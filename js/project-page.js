@@ -32,7 +32,8 @@
     if (!img) return '';
     var s = imgSources(slug, img.name || img.image);
     var ratio = img.w && img.h ? ' style="aspect-ratio:' + img.w + ' / ' + img.h + '"' : '';
-    return '<figure class="uma-project__figure' + (extraClass ? ' ' + extraClass : '') + '"' + ratio + '>' +
+    return '<figure class="uma-project__figure' + (extraClass ? ' ' + extraClass : '') + '"' + ratio +
+      ' data-label="' + esc(img.alt) + '">' +
       '<img loading="lazy" decoding="async" alt="' + esc(img.alt) + '"' +
       (img.w && img.h ? ' width="' + img.w + '" height="' + img.h + '"' : '') +
       ' src="' + s.cdn + '-1200.webp"' +
@@ -113,7 +114,11 @@
       img.addEventListener('error', function onErr() {
         var raw = img.getAttribute('data-raw');
         // ни CDN, ни запасной адрес не ответили: оставляем пустую подложку
-        if (!raw || img.dataset.fallback) { img.classList.add('is-missing'); return; }
+        if (!raw || img.dataset.fallback) {
+          img.classList.add('is-missing');
+          img.parentNode.classList.add('is-empty');   // на плашке видна подпись: что здесь будет
+          return;
+        }
         img.dataset.fallback = '1';
         img.removeAttribute('srcset');
         img.src = raw + '-1200.webp';

@@ -108,6 +108,21 @@ body.light-theme .uma-project {
 }
 .uma-project__figure img.is-loaded { opacity: 1; }
 .uma-project__figure img.is-missing { visibility: hidden; }
+/* пока изображения нет: подпись по центру плашки */
+.uma-project__figure.is-empty::after {
+    content: attr(data-label);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--up-muted);
+    border: 1px dashed color-mix(in srgb, var(--up-muted) 40%, transparent);
+}
 .uma-project__cover { margin-top: var(--up-inner); }
 
 /* ---------- Вступление ---------- */
