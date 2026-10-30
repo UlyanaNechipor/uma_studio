@@ -1,0 +1,55 @@
+/* UMA · loops
+   Перенесено из блока Тильды rec4411494701. */
+
+/* ========================================================================= */
+/* ⚡ ХАРДВЕРНЫЙ ДВИЖОК БЕСКОНЕЧНЫХ ЛЕНТ UMA INFINITE LOOP */
+/* ========================================================================= */
+
+/* Задаем жесткие бруталистические рамки для всего Zero Block хедера, 
+   чтобы улетающие вверх мокапы элегантно прятались за верхней границей */
+#rec3979597301, 
+#rec3979597301 .t396__artboard {
+    overflow: hidden !important;
+}
+
+/* Настраиваем независимые стрим-контейнеры под мягкое флюидное скольжение */
+.uma-loop-mobiles,
+.uma-loop-desktops {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 40px !important; /* Чистый фиксированный воздух между карточками кейса */
+    height: auto !important;
+    will-change: transform;
+}
+
+/* Запускаем бесконечные, независимые циклы анимации на видеокарте */
+.uma-loop-running .uma-loop-mobiles {
+    animation: umaScrollUpMobiles 22s linear infinite;
+}
+
+.uma-loop-running .uma-loop-desktops {
+    /* Десктопная лента идет с чуть-чуть другой скоростью для создания оптического объема */
+    animation: umaScrollUpDesktops 28s linear infinite;
+}
+
+/* ========================================================================= */
+/* 📈 МАТЕМАТИЧЕСКИЕ КОРРИДОРЫ СМЕЩЕНИЯ (БЕСШОВНЫЙ СТЫК В КЛЮЧЕВЫХ КАДРАХ) */
+/* ========================================================================= */
+@keyframes umaScrollUpMobiles {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(0, -50%, 0); } /* Сдвигаемся ровно на длину исходного блока */
+}
+
+@keyframes umaScrollUpDesktops {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(0, -50%, 0); }
+}
+
+/* Эффект интерактива: при наведении мыши на любую из лент, 
+   её бег породисто и плавно замедляется в два раза, позволяя разглядеть кейс */
+.uma-loop-mobiles:hover,
+.uma-loop-desktops:hover {
+    animation-play-state: paused !important;
+    opacity: 0.95;
+    transition: opacity 0.3s ease;
+}

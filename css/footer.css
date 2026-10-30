@@ -1,0 +1,121 @@
+/* UMA · footer
+   Перенесено из блока Тильды rec5227328501. */
+
+/* 1. СКРЫТИЕ ПЛАШКИ TILDA (как в прежнем футере) */
+.t-tildalаbеl, [class*="tildalabel"], #tildacоpy, .t-tildalаbеl__wrapper {
+    display: none !important; visibility: hidden !important; opacity: 0 !important; height: 0 !important; padding: 0 !important; margin: 0 !important;
+}
+
+/* 2. КАРКАС ФУТЕРА */
+.uma-footer {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    background-color: var(--bg, #111211) !important;
+    font-family: 'Manrope', Arial, sans-serif;
+    color: var(--txt, #ffffff);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.uma-footer__field {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: block;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 3. КНОПКИ: по колонкам сетки сайта (как DIGITAL / DESIGN / DIRECTION / AI) */
+.uma-footer__actions {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 0.9vw;
+    align-items: center;
+    padding: 0 2.66vw;      /* поля как у колонок выше */
+    box-sizing: border-box;
+    width: 100%;
+}
+.uma-footer__actions .uma-footer__btn { justify-self: start; }
+
+.uma-footer__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 48px;
+    padding: 0 26px;
+    border: 1px solid var(--border, rgba(255, 255, 255, 0.25));
+    border-radius: 2px;
+    background-color: var(--bg, #111211);   /* сплошная подложка: символы не просвечивают */
+    color: var(--txt, #ffffff) !important;
+    font-family: 'Manrope', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 450;
+    letter-spacing: 0.2px;
+    text-decoration: none !important;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.uma-footer__btn:hover,
+.uma-footer__btn:focus-visible {
+    border-color: #e08244;
+    color: #e08244 !important;
+    outline: none;
+}
+/* стрелки — SVG, а не символы ↗ ↑: на iOS символы превращаются в эмодзи */
+.uma-footer__btn-icon {
+    width: 11px;
+    height: 11px;
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.uma-footer__btn:hover .uma-footer__btn-icon { transform: translate(2px, -2px); }
+.uma-footer__btn[data-action="top"]:hover .uma-footer__btn-icon { transform: translateY(-3px); }
+
+/* 4. НИЖНЯЯ СТРОКА */
+.uma-footer__bar {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2.66vw 24px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #767575 !important;
+    pointer-events: none;
+}
+.uma-footer__bar span,
+.uma-footer__bar a {
+    pointer-events: auto;
+    color: #767575 !important;
+    text-decoration: none !important;
+    background-color: var(--bg, #111211);
+    padding: 2px 4px;
+    transition: color 0.3s ease;
+}
+.uma-footer__bar a:hover { color: #e08244 !important; }
+
+/* 📱 Мобильные */
+@media screen and (max-width: 767px) {
+    .uma-footer { height: 320px; }
+    .uma-footer__actions { grid-template-columns: repeat(2, 1fr); column-gap: 12px; row-gap: 14px; padding: 0 16px; margin-top: -24px; }
+    .uma-footer__btn { height: 44px; padding: 0 18px; font-size: 14px; }
+    .uma-footer__bar { flex-direction: column; gap: 6px; padding: 0 16px 16px; font-size: 11px; }
+}

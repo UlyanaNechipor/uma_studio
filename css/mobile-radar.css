@@ -1,0 +1,61 @@
+/* UMA · mobile-radar
+   Перенесено из блока Тильды rec4222186401. */
+
+/* ========================================================================= */
+/* 📱 КИНЕТИЧЕСКИЙ ЦЕНТРАЛЬНЫЙ РАДАР ДЛЯ МОБИЛЬНЫХ ГРУПП UMA */
+/* ========================================================================= */
+@media screen and (max-width: 1024px) {
+    
+    /* Базовая подготовка нативной подложки группы Tilda */
+    .project-group-card {
+        /* Плавное, благородное наливание подложки цветом */
+        background-color: transparent !important;
+        transition: background-color 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+
+    /* АКТИВАЦИЯ ФОКУСА: Наливаем группу контрастным fbfbfb */
+    .project-group-card.is-focused {
+        background-color: #fbfbfb !important;
+    }
+    
+    /* Автоматическая поддержка темной/светлой темы сайта UMA */
+    body.light-theme .project-group-card.is-focused {
+        background-color: #111211 !important;
+    }
+
+    /* ТОТАЛЬНАЯ ИНВЕРСИЯ ТЕКСТОВ ВНУТРИ АКТИВНОЙ ГРУППЫ */
+    /* Находим все текстовые элементы внутри фокусной группы и перекрашиваем в темный графит */
+    .project-group-card.is-focused [data-elem-type="text"] .tn-atom,
+    .project-group-card.is-focused [data-elem-type="text"] a,
+    .project-group-card.is-focused [data-elem-type="text"] h2,
+    .project-group-card.is-focused [data-elem-type="text"] h3 {
+        color: #111211 !important;
+        transition: color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+    
+    /* Синхронная инверсия текстов для светлой темы (буквы наливаются бежем) */
+    body.light-theme .project-group-card.is-focused [data-elem-type="text"] .tn-atom,
+    body.light-theme .project-group-card.is-focused [data-elem-type="text"] a,
+    body.light-theme .project-group-card.is-focused [data-elem-type="text"] h2,
+    body.light-theme .project-group-card.is-focused [data-elem-type="text"] h3 {
+        color: #F5F4F0 !important;
+    }
+
+    /* Плавность угасания текстов при выходе группы из фокуса радара */
+    .project-group-card [data-elem-type="text"] .tn-atom,
+    .project-group-card [data-elem-type="text"] h2,
+    .project-group-card [data-elem-type="text"] h3 {
+        transition: color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+
+    /* КИНЕТИЧЕСКИЙ ТАКТИЛЬНЫЙ ИМПУЛЬС ДЛЯ ОБЛОЖЕК ВНУТРИ ГРУППЫ */
+    .project-group-card [data-elem-type="image"] {
+        transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        will-change: transform;
+    }
+
+    /* Когда группа в центре экрана — обложки упруго увеличиваются на 2.5% */
+    .project-group-card.is-focused [data-elem-type="image"] {
+        transform: scale(1.025) !important; 
+    }
+}

@@ -1,0 +1,33 @@
+/* UMA · trail
+   Перенесено из блока Тильды rec4044167501. */
+
+body {
+    background-color: #111211 !important; /* Ваш точный фон */
+    position: relative;
+    overflow-x: hidden;
+}
+
+#trail-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none; 
+    z-index: 0; 
+    /* Мягкий блюр для объема */
+    filter: blur(28px);
+    mix-blend-mode: screen; 
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: -1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://w3.org id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.015'/%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
+.r, .t396__artboard, .t396__carrier {
+    background-color: transparent !important;
+    background-image: none !important;
+}

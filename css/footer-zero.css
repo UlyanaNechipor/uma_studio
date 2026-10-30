@@ -1,0 +1,21 @@
+/* UMA · footer-zero
+   Перенесено из блока Тильды rec3979598101. */
+
+/* Нацеливаемся строго на ваш Zero Block футера по его ID */
+#rec3979598001 {
+    position: relative !important;
+    z-index: 99999 !important; /* Выталкиваем его на самый верхний слой над плашкой */
+    background-color: #111211 !important; /* Задаем ему ваш глухой матовый цвет */
+}
+
+/* Полностью изолируем внутренний контейнер блока, чтобы под ним ничего не сквозило */
+#rec3979598001 .t396__artboard, 
+#rec3979598001 .t396__carrier {
+    background-color: #111211 !important;
+    background-image: none !important;
+}
+
+/* Принудительно опускаем лейбл Tilda под ваш футер */
+.t-tildalаbеl {
+    z-index: 1 !important;
+}

@@ -1,0 +1,228 @@
+/* UMA · theme
+   Перенесено из блока Тильды rec4823650601. */
+
+/* ========================================================================= */
+/* 1. ГЛОБАЛЬНАЯ СИСТЕМА ПЕРЕМЕННЫХ И ЧИСТЫЙ ПЕРЕХВАТ ФОНОВ TILDA */
+/* ========================================================================= */
+:root { 
+    --bg: #111211; --txt: #ffffff; 
+    --border: rgba(255, 255, 255, 0.25); 
+}
+body.light-theme { 
+    --bg: #f0f0f0; 
+    --txt: #1a1a1a; 
+    --border: rgba(26, 26, 26, 0.15); 
+}
+body.light-theme #trail-canvas { mix-blend-mode: multiply !important; opacity: 0.85 !important; filter: blur(24px) !important; }
+
+/* СКВОЗНОЙ ПЕРЕХВАТ БАЗОВЫХ ФОНОВ */
+body, .r, [class*="t396__artboard"], [class*="t396__carrier"], 
+#rec3979597301, #rec3979597301 > .m, #rec3979597301 [class*="t396__artboard"], #rec3979597301 [class*="t396__carrier"] {
+    background-color: var(--bg) !important; background-image: none !important;
+}
+
+/* 🔥 УЛЬТИМАТИВНАЯ КЛАССОВАЯ ИНВЕРСИЯ ТЕКСТОВ САЙТА */
+body.light-theme .uma-invert-white, body.light-theme .uma-invert-white .tn-atom, body.light-theme .uma-invert-white span, body.light-theme .uma-invert-white a {
+    color: var(--txt) !important; font-weight: 450 !important; transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1), font-weight 0.5s ease !important;
+}
+body.light-theme h1.uma-invert-white, body.light-theme h2.uma-invert-white, body.light-theme h3.uma-invert-white, body.light-theme .uma-invert-white h1, body.light-theme .uma-invert-white h2, body.light-theme .uma-invert-white h3 {
+    font-weight: 480 !important;
+}
+body.light-theme .t-menu__link-item { color: var(--txt) !important; font-weight: 450 !important; }
+
+/* 🛡️ АБСОЛЮТНАЯ НЕПРИКОСНОВЕННОСТЬ ДЛЯ СЕРОГО ЦВЕТА #767575 */
+body.light-theme .uma-keep-grey, body.light-theme .uma-keep-grey .tn-atom, body.light-theme .uma-keep-grey span, body.light-theme .uma-keep-grey a {
+    color: #767575 !important; font-weight: 400 !important; transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1), font-weight 0.5s ease !important;
+}
+
+/* ========================================================================= */
+/* ✨ ЮВЕЛИРНЫЙ ПЕРЕХВАТ ХОВЕРА КНОПОК МЕНЮ В СВЕТЛОЙ ТЕМЕ (УЛЬТРА-ПЛАВНЫЙ) */
+/* ========================================================================= */
+#rec3979597301 .tn-atom, #rec3979597301 .t-menu__link-item, #rec3979597301 a {
+    transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+body.light-theme #rec3979597301 .tn-atom:hover,
+body.light-theme #rec3979597301 .t-menu__link-item:hover,
+body.light-theme #rec3979597301 a:hover,
+body.light-theme #rec3979597301 a:hover span,
+body.light-theme #rec3979597301 .tn-atom:hover span {
+    color: #111211 !important;
+    transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* ========================================================================= */
+/* ⚡ СИНХРОНИЗАЦИЯ СЕПАРАТОРОВ */
+/* ========================================================================= */
+body.light-theme .uma-separator {
+    opacity: 0.15 !important; 
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+body.light-theme .uma-separator .tn-atom {
+    background-color: transparent !important; border-color: transparent !important; text-indent: -9999px !important; overflow: hidden !important;
+}
+
+body.light-theme .uma-header-line {
+    filter: invert(0.85) !important;
+    opacity: 1 !important;
+    transition: filter 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* 🟢 АВТОНОМНАЯ ЗАЩИТА СИСТЕМНЫХ ЦВЕТОВЫХ МАРКЕРОВ */
+body.light-theme .uma-hover-fade .tn-atom__circle, body.light-theme .uma-hover-fade span:before { background-color: #24b47c !important; color: #24b47c !important; }
+body.light-theme .tn-atom:not(.logo-fill-text):not(.logo-bg-text) svg path, body.light-theme .tn-atom:not(.logo-fill-text):not(.logo-bg-text) svg { fill: var(--txt); }
+#theme-wipe-canvas { position: fixed !important; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -2; }
+
+/* ========================================================================= */
+/* 📐 КИНЕТИЧЕСКАЯ ГЕОМЕТРИЯ С ИСХОДНЫМ ТОНКИМ ВИДОМ КНОПКИ */
+/* ========================================================================= */
+@media screen and (min-width: 768px) {
+    .theme-toggle-btn {
+        position: absolute !important; 
+        right: 2.15rem !important; left: auto !important; top: 1.5rem !important; 
+        transform: translateY(-50%) !important; z-index: 2147483647 !important;
+        background: transparent !important; padding: 0; margin: 0; 
+        
+        width: 2vw !important; height: 2vw !important; 
+        border: 1px solid var(--border) !important; 
+        border-radius: 4px !important; 
+        
+        display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer !important; 
+        opacity: 0; animation: fadeInToggle 0.6s ease forwards 5s; 
+        transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    
+    .theme-toggle-btn:hover { 
+        background-color: #e08244 !important; 
+        border-color: #e08244 !important; 
+    }
+    body.light-theme .theme-toggle-btn:hover {
+        background-color: #e08244 !important; 
+        border-color: #e08244 !important; 
+    }
+    
+    .theme-icon-container { 
+        width: 0.64vw !important; height: 0.64vw !important; 
+        position: relative; display: flex; align-items: center; justify-content: center; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
+    }
+
+    #rec3979597301 .t-menu__list, #rec3979597301 .t228__rightside, #rec3979597301 [class*="t-align_right"] {
+        padding-right: 3.5rem !important; box-sizing: border-box !important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .theme-toggle-btn {
+        position: absolute !important; right: 20px !important; left: auto !important; top: 50% !important; transform: translateY(-50%) !important; z-index: 2147483647 !important; 
+        background: transparent !important; padding: 0; margin: 0; width: 20px !important; height: 20px !important; 
+        border: 1px solid var(--border) !important; border-radius: 4px !important; 
+        display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer !important; 
+        opacity: 0; animation: fadeInToggleMobile 0.6s ease forwards 4.4s; 
+        transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .theme-toggle-btn:hover { background-color: #e08244 !important; border-color: #e08244 !important; }
+    .theme-icon-container { width: 10px !important; height: 10px !important; position: relative; display: flex; align-items: center; justify-content: center; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+}
+
+.theme-icon-container svg { position: absolute; width: 100%; height: 100%; fill: none !important; stroke: var(--txt); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: opacity 0.2s ease, stroke 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+.icon-sun { opacity: 0 !important; transform: scale(0.6) rotate(-45deg); } .icon-moon { opacity: 1 !important; }
+body.light-theme .theme-icon-container { transform: rotate(45deg); } body.light-theme .icon-moon { opacity: 0 !important; transform: scale(0.6) rotate(45deg); } body.light-theme .icon-sun { opacity: 1 !important; transform: rotate(0deg) !important; }
+.theme-toggle-btn:hover .theme-icon-container svg { stroke: #ffffff !important; }
+
+@keyframes fadeInToggle { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes fadeInToggleMobile { 0% { opacity: 0; transform: translateY(-50%) scale(0.85); } 100% { opacity: 1; transform: translateY(-50%) scale(1); } }
+
+/* ========================================================================= */
+/* 🖌️ ЗАЛИВКА ТЕКСТА ОДНИМ СЛОЕМ                                             */
+/* Текст один. Заливка рисуется градиентом прямо по буквам:                  */
+/* слева цвет заливки (--uma-ink), справа базовый цвет (--uma-base).         */
+/* При смене темы меняются только эти две переменные.                        */
+/* ========================================================================= */
+
+/* 🖤 Тёмная тема: тёмно-серое русло, заливка белым */
+:root {
+    --uma-base: #2a2b2a;
+    --uma-ink:  #ffffff;
+}
+
+/* 🤍 Светлая тема: светло-светло-серое русло, заливка графитом */
+html.light-theme,
+body.light-theme {
+    --uma-base: #dcdcd9;
+    --uma-ink:  #1a1a1a;
+}
+
+/* Второй (белый) слой больше не нужен. Пока он есть в Зеро-блоках, просто прячем его.
+   Позже элементы с классами uma-stream-top-cyr / uma-stream-top-lat можно удалить из Зеро. */
+html body.t-body #allrecords [class*="uma-stream-top-"] {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Текст до запуска скрипта (и если скрипт не загрузился) сразу показан залитым */
+html body.t-body #allrecords [class*="uma-stream-bg-"] .tn-atom,
+html body.t-body #allrecords [class*="uma-stream-bg-"] .tn-atom * {
+    color: var(--uma-ink) !important;
+    -webkit-text-fill-color: var(--uma-ink) !important;
+    transition: none !important;
+}
+
+/* Строка с заливкой: буквы прозрачные, цвет им даёт фон, обрезанный по тексту */
+html body.t-body #allrecords .uma-line.uma-fill,
+html body.t-body #allrecords .uma-line.uma-fill * {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+html body.t-body #allrecords .uma-line.uma-fill {
+    --uma-p: 0px;   /* докуда дошла заливка (ставит скрипт) */
+    --uma-f: 0px;   /* ширина мягкого края (ставит скрипт) */
+    display: block;
+    width: fit-content;
+    white-space: nowrap;
+    /* запас под выносные элементы букв (g, p, й), положение текста не меняется */
+    padding: 0.2em 0;
+    margin-top: -0.2em;
+    margin-bottom: -0.2em;
+    /* мягкий край с тем же профилем, что у логотипа в прелоадере:
+       сплошной цвет -> 84% -> 50% -> 16% -> базовый цвет */
+    background-image: linear-gradient(90deg,
+        var(--uma-ink) 0,
+        var(--uma-ink) calc(var(--uma-p) - var(--uma-f)),
+        color-mix(in srgb, var(--uma-ink) 84%, var(--uma-base)) calc(var(--uma-p) - var(--uma-f) * 0.75),
+        color-mix(in srgb, var(--uma-ink) 50%, var(--uma-base)) calc(var(--uma-p) - var(--uma-f) * 0.5),
+        color-mix(in srgb, var(--uma-ink) 16%, var(--uma-base)) calc(var(--uma-p) - var(--uma-f) * 0.25),
+        var(--uma-base) var(--uma-p),
+        var(--uma-base) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+/* ========================================================================= */
+/* ✍️ ПЕРЕНОСЫ КАК В FIGMA: WRAP STYLE BALANCE / PRETTY                      */
+/* Класс ставится на текстовый элемент в Зеро-блоке (поле CSS-класса).       */
+/*   uma-balance - строки выравниваются по длине (для заголовков, до 6 строк) */
+/*   uma-pretty  - без одинокого слова в последней строке (для абзацев)      */
+/* ========================================================================= */
+.uma-balance .tn-atom,
+.uma-balance .tn-atom * {
+    text-wrap: balance;
+}
+
+.uma-pretty .tn-atom,
+.uma-pretty .tn-atom * {
+    text-wrap: pretty;
+}
+
+/* Заголовки с заливкой балансируются автоматически, класс ставить не нужно.
+   Если какой-то из них должен переноситься как обычно, добавьте ему класс uma-wrap-auto */
+html body.t-body #allrecords [class*="uma-stream-bg-"]:not(.uma-wrap-auto) .tn-atom {
+    text-wrap: balance;
+}
+
+/* Сброс: обычный перенос, даже если элемент попал под правила выше */
+html body.t-body #allrecords .uma-wrap-auto .tn-atom {
+    text-wrap: wrap;
+}

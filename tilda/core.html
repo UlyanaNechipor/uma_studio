@@ -1,0 +1,431 @@
+<!-- =========================================================================
+     UMA CORE: единственная вставка с кодом в Тильде.
+     Здесь только то, что должно сработать в первую миллисекунду:
+     тема до отрисовки, блокировка скролла, прелоадер. Всё остальное
+     загрузчик ниже берёт из GitHub: github.com/UlyanaNechipor/uma_studio
+     Исходник этой вставки лежит в репозитории: tilda/core.html
+     ========================================================================= -->
+
+<script>
+/* ========================================================================= */
+/* САМАЯ ПЕРВАЯ МИЛЛИСЕКУНДА: Мгновенный перехват темы ДО отрисовки пикселей. */
+/* ========================================================================= */
+if (localStorage.getItem('theme') === 'light') {
+    document.documentElement.classList.add('light-theme');
+    document.addEventListener("DOMContentLoaded", function() {
+        document.body.classList.add('light-theme');
+    });
+}
+</script>
+
+<style>
+/* 1. БЛОКИРУЕМ ПОЛЗУНОК СКРОЛЛА НА ВРЕМЯ РАБОТЫ ЛОАДЕРА */
+/* Этот класс мгновенно прячет вертикальный курсор сбоку и запрещает любые движения */
+html.uma-scroll-locked, 
+body.uma-scroll-locked {
+    overflow: hidden !important;
+    height: 100vh !important;
+    touch-action: none !important; /* Защита от тач-скролла на мобильных */
+}
+
+/* Настраиваем ультра-плавное возвращение ползунка скролла после лоадера */
+html, body {
+    transition: background-color 0.6s cubic-bezier(0.25, 1, 0.2, 1);
+}
+</style>
+
+<script>
+// В самую первую миллисекунду вешаем замок на скроллбар, чтобы он исчез с экрана
+document.documentElement.classList.add('uma-scroll-locked');
+if (document.body) document.body.classList.add('uma-scroll-locked');
+
+// Отключаем память скролла браузера
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
+// Мгновенный первичный сброс в ноль
+window.scrollTo(0, 0);
+
+// Цикл удержания страницы на отметке (0,0) под замком
+let isLoaderActive = true;
+function lockScrollToTop() {
+    if (!isLoaderActive) return;
+    window.scrollTo(0, 0);
+    requestAnimationFrame(lockScrollToTop);
+}
+requestAnimationFrame(lockScrollToTop);
+
+// Ровно через 2.5 секунды (когда шторка залилась и начинает улетать) — снимаем замок
+setTimeout(function() {
+    isLoaderActive = false;
+    
+    // Нежно возвращаем вертикальный ползунок на место
+    document.documentElement.classList.remove('uma-scroll-locked');
+    if (document.body) document.body.classList.remove('uma-scroll-locked');
+    
+    // Финальный закреп на верхушке сайта
+    window.scrollTo(0, 0);
+}, 2500);
+
+// Страховочный сброс для медленного интернета
+window.addEventListener('load', function() {
+    window.scrollTo(0, 0);
+});
+</script>
+
+<style>
+/* ========================================================================= */
+/* 1. ПРЕЛОАДЕР: ГЛОБАЛЬНАЯ СИСТЕМА ИНВЕРСИИ ЦВЕТОВ */
+/* ========================================================================= */
+:root {
+    --preloader-bg: #111211;       /* Базовый тёмный графит UMA */
+    --preloader-text-bg: #202120;  /* Бледные буквы на старте */
+}
+
+html.light-theme,
+body.light-theme {
+    --preloader-bg: #F5F4F0;       /* Матовая костяная бумага (мягкий беж) */
+    --preloader-text-bg: #E3E2DE;  /* Мягкая подложка букв в светлой теме */
+}
+
+/* Главный экран прелоадера */
+#custom-preloader {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: var(--preloader-bg) !important; 
+    z-index: 9999999 !important; 
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 1.2s cubic-bezier(0.19, 1, 0.22, 1), visibility 1.2s;
+}
+
+#custom-preloader.completed {
+    background-color: rgba(17, 18, 17, 0) !important;
+    pointer-events: none; 
+}
+
+/* АДАПТИВНЫЙ КОНТЕЙНЕР ДЛЯ ПОЛЕТА ЛОГОТИПА */
+.preloader-logo-container {
+    position: absolute;
+    height: auto;
+    z-index: 10;
+    transform-origin: left center; 
+    left: 50vw;
+    top: 50vh;
+    transform: translate3d(-50%, -50%, 0) scale(1);
+    
+    /* Вылет: 1.4 секунды на кубической экспоненте Безье */
+    transition: transform 1.4s cubic-bezier(0.19, 1, 0.22, 1), 
+                left 1.4s cubic-bezier(0.19, 1, 0.22, 1), 
+                top 1.4s cubic-bezier(0.19, 1, 0.22, 1),
+                width 1.4s cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: transform, left, top, width;
+}
+
+.preloader-logo-container svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 1 СЛОЙ: Бледные буквы на старте (в потоке, задаёт размер контейнера) */
+.logo-bg-text {
+    font-family: 'Manrope', 'Arial Black', sans-serif;
+    font-weight: 800;
+    font-size: 112px; 
+    letter-spacing: -4px; 
+    fill: var(--preloader-text-bg) !important; 
+    opacity: 0;
+    animation: fadeInLogo 0.6s ease forwards 0.2s; 
+}
+
+/* 2 СЛОЙ: Оранжевая заливка */
+.logo-fill-text {
+    font-family: 'Manrope', 'Arial Black', sans-serif;
+    font-weight: 800;
+    font-size: 112px;
+    letter-spacing: -4px;
+    fill: #e08244 !important; 
+}
+
+/* Заливка логотипа с мягким краем без маски в анимации.
+   Окошко (.uma-reveal) едет вправо, оранжевый слой внутри (.uma-reveal-inner) едет влево
+   на то же расстояние. Мягкий край это статическая маска на окошке.
+   --f: ширина мягкого края в долях ширины логотипа (меньше = уже и чётче). */
+.uma-reveal-wrap {
+    --f: 0.10;
+    --s: calc(100% / (1 + var(--f)));
+}
+
+.uma-reveal {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    width: calc((1 + var(--f)) * 100%);
+    overflow: hidden;
+    transform: translate3d(-100%, 0, 0);
+    will-change: transform;
+    -webkit-mask-image: linear-gradient(90deg,
+        #000 0, #000 var(--s),
+        rgba(0,0,0,.84) calc(var(--s) + (100% - var(--s)) * .25),
+        rgba(0,0,0,.5)  calc(var(--s) + (100% - var(--s)) * .5),
+        rgba(0,0,0,.16) calc(var(--s) + (100% - var(--s)) * .75),
+        transparent 100%);
+    mask-image: linear-gradient(90deg,
+        #000 0, #000 var(--s),
+        rgba(0,0,0,.84) calc(var(--s) + (100% - var(--s)) * .25),
+        rgba(0,0,0,.5)  calc(var(--s) + (100% - var(--s)) * .5),
+        rgba(0,0,0,.16) calc(var(--s) + (100% - var(--s)) * .75),
+        transparent 100%);
+    animation: umaRevealOuter 1.8s cubic-bezier(0.25, 1, 0.4, 1) both 1.0s;
+}
+
+.uma-reveal-inner {
+    position: absolute;
+    top: 0; left: 0;
+    width: calc(100% / (1 + var(--f)));
+    height: 100%;
+    transform: translate3d(calc((1 + var(--f)) * 100%), 0, 0);
+    will-change: transform;
+    animation: umaRevealInner 1.8s cubic-bezier(0.25, 1, 0.4, 1) both 1.0s;
+}
+
+@keyframes fadeInLogo { to { opacity: 1; } }
+
+@keyframes umaRevealOuter {
+    from { transform: translate3d(-100%, 0, 0); }
+    to   { transform: translate3d(0, 0, 0); }
+}
+@keyframes umaRevealInner {
+    from { transform: translate3d(calc((1 + var(--f)) * 100%), 0, 0); }
+    to   { transform: translate3d(0, 0, 0); }
+}
+
+/* 💻 Финал для десктопа (хедер 48px с autoscale) */
+@media screen and (min-width: 768px) {
+    .preloader-logo-container {
+        width: calc(100vw - 64px) !important; 
+    }
+    #custom-preloader.completed .preloader-logo-container {
+        left: 2rem !important;     
+        top: 1.5rem !important;    
+        transform: translate3d(0%, -50%, 0) scale(0.041) !important; 
+    }
+}
+
+/* 📱 Финал для мобильных (линия 16px на 28px) */
+@media screen and (max-width: 767px) {
+    .preloader-logo-container {
+        width: calc(100vw - 32px) !important; 
+        left: 50vw !important;
+        top: 45vh !important; 
+        transform: translate3d(-50%, -50%, 0) scale(1);
+    }
+    #custom-preloader.completed .preloader-logo-container {
+        width: 41px !important;       
+        left: 16px !important;        
+        top: 28px !important;         
+        transform: translate3d(0, 0, 0) scale(1) !important; 
+    }
+}
+
+/* Цвета и стиль заливки текста лежат в блоке стилей темы (раздел «ЗАЛИВКА ТЕКСТА ОДНИМ СЛОЕМ») */
+</style>
+
+<div id="custom-preloader">
+    <div class="preloader-logo-container uma-reveal-wrap" id="uma-logo-wrap">
+
+        <!-- Бледные буквы (в потоке, задают размер) -->
+        <svg viewBox="0 0 255 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-bg-text">UMA</text>
+        </svg>
+
+        <!-- Оранжевая заливка: окошко едет вправо, слой внутри едет влево -->
+        <div class="uma-reveal">
+            <div class="uma-reveal-inner">
+                <svg viewBox="0 0 255 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-fill-text">UMA</text>
+                </svg>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+/* Страховка: если код из GitHub не загрузился, прелоадер всё равно уходит */
+window.umaReleasePreloader = function () {
+  var p = document.getElementById('custom-preloader');
+  if (p && !p.classList.contains('completed')) p.classList.add('completed');
+  document.documentElement.classList.remove('uma-scroll-locked');
+  if (document.body) document.body.classList.remove('uma-scroll-locked');
+};
+setTimeout(window.umaReleasePreloader, 10000);
+</script>
+
+<script>
+/* =========================================================================
+   UMA LOADER: подтягивает весь остальной код сайта из GitHub
+   Репозиторий: github.com/UlyanaNechipor/uma_studio (ветка main)
+   Список файлов и порядок их подключения: uma.json в корне репозитория.
+
+   ?umaref=dev     предпросмотр ветки dev (запоминается до закрытия вкладки)
+   ?umaref=main    вернуться к основной версии
+   ?umadebug       подробный лог загрузки в консоли
+   ========================================================================= */
+(function () {
+  var REPO = 'UlyanaNechipor/uma_studio';
+  // одни и те же файлы с трёх адресов jsDelivr: если один недоступен, берём следующий
+  var CDNS = ['https://cdn.jsdelivr.net/gh/', 'https://fastly.jsdelivr.net/gh/', 'https://gcore.jsdelivr.net/gh/'];
+
+  var q = location.search;
+  var DEBUG = /[?&]umadebug/.test(q);
+  function log() { if (DEBUG) console.log.apply(console, ['UMA loader:'].concat([].slice.call(arguments))); }
+
+  /* ---------- какая ветка ---------- */
+  var ref = 'main';
+  try {
+    var m = q.match(/[?&]umaref=([\w.\-]+)/);
+    if (m) {
+      ref = m[1];
+      if (ref === 'main') sessionStorage.removeItem('uma_ref'); else sessionStorage.setItem('uma_ref', ref);
+    } else {
+      ref = sessionStorage.getItem('uma_ref') || 'main';
+    }
+  } catch (e) {}
+
+  /* ---------- DOMContentLoaded / load для кода, пришедшего позже ----------
+     Файлы из GitHub выполняются, когда страница уже разобрана. Обработчик
+     DOMContentLoaded (или load), повешенный после этого события, вызывается сразу. */
+  (function () {
+    function call(fn, target, type) {
+      var ev; try { ev = new Event(type); } catch (e) { ev = { type: type }; }
+      if (typeof fn === 'function') fn.call(target, ev); else fn.handleEvent(ev);
+    }
+    function wrap(target) {
+      var orig = target.addEventListener;
+      target.addEventListener = function (type, fn, opts) {
+        if (fn && (typeof fn === 'function' || fn.handleEvent)) {
+          if (type === 'DOMContentLoaded' && document.readyState !== 'loading') {
+            setTimeout(function () { call(fn, target, type); }, 0); return;
+          }
+          if (type === 'load' && target === window && document.readyState === 'complete') {
+            setTimeout(function () { call(fn, target, type); }, 0); return;
+          }
+        }
+        return orig.call(this, type, fn, opts);
+      };
+    }
+    wrap(document); wrap(window);
+  })();
+
+  /* ---------- утилиты ---------- */
+  function timeout(p, ms) {
+    return new Promise(function (ok, fail) {
+      var t = setTimeout(function () { fail(new Error('timeout')); }, ms);
+      p.then(function (v) { clearTimeout(t); ok(v); }, function (e) { clearTimeout(t); fail(e); });
+    });
+  }
+  function getText(url) {
+    return timeout(fetch(url), 6000).then(function (r) {
+      if (!r.ok) throw new Error(r.status + ' ' + url);
+      return r.text();
+    });
+  }
+
+  /* ---------- 1. номер последнего коммита ----------
+     Файлы по точному коммиту jsDelivr отдаёт свежими сразу. По имени ветки
+     он кэширует их до 12 часов, поэтому ветка — только запасной вариант. */
+  function resolveVersion() {
+    var key = 'uma_sha_' + ref, c = null;
+    try { c = JSON.parse(sessionStorage.getItem(key) || 'null'); } catch (e) {}
+    if (c && Date.now() - c.t < 60000) return Promise.resolve(c.sha);
+    return timeout(fetch('https://api.github.com/repos/' + REPO + '/commits/' + ref, {
+      headers: { Accept: 'application/vnd.github.sha' }, cache: 'no-store'
+    }), 2500).then(function (r) { return r.ok ? r.text() : ''; }).then(function (s) {
+      s = (s || '').trim();
+      if (!/^[0-9a-f]{40}$/.test(s)) throw new Error('нет sha');
+      try { sessionStorage.setItem(key, JSON.stringify({ sha: s, t: Date.now() })); } catch (e) {}
+      return s;
+    }).catch(function (e) {
+      log('коммит не получен (' + e.message + '), беру ветку ' + ref);
+      return ref;
+    });
+  }
+
+  /* ---------- 2. список файлов (uma.json) с первого доступного CDN ---------- */
+  function loadManifest(version) {
+    var i = 0;
+    return new Promise(function (ok, fail) {
+      (function next() {
+        if (i >= CDNS.length) return fail(new Error('uma.json недоступен на всех CDN'));
+        var base = CDNS[i++] + REPO + '@' + version + '/';
+        getText(base + 'uma.json').then(function (t) { ok({ base: base, manifest: JSON.parse(t) }); }, function (e) {
+          log('CDN не ответил', base, e.message); next();
+        });
+      })();
+    });
+  }
+
+  // один файл: сначала с того же CDN, что и uma.json, потом с остальных
+  function loadFile(base, version, path) {
+    var bases = [base].concat(CDNS.map(function (c) { return c + REPO + '@' + version + '/'; })
+      .filter(function (b) { return b !== base; }));
+    var i = 0;
+    return new Promise(function (ok, fail) {
+      (function next() {
+        if (i >= bases.length) return fail(new Error('не загрузился ' + path));
+        getText(bases[i++] + path).then(ok, next);
+      })();
+    });
+  }
+
+  /* ---------- 3. подключение: все файлы качаются параллельно,
+                    выполняются строго по порядку из uma.json ---------- */
+  function apply(version, base, manifest) {
+    var css = manifest.css || [], js = manifest.js || [];
+    var all = css.concat(js);
+    return Promise.all(all.map(function (p) {
+      return loadFile(base, version, p).catch(function (e) { console.warn('UMA loader: ' + e.message); return null; });
+    })).then(function (texts) {
+      var head = document.head || document.documentElement;
+      css.forEach(function (p, k) {
+        if (texts[k] == null) return;
+        var s = document.createElement('style');
+        s.setAttribute('data-uma', p);
+        s.textContent = texts[k];
+        head.appendChild(s);
+      });
+      js.forEach(function (p, k) {
+        var code = texts[css.length + k];
+        if (code == null) return;
+        var s = document.createElement('script');
+        s.setAttribute('data-uma', p);
+        // sourceURL: в DevTools ошибки показываются с именем файла из репозитория
+        s.text = code + '\n//# sourceURL=uma/' + p;
+        head.appendChild(s);
+      });
+      window.UMA = { ref: ref, version: version, base: base, files: all };
+      document.documentElement.classList.add('uma-loaded');
+      log('готово', ref, version.slice(0, 7), all.length + ' файлов');
+    });
+  }
+
+  function failsafe(e) {
+    console.warn('UMA loader: ' + (e && e.message));
+    if (window.umaReleasePreloader) window.umaReleasePreloader();
+  }
+
+  function start() {
+    resolveVersion().then(function (version) {
+      log('версия', ref, version);
+      return loadManifest(version).then(function (r) { return apply(version, r.base, r.manifest); });
+    }).catch(failsafe);
+  }
+  start();
+})();
+</script>

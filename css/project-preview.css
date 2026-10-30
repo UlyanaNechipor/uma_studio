@@ -1,0 +1,32 @@
+/* UMA · project-preview
+   Перенесено из блока Тильды rec4582105101. */
+
+/* Стили для всплывающего окошка-превью */
+.project-preview-popup {
+    position: fixed;
+    width: 380px;            /* Увеличили ширину, чтобы телефон на обложке смотрелся крупно */
+    height: 240px;           /* Высота карточки обложки */
+    background-size: cover;
+    background-position: center;
+    border-radius: 14px;     /* Красивое скругление углов */
+    pointer-events: none;    /* Пропускаем клики мыши сквозь картинку к ссылкам */
+    z-index: 9999;           /* Поверх всего контента на сайте */
+    opacity: 0;              /* Изначально скрыто */
+    transform: translate(-50%, -50%) scale(0.85); /* Стартовое уменьшение для эффекта плавного всплытия */
+    
+    /* Ультра-плавное появление и исчезновение */
+    transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.6); /* Объемная глубокая тень */
+    will-change: left, top, transform, opacity;
+}
+
+/* Эффект при активном наведении на строку */
+.project-preview-popup.is-active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Меняем курсор на pointer (ручку) при наведении на любой проект из списка */
+.pr-1, .pr-2, .pr-3, .pr-4, .pr-5, .pr-6, .pr-7, .pr-8, .pr-9, .pr-10 {
+    cursor: pointer !important;
+}

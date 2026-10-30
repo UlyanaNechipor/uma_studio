@@ -1,0 +1,28 @@
+{
+  "css": [
+    "css/cursor.css",
+    "css/trail.css",
+    "css/header.css",
+    "css/loops.css",
+    "css/project-preview.css",
+    "css/mobile-radar.css",
+    "css/buttons.css",
+    "css/neon-button.css",
+    "css/footer-zero.css",
+    "css/rem.css",
+    "css/footer.css",
+    "css/theme.css"
+  ],
+  "js": [
+    "js/hero-fill.js",
+    "js/trail.js",
+    "js/loops.js",
+    "js/scroll-fill.js",
+    "js/project-preview.js",
+    "js/mobile-radar.js",
+    "js/rem.js",
+    "js/prepositions.js",
+    "js/footer.js",
+    "js/theme-toggle.js"
+  ]
+}
