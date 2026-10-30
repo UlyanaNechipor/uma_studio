@@ -13,7 +13,7 @@
   // Ничего не указано — вместо обложки карточка с названием проекта.
   var PROJECTS = [
     { sel: '.pr-1', name: 'Rosi',          img: 'https://optim.tildacdn.com/tild6666-6631-4862-b134-313063336533/-/format/webp/Frame_758532524_1.jpg.webp' },
-    { sel: '.pr-2', name: 'Sure' },
+    { sel: '.pr-2', name: 'Sure',          file: 'img/covers/sure.webp' },
     { sel: '.pr-3', name: 'Kara Fox',      file: 'img/covers/kara-fox.webp' },
     { sel: '.pr-4', name: 'Black Sable',   file: 'img/covers/black-sable.webp' },
     { sel: '.pr-5', name: 'Arine Atelier', file: 'img/covers/arine-atelier.webp' }
