@@ -18,9 +18,9 @@
     --up-sec:     clamp(80px, 8.333vw, 160px);  /* между разделами: 160 */
     --up-inner:   clamp(40px, 4.167vw, 80px);   /* от подписи до картинки: 80 */
 
-    /* шрифты: заголовки Manrope, основной текст Inter (как на всём сайте) */
+    /* шрифты: заголовки Manrope, основной текст — шрифт сайта из css/typography.css */
     --up-head: var(--uma-font-head, 'Manrope', Arial, sans-serif);
-    --up-body: var(--uma-font-body, 'Inter', Arial, sans-serif);
+    --up-body: var(--uma-font-body, 'Manrope', Arial, sans-serif);   /* Inter, когда подключена типографика */
 
     box-sizing: border-box;
     width: 100%;
