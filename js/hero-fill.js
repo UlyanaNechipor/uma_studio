@@ -5,6 +5,7 @@
   /* ================= НАСТРОЙКИ ================= */
   var REC_ID     = 'rec3979597401';
   var MIN_TIME   = 2600;  // мс: минимум до вылета логотипа
+  var INNER_MIN_TIME = 1400; // мс: то же на страницах без главного экрана (страницы проектов)
   var MAX_WAIT   = 7000;  // мс: предохранитель, дольше этого прелоадер не держим
   var TEXT_DELAY = 900;   // мс после вылета логотипа до старта заливки (2600 + 900 = 3.5 с)
 
@@ -267,6 +268,14 @@
 
   // ждём, пока Тильда отрисует Зеро-блок и загрузятся GSAP + SplitText
   function waitForRec() {
+    // Страница без главного экрана (например, страница проекта): ждать заголовок
+    // незачем, прелоадер уходит, как только загрузились страница и шрифты.
+    if (document.readyState !== 'loading' && !document.getElementById(REC_ID)) {
+      textReady = true;
+      setTimeout(function () { minDone = true; tryRelease(); }, INNER_MIN_TIME);
+      tryRelease();
+      return;
+    }
     var tries = 0;
     var timer = setInterval(function () {
       var root = document.getElementById(REC_ID);

@@ -1,0 +1,228 @@
+/* UMA · project-page
+   Страница кейса. Вёрстку собирает js/project-page.js из projects/<slug>.json.
+   Макет: Figma «Landing Arine», фрейм MAIN (894:1338), ширина 1920.
+   Размеры масштабируются от ширины экрана: px на 1920 переводятся в vw
+   с нижней границей, чтобы текст не становился мельче читаемого. */
+
+.uma-project {
+    /* цвета: тёмная тема */
+    --up-text:   #ededed;
+    --up-muted:  #a9a9a9;                   /* текст в колонках, контраст ~8:1 на фоне сайта */
+    --up-meta:   rgba(237, 237, 237, 0.55);  /* пункты «Проект» / «Задачи» */
+    --up-line:   #ededed;
+    --up-ph:     #1b1c1b;                   /* подложка картинки, пока она грузится */
+
+    /* сетка */
+    --up-pad:     clamp(16px, 1.667vw, 32px);   /* поля по краям: 32 на 1920 */
+    --up-gap:     16px;                         /* промежуток между колонками */
+    --up-sec:     clamp(80px, 8.333vw, 160px);  /* между разделами: 160 */
+    --up-inner:   clamp(40px, 4.167vw, 80px);   /* от подписи до картинки: 80 */
+
+    /* шрифты: заголовки Manrope, основной текст Inter (как на всём сайте) */
+    --up-head: var(--uma-font-head, 'Manrope', Arial, sans-serif);
+    --up-body: var(--uma-font-body, 'Inter', Arial, sans-serif);
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: clamp(96px, 6.406vw, 123px) var(--up-pad) 0;
+    color: var(--up-text);
+    font-family: var(--up-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+html.light-theme .uma-project,
+body.light-theme .uma-project {
+    --up-text:   #1a1a1a;
+    --up-muted:  #5c5c5c;                   /* #a9a9a9 на светлом фоне не читается (2:1), этот ~6:1 */
+    --up-meta:   rgba(26, 26, 26, 0.62);
+    --up-line:   #1a1a1a;
+    --up-ph:     #e4e4e1;
+}
+.uma-project *, .uma-project *::before, .uma-project *::after { box-sizing: border-box; }
+.uma-project p { margin: 0; }
+.uma-project a { color: inherit; text-decoration: none; }
+
+/* ---------- Шапка кейса: название, «Назад», колонки «Проект» и «Задачи» ---------- */
+.uma-project__top {
+    display: grid;
+    grid-template-columns: 1fr minmax(240px, 15.9%);  /* правая колонка: 295 из 1856 */
+    column-gap: var(--up-gap);
+}
+.uma-project__left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+}
+.uma-project__title {
+    margin: 0;
+    font-family: var(--up-head);
+    font-weight: 500;
+    font-size: clamp(36px, 2.917vw, 56px);
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--up-text);
+}
+.uma-project__back {
+    align-self: flex-start;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--up-line);
+    font-size: 15px;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    font-weight: var(--uma-w-ui, 500);
+    color: var(--up-text);
+    transition: color .3s ease, border-color .3s ease;
+}
+.uma-project__back:hover,
+.uma-project__back:focus-visible { color: #e08244; border-color: #e08244; outline: none; }
+
+.uma-project__meta { display: flex; flex-direction: column; gap: 40px; }
+.uma-project__meta-group { display: flex; flex-direction: column; gap: 16px; margin: 0; }
+.uma-project__meta dt,
+.uma-project__meta dd {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    font-weight: var(--uma-w-ui, 500);
+}
+.uma-project__meta dt { color: var(--up-text); }
+.uma-project__meta dd { color: var(--up-meta); }
+
+/* ---------- Картинки ---------- */
+.uma-project__figure {
+    position: relative;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    background: var(--up-ph);
+}
+.uma-project__figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    opacity: 0;
+    transition: opacity .6s ease;
+}
+.uma-project__figure img.is-loaded { opacity: 1; }
+.uma-project__figure img.is-missing { visibility: hidden; }
+.uma-project__cover { margin-top: var(--up-inner); }
+
+/* ---------- Вступление ---------- */
+.uma-project__intro {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--up-gap);
+    margin-top: var(--up-inner);
+}
+.uma-project__lead {
+    width: 35.83%;                    /* 665 из 1856 */
+    font-family: var(--up-head);
+    font-weight: 400;
+    font-size: clamp(22px, 1.458vw, 28px);
+    line-height: 1.35;
+    color: var(--up-text);
+}
+
+/* ---------- Текстовые колонки ---------- */
+.uma-project__cols {
+    display: flex;
+    gap: var(--up-gap);
+    width: 49.57%;                    /* 920 из 1856 */
+    flex: none;
+}
+.uma-project__col { flex: 1 1 0; min-width: 0; }
+.uma-project__col p,
+.uma-project__aside p {
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--up-muted);
+    font-weight: var(--uma-w-body, 400);
+    text-wrap: pretty;
+}
+.uma-project__col p + p,
+.uma-project__aside p + p { margin-top: var(--up-pgap, 0); }
+.uma-project p.uma-project__spacer { height: 1.4em; }
+
+/* ---------- Разделы ---------- */
+.uma-project__section { margin-top: var(--up-sec); }
+.uma-project__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--up-gap);
+}
+.uma-project__h2 {
+    margin: 0;
+    flex: 1 1 0;
+    font-family: var(--up-head);
+    font-weight: 400;
+    font-size: clamp(22px, 1.458vw, 28px);
+    line-height: 1.35;
+    color: var(--up-text);
+}
+.uma-project__aside { width: 32.76%; flex: none; }   /* 608 из 1856 */
+.uma-project__aside p { text-wrap: balance; }
+.uma-project__section .uma-project__figure { margin-top: var(--up-inner); }
+.uma-project__section .uma-project__figure + .uma-project__figure { margin-top: var(--up-sec); }
+
+/* ---------- Пагинация ---------- */
+.uma-project__pager {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    margin-top: var(--up-inner);
+    padding-bottom: var(--up-sec);
+    font-size: 14px;
+    line-height: 1;
+    font-weight: var(--uma-w-ui, 500);
+}
+.uma-project__pager a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--up-text);
+    transition: color .3s ease;
+}
+.uma-project__pager a:hover,
+.uma-project__pager a:focus-visible { color: #e08244; outline: none; }
+.uma-project__pager .is-next { justify-self: end; }
+.uma-project__pager svg { width: 16px; height: 16px; flex: none; fill: currentColor; }
+.uma-project__pager .is-next svg { transform: rotate(180deg); }   /* как в макете: ▲ назад, ▼ вперёд */
+.uma-project__count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    font-family: var(--up-head);
+    font-weight: 400;
+    color: var(--up-text);
+}
+.uma-project__count span { color: var(--up-muted); }
+
+/* ---------- Планшеты ---------- */
+@media screen and (max-width: 1199px) {
+    .uma-project__intro { flex-direction: column; }
+    .uma-project__lead { width: 100%; max-width: 720px; }
+    .uma-project__cols { width: 100%; }
+    .uma-project__aside { width: 50%; }
+}
+
+/* ---------- Телефоны ---------- */
+@media screen and (max-width: 767px) {
+    .uma-project__top { grid-template-columns: 1fr; row-gap: 32px; }
+    .uma-project__left { gap: 24px; }
+    .uma-project__head { flex-direction: column; gap: 20px; }
+    .uma-project__cols { flex-direction: column; gap: 1.4em; }
+    .uma-project__aside { width: 100%; }
+    .uma-project__h2 { flex: none; }
+    .uma-project__pager { grid-template-columns: 1fr 1fr; row-gap: 16px; }
+    .uma-project__count { grid-column: 1 / -1; grid-row: 1; justify-self: center; height: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .uma-project__figure img { transition: none; opacity: 1; }
+}
