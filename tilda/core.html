@@ -272,6 +272,7 @@ setTimeout(window.umaReleasePreloader, 10000);
    UMA LOADER: подтягивает весь остальной код сайта из GitHub
    Репозиторий: github.com/UlyanaNechipor/uma_studio (ветка main)
    Список файлов и порядок их подключения: uma.json в корне репозитория.
+   Поле "v" в uma.json меняется при каждом изменении кода.
 
    ?umaref=dev     предпросмотр ветки dev (запоминается до закрытия вкладки)
    ?umaref=main    вернуться к основной версии
@@ -279,8 +280,16 @@ setTimeout(window.umaReleasePreloader, 10000);
    ========================================================================= */
 (function () {
   var REPO = 'UlyanaNechipor/uma_studio';
-  // одни и те же файлы с трёх адресов jsDelivr: если один недоступен, берём следующий
-  var CDNS = ['https://cdn.jsdelivr.net/gh/', 'https://fastly.jsdelivr.net/gh/', 'https://gcore.jsdelivr.net/gh/'];
+  // Источники по порядку. raw.githubusercontent: свежая версия не позже чем через 5 минут после пуша.
+  // jsDelivr (три адреса) — запасной вариант: он кэширует ветку дольше, до 12 часов.
+  function sources(ref) {
+    return [
+      'https://raw.githubusercontent.com/' + REPO + '/' + ref + '/',
+      'https://cdn.jsdelivr.net/gh/' + REPO + '@' + ref + '/',
+      'https://fastly.jsdelivr.net/gh/' + REPO + '@' + ref + '/',
+      'https://gcore.jsdelivr.net/gh/' + REPO + '@' + ref + '/'
+    ];
+  }
 
   var q = location.search;
   var DEBUG = /[?&]umadebug/.test(q);
@@ -337,49 +346,33 @@ setTimeout(window.umaReleasePreloader, 10000);
     });
   }
 
-  /* ---------- 1. номер последнего коммита ----------
-     Файлы по точному коммиту jsDelivr отдаёт свежими сразу. По имени ветки
-     он кэширует их до 12 часов, поэтому ветка — только запасной вариант. */
-  function resolveVersion() {
-    var key = 'uma_sha_' + ref, c = null;
-    try { c = JSON.parse(sessionStorage.getItem(key) || 'null'); } catch (e) {}
-    if (c && Date.now() - c.t < 60000) return Promise.resolve(c.sha);
-    return timeout(fetch('https://api.github.com/repos/' + REPO + '/commits/' + ref, {
-      headers: { Accept: 'application/vnd.github.sha' }, cache: 'no-store'
-    }), 2500).then(function (r) { return r.ok ? r.text() : ''; }).then(function (s) {
-      s = (s || '').trim();
-      if (!/^[0-9a-f]{40}$/.test(s)) throw new Error('нет sha');
-      try { sessionStorage.setItem(key, JSON.stringify({ sha: s, t: Date.now() })); } catch (e) {}
-      return s;
-    }).catch(function (e) {
-      log('коммит не получен (' + e.message + '), беру ветку ' + ref);
-      return ref;
-    });
-  }
-
-  /* ---------- 2. список файлов (uma.json) с первого доступного CDN ---------- */
-  function loadManifest(version) {
-    var i = 0;
+  /* ---------- 1. список файлов (uma.json) с первого доступного источника ----------
+     ?t= меняется раз в минуту, чтобы браузер не держал старый список. */
+  function loadManifest() {
+    var list = sources(ref), i = 0, t = Math.floor(Date.now() / 60000);
     return new Promise(function (ok, fail) {
       (function next() {
-        if (i >= CDNS.length) return fail(new Error('uma.json недоступен на всех CDN'));
-        var base = CDNS[i++] + REPO + '@' + version + '/';
-        getText(base + 'uma.json').then(function (t) { ok({ base: base, manifest: JSON.parse(t) }); }, function (e) {
-          log('CDN не ответил', base, e.message); next();
+        if (i >= list.length) return fail(new Error('uma.json недоступен во всех источниках'));
+        var base = list[i++];
+        timeout(fetch(base + 'uma.json?t=' + t, { cache: 'no-store' }), 6000).then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          return r.json();
+        }).then(function (m) { ok({ base: base, manifest: m }); }, function (e) {
+          log('источник не ответил', base, e.message); next();
         });
       })();
     });
   }
 
-  // один файл: сначала с того же CDN, что и uma.json, потом с остальных
+  // один файл: сначала из того же источника, что и uma.json, потом из остальных.
+  // ?v= из uma.json: новая версия => новый адрес => браузер и CDN не отдадут старое.
   function loadFile(base, version, path) {
-    var bases = [base].concat(CDNS.map(function (c) { return c + REPO + '@' + version + '/'; })
-      .filter(function (b) { return b !== base; }));
+    var list = [base].concat(sources(ref).filter(function (b) { return b !== base; }));
     var i = 0;
     return new Promise(function (ok, fail) {
       (function next() {
-        if (i >= bases.length) return fail(new Error('не загрузился ' + path));
-        getText(bases[i++] + path).then(ok, next);
+        if (i >= list.length) return fail(new Error('не загрузился ' + path));
+        getText(list[i++] + path + '?v=' + encodeURIComponent(version)).then(ok, next);
       })();
     });
   }
@@ -411,7 +404,7 @@ setTimeout(window.umaReleasePreloader, 10000);
       });
       window.UMA = { ref: ref, version: version, base: base, files: all };
       document.documentElement.classList.add('uma-loaded');
-      log('готово', ref, version.slice(0, 7), all.length + ' файлов');
+      log('готово', ref, 'v' + version, all.length + ' файлов');
     });
   }
 
@@ -421,9 +414,10 @@ setTimeout(window.umaReleasePreloader, 10000);
   }
 
   function start() {
-    resolveVersion().then(function (version) {
-      log('версия', ref, version);
-      return loadManifest(version).then(function (r) { return apply(version, r.base, r.manifest); });
+    loadManifest().then(function (r) {
+      var version = String(r.manifest.v || Math.floor(Date.now() / 60000));
+      log('источник', r.base, 'версия', version);
+      return apply(version, r.base, r.manifest);
     }).catch(failsafe);
   }
   start();
