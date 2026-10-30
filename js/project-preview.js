@@ -9,13 +9,14 @@
 (function () {
   /* ================= НАСТРОЙКИ ================= */
   // Строки списка (группы в Зеро-блоке с классами pr-1, pr-2…) и их обложки.
-  // img: адрес картинки. Пусто — вместо обложки карточка с названием проекта.
+  // file: картинка из репозитория (img/covers/…), img: любой внешний адрес.
+  // Ничего не указано — вместо обложки карточка с названием проекта.
   var PROJECTS = [
     { sel: '.pr-1', name: 'Rosi',          img: 'https://optim.tildacdn.com/tild6666-6631-4862-b134-313063336533/-/format/webp/Frame_758532524_1.jpg.webp' },
-    { sel: '.pr-2', name: 'Sure',          img: '' },
-    { sel: '.pr-3', name: 'Kara Fox',      img: '' },
-    { sel: '.pr-4', name: 'Black Sable',   img: '' },
-    { sel: '.pr-5', name: 'Arine Atelier', img: '' }
+    { sel: '.pr-2', name: 'Sure' },
+    { sel: '.pr-3', name: 'Kara Fox',      file: 'img/covers/kara-fox.webp' },
+    { sel: '.pr-4', name: 'Black Sable',   file: 'img/covers/black-sable.webp' },
+    { sel: '.pr-5', name: 'Arine Atelier', file: 'img/covers/arine-atelier.webp' }
   ];
   var FOLLOW    = 0.12;  // насколько быстро окошко догоняет курсор (меньше = ленивее)
   var TILT_MAX  = 5;     // наклон окошка от скорости движения мыши, градусы (0 = без наклона)
@@ -29,13 +30,25 @@
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
+  // файл из репозитория: основной адрес — jsDelivr, запасной — raw.githubusercontent
+  var REPO = 'UlyanaNechipor/uma_studio';
+  function fromRepo(path) {
+    var ref = (window.UMA && window.UMA.ref) || 'main';
+    var v = (window.UMA && window.UMA.version) ? '?v=' + encodeURIComponent(window.UMA.version) : '';
+    return {
+      cdn: 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + ref + '/' + path + v,
+      raw: 'https://raw.githubusercontent.com/' + REPO + '/' + ref + '/' + path + v
+    };
+  }
+
   function build() {
     var root = document.createElement('div');
     root.className = 'uma-pv' + (reduce ? ' is-reduced' : '');
     root.setAttribute('aria-hidden', 'true');
     var slides = PROJECTS.map(function (p, i) {
-      var inner = p.img
-        ? '<img alt="" decoding="async" data-src="' + esc(p.img) + '">'
+      var src = p.file ? fromRepo(p.file) : (p.img ? { cdn: p.img } : null);
+      var inner = src
+        ? '<img alt="" decoding="async" data-src="' + esc(src.cdn) + '"' + (src.raw ? ' data-raw="' + esc(src.raw) + '"' : '') + '>'
         : '<div class="uma-pv__card"><span>' + esc(p.name) + '</span><small>' + String(i + 1).padStart(2, '0') + '</small></div>';
       return '<div class="uma-pv__slide">' + inner + '</div>';
     }).join('');
@@ -61,7 +74,13 @@
     function loadImages() {
       if (loaded) return;
       loaded = true;
-      root.querySelectorAll('img[data-src]').forEach(function (img) { img.src = img.getAttribute('data-src'); });
+      root.querySelectorAll('img[data-src]').forEach(function (img) {
+        img.addEventListener('error', function () {
+          var raw = img.getAttribute('data-raw');
+          if (raw && img.src !== raw) img.src = raw;
+        });
+        img.src = img.getAttribute('data-src');
+      });
     }
 
     var x = 0, y = 0, tx = 0, ty = 0, vx = 0, tilt = 0;
@@ -132,6 +151,7 @@
     }, { passive: true });
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  // на один такт позже: к этому моменту загрузчик уже записал в window.UMA ветку и версию
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(init, 0); });
+  else setTimeout(init, 0);
 })();
