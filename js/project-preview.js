@@ -4,19 +4,26 @@
    из всех обложек: при переходе на соседний проект окошко не закрывается,
    лента плавно прокручивается к нужной обложке. Открывается окошко при входе
    в список, закрывается при выходе из него.
+
+   Строки находятся сами, по названиям проектов: строка — это полоса во всю
+   ширину списка вокруг названия. Классы в Зеро-блоке и группировка элементов
+   не нужны. Элементы, которые на текущем экране спрятаны (лежат за пределами
+   своего блока), не учитываются, поэтому работает на любом брейкпоинте.
    Работает только там, где есть мышь (на телефонах и планшетах наведения нет).
    Стили — css/project-preview.css. */
 (function () {
   /* ================= НАСТРОЙКИ ================= */
-  // Строки списка (группы в Зеро-блоке с классами pr-1, pr-2…) и их обложки.
+  // Проекты в том порядке, в каком они идут в списке, и их обложки.
+  // name: название, как оно написано в строке списка (регистр не важен).
   // file: картинка из репозитория (img/covers/…), img: любой внешний адрес.
-  // Ничего не указано — вместо обложки карточка с названием проекта.
+  // Без картинки — вместо обложки карточка с названием проекта.
+  var LIST_REC = 'rec3979597501';   // Зеро-блок со списком проектов
   var PROJECTS = [
-    { sel: '.pr-1', name: 'Rosi',          img: 'https://optim.tildacdn.com/tild6666-6631-4862-b134-313063336533/-/format/webp/Frame_758532524_1.jpg.webp' },
-    { sel: '.pr-2', name: 'Sure',          file: 'img/covers/sure.webp' },
-    { sel: '.pr-3', name: 'Kara Fox',      file: 'img/covers/kara-fox.webp' },
-    { sel: '.pr-4', name: 'Black Sable',   file: 'img/covers/black-sable.webp' },
-    { sel: '.pr-5', name: 'Arine Atelier', file: 'img/covers/arine-atelier.webp' }
+    { name: 'Rosi',          img: 'https://optim.tildacdn.com/tild6666-6631-4862-b134-313063336533/-/format/webp/Frame_758532524_1.jpg.webp' },
+    { name: 'Sure',          file: 'img/covers/sure.webp' },
+    { name: 'Kara Fox',      file: 'img/covers/kara-fox.webp' },
+    { name: 'Black Sable',   file: 'img/covers/black-sable.webp' },
+    { name: 'Arine Atelier', file: 'img/covers/arine-atelier.webp' }
   ];
   var FOLLOW    = 0.12;  // насколько быстро окошко догоняет курсор (меньше = ленивее)
   var TILT_MAX  = 5;     // наклон окошка от скорости движения мыши, градусы (0 = без наклона)
@@ -57,13 +64,62 @@
     return root;
   }
 
-  function init() {
-    // строки проектов: у каждой свой индекс в ленте (одна и та же строка может быть в нескольких списках)
-    var rows = [];
+  /* ---------- строки списка ----------
+     Для каждого проекта ищем текстовый элемент с его названием внутри блока списка,
+     который на текущем экране действительно лежит внутри блока. По центрам названий
+     строим полосы: граница между строками — середина между соседними названиями. */
+  function norm(t) { return String(t || '').replace(/\s+/g, ' ').trim().toLowerCase(); }
+
+  function findBands() {
+    var rec = document.getElementById(LIST_REC);
+    if (!rec) return null;
+    var rb = rec.getBoundingClientRect();
+    if (!rb.height) return null;
+    var atoms = rec.querySelectorAll('.t396__elem[data-elem-type="text"] .tn-atom');
+    var found = [];
     PROJECTS.forEach(function (p, i) {
-      document.querySelectorAll(p.sel).forEach(function (el) { rows.push({ el: el, i: i }); });
+      var want = norm(p.name);
+      for (var k = 0; k < atoms.length; k++) {
+        var a = atoms[k];
+        if (norm(a.textContent) !== want) continue;
+        var r = a.getBoundingClientRect();
+        if (!r.width || !r.height) continue;
+        // спрятанные раскладки других брейкпоинтов лежат за пределами блока
+        if (r.top < rb.top - 1 || r.bottom > rb.bottom + 1 || r.left < rb.left - 1 || r.right > rb.right + 1) continue;
+        if (getComputedStyle(a).visibility === 'hidden') continue;
+        found.push({ i: i, cy: r.top + r.height / 2, left: r.left });
+        break;
+      }
     });
-    if (!rows.length) return;
+    if (!found.length) return null;
+    found.sort(function (p, q) { return p.cy - q.cy; });
+    var step = found.length > 1 ? (found[found.length - 1].cy - found[0].cy) / (found.length - 1) : 80;
+    var left = Math.min.apply(null, found.map(function (f) { return f.left; }));
+    var pad = left - rb.left;                       // поля списка слева = поля справа
+    return {
+      x0: left - 16,
+      x1: rb.right - pad + 16,
+      rows: found.map(function (f, k) {
+        return {
+          i: f.i,
+          y0: k ? (found[k - 1].cy + f.cy) / 2 : f.cy - step / 2,
+          y1: k < found.length - 1 ? (f.cy + found[k + 1].cy) / 2 : f.cy + step / 2
+        };
+      })
+    };
+  }
+
+  // какой проект под курсором (координаты окна); -1 — курсор вне списка
+  function hit(b, cx, cy) {
+    if (!b || cx < b.x0 || cx > b.x1) return -1;
+    for (var k = 0; k < b.rows.length; k++) {
+      if (cy >= b.rows[k].y0 && cy < b.rows[k].y1) return b.rows[k].i;
+    }
+    return -1;
+  }
+
+  function init() {
+    if (!document.getElementById(LIST_REC)) return;
 
     var root = build();
     var strip = root.querySelector('.uma-pv__strip');
@@ -95,6 +151,7 @@
 
     function show(i, e) {
       clearTimeout(hideTimer);
+      hideTimer = null;
       if (window.innerWidth < MIN_WIDTH) return;
       loadImages();
       if (!open) {
@@ -114,8 +171,9 @@
     }
 
     function hide() {
-      clearTimeout(hideTimer);
+      if (hideTimer) return;           // уже закрываемся: таймер не перезапускаем
       hideTimer = setTimeout(function () {
+        hideTimer = null;
         open = false;
         root.classList.remove('is-open');
       }, HIDE_WAIT);
@@ -135,20 +193,20 @@
       })();
     }
 
-    window.addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; }, { passive: true });
+    // проверяем строку под курсором при движении мыши и при прокрутке страницы
+    var pending = false;
+    function check() {
+      pending = false;
+      if (window.innerWidth < MIN_WIDTH) { if (open) hide(); return; }
+      var i = hit(findBands(), tx, ty);
+      if (i >= 0) show(i, { clientX: tx, clientY: ty });
+      else if (open) hide();
+    }
+    function schedule() { if (!pending) { pending = true; requestAnimationFrame(check); } }
 
-    rows.forEach(function (r) {
-      r.el.addEventListener('mouseenter', function (e) { show(r.i, e); });
-      r.el.addEventListener('mouseleave', hide);
-    });
-
-    // при прокрутке колесом курсор может уехать со строки без mouseleave
-    window.addEventListener('scroll', function () {
-      if (!open) return;
-      var el = document.elementFromPoint(tx, ty);
-      var inside = el && rows.some(function (r) { return r.el.contains(el); });
-      if (!inside) hide();
-    }, { passive: true });
+    window.addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; schedule(); }, { passive: true });
+    window.addEventListener('scroll', schedule, { passive: true });
+    document.addEventListener('mouseleave', function () { if (open) hide(); });
   }
 
   // на один такт позже: к этому моменту загрузчик уже записал в window.UMA ветку и версию
