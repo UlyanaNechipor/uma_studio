@@ -1,32 +1,98 @@
 /* UMA · project-preview
-   Перенесено из блока Тильды rec4582105101. */
+   Окошко с обложкой проекта при наведении на строку списка. Логика — js/project-preview.js. */
 
-/* Стили для всплывающего окошка-превью */
-.project-preview-popup {
+.uma-pv {
+    --pv-w: 380px;            /* размер окошка */
+    --pv-h: 240px;
+    --pv-radius: 4px;
+    --pv-slide: 0.75s;        /* скорость прокрутки ленты между обложками */
+    --pv-ease: cubic-bezier(0.65, 0, 0.35, 1);
+
     position: fixed;
-    width: 380px;            /* Увеличили ширину, чтобы телефон на обложке смотрелся крупно */
-    height: 240px;           /* Высота карточки обложки */
-    background-size: cover;
-    background-position: center;
-    border-radius: 14px;     /* Красивое скругление углов */
-    pointer-events: none;    /* Пропускаем клики мыши сквозь картинку к ссылкам */
-    z-index: 9999;           /* Поверх всего контента на сайте */
-    opacity: 0;              /* Изначально скрыто */
-    transform: translate(-50%, -50%) scale(0.85); /* Стартовое уменьшение для эффекта плавного всплытия */
-    
-    /* Ультра-плавное появление и исчезновение */
-    transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-    box-shadow: 0 25px 50px rgba(0,0,0,0.6); /* Объемная глубокая тень */
-    will-change: left, top, transform, opacity;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: 9999;
+    pointer-events: none;
+    will-change: transform;
 }
 
-/* Эффект при активном наведении на строку */
-.project-preview-popup.is-active {
+/* само окошко: центр — под курсором */
+.uma-pv__frame {
+    position: absolute;
+    left: calc(var(--pv-w) / -2);
+    top: calc(var(--pv-h) / -2);
+    width: var(--pv-w);
+    height: var(--pv-h);
+    overflow: hidden;
+    border-radius: var(--pv-radius);
+    background: #1b1c1b;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transform: scale(0.6);
+    clip-path: inset(50% 50% 50% 50% round var(--pv-radius));
+    transition:
+        opacity 0.35s ease,
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        clip-path 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.uma-pv.is-open .uma-pv__frame {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1);
+    clip-path: inset(0 0 0 0 round var(--pv-radius));
 }
 
-/* Меняем курсор на pointer (ручку) при наведении на любой проект из списка */
+/* лента обложек: прокручивается по вертикали */
+.uma-pv__strip {
+    height: 100%;
+    transition: transform var(--pv-slide) var(--pv-ease);
+    will-change: transform;
+}
+.uma-pv__slide {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+/* картинка внутри чуть «отстаёт» и дотягивается: ощущение глубины при смене */
+.uma-pv__slide img,
+.uma-pv__card {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.12);
+    transition: transform calc(var(--pv-slide) + 0.25s) var(--pv-ease);
+}
+.uma-pv__slide.is-active img,
+.uma-pv__slide.is-active .uma-pv__card { transform: scale(1); }
+
+/* карточка-заглушка, пока у проекта нет обложки */
+.uma-pv__card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 22px;
+    box-sizing: border-box;
+    background:
+        radial-gradient(120% 140% at 85% 110%, rgba(224, 130, 68, 0.28), transparent 55%),
+        linear-gradient(160deg, #262726, #151615);
+    color: #ededed;
+    font-family: 'Manrope', Arial, sans-serif;
+}
+.uma-pv__card span { font-size: 28px; line-height: 1.1; letter-spacing: -0.01em; }
+.uma-pv__card small { align-self: flex-end; font-size: 12px; letter-spacing: 0.08em; color: rgba(237, 237, 237, 0.5); }
+
+html.light-theme .uma-pv__frame,
+body.light-theme .uma-pv__frame { box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.3); }
+
+/* без анимаций по настройке системы: просто появляется и меняется */
+.uma-pv.is-reduced .uma-pv__frame,
+.uma-pv.is-reduced .uma-pv__strip,
+.uma-pv.is-reduced .uma-pv__slide img,
+.uma-pv.is-reduced .uma-pv__card { transition: opacity 0.2s ease; transform: none; clip-path: none; }
+
+/* курсор-рука на строках проектов */
 .pr-1, .pr-2, .pr-3, .pr-4, .pr-5, .pr-6, .pr-7, .pr-8, .pr-9, .pr-10 {
     cursor: pointer !important;
 }
