@@ -1,5 +1,5 @@
 {
-  "v": "2026-11-02.5",
+  "v": "2026-11-02.b1",
   "css": [
     "css/cursor.css",
     "css/trail.css",
@@ -14,6 +14,7 @@
     "css/footer.css",
     "css/project-page.css",
     "css/theme.css",
+    "css/zero-buttons.css",
     "css/headings.css"
   ],
   "js": [
@@ -28,6 +29,7 @@
     "js/prepositions.js",
     "js/footer.js",
     "js/theme-toggle.js",
-    "js/project-page.js"
+    "js/project-page.js",
+    "js/zero-buttons.js"
   ]
 }

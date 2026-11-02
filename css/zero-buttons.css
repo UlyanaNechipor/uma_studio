@@ -1,0 +1,86 @@
+/* UMA · zero-buttons
+   Наведение, нажатие и фокус для кнопок Zero-блоков, как у кнопок футера.
+   Какие группы считаются кнопками и что они делают — js/zero-buttons.js. */
+
+html body.t-body #allrecords .uma-zb {
+    --zb-accent: #e08244;
+    --zb-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer !important;
+    outline: none;
+    transition:
+        box-shadow .35s var(--zb-ease),
+        background-color .35s var(--zb-ease),
+        scale .2s var(--zb-ease) !important;
+}
+
+/* рамка цвета акцента при наведении: тенью, чтобы кнопка не меняла размер */
+html body.t-body #allrecords .uma-zb--primary:hover,
+html body.t-body #allrecords .uma-zb--ghost:hover {
+    box-shadow: inset 0 0 0 1px var(--zb-accent) !important;
+}
+html body.t-body #allrecords .uma-zb:hover .tn-atom,
+html body.t-body #allrecords .uma-zb:hover .tn-atom span {
+    color: var(--zb-accent) !important;
+}
+
+/* лёгкое нажатие: свойство scale не трогает transform, которым Тильда расставляет элементы */
+html body.t-body #allrecords .uma-zb:active { scale: 0.98; }
+
+/* видимый фокус с клавиатуры: внутри кнопки (у «О нас» края обрезаны clip-path) */
+html body.t-body #allrecords .uma-zb:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--zb-accent) !important;
+}
+
+/* стрелка: выезжает справа при наведении */
+html body.t-body #allrecords .uma-zb .uma-zb__arrow {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    width: 11px;
+    height: 11px;
+    margin-top: -5.5px;
+    fill: none;
+    stroke: var(--zb-accent);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+    transform: translate(-6px, 4px);
+    transition: opacity .3s var(--zb-ease), transform .35s var(--zb-ease);
+    pointer-events: none;
+}
+html body.t-body #allrecords .uma-zb:hover .uma-zb__arrow,
+html body.t-body #allrecords .uma-zb:focus-visible .uma-zb__arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+/* почта: подчёркивание при наведении и подсказка «скопировано» */
+html body.t-body #allrecords .uma-zb--mail .tn-atom {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+    transition: color .35s var(--zb-ease), text-decoration-color .35s var(--zb-ease) !important;
+}
+html body.t-body #allrecords .uma-zb--mail:hover .tn-atom { text-decoration-color: currentColor; }
+html body.t-body #allrecords .uma-zb--mail:focus-visible { box-shadow: inset 0 0 0 2px var(--zb-accent) !important; border-radius: 2px; }
+html body.t-body #allrecords .uma-zb__note {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 6px);
+    white-space: nowrap;
+    font-size: 12px;
+    color: var(--zb-accent);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity .25s ease, transform .25s ease;
+    pointer-events: none;
+}
+html body.t-body #allrecords .uma-zb--mail.is-copied .uma-zb__note { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    html body.t-body #allrecords .uma-zb,
+    html body.t-body #allrecords .uma-zb .uma-zb__arrow { transition: none !important; }
+    html body.t-body #allrecords .uma-zb:active { scale: none; }
+}
