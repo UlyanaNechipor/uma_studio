@@ -1,5 +1,5 @@
 /* UMA · zero-buttons
-   Кнопки из Zero-блоков ведут себя так же, как кнопки футера.
+   Кнопки из Zero-блоков: действия, клавиатура и единое наведение (как у футера).
    В Тильде кнопки собраны группами без ссылки, поэтому действие задаётся здесь:
      «Написать нам» (группы .uma-btn-dark-view / .uma-btn-light-view) — письмо с темой
      «О нас»        (группа .uma-blur-btn)                              — плавно к блоку «О нас»
@@ -13,7 +13,6 @@
   var ABOUT_ID = 'rec3979597701';   // блок «О нас»: сюда ведёт кнопка, если нет якоря #about
   /* ============================================= */
 
-  var ARROW = '<svg class="uma-zb__arrow" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5"/></svg>';
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function scrollToAbout() {
@@ -36,12 +35,11 @@
     if (el.__umaZb) return;
     el.__umaZb = true;
     el.classList.add('uma-zb');
-    // стрелке и подсказке нужен позиционированный родитель; позицию Тильды не меняем, если она уже задана
+    // подсказке нужен позиционированный родитель; позицию Тильды не меняем, если она уже задана
     if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
     if (opts && opts.kind) el.classList.add('uma-zb--' + opts.kind);
     el.setAttribute('role', opts && opts.role || 'link');
     el.setAttribute('aria-label', label);
-    if (!opts || opts.arrow !== false) el.insertAdjacentHTML('beforeend', ARROW);
     el.addEventListener('click', function (e) { e.preventDefault(); action(el); });
     el.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); action(el); }
@@ -86,7 +84,7 @@
     root.querySelectorAll('.t396__elem[data-elem-type="text"]').forEach(function (e) {
       var atom = e.querySelector('.tn-atom');
       if (!atom || atom.textContent.trim() !== EMAIL || e.closest('#rec3979597301')) return;
-      make(e, 'Скопировать почту ' + EMAIL, copyMail, { kind: 'mail', role: 'button', arrow: false });
+      make(e, 'Скопировать почту ' + EMAIL, copyMail, { kind: 'mail', role: 'button' });
       e.insertAdjacentHTML('beforeend', '<span class="uma-zb__note" role="status" aria-live="polite"></span>');
     });
 

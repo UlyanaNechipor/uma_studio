@@ -79,40 +79,4 @@ body.light-theme .uma-blur-btn {
     border: none !important;
 }
 
-/* ========================================================================= */
-/* 🧡 УЛЬТРА-ПЛАВНЫЙ ОРАНЖЕВЫЙ ХОВЕР С НАЛИВАНИЕМ СВЕТА */
-/* ========================================================================= */
-
-/* 1. Ховер кнопки «Написать нам» (Тёмная тема) */
-body:not(.light-theme) .uma-btn-dark-view:hover .tn-atom,
-body:not(.light-theme) .uma-btn-dark-view:hover span,
-body:not(.light-theme) .uma-btn-dark-view:hover a { color: #e08244 !important; }
-body:not(.light-theme) .uma-btn-dark-view:hover .tn-atom__circle,
-body:not(.light-theme) .uma-btn-dark-view:hover span:before { background-color: #e08244 !important; color: #e08244 !important; }
-
-/* 2. Ховер кнопки «Написать нам» (Светлая тема) */
-body.light-theme .uma-btn-light-view:hover .tn-atom,
-body.light-theme .uma-btn-light-view:hover span,
-body.light-theme .uma-btn-light-view:hover a { color: #e08244 !important; }
-body.light-theme .uma-btn-light-view:hover .tn-atom__circle,
-body.light-theme .uma-btn-light-view:hover span:before { background-color: #e08244 !important; color: #e08244 !important; }
-
-/* 3. Ховер кнопки «О нас» (Тёмная тема: Текст оранжевый, стекло уплотняется) */
-body:not(.light-theme) .uma-blur-btn:hover {
-    background-color: rgba(37, 38, 37, 0.75) !important;
-    background: rgba(37, 38, 37, 0.45) !important;
-}
-body:not(.light-theme) .uma-blur-btn:hover .tn-atom,
-body:not(.light-theme) .uma-blur-btn:hover span,
-body:not(.light-theme) .uma-blur-btn:hover a { color: #e08244 !important; }
-
-/* 4. Ховер кнопки «О нас» (Светлая тема: Текст оранжевый, стекло наливается светом) */
-body.light-theme .uma-blur-btn:hover {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-}
-body.light-theme .uma-blur-btn:hover .tn-atom,
-body.light-theme .uma-blur-btn:hover span,
-body.light-theme .uma-blur-btn:hover a { 
-    color: #e08244 !important; 
-}
+/* Наведение на кнопки — в css/zero-buttons.css: светлое на тёмном фоне, тёмное на светлом. */

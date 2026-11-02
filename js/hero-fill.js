@@ -212,10 +212,12 @@
       first = false;
     });
 
-    // если заливка уже была запущена (ресайз), сразу показываем конечное состояние
+    // если заливка уже была запущена (ресайз), показываем состояние по скроллу
     if (textStarted) {
-      master.progress(1);
-      items.forEach(function (it) {
+      master.pause();
+      if (linked) { fillTarget = fillNow = targetFromScroll(); master.progress(fillNow); }
+      else master.progress(1);
+      if (!linked || fillNow >= 1) items.forEach(function (it) {
         if (it.lines) it.lines.forEach(function (l) { setP(l, FULL); });
       });
     }
@@ -224,8 +226,57 @@
   function playText() {
     if (textStarted) return;
     textStarted = true;
-    if (master) master.play(0);
+    if (master) {
+      master.eventCallback('onComplete', linkToScroll);
+      master.play(0);
+    } else linkToScroll();
     log('заливка запущена');
+  }
+
+  /* ---------- после первой заливки: связь со скроллом ----------
+     Пока заголовок уходит под шапку при прокрутке вниз, заливка убывает;
+     при прокрутке вверх возвращается. Значение сглажено, как scrub у остальных заголовков. */
+  var linked = false, fillNow = 1, fillTarget = 1, raf = null;
+
+  function heading() {
+    for (var i = 0; i < items.length; i++) if (items[i].tl) return items[i].el;
+    return null;
+  }
+  function headerHeight() {
+    var h = document.getElementById('rec3979597301');
+    var b = h && (h.querySelector('.t396__artboard') || h);
+    return b ? b.getBoundingClientRect().height : 0;
+  }
+  function targetFromScroll() {
+    var el = heading();
+    if (!el) return 1;
+    var r = el.getBoundingClientRect();
+    var y = window.pageYOffset;
+    var docTop = r.top + y;
+    // 1 — страница вверху; 0 — заголовок целиком ушёл под шапку
+    var range = Math.max(1, docTop + r.height - headerHeight());
+    return Math.max(0, Math.min(1, 1 - y / range));
+  }
+  function tick() {
+    raf = null;
+    if (!master) return;
+    fillNow += (fillTarget - fillNow) * 0.18;
+    if (Math.abs(fillTarget - fillNow) < 0.002) fillNow = fillTarget;
+    master.progress(fillNow);
+    if (fillNow !== fillTarget) raf = requestAnimationFrame(tick);
+  }
+  function onScroll() {
+    if (!linked || !master) return;
+    fillTarget = targetFromScroll();
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+  function linkToScroll() {
+    if (linked) return;
+    linked = true;
+    if (master) master.pause();
+    fillNow = master ? master.progress() : 1;
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
 
   function initText(root) {

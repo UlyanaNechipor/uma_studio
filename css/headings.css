@@ -8,6 +8,6 @@ html body.t-body #allrecords .tn-atom.uma-h {
 }
 
 /* страница проекта */
-html body.t-body .uma-project__title { line-height: 1.1; letter-spacing: -0.01em; }
+html body.t-body .uma-project__title { line-height: 1.0; letter-spacing: -0.02em; }
 html body.t-body .uma-project__h2,
-html body.t-body .uma-project__lead  { line-height: 1.2; letter-spacing: -0.015em; }
+html body.t-body .uma-project__lead  { line-height: 1.12; letter-spacing: -0.025em; }

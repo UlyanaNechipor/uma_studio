@@ -76,7 +76,7 @@ body.light-theme .uma-project {
     transition: color .3s ease, border-color .3s ease;
 }
 .uma-project__back:hover,
-.uma-project__back:focus-visible { color: #e08244; border-color: #e08244; outline: none; }
+.uma-project__back:focus-visible { color: var(--up-muted); border-color: var(--up-muted); outline: none; }
 
 .uma-project__meta { display: flex; flex-direction: column; gap: 40px; }
 .uma-project__meta-group { display: flex; flex-direction: column; gap: 16px; margin: 0; }
@@ -202,7 +202,7 @@ body.light-theme .uma-project {
     transition: color .3s ease;
 }
 .uma-project__pager a:hover,
-.uma-project__pager a:focus-visible { color: #e08244; outline: none; }
+.uma-project__pager a:focus-visible { color: var(--up-muted); outline: none; }
 .uma-project__pager .is-next { justify-self: end; }
 .uma-project__pager svg { width: 16px; height: 16px; flex: none; fill: currentColor; }
 .uma-project__pager .is-next svg { transform: rotate(180deg); }   /* как в макете: ▲ назад, ▼ вперёд */

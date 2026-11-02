@@ -2,6 +2,9 @@
    Разметка, поведение и фон футера. Стили — css/footer.css.
    Вставляется в <div id="uma-footer-mount"></div> из блока Тильды.
 
+   Кегли и отступы масштабируются как Zero-блоки Тильды (--ft-z).
+   Фон — приглушённое переливающееся поле символов.
+
    Колонки построены по задачам посетителя, дошедшего до конца страницы:
    1. готов обсудить проект  -> главная кнопка «Написать нам»
    2. хочет связаться иначе  -> Telegram и почта, которая копируется в один клик
@@ -17,9 +20,8 @@
   var TZ       = 'Europe/Moscow';
 
   var FIELD = {
-    WORD:      'UMA DIGITAL  DESIGN  DIRECTION  AI  ',  // из этих букв собран логотип
-    LOGO:      'UMA',
-    FONT_SIZE: 10,      // размер символа поля, px
+    WORD:      'UMA DIGITAL  DESIGN  DIRECTION  AI  ',  // слова, которые проступают в поле
+    FONT_SIZE: 10,      // размер символа поля, px (на узких экранах 7)
     LINE:      1.5,     // высота строки поля в долях размера символа
     FPS:       24,
     SPEED:     0.8,     // скорость перелива
@@ -27,8 +29,6 @@
   };
   /* ============================================= */
 
-  var ARROW = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5"/></svg>';
-  var UP    = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 10V2M2.5 5.5 6 2l3.5 3.5"/></svg>';
 
   var HTML =
     '<footer class="uma-ft" id="uma-footer">' +
@@ -37,25 +37,25 @@
         '<section class="uma-ft__col" aria-labelledby="uma-ft-l1">' +
           '<h2 class="uma-ft__label" id="uma-ft-l1">Новый проект</h2>' +
           '<p class="uma-ft__text">Расскажите о задаче, ответим в течение рабочего дня.</p>' +
-          '<a class="uma-ft__btn uma-ft__btn--primary" href="mailto:' + EMAIL + '?subject=' + encodeURIComponent('Проект для UMA') + '">Обсудить проект' + ARROW + '</a>' +
+          '<a class="uma-ft__btn uma-ft__btn--primary" href="mailto:' + EMAIL + '?subject=' + encodeURIComponent('Проект для UMA') + '">Обсудить проект</a>' +
         '</section>' +
         '<section class="uma-ft__col" aria-labelledby="uma-ft-l2">' +
           '<h2 class="uma-ft__label" id="uma-ft-l2">Связь</h2>' +
           '<p class="uma-ft__text">Быстрее всего — в Telegram. Почта копируется по клику.</p>' +
-          '<a class="uma-ft__btn" href="' + TELEGRAM + '" target="_blank" rel="noopener">Telegram' + ARROW + '</a>' +
+          '<a class="uma-ft__btn" href="' + TELEGRAM + '" target="_blank" rel="noopener">Telegram</a>' +
           '<button class="uma-ft__btn uma-ft__copy" type="button" data-copy="' + EMAIL + '">' + EMAIL +
             '<span class="uma-ft__copy-note" role="status" aria-live="polite"></span></button>' +
         '</section>' +
         '<section class="uma-ft__col" aria-labelledby="uma-ft-l3">' +
           '<h2 class="uma-ft__label" id="uma-ft-l3">Работы</h2>' +
           '<p class="uma-ft__text">Интернет-магазины, айдентика и digital-продукты.</p>' +
-          '<a class="uma-ft__btn" href="' + PROJECTS + '">Все проекты' + ARROW + '</a>' +
+          '<a class="uma-ft__btn" href="' + PROJECTS + '">Все проекты</a>' +
         '</section>' +
         '<section class="uma-ft__col" aria-labelledby="uma-ft-l4">' +
           '<h2 class="uma-ft__label" id="uma-ft-l4">Студия</h2>' +
           '<p class="uma-ft__text">Кто мы и как работаем: от концепции до запуска.</p>' +
-          '<a class="uma-ft__btn" href="' + ABOUT + '">О студии' + ARROW + '</a>' +
-          '<a class="uma-ft__btn" href="#" data-action="top">Наверх' + UP + '</a>' +
+          '<a class="uma-ft__btn" href="' + ABOUT + '">О студии</a>' +
+          '<a class="uma-ft__btn" href="#" data-action="top">Наверх</a>' +
         '</section>' +
       '</div>' +
       '<div class="uma-ft__bar"><div class="uma-ft__bar-inner">' +
@@ -63,6 +63,15 @@
         '<span>' + CITY + ' · <span class="uma-ft__time"></span></span>' +
       '</div></div>' +
     '</footer>';
+
+  // Тильда растягивает Zero-блоки свойством zoom: ширина экрана / ширина брейкпоинта.
+  // Футер получает тот же коэффициент (--ft-z), поэтому кегли и отступы совпадают с блоками.
+  function zoomFactor() {
+    var w = window.innerWidth;
+    var bp = w >= 1200 ? 1200 : w >= 960 ? 960 : w >= 640 ? 640 : w >= 480 ? 480 : 320;
+    return w / bp;
+  }
+  function applyZoom(host) { host.style.setProperty('--ft-z', zoomFactor().toFixed(4)); }
 
   function mount() {
     var m = document.getElementById('uma-footer-mount');
@@ -144,7 +153,6 @@
     var ctx = canvas.getContext('2d');
     var FONT = 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace';
     var W = 0, H = 0, cols = 0, rows = 0, cw = 0, ch = 0, dpr = 1, fs = FIELD.FONT_SIZE;
-    var mask = null;                       // насколько клетка внутри букв логотипа: 0..1
     var ink = '#ffffff';
     var mouse = { x: -9999, y: -9999, k: 0 };
     var running = true, onScreen = false;
@@ -153,39 +161,6 @@
     function readInk() {
       var v = getComputedStyle(document.body).getPropertyValue('--txt').trim();
       ink = v || (document.body.classList.contains('light-theme') ? '#1a1a1a' : '#ffffff');
-    }
-
-    // логотип рисуется во вспомогательный холст, по нему считается маска клеток.
-    // Он занимает всю ширину, но только ниже колонок; низ букв уходит за край футера.
-    function buildMask() {
-      var off = document.createElement('canvas');
-      off.width = cols; off.height = rows;
-      var o = off.getContext('2d');
-      // логотип начинается под колонками, а на телефоне — под нижней строкой
-      var anchor = host.querySelector(window.innerWidth < 640 ? '.uma-ft__bar-inner' : '.uma-ft__grid');
-      var hr = host.getBoundingClientRect(), gr = anchor.getBoundingClientRect();
-      var top = Math.ceil((gr.bottom - hr.top + 28) / ch);       // первая строка под ними
-      var avail = Math.max(4, rows - top);                        // строк под логотип
-      var sx = ch / cw;                                           // клетки не квадратные
-      var font = function (px) { return '800 ' + px + 'px Manrope, "Arial Black", sans-serif'; };
-      o.font = font(100);
-      var m = o.measureText(FIELD.LOGO);
-      var capH = (m.actualBoundingBoxAscent || 72) / 100;         // высота букв в долях кегля
-      // кегль: по ширине (96% футера) и по высоте (видимая часть букв + 22% под край)
-      var byW = 100 * (cols * 0.96) / (m.width * sx);
-      var byH = avail / (capH * 0.78);
-      var size = Math.min(byW, byH);
-      o.font = font(size);
-      var w = o.measureText(FIELD.LOGO).width;
-      o.save();
-      o.scale(sx, 1);
-      o.textBaseline = 'alphabetic';
-      o.fillStyle = '#000';
-      o.fillText(FIELD.LOGO, (cols / sx - w) / 2, rows + size * capH * 0.22);
-      o.restore();
-      var data = o.getImageData(0, 0, cols, rows).data;
-      mask = new Float32Array(cols * rows);
-      for (var i = 0; i < cols * rows; i++) mask[i] = data[i * 4 + 3] / 255;
     }
 
     function resize() {
@@ -202,36 +177,33 @@
       cw = ctx.measureText('M').width;
       ch = fs * FIELD.LINE;
       cols = Math.ceil(W / cw); rows = Math.ceil(H / ch);
-      buildMask();
       draw(0);
     }
 
+    // приглушённое поле: редкие точки, чуть гуще к низу, в самых плотных местах проступают слова
     var buckets = [[], [], [], []];
-    var ALPHA = [0.10, 0.18, 0.30, 0.46];
+    var ALPHA = [0.05, 0.09, 0.14, 0.2];
 
     function draw(t) {
-      if (!mask) return;
       ctx.clearRect(0, 0, W, H);
       for (var b = 0; b < 4; b++) buckets[b].length = 0;
       var len = FIELD.WORD.length;
       for (var r = 0; r < rows; r++) {
-        var shift = r * 11;
+        var shift = r * 11, yb = r / rows;
         for (var c = 0; c < cols; c++) {
-          var m = mask[r * cols + c];
-          var n = (noise(c * 0.07 + t * 0.06, r * 0.11 - t * 0.04) + 1) / 2;   // перелив
-          var d = m * (0.55 + n * 0.6);
+          var n = (noise(c * 0.06 + t * 0.06, r * 0.1 - t * 0.04) + 1) / 2;
+          var d = (n - 0.42) * 1.1 + yb * 0.22;
           if (mouse.k > 0.01) {
             var dx = c * cw - mouse.x, dy = r * ch - mouse.y;
-            d += mouse.k * 0.35 * Math.exp(-(dx * dx + dy * dy) / (FIELD.MOUSE_R * FIELD.MOUSE_R)) * (0.4 + m);
+            d += mouse.k * 0.3 * Math.exp(-(dx * dx + dy * dy) / (FIELD.MOUSE_R * FIELD.MOUSE_R));
           }
-          if (d < 0.08) {
-            // редкая пыль вне букв
-            if (hash(c, r) < 0.035 && n > 0.55) buckets[0].push(c, r, '.');
+          if (d < 0.1) {
+            if (hash(c, r) < 0.03 && n > 0.5) buckets[0].push(c, r, '.');
             continue;
           }
           var lvl, s;
-          if (d < 0.3) { lvl = 1; s = n > 0.5 ? ':' : '.'; }
-          else if (d < 0.62) { lvl = 2; s = '+'; }
+          if (d < 0.28) { lvl = 1; s = n > 0.5 ? ':' : '.'; }
+          else if (d < 0.46) { lvl = 2; s = '+'; }
           else { lvl = 3; s = FIELD.WORD.charAt((c + shift) % len); if (s === ' ') s = '+'; }
           buckets[lvl].push(c, r, s);
         }
@@ -260,8 +232,6 @@
     resize();
     if (window.ResizeObserver) new ResizeObserver(resize).observe(host);
     else window.addEventListener('resize', resize);
-    // логотип рисуется шрифтом Manrope: пересчитать маску, когда он загрузится
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(resize);
     new MutationObserver(function () { readInk(); draw(0); })
       .observe(document.body, { attributes: true, attributeFilter: ['class'] });
     if (window.IntersectionObserver) {
@@ -280,6 +250,8 @@
   function boot() {
     var host = mount();
     if (!host) return;
+    applyZoom(host);
+    window.addEventListener('resize', function () { applyZoom(host); });
     wire(host);
     field(host);
   }
