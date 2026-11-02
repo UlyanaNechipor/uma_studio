@@ -16,21 +16,7 @@ html body.t-body #allrecords .uma-zb .tn-atom {
     transition: background-color .35s var(--zb-ease), color .35s var(--zb-ease) !important;
 }
 
-/* «Написать нам»: уже залита контрастным цветом, при наведении чуть смягчается */
-html body.t-body #allrecords .uma-zb--primary:hover .tn-molecule {
-    background-color: color-mix(in srgb, var(--txt, #fff) 80%, var(--bg, #111211)) !important;
-}
 
-/* «О нас»: при наведении заливается цветом текста темы, текст — цветом фона */
-html body.t-body #allrecords .uma-zb--ghost:hover .tn-molecule {
-    background-color: var(--txt, #fff) !important;
-}
-html body.t-body #allrecords .uma-zb--ghost:hover .tn-atom,
-html body.t-body #allrecords .uma-zb--ghost:hover .tn-atom span {
-    color: var(--bg, #111211) !important;
-}
-/* стекло «О нас» при наведении не размываем: заливка сплошная */
-html body.t-body #allrecords .uma-zb--ghost:hover { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
 
 /* лёгкое нажатие: свойство scale не трогает transform, которым Тильда расставляет элементы */
 html body.t-body #allrecords .uma-zb:active { scale: 0.98; }
@@ -49,7 +35,7 @@ html body.t-body #allrecords .uma-zb--mail .tn-atom {
     text-decoration-thickness: 1px;
     transition: text-decoration-color .35s var(--zb-ease) !important;
 }
-html body.t-body #allrecords .uma-zb--mail:hover .tn-atom { text-decoration-color: currentColor; }
+
 html body.t-body #allrecords .uma-zb__note {
     position: absolute;
     left: 0;
@@ -69,4 +55,24 @@ html body.t-body #allrecords .uma-zb--mail.is-copied .uma-zb__note { opacity: .7
     html body.t-body #allrecords .uma-zb .tn-molecule,
     html body.t-body #allrecords .uma-zb .tn-atom { transition: none !important; }
     html body.t-body #allrecords .uma-zb:active { scale: none; }
+}
+
+/* наведение — только на устройствах с мышью: на телефоне :hover залипает после касания */
+@media (hover: hover) and (pointer: fine) {
+/* «Написать нам»: уже залита контрастным цветом, при наведении чуть смягчается */
+html body.t-body #allrecords .uma-zb--primary:hover .tn-molecule {
+    background-color: color-mix(in srgb, var(--txt, #fff) 80%, var(--bg, #111211)) !important;
+}
+
+/* «О нас»: при наведении заливается цветом текста темы, текст — цветом фона */
+html body.t-body #allrecords .uma-zb--ghost:hover .tn-molecule {
+    background-color: var(--txt, #fff) !important;
+}
+html body.t-body #allrecords .uma-zb--ghost:hover .tn-atom,
+html body.t-body #allrecords .uma-zb--ghost:hover .tn-atom span {
+    color: var(--bg, #111211) !important;
+}
+/* стекло «О нас» при наведении не размываем: заливка сплошная */
+html body.t-body #allrecords .uma-zb--ghost:hover { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+html body.t-body #allrecords .uma-zb--mail:hover .tn-atom { text-decoration-color: currentColor; }
 }

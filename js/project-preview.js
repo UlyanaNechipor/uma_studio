@@ -9,7 +9,11 @@
    ширину списка вокруг названия. Классы в Зеро-блоке и группировка элементов
    не нужны. Элементы, которые на текущем экране спрятаны (лежат за пределами
    своего блока), не учитываются, поэтому работает на любом брейкпоинте.
-   Работает только там, где есть мышь (на телефонах и планшетах наведения нет).
+
+   На телефонах и планшетах (без мыши) окошко открывается по положению на экране:
+   активна карточка проекта (.project-group-card), которая пересекает середину
+   экрана. Окошко ложится на место картинок в этой карточке и при прокрутке
+   плавно переезжает к следующей, лента обложек переключается так же, как на десктопе.
    Стили — css/project-preview.css. */
 (function () {
   /* ================= НАСТРОЙКИ ================= */
@@ -28,11 +32,13 @@
   var FOLLOW    = 0.12;  // насколько быстро окошко догоняет курсор (меньше = ленивее)
   var TILT_MAX  = 5;     // наклон окошка от скорости движения мыши, градусы (0 = без наклона)
   var HIDE_WAIT = 140;   // мс: пауза перед закрытием, чтобы не мигать в зазоре между строками
-  var MIN_WIDTH = 1024;  // px: на экранах уже эффект выключен
+  var MIN_WIDTH = 1024;  // px: с мышью на экранах уже эффект выключен
+  var FOCUS_Y   = 0.5;   // без мыши: линия фокуса в долях высоты экрана (0.5 — середина)
+  var GLIDE     = 0.2;   // без мыши: скорость переезда окошка к следующей карточке
   /* ============================================= */
 
   var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  if (!canHover) return;
+  var touchMode = !canHover;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -124,6 +130,7 @@
     if (!document.getElementById(LIST_REC)) return;
 
     var root = build();
+    if (touchMode) root.classList.add('is-touch');
     var strip = root.querySelector('.uma-pv__strip');
     var slides = root.querySelectorAll('.uma-pv__slide');
     var loaded = false;
@@ -154,7 +161,7 @@
     function show(i, e) {
       clearTimeout(hideTimer);
       hideTimer = null;
-      if (window.innerWidth < MIN_WIDTH) return;
+      if (!touchMode && window.innerWidth < MIN_WIDTH) return;
       loadImages();
       if (!open) {
         // при открытии окошко появляется сразу под курсором, без «прилёта» из угла
@@ -182,6 +189,7 @@
     }
 
     function loop() {
+      if (touchMode) return;
       cancelAnimationFrame(raf);
       (function step() {
         var dx = (tx - x) * (reduce ? 1 : FOLLOW);
@@ -193,6 +201,79 @@
         // крутимся, пока окошко открыто или ещё не догнало курсор
         if (open || Math.abs(tx - x) > 0.5 || Math.abs(ty - y) > 0.5) raf = requestAnimationFrame(step);
       })();
+    }
+
+    /* ---------- без мыши: по положению карточки на экране ---------- */
+    if (touchMode) {
+      // карточки проектов в блоке списка и их индекс в ленте (по названию в карточке)
+      function cards() {
+        var rec = document.getElementById(LIST_REC);
+        if (!rec) return [];
+        var out = [];
+        rec.querySelectorAll('.project-group-card').forEach(function (c) {
+          if (!c.getClientRects().length) return;
+          var idx = -1;
+          c.querySelectorAll('.t396__elem[data-elem-type="text"] .tn-atom').forEach(function (a) {
+            if (idx >= 0) return;
+            var t = norm(a.textContent);
+            for (var k = 0; k < PROJECTS.length; k++) if (norm(PROJECTS[k].name) === t) { idx = k; break; }
+          });
+          if (idx >= 0) out.push({ el: c, i: idx });
+        });
+        return out;
+      }
+      // место под картинки в карточке: общий прямоугольник её фигур и изображений
+      function zone(c) {
+        var r = null;
+        c.querySelectorAll('.t396__elem[data-elem-type="shape"], .t396__elem[data-elem-type="image"]').forEach(function (e) {
+          var q = e.getBoundingClientRect();
+          if (!q.width || !q.height) return;
+          r = r ? { l: Math.min(r.l, q.left), t: Math.min(r.t, q.top), r: Math.max(r.r, q.right), b: Math.max(r.b, q.bottom) }
+                : { l: q.left, t: q.top, r: q.right, b: q.bottom };
+        });
+        if (!r) { var q = c.getBoundingClientRect(); r = { l: q.left, t: q.top, r: q.right, b: q.bottom }; }
+        return r;
+      }
+
+      var list = [], px = 0, py = 0, pw = 0, ph = 0, tpx = 0, tpy = 0, tpw = 0, tph = 0, traf = null;
+      function placeNow() {
+        var sy = window.pageYOffset;
+        root.style.transform = 'translate3d(' + px.toFixed(1) + 'px,' + (py - sy).toFixed(1) + 'px,0)';
+        root.style.setProperty('--pv-w', pw.toFixed(1) + 'px');
+        root.style.setProperty('--pv-h', ph.toFixed(1) + 'px');
+      }
+      // координаты окошка считаются в координатах страницы: при прокрутке оно
+      // едет вместе с карточкой без отставания, а к новой карточке — плавно
+      function glide() {
+        traf = null;
+        var k = reduce ? 1 : GLIDE;
+        px += (tpx - px) * k; py += (tpy - py) * k; pw += (tpw - pw) * k; ph += (tph - ph) * k;
+        placeNow();
+        if (Math.abs(tpx - px) + Math.abs(tpy - py) + Math.abs(tpw - pw) + Math.abs(tph - ph) > 0.5) traf = requestAnimationFrame(glide);
+      }
+      function update() {
+        if (!list.length) list = cards();
+        if (!list.length) { if (open) hide(); return; }
+        var line = window.innerHeight * FOCUS_Y, act = null;
+        for (var n = 0; n < list.length; n++) {
+          var r = list[n].el.getBoundingClientRect();
+          if (r.top <= line && r.bottom >= line) { act = list[n]; break; }
+        }
+        if (!act) { if (open) hide(); return; }
+        var z = zone(act.el), sy = window.pageYOffset;
+        tpx = (z.l + z.r) / 2; tpy = (z.t + z.b) / 2 + sy; tpw = z.r - z.l; tph = z.b - z.t;
+        if (!open) { px = tpx; py = tpy; pw = tpw; ph = tph; }
+        show(act.i, { clientX: tpx, clientY: tpy - sy });
+        placeNow();
+        if (!traf) traf = requestAnimationFrame(glide);
+      }
+      var tpending = false;
+      function tschedule() { if (!tpending) { tpending = true; requestAnimationFrame(function () { tpending = false; update(); }); } }
+      window.addEventListener('scroll', tschedule, { passive: true });
+      window.addEventListener('resize', function () { list = []; tschedule(); });
+      window.addEventListener('load', function () { list = []; tschedule(); });
+      tschedule();
+      return;
     }
 
     // проверяем строку под курсором при движении мыши и при прокрутке страницы

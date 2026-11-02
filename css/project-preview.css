@@ -96,3 +96,18 @@ body.light-theme .uma-pv__frame { box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.
 .pr-1, .pr-2, .pr-3, .pr-4, .pr-5, .pr-6, .pr-7, .pr-8, .pr-9, .pr-10 {
     cursor: pointer !important;
 }
+
+/* ---------- Телефоны и планшеты ---------- */
+
+/* без мыши окошко лежит на месте картинок карточки: тень мягче, скругление как у картинок */
+.uma-pv.is-touch .uma-pv__frame {
+    --pv-radius: 0px;
+    box-shadow: 0 16px 32px -18px rgba(0, 0, 0, 0.45);
+}
+
+/* названия проектов в мобильных карточках: цвет текста темы
+   (в Тильде они белые и пропадали на светлой теме) */
+html body.t-body #allrecords .project-link-item .tn-atom,
+html body.t-body #allrecords .project-link-item .tn-atom a {
+    color: var(--txt, #ffffff) !important;
+}

@@ -113,10 +113,7 @@ body.light-theme .uma-ft {
 }
 .uma-ft__btn--primary { background: var(--ft-primary-bg); color: var(--ft-primary-fg) !important; }
 
-/* наведение: контрастно фону страницы, без акцентного цвета */
-.uma-ft__btn:hover,
 .uma-ft__btn:focus-visible { background: var(--ft-text); color: var(--ft-bg) !important; outline: none; }
-.uma-ft__btn--primary:hover,
 .uma-ft__btn--primary:focus-visible { background: color-mix(in srgb, var(--ft-primary-bg) 80%, var(--ft-bg)); color: var(--ft-primary-fg) !important; }
 .uma-ft__btn:focus-visible { box-shadow: inset 0 0 0 2px var(--ft-bg), 0 0 0 2px var(--ft-text); }
 .uma-ft__btn:active { scale: 0.98; }
@@ -172,4 +169,11 @@ body.light-theme .uma-ft {
 @media (prefers-reduced-motion: reduce) {
     .uma-ft__btn, .uma-ft__copy-note { transition: none; }
     .uma-ft__btn:active { scale: none; }
+}
+
+/* наведение — только на устройствах с мышью */
+@media (hover: hover) and (pointer: fine) {
+/* наведение: контрастно фону страницы, без акцентного цвета */
+.uma-ft__btn:hover { background: var(--ft-text); color: var(--ft-bg) !important; outline: none; }
+.uma-ft__btn--primary:hover { background: color-mix(in srgb, var(--ft-primary-bg) 80%, var(--ft-bg)); color: var(--ft-primary-fg) !important; }
 }
