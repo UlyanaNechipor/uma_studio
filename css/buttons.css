@@ -8,7 +8,9 @@
 .uma-btn-light-view {
     opacity: 1 !important;
     transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    height: 100% !important;
+    /* высота — по самой кнопке, а не по родительской группе: на телефоне группа выше
+       (почта переносится под кнопки), и светлая версия «Написать нам» растягивалась */
+    height: auto !important;
     box-sizing: border-box !important;
 }
 
