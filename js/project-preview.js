@@ -84,8 +84,10 @@
         if (norm(a.textContent) !== want) continue;
         var r = a.getBoundingClientRect();
         if (!r.width || !r.height) continue;
-        // спрятанные раскладки других брейкпоинтов лежат за пределами блока
-        if (r.top < rb.top - 1 || r.bottom > rb.bottom + 1 || r.left < rb.left - 1 || r.right > rb.right + 1) continue;
+        // спрятанные раскладки других брейкпоинтов лежат за пределами блока:
+        // учитываем название, только если его центр внутри блока
+        var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        if (cy < rb.top || cy > rb.bottom || cx < rb.left || cx > rb.right) continue;
         if (getComputedStyle(a).visibility === 'hidden') continue;
         found.push({ i: i, cy: r.top + r.height / 2, left: r.left });
         break;
