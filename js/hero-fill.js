@@ -213,13 +213,13 @@
     });
 
     // если заливка уже была запущена (ресайз), показываем состояние по скроллу
+    // Пересборка после старта (ресайз, поздно догрузились шрифты): новая заливка
+    // сразу связывается со скроллом, иначе она остаётся статичной.
     if (textStarted) {
       master.pause();
-      if (linked) { fillTarget = fillNow = targetFromScroll(); master.progress(fillNow); }
-      else master.progress(1);
-      if (!linked || fillNow >= 1) items.forEach(function (it) {
-        if (it.lines) it.lines.forEach(function (l) { setP(l, FULL); });
-      });
+      if (!linked) { master.progress(1); linkToScroll(); }
+      fillTarget = fillNow = targetFromScroll();
+      master.progress(fillNow);
     }
   }
 
