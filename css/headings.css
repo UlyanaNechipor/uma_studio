@@ -1,0 +1,13 @@
+/* UMA · headings
+   Плотный набор заголовков. Какие тексты заголовки и какие значения им нужны,
+   решает js/headings.js (класс uma-h и переменные --uma-hlh, --uma-hls). */
+
+html body.t-body #allrecords .tn-atom.uma-h {
+    line-height: calc(var(--uma-hlh, 1.1) * 1em) !important;
+    letter-spacing: var(--uma-hls, -0.02em) !important;
+}
+
+/* страница проекта */
+html body.t-body .uma-project__title { line-height: 1.1; letter-spacing: -0.01em; }
+html body.t-body .uma-project__h2,
+html body.t-body .uma-project__lead  { line-height: 1.2; letter-spacing: -0.015em; }
