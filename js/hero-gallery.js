@@ -200,8 +200,8 @@
     }
     function schedule() {
       clearTimeout(timer);
-      box.classList.toggle('is-paused', !shown || !visible || hovered || document.hidden);
-      if (!shown || !visible || hovered || document.hidden) return;
+      box.classList.toggle('is-paused', !shown || !visible || document.hidden);
+      if (!shown || !visible || document.hidden) return;
       timer = setTimeout(function () { next(); schedule(); }, INTERVAL);
     }
 
@@ -220,7 +220,7 @@
       }, { passive: true });
     }
 
-    /* ---------- десктоп: курсор «Далее / Назад», фото за мышью, пауза ---------- */
+    /* ---------- десктоп: курсор «Далее / Назад», фото за мышью (без паузы: кадр большой, курсор почти всегда на нём) ---------- */
     if (mouse) {
       var cur = box.querySelector('.uma-hg__cursor'), curLabel = cur.querySelector('span');
       var cx = 0, cy = 0, tcx = 0, tcy = 0, mx = 0, my = 0, tmx = 0, tmy = 0, craf = null, back = false;
@@ -238,7 +238,7 @@
       box.addEventListener('mouseenter', function (e) {
         var r = box.getBoundingClientRect();
         cx = tcx = e.clientX - r.left; cy = tcy = e.clientY - r.top;
-        hovered = true; box.classList.add('is-hover'); schedule(); kick();
+        hovered = true; box.classList.add('is-hover'); kick();
       });
       box.addEventListener('mousemove', function (e) {
         var r = box.getBoundingClientRect();
@@ -254,7 +254,7 @@
       });
       box.addEventListener('mouseleave', function () {
         hovered = false; box.classList.remove('is-hover');
-        tmx = 0; tmy = 0; kick(); schedule();
+        tmx = 0; tmy = 0; kick();
       });
       box.addEventListener('click', function () {
         if (back) prev(); else next();
