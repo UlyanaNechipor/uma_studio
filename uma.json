@@ -1,5 +1,5 @@
 {
-  "v": "2026-11-03.1",
+  "v": "2026-11-03.2",
   "css": [
     "css/cursor.css",
     "css/trail.css",
@@ -13,6 +13,7 @@
     "css/rem.css",
     "css/footer.css",
     "css/project-page.css",
+    "css/hero-gallery.css",
     "css/theme.css",
     "css/zero-buttons.css",
     "css/headings.css"
@@ -20,6 +21,7 @@
   "js": [
     "js/headings.js",
     "js/hero-fill.js",
+    "js/hero-gallery.js",
     "js/trail.js",
     "js/loops.js",
     "js/scroll-fill.js",

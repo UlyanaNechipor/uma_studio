@@ -1,0 +1,205 @@
+/* UMA · hero-gallery
+   Галерея первого экрана на телефоне. Логика — js/hero-gallery.js. */
+
+/* слайдер Тильды прячем: на его месте своя галерея.
+   Её собственное «выезжание» Тильды отключаем — появление делает галерея */
+html body.t-body #allrecords .uma-hg-host .tn-atom__gallery { visibility: hidden !important; }
+html body.t-body #allrecords .uma-hg-host.t-animate,
+html body.t-body #allrecords .uma-hg-host.t-animate_started {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.uma-hg {
+    --hg-ease: cubic-bezier(0.65, 0, 0.35, 1);
+    --hg-out:  cubic-bezier(0.16, 1, 0.3, 1);
+    --hg-slide: 1.05s;
+    --hg-par: 0px;
+    --hg-mx: 0px;
+    --hg-my: 0px;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    background: var(--bg, #111211);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y;
+}
+
+/* кадр: раскрывается шторкой снизу вверх */
+.uma-hg__frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 1.25s var(--hg-out);
+}
+.uma-hg.is-in .uma-hg__frame { clip-path: inset(0 0 0 0); }
+
+/* лента кадров: едет по вертикали, как превью проектов на десктопе */
+.uma-hg__strip {
+    height: 100%;
+    transition: transform var(--hg-slide) var(--hg-ease);
+    will-change: transform;
+}
+.uma-hg__slide {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+.uma-hg__slide img {
+    position: absolute;
+    left: 0;
+    top: -8%;
+    width: 100%;
+    height: 116%;                 /* запас под параллакс */
+    object-fit: cover;
+    display: block;
+    transform: translate3d(var(--hg-mx), calc(var(--hg-par) + var(--hg-my)), 0) scale(1.14);
+    transition: transform calc(var(--hg-slide) + 0.35s) var(--hg-ease);
+}
+.uma-hg__slide.is-active img { transform: translate3d(var(--hg-mx), calc(var(--hg-par) + var(--hg-my)), 0) scale(1); }
+
+/* при первом раскрытии фото «оседает» дольше и сильнее */
+.uma-hg:not(.is-in) .uma-hg__slide.is-active img { transform: translate3d(var(--hg-mx), calc(var(--hg-par) + var(--hg-my)), 0) scale(1.28); }
+.uma-hg.is-in .uma-hg__slide.is-active img { transition-duration: 1.6s; }
+
+/* счётчик и полоса прогресса поверх фото */
+.uma-hg__ui {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    font-family: var(--uma-font-head, 'Manrope', Arial, sans-serif);
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .6s ease .9s, transform .6s var(--hg-out) .9s;
+    pointer-events: none;
+}
+.uma-hg.is-in .uma-hg__ui { opacity: 1; transform: none; }
+.uma-hg__count b { font-weight: 500; }
+.uma-hg__count { opacity: .9; flex: none; }
+
+/* название проекта: старое уходит вверх, новое выезжает снизу */
+.uma-hg__title {
+    position: relative;
+    flex: none;
+    height: 1.2em;
+    min-width: 7em;
+    overflow: hidden;
+}
+.uma-hg__title span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: nowrap;
+    transition: transform .8s var(--hg-out), opacity .8s var(--hg-out);
+}
+.uma-hg__title span.is-enter { transform: translateY(110%); opacity: 0; transition: none; }
+.uma-hg__title span.is-leave { transform: translateY(-110%); opacity: 0; }
+
+/* для экранных дикторов: какой проект на кадре */
+.uma-hg__live {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.uma-hg__bar {
+    position: relative;
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.35);
+    overflow: hidden;
+}
+.uma-hg__bar i {
+    position: absolute;
+    inset: 0;
+    background: #ffffff;
+    transform-origin: left center;
+    transform: scaleX(0);
+    animation: uma-hg-progress 3200ms linear forwards;
+}
+.uma-hg:not(.is-in) .uma-hg__bar i,
+.uma-hg.is-paused .uma-hg__bar i { animation-play-state: paused; }
+@keyframes uma-hg-progress { to { transform: scaleX(1); } }
+
+/* без анимаций по настройке системы: кадры просто сменяются */
+.uma-hg.is-reduced .uma-hg__frame { clip-path: none; transition: none; }
+.uma-hg.is-reduced .uma-hg__strip { transition: none; }
+.uma-hg.is-reduced .uma-hg__slide img { transform: none !important; transition: none; }
+.uma-hg.is-reduced .uma-hg__ui { opacity: 1; transform: none; transition: none; }
+
+/* ---------- Десктоп: мышь ---------- */
+
+/* запас по ширине, чтобы фото могло следовать за мышью без пустых краёв */
+.uma-hg.is-mouse .uma-hg__slide img { left: -2%; width: 104%; }
+
+/* интерфейс крупнее на большом кадре */
+.uma-hg.is-mouse .uma-hg__ui { left: 28px; right: 28px; bottom: 24px; gap: 20px; font-size: 13px; }
+
+/* круглый курсор «Далее / Назад» вместо обычного */
+.uma-hg.is-mouse, .uma-hg.is-mouse * { cursor: none !important; }
+.uma-hg__cursor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    will-change: transform;
+}
+.uma-hg__cursor span {
+    position: absolute;
+    left: -46px;
+    top: -46px;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.92);
+    color: #111211;
+    font-family: var(--uma-font-head, 'Manrope', Arial, sans-serif);
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    transform: scale(0);
+    transition: transform .5s var(--hg-out);
+}
+.uma-hg.is-hover .uma-hg__cursor span { transform: scale(1); }
+.uma-hg__cursor.is-press span { animation: uma-hg-press .45s var(--hg-out); }
+@keyframes uma-hg-press { 40% { transform: scale(0.82); } 100% { transform: scale(1); } }
+
+/* фокус с клавиатуры (стрелки листают) */
+.uma-hg.is-mouse:focus { outline: none; }
+.uma-hg.is-mouse:focus-visible { box-shadow: inset 0 0 0 2px #ffffff; }
+
+@media (prefers-reduced-motion: reduce) {
+    .uma-hg__title span, .uma-hg__cursor span { transition: none; }
+    .uma-hg__cursor.is-press span { animation: none; }
+}
+
+/* мягкое затемнение снизу: счётчик и название читаются и на светлых фото */
+.uma-hg__frame::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 28%;
+    max-height: 140px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0));
+    pointer-events: none;
+}
