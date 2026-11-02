@@ -1,0 +1,113 @@
+/* UMA · hero-gallery
+   Галерея первого экрана на телефоне. Логика — js/hero-gallery.js. */
+
+/* слайдер Тильды прячем: на его месте своя галерея.
+   Её собственное «выезжание» Тильды отключаем — появление делает галерея */
+html body.t-body #allrecords .uma-hg-host .tn-atom__gallery { visibility: hidden !important; }
+html body.t-body #allrecords .uma-hg-host.t-animate,
+html body.t-body #allrecords .uma-hg-host.t-animate_started {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.uma-hg {
+    --hg-ease: cubic-bezier(0.65, 0, 0.35, 1);
+    --hg-out:  cubic-bezier(0.16, 1, 0.3, 1);
+    --hg-slide: 1.05s;
+    --hg-par: 0px;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    background: var(--bg, #111211);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y;
+}
+
+/* кадр: раскрывается шторкой снизу вверх */
+.uma-hg__frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 1.25s var(--hg-out);
+}
+.uma-hg.is-in .uma-hg__frame { clip-path: inset(0 0 0 0); }
+
+/* лента кадров: едет по вертикали, как превью проектов на десктопе */
+.uma-hg__strip {
+    height: 100%;
+    transition: transform var(--hg-slide) var(--hg-ease);
+    will-change: transform;
+}
+.uma-hg__slide {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+.uma-hg__slide img {
+    position: absolute;
+    left: 0;
+    top: -8%;
+    width: 100%;
+    height: 116%;                 /* запас под параллакс */
+    object-fit: cover;
+    display: block;
+    transform: translate3d(0, var(--hg-par), 0) scale(1.14);
+    transition: transform calc(var(--hg-slide) + 0.35s) var(--hg-ease);
+}
+.uma-hg__slide.is-active img { transform: translate3d(0, var(--hg-par), 0) scale(1); }
+
+/* при первом раскрытии фото «оседает» дольше и сильнее */
+.uma-hg:not(.is-in) .uma-hg__slide.is-active img { transform: translate3d(0, var(--hg-par), 0) scale(1.28); }
+.uma-hg.is-in .uma-hg__slide.is-active img { transition-duration: 1.6s; }
+
+/* счётчик и полоса прогресса поверх фото */
+.uma-hg__ui {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    font-family: var(--uma-font-head, 'Manrope', Arial, sans-serif);
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .6s ease .9s, transform .6s var(--hg-out) .9s;
+    pointer-events: none;
+}
+.uma-hg.is-in .uma-hg__ui { opacity: 1; transform: none; }
+.uma-hg__count b { font-weight: 500; }
+.uma-hg__count { opacity: .9; }
+.uma-hg__bar {
+    position: relative;
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.35);
+    overflow: hidden;
+}
+.uma-hg__bar i {
+    position: absolute;
+    inset: 0;
+    background: #ffffff;
+    transform-origin: left center;
+    transform: scaleX(0);
+    animation: uma-hg-progress 3200ms linear forwards;
+}
+.uma-hg:not(.is-in) .uma-hg__bar i,
+.uma-hg.is-paused .uma-hg__bar i { animation-play-state: paused; }
+@keyframes uma-hg-progress { to { transform: scaleX(1); } }
+
+/* без анимаций по настройке системы: кадры просто сменяются */
+.uma-hg.is-reduced .uma-hg__frame { clip-path: none; transition: none; }
+.uma-hg.is-reduced .uma-hg__strip { transition: none; }
+.uma-hg.is-reduced .uma-hg__slide img { transform: none !important; transition: none; }
+.uma-hg.is-reduced .uma-hg__ui { opacity: 1; transform: none; transition: none; }
