@@ -67,6 +67,12 @@
   // Тильда растягивает Zero-блоки свойством zoom: ширина экрана / ширина брейкпоинта.
   // Футер получает тот же коэффициент (--ft-z), поэтому кегли и отступы совпадают с блоками.
   function zoomFactor() {
+    // берём коэффициент прямо у видимого Zero-элемента; формула — запасной вариант
+    var els = document.querySelectorAll('#allrecords .t396__elem[style*="zoom"]');
+    for (var i = 0; i < els.length; i++) {
+      var z = parseFloat(els[i].style.zoom);
+      if (z > 0 && els[i].getClientRects().length) return z;
+    }
     var w = window.innerWidth;
     var bp = w >= 1200 ? 1200 : w >= 960 ? 960 : w >= 640 ? 640 : w >= 480 ? 480 : 320;
     return w / bp;
@@ -251,7 +257,10 @@
     var host = mount();
     if (!host) return;
     applyZoom(host);
-    window.addEventListener('resize', function () { applyZoom(host); });
+    window.addEventListener('resize', function () { setTimeout(function () { applyZoom(host); }, 50); });
+    // Тильда проставляет zoom Zero-блокам чуть позже загрузки: сверяемся ещё раз
+    window.addEventListener('load', function () { applyZoom(host); });
+    setTimeout(function () { applyZoom(host); }, 1200);
     wire(host);
     field(host);
   }
