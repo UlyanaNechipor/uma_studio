@@ -235,8 +235,11 @@
 
   /* ---------- после первой заливки: связь со скроллом ----------
      Пока заголовок уходит под шапку при прокрутке вниз, заливка убывает;
-     при прокрутке вверх возвращается. Значение сглажено, как scrub у остальных заголовков. */
-  var linked = false, fillNow = 1, fillTarget = 1, raf = null;
+     при прокрутке вверх возвращается. Прокрутку отслеживает ScrollTrigger —
+     тот же механизм, что у остальных заголовков: он учитывает особенности
+     Safari на iPhone (инерционная прокрутка, панель адреса, обновление
+     размеров после прелоадера). Значение сглажено, как scrub у остальных. */
+  var linked = false, fillNow = 1, fillTarget = 1, running = false, st = null;
 
   function heading() {
     for (var i = 0; i < items.length; i++) if (items[i].tl) return items[i].el;
@@ -247,36 +250,53 @@
     var b = h && (h.querySelector('.t396__artboard') || h);
     return b ? b.getBoundingClientRect().height : 0;
   }
-  function targetFromScroll() {
+  // сколько пикселей прокрутки от верха страницы до момента, когда заголовок целиком под шапкой
+  function drainDistance() {
     var el = heading();
     if (!el) return 1;
     var r = el.getBoundingClientRect();
-    var y = window.pageYOffset;
-    var docTop = r.top + y;
-    // 1 — страница вверху; 0 — заголовок целиком ушёл под шапку
-    var range = Math.max(1, docTop + r.height - headerHeight());
-    return Math.max(0, Math.min(1, 1 - y / range));
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    return Math.max(1, r.top + y + r.height - headerHeight());
   }
+  function targetFromScroll() {
+    if (st) return 1 - st.progress;
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    return Math.max(0, Math.min(1, 1 - y / drainDistance()));
+  }
+  // плавное приближение к цели на тикере GSAP (работает и при инерции прокрутки на iOS)
   function tick() {
-    raf = null;
     if (!master) return;
     fillNow += (fillTarget - fillNow) * 0.18;
     if (Math.abs(fillTarget - fillNow) < 0.002) fillNow = fillTarget;
     master.progress(fillNow);
-    if (fillNow !== fillTarget) raf = requestAnimationFrame(tick);
+    if (fillNow === fillTarget) { gsap.ticker.remove(tick); running = false; }
+  }
+  function kick() {
+    if (!running) { running = true; gsap.ticker.add(tick); }
   }
   function onScroll() {
     if (!linked || !master) return;
     fillTarget = targetFromScroll();
-    if (!raf) raf = requestAnimationFrame(tick);
+    kick();
   }
   function linkToScroll() {
     if (linked) return;
     linked = true;
     if (master) master.pause();
     fillNow = master ? master.progress() : 1;
+    if (window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+      st = ScrollTrigger.create({
+        start: 0,
+        end: drainDistance,
+        invalidateOnRefresh: true,
+        onUpdate: onScroll,
+        onRefresh: onScroll
+      });
+    } else {
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
   }
 
   function initText(root) {
