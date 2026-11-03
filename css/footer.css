@@ -156,14 +156,53 @@ body.light-theme .uma-ft {
     .uma-ft__grid { grid-template-columns: repeat(2, 1fr); row-gap: calc(28px * var(--z)); }
 }
 
-/* ---------- Телефоны: одна колонка ---------- */
+/* ---------- Телефоны: компактно ----------
+   Без подписей и описаний: сверху главная кнопка, под ней ссылки в две колонки
+   без подложек, внизу одна строка с копирайтом и временем. */
 @media screen and (max-width: 639px) {
-    .uma-ft { padding: calc(40px * var(--z)) 16px calc(20px * var(--z)); }
-    .uma-ft__grid { grid-template-columns: 1fr; row-gap: calc(24px * var(--z)); }
-    .uma-ft__col { padding-right: 0; }
-    .uma-ft__btn { width: 100%; }
-    .uma-ft__bar { padding-top: calc(56px * var(--z)); }
-    .uma-ft__bar-inner { flex-direction: column; gap: 10px; }
+    .uma-ft { padding: 28px 16px 16px; }
+    .uma-ft__grid {
+        grid-template-columns: 1fr 1fr;
+        column-gap: 16px;
+        row-gap: 0;
+        padding-top: 0;
+        border-top: 0;
+    }
+    .uma-ft__col { display: contents; }
+    .uma-ft__label, .uma-ft__text { display: none; }
+
+    /* главная кнопка — на всю ширину */
+    .uma-ft__btn--primary {
+        grid-column: 1 / -1;
+        width: 100%;
+        min-height: 44px;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+    /* остальные — простые ссылки-строки */
+    .uma-ft__btn:not(.uma-ft__btn--primary) {
+        justify-content: flex-start;
+        min-height: 40px;
+        padding: 0;
+        background: none;
+        color: var(--ft-text) !important;
+        font-size: 13px;
+        border-bottom: 1px solid var(--ft-line);
+        border-radius: 0;
+    }
+    /* порядок: Telegram · Проекты / О студии · Наверх / почта на всю ширину */
+    .uma-ft__btn[href*="t.me"]       { order: 1; }
+    .uma-ft__btn[href*="projects"],
+    .uma-ft__col:nth-child(3) .uma-ft__btn { order: 2; }
+    .uma-ft__col:nth-child(4) .uma-ft__btn:not([data-action]) { order: 3; }
+    .uma-ft__btn[data-action="top"]  { order: 4; }
+    .uma-ft__copy { order: 5; grid-column: 1 / -1; }
+    .uma-ft__btn--primary { order: 0; }
+    .uma-ft__copy-note { top: 50%; left: auto; right: 0; transform: translateY(-50%); }
+    .uma-ft__copy.is-copied .uma-ft__copy-note { transform: translateY(-50%); }
+
+    .uma-ft__bar { padding-top: 20px; }
+    .uma-ft__bar-inner { flex-direction: row; gap: 12px; font-size: 10px; letter-spacing: 0.4px; white-space: nowrap; }
 }
 
 @media (prefers-reduced-motion: reduce) {
