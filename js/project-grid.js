@@ -77,17 +77,21 @@
     card.atom.classList.add('is-in');
   }
 
-  // параллакс: фото внутри карточки чуть отстаёт от прокрутки
+  // на каждом кадре прокрутки: параллакс и страховка появления
+  // (если IntersectionObserver не сработал, карточка всё равно появится)
   var ticking = false;
   function onScroll() {
-    if (ticking || !PARALLAX || reduce) return;
+    if (ticking) return;
     ticking = true;
     requestAnimationFrame(function () {
       ticking = false;
-      var vh = window.innerHeight;
+      var vh = window.innerHeight, par = PARALLAX && !reduce;
       for (var k = 0; k < cards.length; k++) {
         var c = cards[k], r = c.atom.getBoundingClientRect();
-        if (r.bottom < -100 || r.top > vh + 100 || !r.height) continue;
+        if (!r.height) continue;
+        if (!c.loaded && r.top < vh + 500 && r.bottom > -500) load(c);
+        if (!c.seen && r.top < vh * 0.94 && r.bottom > 0) { c.seen = true; show(c, 0); }
+        if (!par || r.bottom < -100 || r.top > vh + 100) continue;
         var p = ((r.top + r.height / 2) - vh / 2) / (vh / 2 + r.height / 2);   // −1…1
         p = Math.max(-1, Math.min(1, p));
         c.par.style.transform = 'translate3d(0,' + (p * PARALLAX * r.height).toFixed(1) + 'px,0)';
@@ -109,6 +113,7 @@
           return { c: e.target.__umaPjCard, r: e.boundingClientRect };
         }).sort(function (a, b) { return (a.r.top - b.r.top) * 0.3 + (a.r.left - b.r.left); });
         list.forEach(function (it, n) {
+          if (it.c.seen) return;
           it.c.seen = true;
           var d = n * STAGGER;
           if (it.c.loaded) show(it.c, d);
