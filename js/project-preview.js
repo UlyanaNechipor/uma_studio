@@ -24,7 +24,7 @@
   // Без картинки — вместо обложки карточка с названием проекта.
   var LIST_REC = 'rec3979597501';   // Зеро-блок со списком проектов
   var PROJECTS = [
-    { name: 'Rosi',          img: 'https://optim.tildacdn.com/tild6666-6631-4862-b134-313063336533/-/format/webp/Frame_758532524_1.jpg.webp' },
+    { name: 'Rosi',          file: 'img/covers/rosi.webp' },
     { name: 'Sure',          file: 'img/covers/sure.webp' },
     { name: 'Kara Fox',      file: 'img/covers/kara-fox.webp' },
     { name: 'Black Sable',   file: 'img/covers/black-sable.webp' },
