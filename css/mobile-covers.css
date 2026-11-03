@@ -1,0 +1,8 @@
+/* UMA · mobile-covers
+   Картинки вместо градиентных заглушек в мобильных карточках проектов. Логика — js/mobile-covers.js. */
+html body.t-body #allrecords .uma-mc {
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-color: color-mix(in srgb, var(--txt, #ffffff) 6%, transparent) !important;
+}

@@ -1,5 +1,5 @@
 {
-  "v": "2026-11-04.3",
+  "v": "2026-11-04.5",
   "css": [
     "css/cursor.css",
     "css/trail.css",
@@ -8,6 +8,7 @@
     "css/project-preview.css",
     "css/project-grid.css",
     "css/mobile-radar.css",
+    "css/mobile-covers.css",
     "css/buttons.css",
     "css/neon-button.css",
     "css/footer-zero.css",
@@ -29,6 +30,7 @@
     "js/project-preview.js",
     "js/project-grid.js",
     "js/mobile-radar.js",
+    "js/mobile-covers.js",
     "js/rem.js",
     "js/prepositions.js",
     "js/footer.js",
