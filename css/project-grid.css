@@ -1,17 +1,19 @@
 /* UMA · project-grid
-   Наведение на фото проектов: фото проваливается в глубину самого себя. Логика — js/project-grid.js.
-   Слой --k:0 — само фото (при наведении чуть приближается и темнеет),
-   слои 1…4 — копии того же фото, каждая меньше предыдущей, с тенью: получается тоннель. */
+   Наведение на фото проектов: фото слегка приближается внутри карточки,
+   сама карточка остаётся того же размера. Логика — js/project-grid.js.
+   Сила приближения — --pj-zoom, скорость — --pj-dur. */
 
 html body.t-body #allrecords .uma-pj {
     --pj-ease: cubic-bezier(0.19, 1, 0.22, 1);
+    --pj-zoom: 1.06;
+    --pj-dur: 1s;
     position: relative;
     overflow: hidden;
     isolation: isolate;
     cursor: pointer;
 }
 
-/* все копии берут фон карточки из Тильды как есть */
+/* слой с тем же фоном, что у карточки в Тильде */
 .uma-pj__d {
     position: absolute;
     inset: 0;
@@ -19,22 +21,7 @@ html body.t-body #allrecords .uma-pj {
     background: inherit;
     pointer-events: none;
     transform: scale(1);
-    transition:
-        transform .9s var(--pj-ease) calc((4 - var(--k)) * 30ms),
-        box-shadow .9s var(--pj-ease),
-        filter .9s var(--pj-ease);
+    transition: transform var(--pj-dur) var(--pj-ease);
     will-change: transform;
 }
-/* наведение: фон уходит вперёд и темнеет, копии уменьшаются одна внутри другой */
-.uma-pj:hover .uma-pj__d {
-    transform: scale(var(--s));
-    transition-delay: calc(var(--k) * 45ms);
-}
-.uma-pj:hover .uma-pj__d.uma-pj__d--base {
-    transform: scale(1.06);
-    filter: brightness(0.55);
-}
-.uma-pj:hover .uma-pj__d:not(.uma-pj__d--base) {
-    box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
-    filter: brightness(calc(0.62 + var(--k) * 0.1));
-}
+.uma-pj:hover .uma-pj__d { transform: scale(var(--pj-zoom)); }
