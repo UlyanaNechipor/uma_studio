@@ -1,0 +1,27 @@
+/* UMA · project-grid
+   Наведение на фото проектов: фото слегка приближается внутри карточки,
+   сама карточка остаётся того же размера. Логика — js/project-grid.js.
+   Сила приближения — --pj-zoom, скорость — --pj-dur. */
+
+html body.t-body #allrecords .uma-pj {
+    --pj-ease: cubic-bezier(0.19, 1, 0.22, 1);
+    --pj-zoom: 1.06;
+    --pj-dur: 1s;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    cursor: pointer;
+}
+
+/* слой с тем же фоном, что у карточки в Тильде */
+.uma-pj__d {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background: inherit;
+    pointer-events: none;
+    transform: scale(1);
+    transition: transform var(--pj-dur) var(--pj-ease);
+    will-change: transform;
+}
+.uma-pj:hover .uma-pj__d { transform: scale(var(--pj-zoom)); }
