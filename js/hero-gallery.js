@@ -20,6 +20,10 @@
     { name: 'kara-fox',      title: 'Kara Fox' },
     { name: 'arine-atelier', title: 'Arine Atelier' }
   ];
+  // фото из галереи Тильды, которые подменяются файлами из репозитория (img/gallery)
+  var REPLACE = [
+    { match: /rosi/i, name: 'rosi', title: 'Rosi', big: 1536 }
+  ];
   var PARALLAX     = 0.12;  // телефон: параллакс при прокрутке (0 — без него)
   var REVEAL_DELAY = 700;   // мс после ухода прелоадера до раскрытия
   /* ============================================= */
@@ -77,9 +81,20 @@
     try {
       JSON.parse(host.getAttribute('data-field-imgs-value') || '[]').forEach(function (it) {
         if (!it.li_img) return;
+        var title = it.li_imgtitle || titleFromFile(it.li_img);
+        var rep = null;
+        for (var r = 0; r < REPLACE.length; r++) {
+          if (REPLACE[r].match.test(title) || REPLACE[r].match.test(it.li_img)) rep = REPLACE[r];
+        }
+        if (rep) {
+          var rp = 'img/gallery/' + rep.name;
+          list.push({ src: repo(rp + '-1200.webp'),
+                      srcset: repo(rp + '-1200.webp') + ' 1200w, ' + repo(rp + '-' + rep.big + '.webp') + ' ' + rep.big + 'w',
+                      raw: repoRaw(rp + '-1200.webp'), title: rep.title, alt: it.li_imgalt || rep.title });
+          return;
+        }
         var t = tilda(it.li_img);
-        list.push({ src: t.src, srcset: t.srcset, raw: it.li_img,
-                    title: it.li_imgtitle || titleFromFile(it.li_img), alt: it.li_imgalt || '' });
+        list.push({ src: t.src, srcset: t.srcset, raw: it.li_img, title: title, alt: it.li_imgalt || '' });
       });
     } catch (e) {}
     for (var k = 0; list.length < MIN_SLIDES && k < EXTRA.length; k++) {
