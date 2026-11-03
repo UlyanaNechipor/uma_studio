@@ -4,10 +4,9 @@
    в том же языке, что превью проектов:
      • вертикальная лента: кадр уезжает вверх, следующее фото «дотягивается» из приближения;
      • появление после прелоадера — раскрытие шторкой снизу, фото оседает из увеличения;
-     • счётчик, название проекта и полоса прогресса; вне экрана — пауза.
+     • счётчик 01/04, название проекта и тонкие стрелки «назад / вперёд»; вне экрана — пауза.
    Только телефон: свайп влево/вправо, параллакс при прокрутке.
-   Только с мышью: круглый курсор «Далее / Назад» (клик листает), фото слегка
-     следует за мышью, при наведении автопрокрутка на паузе; стрелки клавиатуры.
+   Только с мышью: стрелки клавиатуры, когда галерея в фокусе.
    Фото берутся из галереи Тильды (добавляйте их там). Если фото меньше MIN_SLIDES,
    добавляются обложки проектов из репозитория (img/gallery, 1200 и 2400 px).
    Стили — css/hero-gallery.css. */
@@ -22,13 +21,16 @@
     { name: 'arine-atelier', title: 'Arine Atelier' }
   ];
   var PARALLAX     = 0.12;  // телефон: параллакс при прокрутке (0 — без него)
-  var MOUSE_SHIFT  = 18;    // десктоп: на сколько px фото следует за мышью (0 — без этого)
   var REVEAL_DELAY = 700;   // мс после ухода прелоадера до раскрытия
   /* ============================================= */
 
   var REPO = 'UlyanaNechipor/uma_studio';
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var mouse  = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // тонкая стрелка: линия и короткий уголок, как штрихи в интерфейсе сайта
+  var ARROW = '<svg viewBox="0 0 24 12" width="24" height="12" aria-hidden="true" focusable="false">' +
+              '<path d="M0.5 6H22.5M17.5 1L22.5 6L17.5 11" fill="none" stroke="currentColor" stroke-width="1"/></svg>';
 
   function esc(s) { return String(s || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -117,9 +119,11 @@
       '<div class="uma-hg__ui" aria-hidden="true">' +
         '<span class="uma-hg__count"><b>01</b>/' + pad(slides.length) + '</span>' +
         '<span class="uma-hg__title"><span>' + esc(slides[0].title) + '</span></span>' +
-        '<span class="uma-hg__bar"><i></i></span>' +
       '</div>' +
-      (mouse ? '<div class="uma-hg__cursor" aria-hidden="true"><span>Далее</span></div>' : '') +
+      '<div class="uma-hg__nav">' +
+        '<button type="button" class="uma-hg__arrow uma-hg__arrow--prev" aria-label="Предыдущий кадр">' + ARROW + '</button>' +
+        '<button type="button" class="uma-hg__arrow uma-hg__arrow--next" aria-label="Следующий кадр">' + ARROW + '</button>' +
+      '</div>' +
       '<p class="uma-hg__live" aria-live="polite"></p>';
     host.appendChild(box);
 
@@ -128,8 +132,7 @@
     var countEl = box.querySelector('.uma-hg__count b');
     var titleEl = box.querySelector('.uma-hg__title');
     var live = box.querySelector('.uma-hg__live');
-    var bar = box.querySelector('.uma-hg__bar i');
-    var n = slides.length, i = 0, timer = null, visible = true, shown = false, busy = false, hovered = false;
+    var n = slides.length, i = 0, timer = null, visible = true, shown = false, busy = false;
 
     // запасной адрес картинки, если CDN не ответил
     box.querySelectorAll('img').forEach(function (img) {
@@ -156,12 +159,6 @@
       nu.className = '';
       setTimeout(function () { if (old && old.parentNode) old.parentNode.removeChild(old); }, 900);
     }
-    function restartBar() {
-      bar.style.animation = 'none';
-      bar.offsetWidth;                      // перезапуск полосы прогресса
-      bar.style.animation = '';
-      bar.style.animationDuration = INTERVAL + 'ms';
-    }
     var settleT = null;
     function go(k, jump) {
       if (busy && !jump) return;
@@ -174,7 +171,6 @@
         busy = true;
         setTitle(i, true);
         live.textContent = slides[i % n].title || '';
-        restartBar();
         // страховка: если transitionend не придёт (фоновая вкладка), лента не застрянет
         clearTimeout(settleT);
         settleT = setTimeout(settle, 1400);
@@ -200,7 +196,6 @@
     }
     function schedule() {
       clearTimeout(timer);
-      box.classList.toggle('is-paused', !shown || !visible || document.hidden);
       if (!shown || !visible || document.hidden) return;
       timer = setTimeout(function () { next(); schedule(); }, INTERVAL);
     }
@@ -220,49 +215,13 @@
       }, { passive: true });
     }
 
-    /* ---------- десктоп: курсор «Далее / Назад», фото за мышью (без паузы: кадр большой, курсор почти всегда на нём) ---------- */
+    /* ---------- стрелки и клавиатура ---------- */
+    box.querySelector('.uma-hg__arrow--prev').addEventListener('click', function () { prev(); schedule(); });
+    box.querySelector('.uma-hg__arrow--next').addEventListener('click', function () { next(); schedule(); });
     if (mouse) {
-      var cur = box.querySelector('.uma-hg__cursor'), curLabel = cur.querySelector('span');
-      var cx = 0, cy = 0, tcx = 0, tcy = 0, mx = 0, my = 0, tmx = 0, tmy = 0, craf = null, back = false;
-      var follow = function () {
-        craf = null;
-        var k = reduce ? 1 : 0.18;
-        cx += (tcx - cx) * k; cy += (tcy - cy) * k;
-        mx += (tmx - mx) * 0.08; my += (tmy - my) * 0.08;
-        cur.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
-        box.style.setProperty('--hg-mx', mx.toFixed(2) + 'px');
-        box.style.setProperty('--hg-my', my.toFixed(2) + 'px');
-        if (Math.abs(tcx - cx) + Math.abs(tcy - cy) + Math.abs(tmx - mx) + Math.abs(tmy - my) > 0.3) craf = requestAnimationFrame(follow);
-      };
-      var kick = function () { if (!craf) craf = requestAnimationFrame(follow); };
-      box.addEventListener('mouseenter', function (e) {
-        var r = box.getBoundingClientRect();
-        cx = tcx = e.clientX - r.left; cy = tcy = e.clientY - r.top;
-        hovered = true; box.classList.add('is-hover'); kick();
-      });
-      box.addEventListener('mousemove', function (e) {
-        var r = box.getBoundingClientRect();
-        tcx = e.clientX - r.left; tcy = e.clientY - r.top;
-        // левая треть — «Назад», остальное — «Далее»
-        var b = tcx < r.width / 3;
-        if (b !== back) { back = b; curLabel.textContent = back ? 'Назад' : 'Далее'; cur.classList.toggle('is-back', back); }
-        if (MOUSE_SHIFT && !reduce) {
-          tmx = -((tcx / r.width) - 0.5) * 2 * MOUSE_SHIFT;
-          tmy = -((tcy / r.height) - 0.5) * 2 * MOUSE_SHIFT * 0.6;
-        }
-        kick();
-      });
-      box.addEventListener('mouseleave', function () {
-        hovered = false; box.classList.remove('is-hover');
-        tmx = 0; tmy = 0; kick();
-      });
-      box.addEventListener('click', function () {
-        if (back) prev(); else next();
-        cur.classList.remove('is-press'); cur.offsetWidth; cur.classList.add('is-press');
-      });
       box.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
-        else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); next(); schedule(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); schedule(); }
       });
     }
 
@@ -300,7 +259,6 @@
       shown = true;
       setTimeout(function () {
         box.classList.add('is-in');
-        restartBar();
         schedule();
       }, REVEAL_DELAY);
     }
