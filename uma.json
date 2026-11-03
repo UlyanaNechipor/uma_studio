@@ -1,11 +1,12 @@
 {
-  "v": "2026-11-03.6",
+  "v": "2026-11-03.8",
   "css": [
     "css/cursor.css",
     "css/trail.css",
     "css/header.css",
     "css/loops.css",
     "css/project-preview.css",
+    "css/project-grid.css",
     "css/mobile-radar.css",
     "css/buttons.css",
     "css/neon-button.css",
@@ -26,6 +27,7 @@
     "js/loops.js",
     "js/scroll-fill.js",
     "js/project-preview.js",
+    "js/project-grid.js",
     "js/mobile-radar.js",
     "js/rem.js",
     "js/prepositions.js",

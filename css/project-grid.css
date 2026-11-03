@@ -1,0 +1,59 @@
+/* UMA · project-grid
+   Сетка фото проектов: исходное качество картинок и мягкая анимация. Логика — js/project-grid.js. */
+
+html body.t-body #allrecords .uma-pj {
+    --pj-ease: cubic-bezier(0.19, 1, 0.22, 1);
+    --pj-delay: 0ms;
+    /* фон Тильды (пережатый) не показываем — фото лежит в слое внутри */
+    background-image: none !important;
+    background-color: color-mix(in srgb, var(--txt, #ffffff) 5%, transparent) !important;
+    overflow: hidden;
+    isolation: isolate;
+    /* появление: из размытия и чуть снизу */
+    opacity: 0;
+    filter: blur(10px);
+    translate: 0 28px;
+    transition:
+        opacity .9s var(--pj-ease) var(--pj-delay),
+        filter 1s var(--pj-ease) var(--pj-delay),
+        translate 1.2s var(--pj-ease) var(--pj-delay);
+}
+html body.t-body #allrecords .uma-pj.is-in {
+    opacity: 1;
+    filter: none;
+    translate: 0 0;
+}
+
+/* слой параллакса: с запасом по высоте, чтобы смещение не открывало края */
+.uma-pj__par {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -7%;
+    bottom: -7%;
+    display: block;
+    pointer-events: none;
+    will-change: transform;
+}
+.uma-pj__img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background-repeat: no-repeat;
+    transform: scale(1.1);
+    transition: transform 1.6s var(--pj-ease) var(--pj-delay);
+}
+.uma-pj.is-in .uma-pj__img { transform: scale(1); }
+
+/* с мышью: фото плавно приближается при наведении */
+@media (hover: hover) and (pointer: fine) {
+    html body.t-body #allrecords .uma-pj.is-in:hover .uma-pj__img {
+        transform: scale(1.04);
+        transition: transform .8s var(--pj-ease);
+    }
+}
+
+/* без анимаций по настройке системы */
+html body.t-body #allrecords .uma-pj.is-reduced { opacity: 1; filter: none; translate: none; transition: none; }
+.uma-pj.is-reduced .uma-pj__img { transform: none !important; transition: none; }
+.uma-pj.is-reduced .uma-pj__par { top: 0; bottom: 0; }
