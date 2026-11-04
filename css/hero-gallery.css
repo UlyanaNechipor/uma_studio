@@ -67,7 +67,7 @@ html body.t-body #allrecords .uma-hg-host.t-animate_started {
 .uma-hg__ui {
     position: absolute;
     left: 12px;
-    right: 96px;                  /* справа — стрелки */
+    right: 12px;
     bottom: 12px;
     display: flex;
     align-items: center;
@@ -121,7 +121,7 @@ html body.t-body #allrecords .uma-hg-host.t-animate_started {
 /* ---------- Десктоп: мышь ---------- */
 
 /* интерфейс крупнее на большом кадре */
-.uma-hg.is-mouse .uma-hg__ui { left: 28px; right: 128px; bottom: 24px; gap: 20px; font-size: 13px; }
+.uma-hg.is-mouse .uma-hg__ui { left: 28px; right: 28px; bottom: 24px; gap: 20px; font-size: 13px; }
 
 
 /* фокус с клавиатуры (стрелки листают) */
@@ -129,7 +129,7 @@ html body.t-body #allrecords .uma-hg-host.t-animate_started {
 .uma-hg.is-mouse:focus-visible { box-shadow: inset 0 0 0 2px #ffffff; }
 
 @media (prefers-reduced-motion: reduce) {
-    .uma-hg__title span, .uma-hg__arrow, .uma-hg__arrow svg { transition: none; }
+    .uma-hg__title span { transition: none; }
 }
 
 /* мягкое затемнение снизу: счётчик и название читаются и на светлых фото */
@@ -143,47 +143,4 @@ html body.t-body #allrecords .uma-hg-host.t-animate_started {
     max-height: 140px;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0));
     pointer-events: none;
-}
-
-/* стрелки «назад / вперёд»: тонкие линии без подложки, справа внизу */
-.uma-hg__nav {
-    position: absolute;
-    right: 4px;
-    bottom: 0;
-    z-index: 2;
-    display: flex;
-    opacity: 0;
-    transition: opacity .6s ease .9s;
-}
-.uma-hg.is-in .uma-hg__nav { opacity: 1; }
-.uma-hg__arrow {
-    width: 44px;                  /* удобно попасть пальцем */
-    height: 36px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: #ffffff;
-    opacity: .75;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.35));
-    transition: opacity .35s var(--hg-out);
-}
-.uma-hg__arrow svg { display: block; transition: transform .45s var(--hg-out); }
-.uma-hg__arrow--prev svg { transform: scaleX(-1); }
-.uma-hg__arrow:active { opacity: 1; }
-.uma-hg__arrow:focus { outline: none; }
-.uma-hg__arrow:focus-visible { opacity: 1; box-shadow: inset 0 0 0 1px #ffffff; }
-.uma-hg.is-mouse .uma-hg__nav { right: 16px; bottom: 12px; }
-.uma-hg.is-reduced .uma-hg__nav { opacity: 1; transition: none; }
-
-/* с мышью: стрелка ярче и чуть подаётся в свою сторону */
-@media (hover: hover) and (pointer: fine) {
-    .uma-hg__arrow:hover { opacity: 1; }
-    .uma-hg__arrow--next:hover svg { transform: translateX(4px); }
-    .uma-hg__arrow--prev:hover svg { transform: scaleX(-1) translateX(4px); }
 }
