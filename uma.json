@@ -1,5 +1,5 @@
 {
-  "v": "2026-11-05.3",
+  "v": "2026-11-05.5",
   "css": [
     "css/cursor.css",
     "css/trail.css",
@@ -21,6 +21,7 @@
     "css/headings.css"
   ],
   "js": [
+    "js/gsap-loader.js",
     "js/headings.js",
     "js/hero-fill.js",
     "js/hero-gallery.js",

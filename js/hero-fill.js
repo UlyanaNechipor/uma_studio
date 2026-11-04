@@ -6,7 +6,8 @@
   var REC_ID     = 'rec3979597401';
   var MIN_TIME   = 2600;  // мс: минимум до вылета логотипа
   var INNER_MIN_TIME = 1400; // мс: то же на страницах без главного экрана (страницы проектов)
-  var MAX_WAIT   = 7000;  // мс: предохранитель, дольше этого прелоадер не держим
+  var MAX_WAIT   = 4500;  // мс: предохранитель, дольше этого прелоадер не держим
+  var FONT_WAIT  = 1200;  // мс после минимума: дольше шрифты не ждём
   var TEXT_DELAY = 900;   // мс после вылета логотипа до старта заливки (2600 + 900 = 3.5 с)
 
   // GSAP грузится через общий загрузчик с запасными CDN (см. ниже)
@@ -31,7 +32,7 @@
   var textStarted = false;
 
   // состояние контроллера
-  var minDone = false, textReady = false, pageLoaded = false, fontsReady = false, released = false;
+  var minDone = false, textReady = false, fontsReady = false, released = false;
 
   function log() {
     console.log.apply(console, ['UMA:'].concat([].slice.call(arguments)));
@@ -41,7 +42,7 @@
 
   function tryRelease(force) {
     if (released || !preloader) return;
-    if (!force && !(minDone && textReady && pageLoaded && fontsReady)) return;
+    if (!force && !(minDone && textReady && fontsReady)) return;
     released = true;
     preloader.classList.add('completed');   // логотип улетает в шапку
     log('прелоадер улетел', force ? '(по предохранителю)' : '');
@@ -53,11 +54,12 @@
 
     setTimeout(function () { minDone = true; tryRelease(); }, MIN_TIME);
 
-    if (document.readyState === 'complete') pageLoaded = true;
-    else window.addEventListener('load', function () { pageLoaded = true; tryRelease(); });
-
+    // Загрузку всех картинок страницы (событие load) больше не ждём: на медленной
+    // сети она тянулась десятки секунд, и логотип «зависал». Ждём только шрифты,
+    // и не дольше FONT_WAIT после минимального времени.
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () { fontsReady = true; tryRelease(); });
+      setTimeout(function () { fontsReady = true; tryRelease(); }, MIN_TIME + FONT_WAIT);
     } else { fontsReady = true; }
 
     // предохранитель: если что-то грузится слишком долго, всё равно отпускаем

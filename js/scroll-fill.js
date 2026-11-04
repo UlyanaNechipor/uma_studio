@@ -4,7 +4,7 @@
 (function () {
   /* ================= НАСТРОЙКИ ================= */
   var DEBUG = false;   // true: на странице видны маркеры start/end ScrollTrigger
-  var SCRUB = 1;       // сглаживание заливки за скроллом
+  var SCRUB = 0.5;     // сглаживание заливки за скроллом, с (было 1: заливка заметно отставала)
 
   /* Для каждого текста:
      el:    класс элемента текста в Зеро-блоке (тот, что раньше был серым слоем)
@@ -120,7 +120,11 @@
       c[4] + ' ' + p + 'px,' + c[4] + ' 100%)';
   }
   // где сейчас граница заливки в строке (px от левого края строки)
-  function setP(line, px) { line._umaP = px; paint(line); }
+  function setP(line, px) {
+    px = Math.round(px * 2) / 2;            // полпикселя: глазу не видно, а перерисовок меньше
+    if (line._umaP === px && line.style.backgroundImage) return;
+    line._umaP = px; paint(line);
+  }
   // ширина мягкого края (px)
   function setF(line, px) { line._umaF = px; }
 
@@ -322,6 +326,9 @@
 
       if (libs) {
         gsap.registerPlugin(ScrollTrigger, SplitText);
+        // на телефонах панель адреса меняет высоту окна при каждой прокрутке:
+        // не пересчитываем из-за этого все заливки (это давало рывки)
+        ScrollTrigger.config({ ignoreMobileResize: true });
         BLOCKS.forEach(function (block) {
           if (started[block.id]) return;
           var root = document.getElementById(block.id);

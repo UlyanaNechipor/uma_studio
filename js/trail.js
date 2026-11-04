@@ -1,5 +1,9 @@
 /* UMA · trail
-   Перенесено из блока Тильды rec4044167501. */
+   Перенесено из блока Тильды rec4044167501.
+   Производительность: холст рисуется в половинном разрешении (он всё равно
+   размыт фильтром), кадры считаются только пока след виден, а в покое холст
+   скрыт — размытие на весь экран не пересчитывается на каждом кадре прокрутки.
+   Обработчики касаний пассивные: они больше не тормозят прокрутку на телефоне. */
 
 document.addEventListener("DOMContentLoaded", function() {
     const canvas = document.createElement('canvas');
@@ -7,9 +11,11 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
+    const RES = 0.5; // доля разрешения холста
     function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width = Math.ceil(window.innerWidth * RES);
+        canvas.height = Math.ceil(window.innerHeight * RES);
+        ctx.setTransform(RES, 0, 0, RES, 0, 0);
     }
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
@@ -33,26 +39,28 @@ document.addEventListener("DOMContentLoaded", function() {
         mouseX = e.clientX;
         mouseY = e.clientY;
         initSmoothCoordinates();
+        wake();
     });
 
     // 2. МОБИЛКА: Принудительный мгновенный трекинг тача
-    // { passive: false } сообщает браузеру, что мы перехватываем управление жестом
+    // пассивный обработчик: браузер не ждёт скрипт перед прокруткой
     window.addEventListener('touchstart', function(e) {
         if (e.touches.length > 0) {
             mouseX = e.touches[0].clientX;
             mouseY = e.touches[0].clientY;
             initSmoothCoordinates();
+            wake();
         }
-    }, { passive: false });
+    }, { passive: true });
 
     window.addEventListener('touchmove', function(e) {
         if (e.touches.length > 0) {
             mouseX = e.touches[0].clientX;
             mouseY = e.touches[0].clientY;
-            // Разрешаем рисовать след прямо во время листания страницы, убирая микрофризы
             initSmoothCoordinates();
+            wake();
         }
-    }, { passive: false });
+    }, { passive: true });
 
     // Плавно тушим хвост при отрыве пальца или уходе мыши
     function resetInput() {
@@ -70,8 +78,17 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // цикл кадров работает, только пока след есть на экране
+    let running = false;
+    function wake() {
+        if (running) return;
+        running = true;
+        canvas.style.visibility = 'visible';
+        requestAnimationFrame(animate);
+    }
+
     function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
         // ИНЕРЦИОННОЕ СГЛАЖИВАНИЕ
         if (mouseX !== -1000) {
@@ -128,8 +145,15 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
+        // всё погасло и ввода нет: останавливаемся и прячем холст до следующего движения
+        const settled = mouseX === -1000 || (Math.abs(mouseX - smoothedX) < 1 && Math.abs(mouseY - smoothedY) < 1);
+        if (!points.length && settled) {
+            running = false;
+            canvas.style.visibility = 'hidden';
+            return;
+        }
         requestAnimationFrame(animate);
     }
 
-    animate();
+    canvas.style.visibility = 'hidden';
 });

@@ -1,7 +1,8 @@
 /* UMA · zero-buttons
    Кнопки из Zero-блоков: действия, клавиатура и единое наведение (как у футера).
    В Тильде кнопки собраны группами без ссылки, поэтому действие задаётся здесь:
-     «Написать нам» (группы .uma-btn-dark-view / .uma-btn-light-view) — письмо с темой
+     «Написать нам» (группы .uma-btn-dark-view / .uma-btn-light-view) — чат в Телеграме (CHAT),
+                    пока ссылки нет — письмо с темой
      «О нас»        (группа .uma-blur-btn)                              — плавно к блоку «О нас»
      почта          (текст umadigital@gmail.com)                        — копируется по клику
    Кнопки становятся доступны с клавиатуры (Tab, Enter, пробел).
@@ -10,6 +11,7 @@
   /* ================= НАСТРОЙКИ ================= */
   var EMAIL    = 'umadigital@gmail.com';
   var SUBJECT  = 'Проект для UMA';
+  var CHAT     = '';                // ссылка на чат в Телеграме для всех кнопок «Написать нам», например https://t.me/имя
   var ABOUT_ID = 'rec3979597701';   // блок «О нас»: сюда ведёт кнопка, если нет якоря #about
   /* ============================================= */
 
@@ -26,8 +28,13 @@
     window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
   }
 
-  function writeUs() {
+  function mailUs() {
     location.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(SUBJECT);
+  }
+  function writeUs() {
+    if (!CHAT) return mailUs();
+    var w = window.open(CHAT, '_blank', 'noopener');
+    if (!w) location.href = CHAT;   // если браузер не дал открыть новую вкладку
   }
 
   // общая часть: класс, стрелка, клик и клавиатура
@@ -55,8 +62,8 @@
       clearTimeout(el.__umaT);
       el.__umaT = setTimeout(function () { el.classList.remove('is-copied'); }, 1800);
     };
-    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(EMAIL).then(done, writeUs);
-    else writeUs();
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(EMAIL).then(done, mailUs);
+    else mailUs();
   }
 
   // у «Написать нам» две версии под тёмную и светлую тему; в фокус попадает только видимая
@@ -73,7 +80,7 @@
     if (!root) return;
 
     root.querySelectorAll('.uma-btn-dark-view, .uma-btn-light-view').forEach(function (g) {
-      make(g, 'Написать нам: письмо на ' + EMAIL, writeUs, { kind: 'primary' });
+      make(g, CHAT ? 'Написать нам в Телеграме' : 'Написать нам: письмо на ' + EMAIL, writeUs, { kind: 'primary' });
     });
 
     root.querySelectorAll('.uma-blur-btn').forEach(function (g) {
