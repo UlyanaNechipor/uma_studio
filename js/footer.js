@@ -14,6 +14,7 @@
   var PROJECTS = '/#projects';
   var CONTACTS = 'mailto:' + EMAIL;        // «Контакты» в колонке «Компания»
   var ABOUT    = '/#about';
+  var PRIVACY  = '';                       // ссылка на страницу политики (например /privacy); пусто — строка без ссылки
   var YEAR     = '2026';
   /* ============================================= */
 
@@ -34,6 +35,7 @@
           link(PROJECTS, 'Проекты') +
           link(CONTACTS, 'Контакты') +
           link(ABOUT, 'О нас') +
+          link(PRIVACY, 'Политика конфиденциальности') +
         '</ul>' +
       '</nav>' +
       '<section class="uma-ft__col" aria-labelledby="uma-ft-contacts">' +
