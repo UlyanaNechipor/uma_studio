@@ -5,11 +5,14 @@
    Значения берутся по ступеням размера на текущем экране. Если в Тильде
    у заголовка уже задано плотнее, чем в ступени, остаётся значение из Тильды.
    Шапка сайта не затрагивается. Стили — css/headings.css.
-   Отключить для отдельного заголовка: класс uma-no-tight в Зеро-блоке. */
+   Отключить для отдельного заголовка: класс uma-no-tight в Зеро-блоке.
+   На телефонах (уже PHONE_MAX px) трекинг не трогаем: остаётся как в макете
+   Тильды, иначе заголовки на узком экране выглядят мельче макета. */
 (function () {
   /* ================= НАСТРОЙКИ ================= */
   var HEAD_MIN  = 24;               // px: с этого базового размера текст — заголовок
   var HEADER_ID = 'rec3979597301';  // шапка: её не трогаем
+  var PHONE_MAX = 480;              // px: на экранах уже этого трекинг из Тильды
   // ступени по размеру шрифта на экране: межстрочный (в долях кегля) и трекинг (em)
   var STEPS = [
     { from: 60, lh: 0.96, ls: -0.04  },   // крупные заголовки первого экрана (в Тильде было 1.0 и −0.024em)
@@ -49,7 +52,8 @@
       var step = STEPS[0];
       for (var k = 0; k < STEPS.length; k++) { if (fs >= STEPS[k].from) { step = STEPS[k]; break; } }
       atom.style.setProperty('--uma-hlh', Math.min(lh, step.lh).toFixed(3));
-      atom.style.setProperty('--uma-hls', Math.min(ls, step.ls).toFixed(4) + 'em');
+      var phone = window.innerWidth < PHONE_MAX;
+      atom.style.setProperty('--uma-hls', (phone ? ls : Math.min(ls, step.ls)).toFixed(4) + 'em');
       atom.classList.add('uma-h');
     }
   }
