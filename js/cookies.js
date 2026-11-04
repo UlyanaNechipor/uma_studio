@@ -2,7 +2,8 @@
    Плашка согласия на cookie и подключение Яндекс Метрики.
    Одна строка на стеклянной подложке (как кнопка «О нас»). Появляется шторкой,
    текст проявляется из символов поля (+ : . *), звёздочка медленно вращается,
-   надписи кнопок перекатываются при наведении, после выбора — короткий ответ.
+   надписи кнопок перекатываются при наведении, с мышью плашка слегка тянется
+   к курсору, после выбора — короткий ответ «Принято ✳».
    Метрика загружается ТОЛЬКО после «Принять» — до согласия сайт ничего не собирает.
    Выбор запоминается в браузере посетителя (localStorage, ключ uma_cookies),
    баннер больше не показывается. Изменить выбор: window.umaCookieSettings()
@@ -79,10 +80,37 @@
     b.style.width = b.getBoundingClientRect().width + 'px';   // плашка не меняет размер на ответе
     b.classList.add('is-done');
     // короткий ответ на выбор, тем же эффектом символов
-    var reply = v === 'yes' ? 'Спасибо. Делаем сайт лучше.' : 'Хорошо, без аналитики.';
+    var reply = v === 'yes' ? 'Принято ✳' : 'Хорошо ✳';
     b.querySelector('.uma-ck__ghost').textContent = reply;
     scramble(b.querySelector('.uma-ck__live'), reply, 520);
     hide(1100);
+  }
+
+  // магнит: с мышью плашка слегка тянется к курсору, когда он рядом (до MAG px)
+  var MAG = 8, MAG_R = 140;
+  function magnet(el) {
+    if (reduce || !(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches)) return;
+    var tx = 0, ty = 0, x = 0, y = 0, raf = 0;
+    function loop() {
+      x += (tx - x) * 0.15; y += (ty - y) * 0.15;
+      el.style.translate = x.toFixed(2) + 'px ' + y.toFixed(2) + 'px';
+      if (Math.abs(tx - x) > 0.05 || Math.abs(ty - y) > 0.05) raf = requestAnimationFrame(loop);
+      else raf = 0;
+    }
+    function onMove(e) {
+      if (!el.isConnected) { window.removeEventListener('mousemove', onMove); return; }
+      var r = el.getBoundingClientRect();
+      var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      var dx = e.clientX - cx, dy = e.clientY - cy;
+      // расстояние до края плашки, а не до центра: широкая плашка тянется по всей длине
+      var ex = Math.max(0, Math.abs(dx) - r.width / 2), ey = Math.max(0, Math.abs(dy) - r.height / 2);
+      var d = Math.sqrt(ex * ex + ey * ey);
+      var k = d > MAG_R ? 0 : 1 - d / MAG_R;
+      tx = Math.max(-1, Math.min(1, dx / (r.width / 2 + MAG_R))) * MAG * k * 1.6;
+      ty = Math.max(-1, Math.min(1, dy / (r.height / 2 + MAG_R))) * MAG * k * 1.6;
+      if (!raf) raf = requestAnimationFrame(loop);
+    }
+    window.addEventListener('mousemove', onMove, { passive: true });
   }
 
   var MSG = 'Используем Яндекс Метрику, чтобы улучшать сайт.';
@@ -109,6 +137,7 @@
       if (b && !box.classList.contains('is-done')) choose(b.getAttribute('data-v'));
     });
     document.body.appendChild(box);
+    magnet(box);
     var msg = box.querySelector('.uma-ck__live');
     requestAnimationFrame(function () { requestAnimationFrame(function () {
       if (!box) return;
