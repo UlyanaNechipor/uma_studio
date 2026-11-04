@@ -4,7 +4,7 @@
    в том же языке, что превью проектов:
      • вертикальная лента: кадр уезжает вверх, следующее фото «дотягивается» из приближения;
      • появление после прелоадера — раскрытие шторкой снизу, фото оседает из увеличения;
-     • счётчик 01/04, название проекта и тонкие стрелки «назад / вперёд»; вне экрана — пауза.
+     • счётчик 01/04 и название проекта; вне экрана — пауза.
    Только телефон: свайп влево/вправо, параллакс при прокрутке.
    Только с мышью: стрелки клавиатуры, когда галерея в фокусе.
    Фото берутся из галереи Тильды (добавляйте их там). Если фото меньше MIN_SLIDES,
@@ -31,10 +31,6 @@
   var REPO = 'UlyanaNechipor/uma_studio';
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var mouse  = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-  // тонкая стрелка: линия и короткий уголок, как штрихи в интерфейсе сайта
-  var ARROW = '<svg viewBox="0 0 24 12" width="24" height="12" aria-hidden="true" focusable="false">' +
-              '<path d="M0.5 6H22.5M17.5 1L22.5 6L17.5 11" fill="none" stroke="currentColor" stroke-width="1"/></svg>';
 
   function esc(s) { return String(s || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -135,10 +131,7 @@
         '<span class="uma-hg__count"><b>01</b>/' + pad(slides.length) + '</span>' +
         '<span class="uma-hg__title"><span>' + esc(slides[0].title) + '</span></span>' +
       '</div>' +
-      '<div class="uma-hg__nav">' +
-        '<button type="button" class="uma-hg__arrow uma-hg__arrow--prev" aria-label="Предыдущий кадр">' + ARROW + '</button>' +
-        '<button type="button" class="uma-hg__arrow uma-hg__arrow--next" aria-label="Следующий кадр">' + ARROW + '</button>' +
-      '</div>' +
+
       '<p class="uma-hg__live" aria-live="polite"></p>';
     host.appendChild(box);
 
@@ -230,9 +223,7 @@
       }, { passive: true });
     }
 
-    /* ---------- стрелки и клавиатура ---------- */
-    box.querySelector('.uma-hg__arrow--prev').addEventListener('click', function () { prev(); schedule(); });
-    box.querySelector('.uma-hg__arrow--next').addEventListener('click', function () { next(); schedule(); });
+    /* ---------- клавиатура ---------- */
     if (mouse) {
       box.addEventListener('keydown', function (e) {
         if (e.key === 'ArrowRight') { e.preventDefault(); next(); schedule(); }
