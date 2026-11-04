@@ -1,74 +1,102 @@
 /* UMA · cookies
-   Баннер согласия на cookie: небольшая плашка внизу слева, на телефоне — внизу во всю ширину.
-   Цвета берутся из темы сайта (--bg, --txt), кнопки как в Zero-блоках. Логика — js/cookies.js. */
+   Плашка согласия на cookie в духе сайтов с Awwwards: одна строка у нижнего края,
+   стеклянная подложка с размытием (как кнопка «О нас»), подпись капсом как DIGITAL/DESIGN,
+   две короткие кнопки. Появляется шторкой снизу вверх. Логика — js/cookies.js. */
 .uma-ck {
     --ck-ease: cubic-bezier(0.16, 1, 0.3, 1);
-    --ck-bg:   var(--bg, #111211);
-    --ck-text: var(--txt, #fbfbfb);
-    --ck-line: rgba(251, 251, 251, 0.12);
+    --ck-text:  var(--txt, #fbfbfb);
+    --ck-muted: rgba(251, 251, 251, 0.62);
+    --ck-glass: rgba(37, 38, 37, 0.62);
     position: fixed;
     left: 24px;
     bottom: 24px;
     z-index: 999990;
     box-sizing: border-box;
-    width: 340px;
-    max-width: calc(100vw - 32px);
-    padding: 16px 16px 14px;
-    border: 1px solid var(--ck-line);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: calc(100vw - 48px);
+    padding: 6px 6px 6px 16px;
     border-radius: 2px;
-    background: var(--ck-bg);
+    background: var(--ck-glass);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    backdrop-filter: blur(16px) saturate(1.2);
     color: var(--ck-text);
     font-family: var(--uma-font-body, 'Manrope', Arial, sans-serif);
     -webkit-font-smoothing: antialiased;
-    opacity: 0;
-    transform: translateY(12px);
-    transition: opacity .5s var(--ck-ease), transform .6s var(--ck-ease);
+    clip-path: inset(100% 0 0 0);
+    transform: translateY(8px);
+    transition: clip-path .9s var(--ck-ease), transform .9s var(--ck-ease);
     pointer-events: none;
 }
-html.light-theme .uma-ck, body.light-theme .uma-ck { --ck-line: rgba(17, 18, 17, 0.14); }
-.uma-ck.is-in { opacity: 1; transform: none; pointer-events: auto; }
+html.light-theme .uma-ck, body.light-theme .uma-ck {
+    --ck-muted: rgba(17, 18, 17, 0.6);
+    --ck-glass: rgba(235, 234, 230, 0.72);
+}
+.uma-ck.is-in { clip-path: inset(0 0 0 0); transform: none; pointer-events: auto; }
 .uma-ck * { box-sizing: border-box; }
 
 .uma-ck__text {
-    margin: 0 0 12px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 0;
     font-size: 12px;
-    line-height: 1.55;
-    letter-spacing: 0.01em;
-    color: #8f8e8e;
+    line-height: 1.4;
+    color: var(--ck-muted);
 }
-html.light-theme .uma-ck__text, body.light-theme .uma-ck__text { color: #5f5e5e; }
-.uma-ck__link { color: var(--ck-text) !important; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.uma-ck__label {
+    flex: none;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ck-text);
+}
+.uma-ck__link {
+    color: var(--ck-text) !important;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
 
-.uma-ck__actions { display: flex; gap: 8px; }
+.uma-ck__actions { flex: none; display: flex; gap: 4px; }
 .uma-ck__btn {
-    flex: 1;
-    min-height: 36px;
+    min-height: 32px;
     padding: 0 14px;
     border: 0;
     border-radius: 2px;
     background: transparent;
-    box-shadow: inset 0 0 0 1px var(--ck-line);
     color: var(--ck-text);
     font: inherit;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1;
     cursor: pointer;
-    transition: background-color .3s var(--ck-ease), color .3s var(--ck-ease);
+    transition: background-color .3s var(--ck-ease), color .3s var(--ck-ease), opacity .3s var(--ck-ease);
 }
-.uma-ck__btn--primary { background: var(--ck-text); color: var(--ck-bg); box-shadow: none; }
+.uma-ck__btn--primary { background: var(--ck-text); color: var(--bg, #111211); }
+.uma-ck__btn:not(.uma-ck__btn--primary) { opacity: .7; }
 .uma-ck__btn:focus-visible { outline: 1px solid var(--ck-text); outline-offset: 2px; }
-.uma-ck__btn:active { scale: 0.98; }
+.uma-ck__btn:active { scale: 0.97; }
 
 @media (hover: hover) and (pointer: fine) {
-    .uma-ck__btn:hover { background: var(--ck-text); color: var(--ck-bg); }
-    .uma-ck__btn--primary:hover { background: color-mix(in srgb, var(--ck-text) 80%, var(--ck-bg)); }
+    .uma-ck__btn:not(.uma-ck__btn--primary):hover { opacity: 1; }
+    .uma-ck__btn--primary:hover { background: color-mix(in srgb, var(--ck-text) 82%, transparent); }
 }
 
+/* телефоны: во всю ширину, текст над кнопками */
 @media screen and (max-width: 639px) {
-    .uma-ck { left: 16px; right: 16px; bottom: 16px; width: auto; max-width: none; }
-    .uma-ck__btn { min-height: 44px; }
+    .uma-ck {
+        left: 12px; right: 12px; bottom: 12px;
+        max-width: none;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 12px 12px 12px 14px;
+    }
+    .uma-ck__text { flex: 1 1 100%; }
+    .uma-ck__actions { flex: 1 1 100%; }
+    .uma-ck__btn { flex: 1; min-height: 40px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .uma-ck { transition: opacity .2s linear; transform: none; }
+    .uma-ck { transition: none; transform: none; }
 }

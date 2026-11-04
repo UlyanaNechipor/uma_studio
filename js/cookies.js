@@ -1,5 +1,6 @@
 /* UMA · cookies
-   Минималистичный баннер согласия на cookie и подключение Яндекс Метрики.
+   Минималистичная плашка согласия на cookie (одна строка, стекло, как кнопка «О нас»)
+   и подключение Яндекс Метрики.
    Метрика загружается ТОЛЬКО после «Принять» — до согласия сайт ничего не собирает.
    Выбор запоминается в браузере посетителя (localStorage, ключ uma_cookies),
    баннер больше не показывается. Изменить выбор: window.umaCookieSettings()
@@ -45,16 +46,17 @@
 
   function show() {
     if (box) return;
-    var policy = POLICY ? '<a class="uma-ck__link" href="' + POLICY + '">политике конфиденциальности</a>' : 'политике конфиденциальности';
+    var more = POLICY ? ' <a class="uma-ck__link" href="' + POLICY + '">Подробнее</a>' : '';
     box = document.createElement('div');
     box.className = 'uma-ck';
     box.setAttribute('role', 'dialog');
     box.setAttribute('aria-label', 'Согласие на cookie');
     box.innerHTML =
-      '<p class="uma-ck__text">Используем cookie и Яндекс Метрику, чтобы понимать, как работает сайт. Подробнее —&nbsp;в&nbsp;' + policy + '.</p>' +
+      '<p class="uma-ck__text"><span class="uma-ck__label">Cookie</span>' +
+        '<span>Используем Яндекс Метрику, чтобы улучшать сайт.' + more + '</span></p>' +
       '<div class="uma-ck__actions">' +
         '<button type="button" class="uma-ck__btn uma-ck__btn--primary" data-v="yes">Принять</button>' +
-        '<button type="button" class="uma-ck__btn" data-v="no">Отказаться</button>' +
+        '<button type="button" class="uma-ck__btn" data-v="no">Нет</button>' +
       '</div>';
     box.addEventListener('click', function (e) {
       var b = e.target.closest('[data-v]');
