@@ -1,5 +1,5 @@
 {
-  "v": "2026-11-05.7",
+  "v": "2026-11-05.9",
   "css": [
     "css/cursor.css",
     "css/trail.css",
@@ -18,7 +18,8 @@
     "css/hero-gallery.css",
     "css/theme.css",
     "css/zero-buttons.css",
-    "css/headings.css"
+    "css/headings.css",
+    "css/cookies.css"
   ],
   "js": [
     "js/gsap-loader.js",
@@ -37,6 +38,7 @@
     "js/footer.js",
     "js/theme-toggle.js",
     "js/project-page.js",
-    "js/zero-buttons.js"
+    "js/zero-buttons.js",
+    "js/cookies.js"
   ]
 }
