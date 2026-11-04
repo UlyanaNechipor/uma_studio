@@ -1,10 +1,9 @@
 /* UMA · footer
-   Футер: четыре колонки по сетке сайта (как DIGITAL / DESIGN / DIRECTION / AI),
-   в каждой одна задача посетителя и одна кнопка. Фон — приглушённое поле символов.
-   Все размеры — базовые значения сетки Тильды (1200 px), умноженные на --ft-z:
-   тот же коэффициент zoom, которым Тильда растягивает Zero-блоки (ставит js/footer.js).
-   Кнопки такие же, как в Zero-блоках: главная залита контрастным цветом,
-   остальные — как «О нас»; при наведении контрастны фону страницы.
+   Футер по макету Figma «Landing Arine» (узел 2316:24734, кадр 1600 × 240):
+   слева логотип UMA DIGITAL и «Made by UMA DIGITAL ©2026», колонка «Компания»
+   с 50% ширины, колонка «Контакты» с 83% ширины. Линии сверху и снизу.
+   Размеры — пиксели макета × --u: макет нарисован на 1600 px, Zero-блоки Тильды
+   на 1200 px, поэтому --u = 0.75 × --ft-z (zoom Zero-блоков, ставит js/footer.js).
    Вставляется в <div id="uma-footer-mount">. */
 
 /* скрытие плашки Тильды */
@@ -13,206 +12,107 @@
 }
 
 .uma-ft {
-    --z: var(--ft-z, 1);
+    --u: calc(0.75px * var(--ft-z, 1));
     --ft-bg:    var(--bg, #111211);
-    --ft-text:  var(--txt, #ffffff);
-    --ft-muted: #8f8e8e;                         /* описания: контраст ~6:1 */
-    --ft-line:  rgba(255, 255, 255, 0.12);
-    /* кнопки как в Zero-блоках, тёмная тема */
-    --ft-primary-bg: #fbfbfb;  --ft-primary-fg: #111211;
-    --ft-btn-bg:     #252625;  --ft-btn-fg:     #fbfbfb;
+    --ft-text:  var(--txt, #fbfbfb);
+    --ft-muted: #767575;
+    --ft-line:  #2e2e2e;
+    --ft-ease:  cubic-bezier(0.16, 1, 0.3, 1);
 
     position: relative;
-    overflow: hidden;
     box-sizing: border-box;
-    padding: calc(64px * var(--z)) calc(32px * var(--z)) calc(24px * var(--z));
+    display: grid;
+    grid-template-columns: calc(50% + 8 * var(--u)) calc(33.333% - 17 * var(--u)) 1fr;
+    min-height: calc(240 * var(--u));
+    padding: calc(57 * var(--u)) 0 calc(53 * var(--u));
+    border-top: 1px solid var(--ft-line);
+    border-bottom: 1px solid var(--ft-line);
     background-color: var(--ft-bg) !important;
     color: var(--ft-text);
     font-family: var(--uma-font-body, 'Manrope', Arial, sans-serif);
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 html.light-theme .uma-ft,
-body.light-theme .uma-ft {
-    --ft-muted: #5f5e5e;
-    --ft-line:  rgba(26, 26, 26, 0.12);
-    --ft-primary-bg: #111211;  --ft-primary-fg: #fbfbfb;
-    --ft-btn-bg:     #3b3b3b;  --ft-btn-fg:     #fbfbfb;
-}
+body.light-theme .uma-ft { --ft-line: rgba(17, 18, 17, 0.12); }
 .uma-ft *, .uma-ft *::before, .uma-ft *::after { box-sizing: border-box; }
+.uma-ft p, .uma-ft h2, .uma-ft ul { margin: 0; padding: 0; }
 
-/* приглушённое поле символов */
-.uma-ft__field {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* ---------- Четыре колонки ---------- */
-.uma-ft__grid {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    column-gap: calc(12px * var(--z));
-    padding-top: calc(20px * var(--z));
-    border-top: 1px solid var(--ft-line);
-}
-.uma-ft__col {
+/* ---------- слева: логотип и подпись ---------- */
+.uma-ft__brand {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: calc(12px * var(--z));
-    padding-right: calc(20px * var(--z));
-}
-/* подпись колонки — как DIGITAL / DESIGN в Zero-блоке: 12 px, разрядка 0.45 px */
-.uma-ft__label {
-    margin: 0;
-    font-size: calc(12px * var(--z));
-    line-height: 1.55;
-    letter-spacing: calc(0.45px * var(--z));
-    text-transform: uppercase;
-    color: var(--ft-text);
-    font-weight: var(--uma-w-small, 400);
-}
-/* описание — как тексты под DIGITAL / DESIGN: 12 px, межстрочный 1.55 */
-.uma-ft__text {
-    margin: 0 0 calc(6px * var(--z));
-    max-width: calc(230px * var(--z));
-    font-size: calc(12px * var(--z));
-    line-height: 1.55;
-    color: var(--ft-muted);
-    font-weight: var(--uma-w-small, 400);
-    text-wrap: balance;
-}
-
-/* ---------- Кнопки: размер как у «Написать нам» в Zero-блоке (≈122 × 37, текст 14) ---------- */
-.uma-ft__btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: max(44px, calc(37px * var(--z)));   /* не меньше 44 px для пальца */
-    padding: 0 calc(24px * var(--z));
-    border: 0;
-    border-radius: 2px;
-    background: var(--ft-btn-bg);
-    color: var(--ft-btn-fg) !important;
-    font: inherit;
-    font-size: calc(14px * var(--z));
-    line-height: 1;
-    font-weight: var(--uma-w-ui, 400);
-    text-decoration: none !important;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: background-color .35s cubic-bezier(.16, 1, .3, 1), color .35s cubic-bezier(.16, 1, .3, 1), scale .2s cubic-bezier(.16, 1, .3, 1);
-}
-.uma-ft__btn--primary { background: var(--ft-primary-bg); color: var(--ft-primary-fg) !important; }
-
-.uma-ft__btn:focus-visible { background: var(--ft-text); color: var(--ft-bg) !important; outline: none; }
-.uma-ft__btn--primary:focus-visible { background: color-mix(in srgb, var(--ft-primary-bg) 80%, var(--ft-bg)); color: var(--ft-primary-fg) !important; }
-.uma-ft__btn:focus-visible { box-shadow: inset 0 0 0 2px var(--ft-bg), 0 0 0 2px var(--ft-text); }
-.uma-ft__btn:active { scale: 0.98; }
-
-/* почта: копируется в один клик */
-.uma-ft__copy-note {
-    position: absolute;
-    left: 0;
-    top: calc(100% + 6px);
-    font-size: calc(12px * var(--z));
-    color: var(--ft-muted);
-    opacity: 0;
-    transform: translateY(-4px);
-    transition: opacity .25s ease, transform .25s ease;
-    pointer-events: none;
-}
-.uma-ft__copy.is-copied .uma-ft__copy-note { opacity: 1; transform: none; }
-
-/* ---------- Нижняя строка ---------- */
-.uma-ft__bar {
-    position: relative;
-    z-index: 1;
-    padding-top: calc(96px * var(--z));
-}
-.uma-ft__bar-inner {
-    display: flex;
     justify-content: space-between;
-    gap: 16px;
-    font-size: calc(12px * var(--z));
+    align-items: flex-start;
+    gap: calc(24 * var(--u));
+    padding-left: calc(28 * var(--u));
+}
+.uma-ft__logo {
+    margin-top: calc(-4 * var(--u)) !important;
+    font-size: calc(50 * var(--u));
     line-height: 1;
-    letter-spacing: calc(0.45px * var(--z));
+    letter-spacing: -0.06em;            /* в макете −3 px при 50 px */
     text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--ft-text);
+}
+.uma-ft__made {
+    padding-left: calc(4 * var(--u));
+    margin-bottom: calc(5 * var(--u)) !important;
+    font-size: calc(16 * var(--u));
+    line-height: 1;
     color: var(--ft-muted);
-    font-weight: var(--uma-w-small, 400);
+    white-space: nowrap;
 }
-.uma-ft__time { font-variant-numeric: tabular-nums; }
+.uma-ft__made span { text-transform: uppercase; }
 
-/* ---------- Планшеты: 2 × 2 ---------- */
-@media screen and (max-width: 959px) {
-    .uma-ft__grid { grid-template-columns: repeat(2, 1fr); row-gap: calc(28px * var(--z)); }
+/* ---------- колонки ссылок ---------- */
+.uma-ft__title,
+.uma-ft__link {
+    display: block;
+    font-size: calc(15 * var(--u));
+    line-height: calc(26 * var(--u));
+    letter-spacing: 0.03em;             /* в макете 0.45 px при 15 px */
+    font-weight: 400;
 }
-
-/* ---------- Телефоны: компактно ----------
-   Без подписей и описаний: сверху главная кнопка, под ней ссылки в две колонки
-   без подложек, внизу одна строка с копирайтом и временем. */
-@media screen and (max-width: 639px) {
-    .uma-ft { padding: 28px 16px 16px; }
-    .uma-ft__grid {
-        grid-template-columns: 1fr 1fr;
-        column-gap: 16px;
-        row-gap: 0;
-        padding-top: 0;
-        border-top: 0;
-    }
-    .uma-ft__col { display: contents; }
-    .uma-ft__label, .uma-ft__text { display: none; }
-
-    /* главная кнопка — на всю ширину */
-    .uma-ft__btn--primary {
-        grid-column: 1 / -1;
-        width: 100%;
-        min-height: 44px;
-        margin-bottom: 8px;
-        font-size: 14px;
-    }
-    /* остальные — простые ссылки-строки */
-    .uma-ft__btn:not(.uma-ft__btn--primary) {
-        justify-content: flex-start;
-        min-height: 40px;
-        padding: 0;
-        background: none;
-        color: var(--ft-text) !important;
-        font-size: 13px;
-        border-bottom: 1px solid var(--ft-line);
-        border-radius: 0;
-    }
-    /* порядок: Telegram · Проекты / О студии · Наверх / почта на всю ширину */
-    .uma-ft__btn[href*="t.me"]       { order: 1; }
-    .uma-ft__btn[href*="projects"],
-    .uma-ft__col:nth-child(3) .uma-ft__btn { order: 2; }
-    .uma-ft__col:nth-child(4) .uma-ft__btn:not([data-action]) { order: 3; }
-    .uma-ft__btn[data-action="top"]  { order: 4; }
-    .uma-ft__copy { order: 5; grid-column: 1 / -1; }
-    .uma-ft__btn--primary { order: 0; }
-    .uma-ft__copy-note { top: 50%; left: auto; right: 0; transform: translateY(-50%); }
-    .uma-ft__copy.is-copied .uma-ft__copy-note { transform: translateY(-50%); }
-
-    .uma-ft__bar { padding-top: 20px; }
-    .uma-ft__bar-inner { flex-direction: row; gap: 12px; font-size: 10px; letter-spacing: 0.4px; white-space: nowrap; }
+.uma-ft__title { color: var(--ft-text); }
+.uma-ft__list { list-style: none; }
+.uma-ft__col:last-child { padding-right: calc(32 * var(--u)); }
+.uma-ft__link {
+    color: var(--ft-muted) !important;
+    text-decoration: none !important;
+    width: fit-content;
+    transition: color .3s var(--ft-ease);
 }
-
-@media (prefers-reduced-motion: reduce) {
-    .uma-ft__btn, .uma-ft__copy-note { transition: none; }
-    .uma-ft__btn:active { scale: none; }
-}
+a.uma-ft__link:focus-visible { color: var(--ft-text) !important; outline: 1px solid currentColor; outline-offset: 2px; }
 
 /* наведение — только на устройствах с мышью */
 @media (hover: hover) and (pointer: fine) {
-/* наведение: контрастно фону страницы, без акцентного цвета */
-.uma-ft__btn:hover { background: var(--ft-text); color: var(--ft-bg) !important; outline: none; }
-.uma-ft__btn--primary:hover { background: color-mix(in srgb, var(--ft-primary-bg) 80%, var(--ft-bg)); color: var(--ft-primary-fg) !important; }
+    a.uma-ft__link:hover { color: var(--ft-text) !important; }
+}
+
+/* ---------- планшеты ---------- */
+@media screen and (max-width: 959px) {
+    .uma-ft { grid-template-columns: 1fr calc(28% + 8 * var(--u)) calc(28% - 8 * var(--u)); }
+}
+
+/* ---------- телефоны: логотип сверху, две колонки, подпись внизу ---------- */
+@media screen and (max-width: 639px) {
+    .uma-ft {
+        grid-template-columns: 1fr 1fr;
+        column-gap: 16px;
+        row-gap: 28px;
+        min-height: 0;
+        padding: 32px 16px 28px;
+    }
+    .uma-ft__brand { display: contents; }
+    .uma-ft__logo { grid-column: 1 / -1; order: 0; margin-top: 0 !important; font-size: 32px; }
+    .uma-ft__col { order: 1; }
+    .uma-ft__made { grid-column: 1 / -1; order: 2; padding-left: 0; margin-bottom: 0 !important; font-size: 12px; }
+    .uma-ft__title, .uma-ft__link { font-size: 13px; line-height: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .uma-ft__link { transition: none; }
 }
