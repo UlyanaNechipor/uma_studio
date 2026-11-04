@@ -1,6 +1,8 @@
 /* UMA · cookies
-   Минималистичная плашка согласия на cookie (одна строка, стекло, как кнопка «О нас»)
-   и подключение Яндекс Метрики.
+   Плашка согласия на cookie и подключение Яндекс Метрики.
+   Одна строка на стеклянной подложке (как кнопка «О нас»). Появляется шторкой,
+   текст проявляется из символов поля (+ : . *), звёздочка медленно вращается,
+   надписи кнопок перекатываются при наведении, после выбора — короткий ответ.
    Метрика загружается ТОЛЬКО после «Принять» — до согласия сайт ничего не собирает.
    Выбор запоминается в браузере посетителя (localStorage, ключ uma_cookies),
    баннер больше не показывается. Изменить выбор: window.umaCookieSettings()
@@ -31,39 +33,88 @@
     window.ym(METRIKA_ID, 'init', { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: WEBVISOR });
   }
 
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var GLYPHS = '+:.*/#=-';   // те же символы, что в поле символов сайта
+
+  // «расшифровка»: текст проявляется из символов слева направо
+  function scramble(el, text, ms, done) {
+    if (reduce) { el.textContent = text; if (done) done(); return; }
+    var t0 = performance.now();
+    (function frame(now) {
+      var k = Math.min(1, (now - t0) / ms), out = '';
+      var edge = k * (text.length + 6);
+      for (var i = 0; i < text.length; i++) {
+        var c = text[i];
+        if (c === ' ' || i < edge - 6) out += c;
+        else if (i < edge) out += GLYPHS[(Math.random() * GLYPHS.length) | 0];
+        else out += ' ';
+      }
+      el.textContent = out;
+      if (k < 1) requestAnimationFrame(frame);
+      else { el.textContent = text; if (done) done(); }
+    })(t0);
+  }
+
+  // кнопка с «перекатом» текста при наведении: две копии надписи, верхняя уезжает вверх
+  function btn(cls, v, label) {
+    return '<button type="button" class="uma-ck__btn ' + cls + '" data-v="' + v + '" aria-label="' + label + '">' +
+      '<span class="uma-ck__roll" aria-hidden="true"><span>' + label + '</span><span>' + label + '</span></span></button>';
+  }
+
   var box = null;
-  function hide() {
+  function hide(delay) {
     if (!box) return;
-    box.classList.remove('is-in');
     var b = box; box = null;
-    setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 500);
+    setTimeout(function () {
+      b.classList.remove('is-in');
+      b.classList.add('is-out');
+      setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 900);
+    }, delay || 0);
   }
   function choose(v) {
     set(v);
     if (v === 'yes') loadMetrika();
-    hide();
+    var b = box;
+    if (!b) return;
+    b.style.width = b.getBoundingClientRect().width + 'px';   // плашка не меняет размер на ответе
+    b.classList.add('is-done');
+    // короткий ответ на выбор, тем же эффектом символов
+    var reply = v === 'yes' ? 'Спасибо. Делаем сайт лучше.' : 'Хорошо, без аналитики.';
+    b.querySelector('.uma-ck__ghost').textContent = reply;
+    scramble(b.querySelector('.uma-ck__live'), reply, 520);
+    hide(1100);
   }
+
+  var MSG = 'Используем Яндекс Метрику, чтобы улучшать сайт.';
 
   function show() {
     if (box) return;
-    var more = POLICY ? ' <a class="uma-ck__link" href="' + POLICY + '">Подробнее</a>' : '';
+    var more = POLICY ? '<a class="uma-ck__link" href="' + POLICY + '">Подробнее</a>' : '';
     box = document.createElement('div');
     box.className = 'uma-ck';
     box.setAttribute('role', 'dialog');
     box.setAttribute('aria-label', 'Согласие на cookie');
     box.innerHTML =
+      '<span class="uma-ck__mark" aria-hidden="true">✳</span>' +
       '<p class="uma-ck__text"><span class="uma-ck__label">Cookie</span>' +
-        '<span>Используем Яндекс Метрику, чтобы улучшать сайт.' + more + '</span></p>' +
+        // невидимая копия текста задаёт размер, поверх неё проявляется видимый текст
+        '<span class="uma-ck__msg"><span class="uma-ck__ghost">' + MSG + '</span>' +
+        '<span class="uma-ck__live" aria-hidden="true"></span></span>' + more + '</p>' +
       '<div class="uma-ck__actions">' +
-        '<button type="button" class="uma-ck__btn uma-ck__btn--primary" data-v="yes">Принять</button>' +
-        '<button type="button" class="uma-ck__btn" data-v="no">Нет</button>' +
+        btn('uma-ck__btn--primary', 'yes', 'Принять') +
+        btn('', 'no', 'Нет') +
       '</div>';
     box.addEventListener('click', function (e) {
       var b = e.target.closest('[data-v]');
-      if (b) choose(b.getAttribute('data-v'));
+      if (b && !box.classList.contains('is-done')) choose(b.getAttribute('data-v'));
     });
     document.body.appendChild(box);
-    requestAnimationFrame(function () { requestAnimationFrame(function () { if (box) box.classList.add('is-in'); }); });
+    var msg = box.querySelector('.uma-ck__live');
+    requestAnimationFrame(function () { requestAnimationFrame(function () {
+      if (!box) return;
+      box.classList.add('is-in');
+      setTimeout(function () { scramble(msg, MSG, 900); }, 350);
+    }); });
   }
 
   // открыть баннер снова, чтобы изменить выбор

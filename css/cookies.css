@@ -1,7 +1,8 @@
 /* UMA · cookies
    Плашка согласия на cookie в духе сайтов с Awwwards: одна строка у нижнего края,
    стеклянная подложка с размытием (как кнопка «О нас»), подпись капсом как DIGITAL/DESIGN,
-   две короткие кнопки. Появляется шторкой снизу вверх. Логика — js/cookies.js. */
+   две короткие кнопки. Появляется шторкой снизу вверх, текст проявляется из символов,
+   звёздочка вращается, надписи кнопок перекатываются. Логика — js/cookies.js. */
 .uma-ck {
     --ck-ease: cubic-bezier(0.16, 1, 0.3, 1);
     --ck-text:  var(--txt, #fbfbfb);
@@ -14,9 +15,9 @@
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 14px;
     max-width: calc(100vw - 48px);
-    padding: 6px 6px 6px 16px;
+    padding: 6px 6px 6px 14px;
     border-radius: 2px;
     background: var(--ck-glass);
     -webkit-backdrop-filter: blur(16px) saturate(1.2);
@@ -34,6 +35,30 @@ html.light-theme .uma-ck, body.light-theme .uma-ck {
     --ck-glass: rgba(235, 234, 230, 0.72);
 }
 .uma-ck.is-in { clip-path: inset(0 0 0 0); transform: none; pointer-events: auto; }
+/* уход: шторка вниз */
+.uma-ck.is-out { clip-path: inset(0 0 100% 0); transform: translateY(-4px); transition-duration: .7s; }
+
+/* звёздочка: медленно вращается, при наведении на плашку — быстрее */
+.uma-ck__mark {
+    flex: none;
+    display: inline-block;
+    width: 12px;
+    font-size: 13px;
+    line-height: 1;
+    text-align: center;
+    color: var(--ck-text);
+    animation: uma-ck-spin 9s linear infinite;
+}
+.uma-ck:hover .uma-ck__mark { animation-duration: 2.4s; }
+@keyframes uma-ck-spin { to { transform: rotate(360deg); } }
+
+/* после выбора кнопки гаснут, остаётся ответ */
+.uma-ck.is-done .uma-ck__actions { opacity: 0; transform: translateX(6px); pointer-events: none; }
+.uma-ck.is-done .uma-ck__link { opacity: 0; }
+.uma-ck__actions, .uma-ck__link { transition: opacity .4s var(--ck-ease), transform .5s var(--ck-ease); }
+.uma-ck__msg { position: relative; display: inline-block; font-variant-ligatures: none; }
+.uma-ck__ghost { visibility: hidden; }
+.uma-ck__live { position: absolute; inset: 0; white-space: pre-wrap; }
 .uma-ck * { box-sizing: border-box; }
 
 .uma-ck__text {
@@ -59,7 +84,7 @@ html.light-theme .uma-ck, body.light-theme .uma-ck {
     text-underline-offset: 3px;
 }
 
-.uma-ck__actions { flex: none; display: flex; gap: 4px; }
+.uma-ck__actions { flex: none; display: flex; gap: 4px; margin-left: 6px; }
 .uma-ck__btn {
     min-height: 32px;
     padding: 0 14px;
@@ -75,12 +100,16 @@ html.light-theme .uma-ck, body.light-theme .uma-ck {
 }
 .uma-ck__btn--primary { background: var(--ck-text); color: var(--bg, #111211); }
 .uma-ck__btn:not(.uma-ck__btn--primary) { opacity: .7; }
+/* перекат надписи: две копии, при наведении верхняя уезжает вверх, нижняя встаёт на место */
+.uma-ck__roll { position: relative; display: block; height: 1.2em; overflow: hidden; line-height: 1.2; }
+.uma-ck__roll span { display: block; transition: transform .55s var(--ck-ease); }
 .uma-ck__btn:focus-visible { outline: 1px solid var(--ck-text); outline-offset: 2px; }
 .uma-ck__btn:active { scale: 0.97; }
 
 @media (hover: hover) and (pointer: fine) {
     .uma-ck__btn:not(.uma-ck__btn--primary):hover { opacity: 1; }
     .uma-ck__btn--primary:hover { background: color-mix(in srgb, var(--ck-text) 82%, transparent); }
+    .uma-ck__btn:hover .uma-ck__roll span { transform: translateY(-100%); }
 }
 
 /* телефоны: во всю ширину, текст над кнопками */
@@ -92,11 +121,14 @@ html.light-theme .uma-ck, body.light-theme .uma-ck {
         gap: 10px;
         padding: 12px 12px 12px 14px;
     }
-    .uma-ck__text { flex: 1 1 100%; }
+    .uma-ck__text { flex: 1 1 calc(100% - 30px); }
+    .uma-ck__mark { align-self: flex-start; margin-top: 2px; }
     .uma-ck__actions { flex: 1 1 100%; }
     .uma-ck__btn { flex: 1; min-height: 40px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .uma-ck { transition: none; transform: none; }
+    .uma-ck__mark { animation: none; }
+    .uma-ck__roll span { transition: none; }
 }
