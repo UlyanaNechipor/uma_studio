@@ -28,7 +28,8 @@
   function repo(path) {
     var U = window.UMA || {};
     var v = U.version ? '?v=' + encodeURIComponent(U.version) : '';
-    return 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + (U.ref || 'main') + '/' + path + v;
+    // raw.githubusercontent обновляется за ~5 минут; jsDelivr по ветке держит старые файлы до 12 часов
+    return (U.base || ('https://raw.githubusercontent.com/' + REPO + '/' + (U.ref || 'main') + '/')) + path + v;
   }
 
   function init() {

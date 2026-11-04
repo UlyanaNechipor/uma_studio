@@ -41,6 +41,15 @@
         color: #F5F4F0 !important;
     }
 
+    /* Линия-разделитель над карточкой (верхняя граница строки с названием):
+       в подсвеченной карточке прячется, заливка выглядит однородной */
+    .project-group-card .t396__group .tn-molecule {
+        transition: border-color 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+    .project-group-card.is-focused .t396__group .tn-molecule {
+        border-color: transparent !important;
+    }
+
     /* Плавность угасания текстов при выходе группы из фокуса радара */
     .project-group-card [data-elem-type="text"] .tn-atom,
     .project-group-card [data-elem-type="text"] h2,
