@@ -6,13 +6,16 @@
    у заголовка уже задано плотнее, чем в ступени, остаётся значение из Тильды.
    Шапка сайта не затрагивается. Стили — css/headings.css.
    Отключить для отдельного заголовка: класс uma-no-tight в Зеро-блоке.
-   На телефонах (уже PHONE_MAX px) трекинг не трогаем: остаётся как в макете
-   Тильды, иначе заголовки на узком экране выглядят мельче макета. */
+   На телефонах (уже PHONE_MAX px) трекинг остаётся как в макете Тильды, иначе
+   заголовки на узком экране выглядят мельче. Но если строка подходит к краю
+   экрана ближе SAFE px, трекинг уменьшается ровно настолько, чтобы край букв
+   встал на отступ (не плотнее, чем в ступени). */
 (function () {
   /* ================= НАСТРОЙКИ ================= */
   var HEAD_MIN  = 24;               // px: с этого базового размера текст — заголовок
   var HEADER_ID = 'rec3979597301';  // шапка: её не трогаем
   var PHONE_MAX = 480;              // px: на экранах уже этого трекинг из Тильды
+  var SAFE      = 16;               // px: минимальный отступ букв от краёв экрана на телефоне
   // ступени по размеру шрифта на экране: межстрочный (в долях кегля) и трекинг (em)
   var STEPS = [
     { from: 60, lh: 0.96, ls: -0.04  },   // крупные заголовки первого экрана (в Тильде было 1.0 и −0.024em)
@@ -55,6 +58,41 @@
       var phone = window.innerWidth < PHONE_MAX;
       atom.style.setProperty('--uma-hls', (phone ? ls : Math.min(ls, step.ls)).toFixed(4) + 'em');
       atom.classList.add('uma-h');
+      if (phone) fitPhone(atom, fs, ls, step.ls);
+    }
+  }
+
+  // строки текста: правый край и число символов в каждой (по прямоугольникам букв)
+  function lines(atom) {
+    var out = {}, walker = document.createTreeWalker(atom, NodeFilter.SHOW_TEXT), n, r = document.createRange();
+    while ((n = walker.nextNode())) {
+      for (var i = 0; i < n.length; i++) {
+        if (/\s/.test(n.data[i])) continue;
+        r.setStart(n, i); r.setEnd(n, i + 1);
+        var b = r.getBoundingClientRect();
+        if (!b.width) continue;
+        var key = Math.round(b.top / 4);
+        var L = out[key] || (out[key] = { left: b.left, right: b.right, count: 0, h: b.height });
+        L.left = Math.min(L.left, b.left); L.right = Math.max(L.right, b.right); L.count++;
+      }
+    }
+    return Object.keys(out).map(function (k) { return out[k]; });
+  }
+
+  function fitPhone(atom, fs, ls, minLs) {
+    var vw = document.documentElement.clientWidth || window.innerWidth;
+    for (var t = 0; t < 3; t++) {
+      var over = 0, perChar = 0;
+      lines(atom).forEach(function (L) {
+        var o = Math.max(L.right - (vw - SAFE), SAFE - L.left);
+        if (o > over && L.count > 1) { over = o; perChar = over / (L.count - 1); }
+      });
+      if (over <= 0.5) return;
+      // сколько em убрать: перерасход на символ, переведённый в размер шрифта на экране
+      var scale = atom.getBoundingClientRect().height / (atom.offsetHeight || 1) || 1;
+      ls -= perChar / (fs * scale) + 0.0005;
+      if (ls <= minLs) { ls = minLs; atom.style.setProperty('--uma-hls', ls.toFixed(4) + 'em'); return; }
+      atom.style.setProperty('--uma-hls', ls.toFixed(4) + 'em');
     }
   }
 
