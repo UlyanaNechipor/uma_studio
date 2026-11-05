@@ -1,5 +1,5 @@
 {
-  "v": "2026-11-05.35",
+  "v": "2026-11-05.36",
   "css": [
     "css/logo.css",
     "css/image-quality.css",
@@ -42,7 +42,6 @@
     "js/footer.js",
     "js/theme-toggle.js",
     "js/project-page.js",
-    "js/zero-buttons.js",
-    "js/logo-mobile.js"
+    "js/zero-buttons.js"
   ]
 }
