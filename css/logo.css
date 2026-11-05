@@ -7,3 +7,16 @@ html.uma-logo-font #uma-logo-wrap .logo-fill-text {
     font-weight: 600 !important;
     letter-spacing: -3px !important;
 }
+
+/* финальное положение в шапке с учётом длины названия (--pl-k ставит js/logo.js);
+   то же правило есть в новой вставке Тильды — здесь на случай старой */
+@media screen and (min-width: 768px) {
+    #custom-preloader.completed .preloader-logo-container {
+        transform: translate3d(0%, -50%, 0) scale(calc(0.041 * var(--pl-k, 1))) !important;
+    }
+}
+@media screen and (max-width: 767px) {
+    #custom-preloader.completed .preloader-logo-container {
+        width: calc(41px * var(--pl-k, 1)) !important;
+    }
+}
