@@ -2,13 +2,18 @@
    Перенесено из блока Тильды rec4221096501. */
 
 (function () {
+  // сообщения в консоли — только с ?umadebug в адресе
+  var DEBUG = /[?&]umadebug/.test(location.search);
+  function umaWarn() { if (DEBUG) try { console.warn.apply(console, arguments); } catch (e) {} }
+
   /* ================= НАСТРОЙКИ ================= */
   var REC_ID     = 'rec3979597401';
-  var MIN_TIME   = 2600;  // мс: минимум до вылета логотипа
+  var MIN_TIME   = 2900;  // мс: минимум до вылета логотипа (заливка логотипа к этому моменту закончена)
   var INNER_MIN_TIME = 1400; // мс: то же на страницах без главного экрана (страницы проектов)
   var MAX_WAIT   = 4500;  // мс: предохранитель, дольше этого прелоадер не держим
   var FONT_WAIT  = 1200;  // мс после минимума: дольше шрифты не ждём
-  var TEXT_DELAY = 900;   // мс после вылета логотипа до старта заливки (2600 + 900 = 3.5 с)
+  var TEXT_DELAY = 1450;  // мс после вылета логотипа до старта заливки заголовка
+  var HERO_DELAY = 850;   // мс после вылета логотипа: проявляются тексты первого экрана (css/hero-intro.css)
 
   // GSAP грузится через общий загрузчик с запасными CDN (см. ниже)
 
@@ -26,6 +31,19 @@
   /* ============================================= */
 
   var preloader = document.getElementById('custom-preloader');
+  var html = document.documentElement;
+  // первый экран прячется, пока логотип не долетит до шапки
+  if (preloader && !preloader.classList.contains('completed') && document.getElementById(REC_ID)) {
+    html.classList.add('uma-hero-hold');
+    setTimeout(function () { html.classList.add('uma-hero-in'); }, 12000);   // страховка
+  }
+  function heroIn() { setTimeout(function () { html.classList.add('uma-hero-in'); }, HERO_DELAY); }
+  if (preloader && window.MutationObserver) {
+    // прелоадер мог отпустить и не этот скрипт (страховка во вставке)
+    new MutationObserver(function (_, mo) {
+      if (preloader.classList.contains('completed')) { mo.disconnect(); heroIn(); }
+    }).observe(preloader, { attributes: true, attributeFilter: ['class'] });
+  }
 
   var items = [];
   var master = null;
@@ -35,7 +53,7 @@
   var minDone = false, textReady = false, fontsReady = false, released = false;
 
   function log() {
-    console.log.apply(console, ['UMA:'].concat([].slice.call(arguments)));
+    if (DEBUG) console.log.apply(console, ['UMA:'].concat([].slice.call(arguments)));
   }
 
   /* ===================== КОНТРОЛЛЕР: прелоадер + текст ===================== */
@@ -197,7 +215,7 @@
       it.tl = tl;
     } catch (e) {
       // при сбое текст остаётся обычным залитым текстом (см. CSS)
-      console.warn('UMA: ошибка сборки текста', it.p.el, e);
+      umaWarn('UMA: ошибка сборки текста', it.p.el, e);
     }
   }
 
@@ -309,7 +327,7 @@
       var els = root.querySelectorAll(p.el);
       log('текст', p.el, '-> найдено:', els.length);
       if (!els.length) {
-        console.warn('UMA: не найден текст', p.el, '- проверьте класс в Зеро-блоке');
+        umaWarn('UMA: не найден текст', p.el, '- проверьте класс в Зеро-блоке');
         return;
       }
       els.forEach(function (w) {
@@ -361,7 +379,7 @@
         initText(root);
       } else if (++tries > 120) {   // ~12 секунд
         clearInterval(timer);
-        console.warn('UMA: блок #' + REC_ID + ' или GSAP/SplitText не найдены, текст показан без анимации');
+        umaWarn('UMA: блок #' + REC_ID + ' или GSAP/SplitText не найдены, текст показан без анимации');
         textReady = true;
         tryRelease();
       }
@@ -404,7 +422,7 @@
           if (i >= CDNS.length) return fail(new Error('UMA: не удалось загрузить ' + f));
           var src = CDNS[i++] + f;
           inject(src).then(function () { has(f) ? ok() : next(); }, function (e) {
-            console.warn('UMA: ' + e.message + ', пробую следующий CDN');
+            umaWarn('UMA: ' + e.message + ', пробую следующий CDN');
             next();
           });
         })();
@@ -418,7 +436,7 @@
 
   function loadLibs() {
     window.umaLoadGsap().then(waitForRec, function (e) {
-      console.warn(e.message + ', текст показан без анимации');
+      umaWarn(e.message + ', текст показан без анимации');
       textReady = true;
       tryRelease();
     });

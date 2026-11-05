@@ -25,7 +25,7 @@
     { match: /rosi/i, name: 'rosi', title: 'Rosi', big: 1536 }
   ];
   var PARALLAX     = 0.12;  // телефон: параллакс при прокрутке (0 — без него)
-  var REVEAL_DELAY = 700;   // мс после ухода прелоадера до раскрытия
+  var REVEAL_DELAY = 1250;   // мс после ухода прелоадера до раскрытия
   /* ============================================= */
 
   var REPO = 'UlyanaNechipor/uma_studio';

@@ -6,6 +6,10 @@
    раньше они грузились друг за другом, и каждая задержка CDN складывалась.
    Если CDN не ответил за TIMEOUT, недостающие файлы берутся со следующего. */
 (function () {
+  // сообщения в консоли — только с ?umadebug в адресе
+  var DEBUG = /[?&]umadebug/.test(location.search);
+  function umaWarn() { if (DEBUG) try { console.warn.apply(console, arguments); } catch (e) {} }
+
   if (window.umaLoadGsap) return;
 
   var CDNS = [
@@ -43,7 +47,7 @@
         if (i >= CDNS.length) return fail(new Error('UMA: не удалось загрузить ' + missing.join(', ')));
         var base = CDNS[i++];
         Promise.all(missing.map(function (f) { return inject(base + f); })).then(function () {
-          if (FILES.some(function (f) { return !has(f); })) console.warn('UMA: GSAP не загрузился с ' + base + ', пробую следующий CDN');
+          if (FILES.some(function (f) { return !has(f); })) umaWarn('UMA: GSAP не загрузился с ' + base + ', пробую следующий CDN');
           next();
         });
       })();

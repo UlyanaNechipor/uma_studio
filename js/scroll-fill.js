@@ -2,6 +2,10 @@
    Перенесено из блока Тильды rec4582271701. */
 
 (function () {
+  // сообщения в консоли — только с ?umadebug в адресе
+  var LOG = /[?&]umadebug/.test(location.search);
+  function umaWarn() { if (LOG) try { console.warn.apply(console, arguments); } catch (e) {} }
+
   /* ================= НАСТРОЙКИ ================= */
   var DEBUG = false;   // true: на странице видны маркеры start/end ScrollTrigger
   var SCRUB = 0.5;     // сглаживание заливки за скроллом, с (было 1: заливка заметно отставала)
@@ -68,7 +72,7 @@
           if (i >= CDNS.length) return fail(new Error('UMA: не удалось загрузить ' + f));
           var src = CDNS[i++] + f;
           inject(src).then(function () { has(f) ? ok() : next(); }, function (e) {
-            console.warn('UMA: ' + e.message + ', пробую следующий CDN');
+            umaWarn('UMA: ' + e.message + ', пробую следующий CDN');
             next();
           });
         })();
@@ -85,7 +89,7 @@
   var globalsBound = false;
 
   function log() {
-    try { console.log.apply(console, ['UMA stream:'].concat([].slice.call(arguments))); } catch (e) {}
+    if (LOG) try { console.log.apply(console, ['UMA stream:'].concat([].slice.call(arguments))); } catch (e) {}
   }
 
   /* ---------- раскраска строки ----------
@@ -243,13 +247,13 @@
       it.tl = tl;
     } catch (e) {
       // при сбое текст остаётся обычным залитым текстом (см. CSS)
-      console.warn('UMA stream: ошибка сборки текста', p.el, e);
+      umaWarn('UMA stream: ошибка сборки текста', p.el, e);
     }
   }
 
   function rebuildAll() {
     items.forEach(function (it) {
-      try { build(it); } catch (e) { console.warn('UMA stream: ошибка пересборки', e); }
+      try { build(it); } catch (e) { umaWarn('UMA stream: ошибка пересборки', e); }
     });
     ScrollTrigger.refresh();
   }
@@ -312,7 +316,7 @@
       els.forEach(function (w) {
         var it = { p: p, el: w.querySelector('.tn-atom') || w, split: null, tl: null };
         items.push(it);
-        try { build(it); count++; } catch (e) { console.warn('UMA stream: ошибка сборки', e); }
+        try { build(it); count++; } catch (e) { umaWarn('UMA stream: ошибка сборки', e); }
       });
     });
 
@@ -335,7 +339,7 @@
           if (started[block.id]) return;
           var root = document.getElementById(block.id);
           if (root && root.querySelector('.tn-atom')) {
-            try { runBlock(block, root); } catch (e) { console.warn('UMA stream: ошибка блока #' + block.id, e); }
+            try { runBlock(block, root); } catch (e) { umaWarn('UMA stream: ошибка блока #' + block.id, e); }
           }
         });
         bindGlobals();
@@ -347,7 +351,7 @@
       } else if (++tries > 120) {
         clearInterval(timer);
         BLOCKS.forEach(function (b) {
-          if (!started[b.id]) console.warn('UMA stream: блок #' + b.id + ' или библиотеки GSAP/SplitText не найдены, текст показан без анимации');
+          if (!started[b.id]) umaWarn('UMA stream: блок #' + b.id + ' или библиотеки GSAP/SplitText не найдены, текст показан без анимации');
         });
       }
     }, 100);
@@ -397,7 +401,7 @@
     }, function (e) {
       diagState.libs = 'ОШИБКА';
       diagState.error = e.message;
-      console.warn(e.message + ', текст показан без анимации');
+      umaWarn(e.message + ', текст показан без анимации');
     });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);

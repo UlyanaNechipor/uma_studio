@@ -1,0 +1,19 @@
+/* UMA · hero-intro
+   Первый экран проявляется после того, как логотип прелоадера долетел до шапки:
+   пока он в полёте, текстов блока не видно (иначе они проступают сквозь гаснущий фон
+   прелоадера раньше логотипа). Классы ставит js/hero-fill.js:
+   uma-hero-hold — прелоадер ещё не ушёл, uma-hero-in — пора показывать.
+   Галерея раскрывается сама (js/hero-gallery.js, REVEAL_DELAY), заголовок заливается
+   после TEXT_DELAY (js/hero-fill.js). */
+html.uma-hero-hold #rec3979597401 .t396__elem:not([data-elem-type="gallery"]) {
+    transition: opacity .9s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+html.uma-hero-hold:not(.uma-hero-in) #rec3979597401 .t396__elem:not([data-elem-type="gallery"]) {
+    opacity: 0 !important;
+}
+/* заголовок — чуть позже описания */
+html.uma-hero-hold #rec3979597401 .t396__elem[class*="uma-stream-"] { transition-delay: .15s !important; }
+
+@media (prefers-reduced-motion: reduce) {
+    html.uma-hero-hold #rec3979597401 .t396__elem { transition: none !important; }
+}

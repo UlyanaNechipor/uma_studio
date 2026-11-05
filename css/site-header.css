@@ -47,7 +47,6 @@ html.light-theme .uma-hd, body.light-theme .uma-hd { --hd-line: rgba(17, 18, 17,
 }
 .uma-hd__logo b { font-weight: 700; }
 html.uma-hd-logo-on .uma-hd__logo { opacity: 1; }
-.uma-hd__logo { transition: opacity .35s ease; }
 
 .uma-hd__link {
     transform: translate(-50%, -50%);
@@ -96,7 +95,7 @@ html.uma-hd-fly body #custom-preloader.completed #uma-logo-wrap {
 html.uma-hd-logo-on body #custom-preloader #uma-logo-wrap {
     opacity: 0 !important;
     visibility: hidden !important;
-    transition: opacity .35s ease, visibility 0s linear .35s !important;
+    transition: none !important;    /* подмена мгновенная: буквы совпадают с логотипом шапки, без двойного полупрозрачного кадра */
 }
 
 /* ---------- телефон: логотип слева, меню и переключатель справа ---------- */
