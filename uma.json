@@ -1,5 +1,5 @@
 {
-  "v": "2026-11-06.8",
+  "v": "2026-11-06.9",
   "css": [
     "css/logo.css",
     "css/image-quality.css",
@@ -25,6 +25,7 @@
     "css/radius.css"
   ],
   "js": [
+    "js/tablet.js",
     "js/logo.js",
     "js/gsap-loader.js",
     "js/image-quality.js",
