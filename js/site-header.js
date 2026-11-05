@@ -146,6 +146,9 @@
       setTimeout(function () { mo.disconnect(); }, 8000);
     }
     var tm = 0, lw = window.innerWidth;
+    // js/fluid.js перерисовал блоки в другой раскладке — край сетки мог сместиться
+    window.addEventListener('uma:relayout', function () { alignLogo(); aim(); });
+    window.addEventListener('uma:reflow', function () { alignLogo(); aim(); });
     window.addEventListener('resize', function () {
       if (window.innerWidth === lw) return;
       lw = window.innerWidth; clearTimeout(tm); tm = setTimeout(function () { alignLogo(); aim(); }, 200);

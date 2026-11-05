@@ -269,6 +269,8 @@
         rebuildAll();
       }, 250);
     });
+    // js/fluid.js перерисовал блоки в другой раскладке
+    window.addEventListener('uma:relayout', function () { clearTimeout(rt); rt = setTimeout(rebuildAll, 30); });
 
     // после загрузки шрифтов строки могут перенестись иначе
     if (document.fonts && document.fonts.ready) {

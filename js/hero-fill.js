@@ -338,6 +338,8 @@
         buildAll();
       }, 250);
     });
+    // js/fluid.js перерисовал блоки в другой раскладке
+    window.addEventListener('uma:relayout', function () { clearTimeout(rt); rt = setTimeout(buildAll, 30); });
   }
 
   // ждём, пока Тильда отрисует Зеро-блок и загрузятся GSAP + SplitText

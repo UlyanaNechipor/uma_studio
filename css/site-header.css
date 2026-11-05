@@ -105,14 +105,14 @@ html.uma-hd-logo-on body #custom-preloader #uma-logo-wrap {
     .uma-hd__nav {
         position: absolute;
         top: 50%;
-        right: calc(16 * var(--u) + 24px + 15px);
+        right: calc(5vw + 24px + 15px);      /* 5vw — поле сетки (16 из 320) на любой ширине */
         transform: translateY(-50%);
         display: flex;
         gap: calc(8.5 * var(--u));
     }
     .uma-hd__link { position: relative; top: auto; left: auto !important; transform: none; }
 
-    .uma-hd__toggle { right: calc(16 * var(--u)); }
+    .uma-hd__toggle { right: 5vw; }
     html body .uma-hd .theme-toggle-btn {
         width: 24px !important;
         height: 24px !important;
@@ -120,6 +120,9 @@ html.uma-hd-logo-on body #custom-preloader #uma-logo-wrap {
     }
     .uma-hd .theme-toggle-btn .theme-icon-container { scale: 0.85; }
 }
+
+/* планшет вертикально (768–959): блоки в телефонной раскладке (js/fluid.js), правый край — по их полю */
+html.uma-fluid-m .uma-hd__toggle { right: 5vw; }
 
 @media (prefers-reduced-motion: reduce) {
     .uma-hd, .uma-hd__link { transition: none; }

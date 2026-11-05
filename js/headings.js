@@ -106,5 +106,6 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(apply);
   window.addEventListener('load', apply);
   var rt;
+  window.addEventListener('uma:relayout', apply);
   window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(apply, 200); });
 })();

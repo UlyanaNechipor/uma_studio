@@ -74,6 +74,7 @@
     function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
+    window.addEventListener('uma:reflow', onScroll);
     window.addEventListener('load', onScroll);
     update();
   }

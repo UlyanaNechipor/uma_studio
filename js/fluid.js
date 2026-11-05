@@ -19,6 +19,7 @@
   var MOBILE_MAX = 960;   // px: уже этого — телефонная раскладка на всю ширину
   var MIN_FLUID  = 480;   // px: уже этого — всё как в Тильде
   var DESK = 1200, PHONE = 320;
+  var GAP = 0.5;          // как быстро растут отступы между элементами относительно раскладки (0…1)
   var SKIP = ['rec3979597301'];  // старая шапка (скрыта)
   /* ============================================= */
 
@@ -64,13 +65,20 @@
     return out;
   }
 
+  // перерисовать блоки, которые Тильда уже нарисовала в другой раскладке;
+  // остальным скриптам сообщается событием uma:relayout (пересобрать строки, выровнять шапку)
   function relayout() {
     if (typeof window.t396_doResize !== 'function') return;
+    var changed = false;
     recs().forEach(function (id) {
-      if (window.tn && window.tn['ab' + id]) {
-        try { window.t396_doResize(id); } catch (e) {}
-      }
+      var ab = window.tn && window.tn['ab' + id];
+      if (!ab) return;
+      var want = window.t396_detectResolution(id);
+      if (ab.curResolution === want) return;
+      changed = true;
+      try { window.t396_doResize(id); } catch (e) {}
     });
+    if (changed) { relW = 0; reflowAll(); }
   }
 
   /* ---------- 2. стили телефонной раскладки на промежуточных ширинах ---------- */
@@ -139,14 +147,156 @@
       }
     });
 
-    var css =
-      '@media screen and (min-width:' + MIN_FLUID + 'px) and (max-width:' + (MOBILE_MAX - 1) + 'px){' + mob.join('') + '}' +
-      '@media screen and (min-width:' + MIN_FLUID + 'px) and (max-width:' + (DESK - 1) + 'px){' + fonts.join('') + '}';
-    var tag = document.createElement('style');
-    tag.id = 'uma-fluid-css';
-    tag.textContent = css;
-    // после всех стилей Тильды
-    (document.body || document.documentElement).appendChild(tag);
+    function add(id, css) {
+      var tag = document.createElement('style');
+      tag.id = id;
+      tag.textContent = css;
+      // после всех стилей Тильды
+      (document.body || document.documentElement).appendChild(tag);
+    }
+    add('uma-fluid-layout', '@media screen and (min-width:' + MIN_FLUID + 'px) and (max-width:' + (MOBILE_MAX - 1) + 'px){' + mob.join('') + '}');
+    add('uma-fluid-css', '@media screen and (min-width:' + MIN_FLUID + 'px) and (max-width:' + (DESK - 1) + 'px){' + fonts.join('') + '}');
+  }
+
+  /* ---------- 4. по вертикали: элементы подтягиваются за изменившимся по высоте текстом ----------
+     Тильда ставит элементы по координатам из макета. Когда кегль меньше растянутого,
+     текст становится ниже, и под ним остаётся дыра (а когда больше — наезжает на следующий).
+     Каждый элемент блока сдвигается так, чтобы до ближайшего элемента над ним
+     (по той же вертикальной полосе) остался тот же отступ, что в макете. */
+  var fluidTag = null;
+  function fontsOff(off) {
+    if (!fluidTag) fluidTag = document.getElementById('uma-fluid-css');
+    if (fluidTag) fluidTag.media = off ? 'not all' : '';
+  }
+
+  function items(ab) {
+    var list = ab.querySelectorAll(':scope > .t396__elem, :scope > .t396__group');
+    var out = [];
+    for (var i = 0; i < list.length; i++) out.push(list[i]);
+    return out;
+  }
+
+  function clearShift(ab) {
+    items(ab).forEach(function (el) { el.style.translate = ''; });
+    var atoms = ab.querySelectorAll('.tn-atom[data-uma-ls]');
+    for (var i = 0; i < atoms.length; i++) { atoms[i].style.removeProperty('letter-spacing'); atoms[i].removeAttribute('data-uma-ls'); }
+    // своя высота снимается, только если Тильда с тех пор не поставила новую
+    if (ab.__umaH != null) {
+      if (ab.style.height === ab.__umaH) { ab.style.removeProperty('height'); if (ab.__umaOrigH) ab.style.height = ab.__umaOrigH; }
+      ab.__umaH = null;
+    }
+  }
+
+  function rect(el) {
+    var r = el.getBoundingClientRect();
+    return { top: r.top, bottom: r.bottom, left: r.left, right: r.right, h: r.height, w: r.width };
+  }
+
+  function reflow(ab) {
+    clearShift(ab);
+    if (!inFluid()) return;
+    var all = items(ab);
+    var base = ab.getBoundingClientRect();
+    var vw = width();
+
+    // трекинг обычных текстов — в долях кегля, как в макете (иначе он растягивается вместе с раскладкой)
+    fontsOff(true);
+    var atoms = ab.querySelectorAll('.t396__elem[data-elem-type="text"] .tn-atom');
+    var ls = [];
+    for (var a = 0; a < atoms.length; a++) {
+      var cs = getComputedStyle(atoms[a]);
+      var f = parseFloat(cs.fontSize) || 0, l = parseFloat(cs.letterSpacing);
+      ls.push(f && !isNaN(l) && !atoms[a].classList.contains('uma-h') ? l / f : null);
+    }
+    // размеры по макету
+    var design = all.map(rect);
+    fontsOff(false);
+    for (var b = 0; b < atoms.length; b++) {
+      if (ls[b] == null || Math.abs(ls[b]) < 0.001) continue;
+      atoms[b].style.setProperty('letter-spacing', ls[b].toFixed(4) + 'em', 'important');
+      atoms[b].setAttribute('data-uma-ls', '');
+    }
+    var now = all.map(rect);
+
+    // только видимые элементы раскладки (спрятанные за краем — пропускаем)
+    var idx = [];
+    for (var i = 0; i < all.length; i++) {
+      var d = design[i];
+      if (!d.h || !d.w) continue;
+      if (d.top - base.top < -5 || d.right < -5 || d.left > vw + 5) continue;
+      idx.push(i);
+    }
+    idx.sort(function (p, q) { return design[p].top - design[q].top; });
+
+    // отступы между элементами растут медленнее раскладки: при растяжении в z раз — в 1 + (z − 1)·GAP раз
+    var z = parseFloat(getComputedStyle(ab.closest('.t-rec') || ab).getPropertyValue('--zoom')) || 1;
+    var k = (1 + (z - 1) * GAP) / z;
+
+    var shift = {}, nb = {}, maxOld = 0, maxNew = 0;
+    idx.forEach(function (j) {
+      var dj = design[j];
+      // элементы над ним в той же полосе; держимся за ближайшие (самый низкий край)
+      var low = -Infinity, lowNew = -Infinity;
+      idx.forEach(function (i) {
+        if (i === j || nb[i] == null) return;
+        var di = design[i];
+        if (di.bottom > dj.top + 1) return;                                            // не над ним
+        if (Math.min(di.right, dj.right) - Math.max(di.left, dj.left) <= 1) return;     // другая полоса
+        if (di.bottom > low + 2) { low = di.bottom; lowNew = nb[i]; }
+        else if (di.bottom >= low - 2) lowNew = Math.max(lowNew, nb[i]);
+      });
+      var top;
+      if (low === -Infinity) top = base.top + (dj.top - base.top) * k;                 // от верха блока
+      else top = lowNew + (dj.top - low) * k;
+      shift[j] = top - dj.top;
+      nb[j] = top + now[j].h;
+      maxOld = Math.max(maxOld, dj.bottom - base.top);
+      maxNew = Math.max(maxNew, nb[j] - base.top);
+    });
+    var padOld = base.height - maxOld;
+
+    idx.forEach(function (j) {
+      var s = shift[j];
+      if (Math.abs(s) < 0.5) return;
+      var z = parseFloat(all[j].style.zoom) || 1;
+      all[j].style.translate = '0 ' + (s / z).toFixed(2) + 'px';
+    });
+
+    // высота блока — на ту же разницу
+    if (maxOld) {
+      var h = Math.round(maxNew + Math.max(0, padOld) * k) + 'px';
+      ab.__umaOrigH = ab.style.height;
+      ab.style.setProperty('height', h, 'important');
+      ab.__umaH = ab.style.height;
+    }
+  }
+
+  var sig = '', relW = 0;
+  function reflowAll() {
+    var parts = [];
+    recs().forEach(function (id) {
+      var rec = document.getElementById('rec' + id);
+      var ab = rec && rec.querySelector('.t396__artboard');
+      if (!ab) return;
+      if (!ab.__umaFluidL) {
+        ab.__umaFluidL = true;
+        ab.addEventListener('artBoardResized', later);
+      }
+      try { reflow(ab); } catch (e) {}
+      parts.push(ab.style.height);
+    });
+    // элементы сдвинулись — позиции анимаций по скроллу надо пересчитать
+    var s = parts.join(',');
+    // Тильда перерисовала блоки под новую ширину (сама, по resize) — строки заголовков пересобрать
+    if (inFluid() && relW !== width()) {
+      relW = width();
+      try { window.dispatchEvent(new Event('uma:relayout')); } catch (e) {}
+    }
+    if (s !== sig) {
+      sig = s;
+      try { if (window.ScrollTrigger) window.ScrollTrigger.refresh(); } catch (e) {}
+      try { window.dispatchEvent(new Event('uma:reflow')); } catch (e) {}
+    }
   }
 
   function mark() {
@@ -156,19 +306,30 @@
     h.classList.toggle('uma-fluid-d', inFluid() && window.umaRes() === DESK);
   }
 
+  var rf;
+  function later() { clearTimeout(rf); rf = setTimeout(reflowAll, 120); }
+
   function run() {
     patch();
     build();
     mark();
     if (inFluid()) relayout();
+    reflowAll();
+    later();
   }
 
   // как можно раньше: если Тильда ещё не рисовала блоки, она сразу возьмёт нужную раскладку
-  patch();
+  if (!patch()) {
+    // скрипт Тильды ещё не загрузился — ждём его, чтобы подменить выбор раскладки до первой отрисовки
+    var tries = 0, poll = setInterval(function () {
+      if (patch() || ++tries > 400) { clearInterval(poll); if (patched && inFluid()) relayout(); }
+    }, 15);
+  }
   mark();
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
   else run();
-  window.addEventListener('load', function () { patch(); mark(); if (inFluid()) relayout(); });
+  window.addEventListener('load', function () { patch(); mark(); if (inFluid()) relayout(); reflowAll(); later(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { reflowAll(); });
 
   // при смене ширины Тильда сама перерисует блоки (через подменённый выбор раскладки)
   var lw = width(), rt;
@@ -176,6 +337,6 @@
     if (width() === lw) return;
     lw = width();
     clearTimeout(rt);
-    rt = setTimeout(mark, 50);
+    rt = setTimeout(mark, 50);   // сдвиги пересчитаются, когда Тильда перерисует блоки (artBoardResized)
   });
 })();

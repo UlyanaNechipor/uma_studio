@@ -94,25 +94,22 @@ a.uma-ft__link:focus-visible { color: var(--ft-text) !important; outline: 1px so
     a.uma-ft__link:hover { color: var(--ft-text) !important; }
 }
 
-/* ---------- планшеты ---------- */
+/* ---------- телефоны и планшеты (уже 960 px): логотип сверху, две колонки, подпись внизу ----------
+   Боковые поля — как у блоков телефонной раскладки (16 из 320 = 5% ширины),
+   кегли растут с шириной экрана умеренно. */
 @media screen and (max-width: 959px) {
-    .uma-ft { grid-template-columns: 1fr calc(28% + 8 * var(--u)) calc(28% - 8 * var(--u)); }
-}
-
-/* ---------- телефоны: логотип сверху, две колонки, подпись внизу ---------- */
-@media screen and (max-width: 639px) {
     .uma-ft {
         grid-template-columns: 1fr 1fr;
-        column-gap: 16px;
-        row-gap: 28px;
+        column-gap: 5vw;
+        row-gap: clamp(28px, 5vw, 48px);
         min-height: 0;
-        padding: 32px 16px 28px;
+        padding: clamp(32px, 7vw, 64px) 5vw clamp(28px, 6vw, 56px);
     }
     .uma-ft__brand { display: contents; }
-    .uma-ft__logo { grid-column: 1 / -1; order: 0; margin-top: 0 !important; font-size: 32px; }
-    .uma-ft__col { order: 1; }
-    .uma-ft__made { grid-column: 1 / -1; order: 2; padding-left: 0; margin-bottom: 0 !important; font-size: 12px; }
-    .uma-ft__title, .uma-ft__link { font-size: 13px; line-height: 24px; }
+    .uma-ft__logo { grid-column: 1 / -1; order: 0; margin-top: 0 !important; font-size: clamp(32px, 10vw, 64px); }
+    .uma-ft__col { order: 1; padding-right: 0 !important; }
+    .uma-ft__made { grid-column: 1 / -1; order: 2; padding-left: 0; margin-bottom: 0 !important; font-size: clamp(12px, 1.4vw + 7px, 15px); }
+    .uma-ft__title, .uma-ft__link { font-size: clamp(13px, 1.2vw + 8.5px, 16px); line-height: 1.85; }
 }
 
 @media (prefers-reduced-motion: reduce) {
