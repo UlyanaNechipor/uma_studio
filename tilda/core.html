@@ -322,7 +322,8 @@ body.light-theme {
   }
 
   function fit() {
-    var stacked = window.innerWidth < 768;
+    // в одну строку и на телефоне: мобильную шапку собирает js/mobile-header.js
+    var stacked = false;
     if (mode !== (stacked ? 's' : 'l')) { mode = stacked ? 's' : 'l'; layout(stacked); wrap.classList.toggle('is-stacked', stacked); }
     var t = wrap.querySelector('.logo-bg-text');
     // рамка по фактическим границам текста (getBBox), с запасом PAD по бокам:

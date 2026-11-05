@@ -1,0 +1,81 @@
+/* UMA · mobile-header
+   Мобильная шапка в одну строку: слева логотип кеглем меню, справа пункты
+   Проекты · О нас · Контакты (текстом, без рамок) и переключатель темы, между ними 4 px.
+   Размеры ставит js/mobile-header.js. */
+@media screen and (max-width: 767px) {
+    /* прежние пункты меню и область логотипа — скрыты (остаются для нажатий из новой строки) */
+    html.uma-mh-on #rec3979597301 .t396__elem[data-elem-type="button"],
+    html.uma-mh-on #rec3979597301 .t396__elem:has(a[href="#logo"]) {
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    /* кнопки меню справа */
+    .uma-mh {
+        position: absolute;
+        right: var(--mh-m);
+        top: 0;
+        height: var(--mh-h);
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        gap: var(--mh-gap);
+    }
+    .uma-mh__link {
+        display: flex;
+        align-items: center;
+        height: var(--mh-btn-h);
+        padding: 0 var(--mh-pad-x, 8px);
+        box-sizing: border-box;
+        font-family: var(--uma-font-body, 'Manrope', Arial, sans-serif);
+        font-size: var(--mh-font, 12px);
+        line-height: 1;
+        white-space: nowrap;
+        color: #767575 !important;
+        text-decoration: none !important;
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color .3s ease, color .3s ease, border-color .3s ease;
+        opacity: 0;
+        animation: umaMhIn .6s ease forwards 4.2s;
+    }
+    /* увеличенная зона нажатия без изменения вида */
+    .uma-mh__link { position: relative; }
+    .uma-mh__link::after { content: ""; position: absolute; left: -2px; right: -2px; top: -10px; bottom: -10px; }
+    .uma-mh__link:active { color: var(--txt, #fbfbfb) !important; }
+
+    /* переключатель темы — последним, той же высоты, квадратный */
+    html.uma-mh-on .uma-mh .theme-toggle-btn {
+        position: static !important;
+        transform: none !important;
+        flex: none;
+        width: var(--mh-btn-h) !important;
+        height: var(--mh-btn-h) !important;
+    }
+
+    /* область логотипа — ссылка наверх */
+    .uma-mh__home {
+        position: absolute;
+        left: calc(var(--mh-m) - 8px);
+        width: calc(var(--mh-logo-w) + 16px);
+        top: 0;
+        height: var(--mh-h);
+        z-index: 6;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* логотип: в прелоадере во всю ширину одной строкой, в шапке — слева, кеглем меню */
+    html.uma-mh-on body #custom-preloader #uma-logo-wrap.is-mcenter {
+        width: calc(100vw - 32px) !important;
+        left: 50vw !important;
+        top: 45vh !important;
+        transform: translate3d(-50%, -50%, 0) !important;
+    }
+    html.uma-mh-on body #custom-preloader.completed #uma-logo-wrap.is-mcenter {
+        width: var(--mh-logo-w) !important;
+        left: var(--mh-m) !important;
+        top: var(--mh-logo-y) !important;
+        transform: translate3d(0, -50%, 0) !important;
+    }
+}
+@keyframes umaMhIn { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .uma-mh__link { animation: none; opacity: 1; } }
