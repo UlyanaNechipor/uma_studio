@@ -1,22 +1,15 @@
 /* UMA · logo
-   Шрифт логотипа Working Title: Rubik — чуть скруглённые углы. Включается классом
-   uma-logo-font, когда шрифт загружен (ставит js/logo.js), чтобы не было запасного шрифта. */
-html.uma-logo-font #uma-logo-wrap .logo-bg-text,
-html.uma-logo-font #uma-logo-wrap .logo-fill-text {
-    font-family: 'Rubik', 'Manrope', sans-serif !important;
-    font-weight: 600 !important;
-    letter-spacing: -3px !important;
-}
-
-/* финальное положение в шапке с учётом длины названия (--pl-k ставит js/logo.js);
-   то же правило есть в новой вставке Тильды — здесь на случай старой */
+   Только для старой вставки Тильды (класс uma-old-core ставит js/logo.js):
+   логотип цветом текста темы и размер в шапке по длине названия.
+   С новой вставкой (tilda/core.html) эти правила не срабатывают. */
+html.uma-old-core #uma-logo-wrap .logo-fill-text { fill: var(--txt, #fbfbfb) !important; }
 @media screen and (min-width: 768px) {
-    html body #custom-preloader.completed #uma-logo-wrap.preloader-logo-container {
+    html.uma-old-core body #custom-preloader.completed #uma-logo-wrap.preloader-logo-container {
         transform: translate3d(0%, -50%, 0) scale(calc(0.041 * var(--pl-k, 1))) !important;
     }
 }
 @media screen and (max-width: 767px) {
-    html body #custom-preloader.completed #uma-logo-wrap.preloader-logo-container {
-        width: calc(41px * var(--pl-k, 1)) !important;
+    html.uma-old-core body #custom-preloader.completed #uma-logo-wrap.preloader-logo-container {
+        width: min(calc(41px * var(--pl-k, 1)), 72px) !important;
     }
 }

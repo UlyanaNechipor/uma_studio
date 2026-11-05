@@ -6,6 +6,11 @@
      Исходник этой вставки лежит в репозитории: tilda/core.html
      ========================================================================= -->
 
+<!-- Шрифт логотипа: Rubik 500 (WORKING) и 300 (TITLE), только буквы названия -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;500&display=block&text=WORKINGTITLE">
+
 <script>
 /* ========================================================================= */
 /* САМАЯ ПЕРВАЯ МИЛЛИСЕКУНДА: Мгновенный перехват темы ДО отрисовки пикселей. */
@@ -79,15 +84,17 @@ window.addEventListener('load', function() {
 /* 1. ПРЕЛОАДЕР: ГЛОБАЛЬНАЯ СИСТЕМА ИНВЕРСИИ ЦВЕТОВ */
 /* ========================================================================= */
 :root {
-    --uma-accent: #d94f30;         /* акцентный оранжевый: логотип, след курсора */
+    --uma-accent: #d94f30;         /* акцентный оранжевый: след курсора */
     --preloader-bg: #111211;       /* Базовый тёмный графит */
     --preloader-text-bg: #202120;  /* Бледные буквы на старте */
+    --uma-logo-ink: #fbfbfb;       /* цвет логотипа: цвет текста темы */
 }
 
 html.light-theme,
 body.light-theme {
     --preloader-bg: #F5F4F0;       /* Матовая костяная бумага (мягкий беж) */
     --preloader-text-bg: #E3E2DE;  /* Мягкая подложка букв в светлой теме */
+    --uma-logo-ink: #111211;
 }
 
 /* Главный экран прелоадера */
@@ -133,28 +140,37 @@ body.light-theme {
     display: block;
 }
 
+/* Логотип WORKING TITLE: контраст начертаний одного шрифта —
+   WORKING плотнее (500), TITLE тоньше (300). */
+.logo-bg-text,
+.logo-fill-text {
+    font-family: 'Rubik', 'Manrope', sans-serif;
+    font-size: 112px;
+    letter-spacing: -2px;
+}
+.logo-w1 { font-weight: 500; }
+.logo-w2 { font-weight: 300; }
+
 /* 1 СЛОЙ: Бледные буквы на старте (в потоке, задаёт размер контейнера) */
 .logo-bg-text {
-    font-family: 'Manrope', 'Arial Black', sans-serif;
-    font-weight: 800;
-    font-size: 112px; 
-    letter-spacing: -4px; 
-    fill: var(--preloader-text-bg) !important; 
+    fill: var(--preloader-text-bg) !important;
     opacity: 0;
-    animation: fadeInLogo 0.6s ease forwards 0.2s; 
+    animation: fadeInLogo 0.6s ease forwards 0.2s;
 }
 
-/* 2 СЛОЙ: Оранжевая заливка */
+/* 2 СЛОЙ: заливка цветом текста темы */
 .logo-fill-text {
-    font-family: 'Manrope', 'Arial Black', sans-serif;
-    font-weight: 800;
-    font-size: 112px;
-    letter-spacing: -4px;
-    fill: var(--uma-accent, #d94f30) !important; 
+    fill: var(--uma-logo-ink) !important;
 }
+
+/* пока шрифт логотипа не загружен и рамка не подогнана — логотип скрыт и анимации стоят,
+   чтобы буквы не перескакивали из запасного шрифта */
+.uma-reveal-wrap:not(.is-ready) { visibility: hidden; }
+.uma-reveal-wrap:not(.is-ready),
+.uma-reveal-wrap:not(.is-ready) * { animation-play-state: paused !important; }
 
 /* Заливка логотипа с мягким краем без маски в анимации.
-   Окошко (.uma-reveal) едет вправо, оранжевый слой внутри (.uma-reveal-inner) едет влево
+   Окошко (.uma-reveal) едет вправо, слой заливки внутри (.uma-reveal-inner) едет влево
    на то же расстояние. Мягкий край это статическая маска на окошке.
    --f: ширина мягкого края в долях ширины логотипа (меньше = уже и чётче). */
 .uma-reveal-wrap {
@@ -227,10 +243,15 @@ body.light-theme {
         transform: translate3d(-50%, -50%, 0) scale(1);
     }
     #custom-preloader.completed .preloader-logo-container {
-        width: calc(41px * var(--pl-k, 1)) !important;       
+        width: var(--pl-mw, calc(41px * var(--pl-k, 1))) !important;       
         left: 16px !important;        
         top: 28px !important;         
         transform: translate3d(0, 0, 0) scale(1) !important; 
+    }
+    /* двухстрочный логотип: по центру шапки по вертикали */
+    #custom-preloader.completed .preloader-logo-container.is-stacked {
+        top: 26px !important;
+        transform: translate3d(0, -50%, 0) scale(1) !important;
     }
 }
 
@@ -238,18 +259,18 @@ body.light-theme {
 </style>
 
 <div id="custom-preloader">
-    <div class="preloader-logo-container uma-reveal-wrap" id="uma-logo-wrap">
+    <div class="preloader-logo-container uma-reveal-wrap" id="uma-logo-wrap" data-uma-core="2">
 
         <!-- Бледные буквы (в потоке, задают размер) -->
         <svg class="uma-logo-svg" viewBox="0 0 900 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-bg-text">WORKING TITLE</text>
+            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-bg-text"><tspan class="logo-w1">WORKING</tspan><tspan class="logo-w2" dx="26">TITLE</tspan></text>
         </svg>
 
-        <!-- Оранжевая заливка: окошко едет вправо, слой внутри едет влево -->
+        <!-- Заливка: окошко едет вправо, слой внутри едет влево -->
         <div class="uma-reveal">
             <div class="uma-reveal-inner">
                 <svg class="uma-logo-svg" viewBox="0 0 900 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-fill-text">WORKING TITLE</text>
+                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-fill-text"><tspan class="logo-w1">WORKING</tspan><tspan class="logo-w2" dx="26">TITLE</tspan></text>
                 </svg>
             </div>
         </div>
@@ -259,24 +280,88 @@ body.light-theme {
 
 <script>
 /* Логотип в прелоадере (он же логотип в шапке после вылета).
-   Ширина рамки SVG подгоняется под длину текста, а --pl-k держит высоту букв
-   в шапке такой же, как у прежнего логотипа «UMA» (рамка 255 × 100).
-   Сменить название: текст в двух <text> выше. */
+   1. Ждём шрифт логотипа (не дольше 1.5 с), чтобы буквы не перескакивали.
+   2. Компьютер: одна строка WORKING TITLE. Ширина рамки SVG подгоняется под текст,
+      --pl-k держит высоту букв в шапке такой же, как у прежнего логотипа (255 × 100).
+   3. Телефон: две строки — WORKING над TITLE, чтобы логотип поместился в шапку
+      до первого пункта меню; ширина в шапке — --pl-mw.
+   Сменить название: WORDS ниже и текст в двух <text> в разметке. */
 (function () {
   var wrap = document.getElementById('uma-logo-wrap');
   if (!wrap) return;
-  function fit() {
-    var t = wrap.querySelector('.logo-bg-text');
-    var len = 0;
-    try { len = t.getComputedTextLength(); } catch (e) {}
-    if (!len) return;
-    var w = Math.ceil(len + 12);
-    wrap.querySelectorAll('.uma-logo-svg').forEach(function (s) { s.setAttribute('viewBox', '0 0 ' + w + ' 100'); });
-    wrap.style.setProperty('--pl-k', (w / 255).toFixed(4));
+  var WORDS = ['WORKING', 'TITLE'];
+  var GAP = 14;        // px: отступ логотипа от первого пункта меню на телефоне
+  var MOB_H = 30;      // px: высота двухстрочного логотипа в шапке на телефоне
+  var mode = '';
+
+  function layout(stacked) {
+    wrap.querySelectorAll('.uma-logo-svg text').forEach(function (t) {
+      if (stacked) {
+        t.setAttribute('x', '6'); t.removeAttribute('y');
+        t.setAttribute('text-anchor', 'start'); t.removeAttribute('dominant-baseline');
+        t.innerHTML = '<tspan class="logo-w1" x="6" y="86">' + WORDS[0] + '</tspan>' +
+                      '<tspan class="logo-w2" x="6" y="184">' + WORDS[1] + '</tspan>';
+      } else {
+        t.setAttribute('x', '50%'); t.setAttribute('y', '50%');
+        t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'central');
+        t.innerHTML = '<tspan class="logo-w1">' + WORDS[0] + '</tspan><tspan class="logo-w2" dx="26">' + WORDS[1] + '</tspan>';
+      }
+    });
   }
-  fit();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+
+  function navLeft() {
+    var nav = document.querySelectorAll('#rec3979597301 .t396__elem[data-elem-type="button"]');
+    var left = Infinity;
+    for (var i = 0; i < nav.length; i++) {
+      var r = nav[i].getBoundingClientRect();
+      if (r.width && r.left > 40) left = Math.min(left, r.left);
+    }
+    return left;
+  }
+
+  function fit() {
+    var stacked = window.innerWidth < 768;
+    if (mode !== (stacked ? 's' : 'l')) { mode = stacked ? 's' : 'l'; layout(stacked); wrap.classList.toggle('is-stacked', stacked); }
+    var t = wrap.querySelector('.logo-bg-text');
+    var sp = t.querySelectorAll('tspan');
+    var w = 0, h = 100;
+    try {
+      if (stacked) {
+        w = Math.ceil(Math.max(sp[0].getComputedTextLength(), sp[1].getComputedTextLength()) + 12);
+        h = 200;
+      } else {
+        w = Math.ceil(t.getComputedTextLength() + 12);
+      }
+    } catch (e) {}
+    if (!w) return;
+    wrap.querySelectorAll('.uma-logo-svg').forEach(function (s) { s.setAttribute('viewBox', '0 0 ' + w + ' ' + h); });
+    wrap.style.setProperty('--pl-k', (w / 255).toFixed(4));
+    if (stacked) {
+      var mw = MOB_H * w / h, left = navLeft();
+      if (left < Infinity) mw = Math.min(mw, left - 16 - GAP);
+      wrap.style.setProperty('--pl-mw', Math.max(40, mw).toFixed(1) + 'px');
+    } else {
+      wrap.style.removeProperty('--pl-mw');
+    }
+  }
+
+  var shown = false;
+  function ready() {
+    if (shown) return;
+    shown = true;
+    fit();
+    wrap.classList.add('is-ready');
+  }
+  if (document.fonts && document.fonts.load) {
+    Promise.all([
+      document.fonts.load('500 112px Rubik', WORDS[0]),
+      document.fonts.load('300 112px Rubik', WORDS[1])
+    ]).then(ready, ready);
+  } else ready();
+  setTimeout(ready, 1500);
   window.addEventListener('load', fit);
+  var tm = 0;
+  window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(fit, 200); });
 })();
 </script>
 
