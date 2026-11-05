@@ -250,7 +250,7 @@ body.light-theme {
     }
     /* двухстрочный логотип: по центру шапки по вертикали */
     #custom-preloader.completed .preloader-logo-container.is-stacked {
-        top: 26px !important;
+        top: var(--pl-my, 26px) !important;
         transform: translate3d(0, -50%, 0) scale(1) !important;
     }
 }
@@ -309,14 +309,15 @@ body.light-theme {
     });
   }
 
-  function navLeft() {
+  // первый пункта меню в шапке: левый край и середина по высоте
+  function navBox() {
     var nav = document.querySelectorAll('#rec3979597301 .t396__elem[data-elem-type="button"]');
-    var left = Infinity;
+    var box = null;
     for (var i = 0; i < nav.length; i++) {
       var r = nav[i].getBoundingClientRect();
-      if (r.width && r.left > 40) left = Math.min(left, r.left);
+      if (r.width && r.left > 40 && (!box || r.left < box.left)) box = r;
     }
-    return left;
+    return box;
   }
 
   function fit() {
@@ -337,11 +338,14 @@ body.light-theme {
     wrap.querySelectorAll('.uma-logo-svg').forEach(function (s) { s.setAttribute('viewBox', '0 0 ' + w + ' ' + h); });
     wrap.style.setProperty('--pl-k', (w / 255).toFixed(4));
     if (stacked) {
-      var mw = MOB_H * w / h, left = navLeft();
-      if (left < Infinity) mw = Math.min(mw, left - 16 - GAP);
+      var mw = MOB_H * w / h, nb = navBox();
+      if (nb) mw = Math.min(mw, nb.left - 16 - GAP);
       wrap.style.setProperty('--pl-mw', Math.max(40, mw).toFixed(1) + 'px');
+      // середина логотипа — на одной линии с серединой пунктов меню
+      if (nb) wrap.style.setProperty('--pl-my', (nb.top + nb.height / 2).toFixed(1) + 'px');
     } else {
       wrap.style.removeProperty('--pl-mw');
+      wrap.style.removeProperty('--pl-my');
     }
   }
 
@@ -360,6 +364,12 @@ body.light-theme {
   } else ready();
   setTimeout(ready, 1500);
   window.addEventListener('load', fit);
+  // перед вылетом в шапку меряем ещё раз: к этому моменту меню уже на своих местах
+  var pre = document.getElementById('custom-preloader');
+  if (pre && window.MutationObserver) {
+    new MutationObserver(function () { if (pre.classList.contains('completed')) fit(); })
+      .observe(pre, { attributes: true, attributeFilter: ['class'] });
+  }
   var tm = 0;
   window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(fit, 200); });
 })();
