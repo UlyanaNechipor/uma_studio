@@ -52,8 +52,11 @@
       var lhPx = parseFloat(cs.lineHeight);
       var lh = isNaN(lhPx) ? 1.2 : lhPx / fs;                      // "normal" ≈ 1.2
       var ls = cs.letterSpacing === 'normal' ? 0 : (parseFloat(cs.letterSpacing) || 0) / fs;
+      // ступень — по размеру на экране (блок Тильды может быть масштабирован)
+      var zoom = atom.offsetHeight ? atom.getBoundingClientRect().height / atom.offsetHeight : 1;
+      var fsScreen = fs * (zoom > 0.2 && zoom < 5 ? zoom : 1);
       var step = STEPS[0];
-      for (var k = 0; k < STEPS.length; k++) { if (fs >= STEPS[k].from) { step = STEPS[k]; break; } }
+      for (var k = 0; k < STEPS.length; k++) { if (fsScreen >= STEPS[k].from) { step = STEPS[k]; break; } }
       atom.style.setProperty('--uma-hlh', Math.min(lh, step.lh).toFixed(3));
       var phone = window.innerWidth < PHONE_MAX;
       atom.style.setProperty('--uma-hls', (phone ? ls : Math.min(ls, step.ls)).toFixed(4) + 'em');
