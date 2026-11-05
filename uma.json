@@ -1,6 +1,7 @@
 {
-  "v": "2026-11-05.7",
+  "v": "2026-11-05.14",
   "css": [
+    "css/image-quality.css",
     "css/cursor.css",
     "css/trail.css",
     "css/header.css",
@@ -22,6 +23,7 @@
   ],
   "js": [
     "js/gsap-loader.js",
+    "js/image-quality.js",
     "js/headings.js",
     "js/hero-fill.js",
     "js/hero-gallery.js",
