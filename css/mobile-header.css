@@ -26,7 +26,7 @@
         pointer-events: none;
     }
 
-    /* строка меню: четыре равные колонки по полям сайта */
+    /* строка меню: от левого поля до правого, промежутки между пунктами равные */
     .uma-mh {
         position: absolute;
         left: var(--mh-m);
@@ -34,18 +34,16 @@
         top: var(--mh-row-y);
         height: var(--mh-row-h);
         z-index: 5;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        column-gap: var(--mh-gap);
+        display: flex;
+        justify-content: space-between;
         align-items: center;
     }
     .uma-mh__link {
-        justify-self: start;
         display: flex;
         align-items: center;
         height: 100%;
         font-family: var(--uma-font-body, 'Manrope', Arial, sans-serif);
-        font-size: 13px;
+        font-size: var(--mh-font, 13px);
         line-height: 1;
         color: #767575 !important;
         text-decoration: none !important;
@@ -58,22 +56,22 @@
     /* область логотипа — ссылка наверх */
     .uma-mh__home {
         position: absolute;
-        left: 15vw;
-        width: 70vw;
+        left: calc(50vw - var(--mh-logo-w) / 2 - 8px);
+        width: calc(var(--mh-logo-w) + 16px);
         top: var(--mh-top);
         height: var(--mh-logo-h);
         z-index: 6;
         -webkit-tap-highlight-color: transparent;
     }
 
-    /* переключатель темы — в четвёртую колонку, по середине строки */
-    html.uma-mh-on .theme-toggle-btn {
-        top: calc(var(--mh-row-y) + var(--mh-row-h) / 2) !important;
-        left: calc(var(--mh-m) + 3 * (var(--mh-col) + var(--mh-gap))) !important;
-        right: auto !important;
+    /* переключатель темы — последний пункт строки, у правого поля */
+    html.uma-mh-on .uma-mh .theme-toggle-btn {
+        position: static !important;
+        transform: none !important;
+        flex: none;
     }
 
-    /* логотип: в прелоадере во всю ширину одной строкой, в шапке — по центру, 70% ширины */
+    /* логотип: в прелоадере во всю ширину одной строкой, в шапке — по центру, кеглем меню */
     html.uma-mh-on body #custom-preloader #uma-logo-wrap.is-mcenter {
         width: calc(100vw - 32px) !important;
         left: 50vw !important;
@@ -81,7 +79,7 @@
         transform: translate3d(-50%, -50%, 0) !important;
     }
     html.uma-mh-on body #custom-preloader.completed #uma-logo-wrap.is-mcenter {
-        width: 70vw !important;
+        width: var(--mh-logo-w) !important;
         left: 50vw !important;
         top: var(--mh-logo-y) !important;
         transform: translate3d(-50%, -50%, 0) !important;
