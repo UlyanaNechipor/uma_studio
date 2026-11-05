@@ -27,7 +27,8 @@
   }
 
   function skip(el) {
-    if (el.closest('.uma-no-hq') || el.classList.contains('uma-mc')) return true;
+    // uma-hg-host — слайдер Тильды, который заменён своей галереей: его не грузим
+    if (el.closest('.uma-no-hq, .uma-hg-host') || el.classList.contains('uma-mc')) return true;
     var rec = el.closest('.r');
     return rec && SKIP.indexOf(rec.id) !== -1;
   }
@@ -70,6 +71,24 @@
     });
   }) : null;
 
+  // страховка, если IntersectionObserver не сработал: проверка при прокрутке
+  var pending = [];
+  var ticking = false;
+  function check() {
+    ticking = false;
+    var vh = window.innerHeight, left = [];
+    for (var i = 0; i < pending.length; i++) {
+      var el = pending[i];
+      if (el.__umaHqDone) continue;
+      var r = el.getBoundingClientRect();
+      if (r.width && r.bottom > -800 && r.top < vh + 800) upgrade(el); else left.push(el);
+    }
+    pending = left;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking && pending.length) { ticking = true; requestAnimationFrame(check); }
+  }, { passive: true });
+
   function scan() {
     var els = document.querySelectorAll('#allrecords [data-original]');
     for (var i = 0; i < els.length; i++) {
@@ -79,8 +98,10 @@
       if (r.width && r.width < MIN_W) continue;
       el.__umaHqSeen = true;
       if (el.tagName === 'IMG' && mo) mo.observe(el, { attributes: true, attributeFilter: ['src'] });
+      pending.push(el);
       if (io) io.observe(el); else upgrade(el);
     }
+    check();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', scan);
