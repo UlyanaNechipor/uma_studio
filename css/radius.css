@@ -15,11 +15,11 @@ html body.t-body #allrecords .uma-pj {
     overflow: hidden;
 }
 
-/* галерея первого экрана, превью проекта при наведении, подсветка карточек на телефоне */
+/* галерея первого экрана и подсветка карточек на телефоне
+   (у превью проекта при наведении своё скругление 4px — css/project-preview.css) */
 .uma-hg,
 .uma-hg__frame,
 .uma-radar-panel {
     border-radius: var(--uma-radius) !important;
 }
 .uma-hg { overflow: hidden; }
-.uma-pv { --pv-radius: var(--uma-radius); }
