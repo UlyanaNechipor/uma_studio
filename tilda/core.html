@@ -243,11 +243,12 @@ body.light-theme {
         top: 45vh !important; 
         transform: translate3d(-50%, -50%, 0) scale(1);
     }
+    /* в шапке: кегль пунктов меню, по их линии (--pl-mw, --pl-my ставит скрипт ниже) */
     #custom-preloader.completed .preloader-logo-container {
         width: var(--pl-mw, calc(41px * var(--pl-k, 1))) !important;       
         left: 16px !important;        
-        top: 28px !important;         
-        transform: translate3d(0, 0, 0) scale(1) !important; 
+        top: var(--pl-my, 30px) !important;
+        transform: translate3d(0, -50%, 0) scale(1) !important; 
     }
     /* двухстрочный логотип: по центру шапки по вертикали */
     #custom-preloader.completed .preloader-logo-container.is-stacked {
@@ -264,14 +265,14 @@ body.light-theme {
 
         <!-- Бледные буквы (в потоке, задают размер) -->
         <svg class="uma-logo-svg" viewBox="0 0 900 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-bg-text"><tspan class="logo-w1">WORKING</tspan><tspan class="logo-w2" dx="26">TITLE</tspan></text>
+            <text x="0" y="90" class="logo-bg-text"><tspan class="logo-w1">WORKING</tspan><tspan class="logo-w2" dx="26">TITLE</tspan></text>
         </svg>
 
         <!-- Заливка: окошко едет вправо, слой внутри едет влево -->
         <div class="uma-reveal">
             <div class="uma-reveal-inner">
                 <svg class="uma-logo-svg" viewBox="0 0 900 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-fill-text"><tspan class="logo-w1">WORKING</tspan><tspan class="logo-w2" dx="26">TITLE</tspan></text>
+                    <text x="0" y="90" class="logo-fill-text"><tspan class="logo-w1">WORKING</tspan><tspan class="logo-w2" dx="26">TITLE</tspan></text>
                 </svg>
             </div>
         </div>
@@ -303,8 +304,10 @@ body.light-theme {
         t.innerHTML = '<tspan class="logo-w1" x="6" y="86">' + WORDS[0] + '</tspan>' +
                       '<tspan class="logo-w2" x="6" y="184">' + WORDS[1] + '</tspan>';
       } else {
-        t.setAttribute('x', '50%'); t.setAttribute('y', '50%');
-        t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'central');
+        // постоянная точка отсчёта (x = 0) и явная базовая линия: Safari по-своему понимает
+        // dominant-baseline и проценты при смене viewBox — от этого заливка съезжала и резалась
+        t.setAttribute('x', '0'); t.setAttribute('y', '90');
+        t.removeAttribute('text-anchor'); t.removeAttribute('dominant-baseline');
         t.innerHTML = '<tspan class="logo-w1">' + WORDS[0] + '</tspan><tspan class="logo-w2" dx="26">' + WORDS[1] + '</tspan>';
       }
     });
@@ -322,7 +325,7 @@ body.light-theme {
   }
 
   function fit() {
-    // в одну строку и на телефоне: мобильную шапку собирает js/mobile-header.js
+    // логотип всегда в одну строку (на телефоне тоже)
     var stacked = false;
     if (mode !== (stacked ? 's' : 'l')) { mode = stacked ? 's' : 'l'; layout(stacked); wrap.classList.toggle('is-stacked', stacked); }
     var t = wrap.querySelector('.logo-bg-text');
@@ -335,23 +338,25 @@ body.light-theme {
     w = Math.ceil(bb.width + PAD * 2);
     wrap.querySelectorAll('.uma-logo-svg').forEach(function (s) { s.setAttribute('viewBox', x0 + ' 0 ' + w + ' ' + h); });
     wrap.style.setProperty('--pl-k', (w / 255).toFixed(4));
-    if (stacked) {
-      var mw = MOB_H * w / h, nb = navBox();
-      if (nb) mw = Math.min(mw, nb.left - 16 - GAP);
-      wrap.style.setProperty('--pl-mw', Math.max(40, mw).toFixed(1) + 'px');
-      // середина логотипа — на одной линии с серединой пунктов меню
-      if (nb) wrap.style.setProperty('--pl-my', (nb.top + nb.height / 2).toFixed(1) + 'px');
+    // кегль пунктов меню в шапке на экране и середина их строки
+    var nd = navBox(), fpx = 0;
+    if (nd && nd.el) {
+      var a = nd.el.querySelector('.tn-atom') || nd.el;
+      var z = nd.width / (nd.el.offsetWidth || nd.width);              // zoom Тильды
+      fpx = parseFloat(getComputedStyle(a).fontSize) * (z || 1);
+    }
+    var target = fpx ? fpx * w / 112 : 0;                                // ширина логотипа кеглем меню
+    if (window.innerWidth < 768) {
+      wrap.style.removeProperty('--pl-ds'); wrap.style.removeProperty('--pl-dy');
+      if (target && nd) {
+        var mw = Math.min(target, nd.left - 16 - GAP);                   // не наезжать на меню
+        wrap.style.setProperty('--pl-mw', Math.max(40, mw).toFixed(1) + 'px');
+        wrap.style.setProperty('--pl-my', (nd.top + nd.height / 2).toFixed(1) + 'px');
+      }
     } else {
-      wrap.style.removeProperty('--pl-mw');
-      wrap.style.removeProperty('--pl-my');
-      // компьютер: кегль логотипа в шапке = кегль пунктов меню, середина — на их линии
-      var nd = navBox();
-      if (nd && nd.el) {
-        var a = nd.el.querySelector('.tn-atom') || nd.el;
-        var z = nd.width / (nd.el.offsetWidth || nd.width);            // zoom Тильды
-        var fpx = parseFloat(getComputedStyle(a).fontSize) * (z || 1); // кегль меню на экране
-        var cw = Math.max(1, window.innerWidth - 64);                   // ширина логотипа до вылета
-        var target = fpx * w / 112;                                     // ширина логотипа в шапке
+      wrap.style.removeProperty('--pl-mw'); wrap.style.removeProperty('--pl-my');
+      if (target && nd) {
+        var cw = Math.max(1, window.innerWidth - 64);                    // ширина логотипа до вылета
         wrap.style.setProperty('--pl-ds', (target / cw).toFixed(5));
         wrap.style.setProperty('--pl-dy', (nd.top + nd.height / 2).toFixed(1) + 'px');
       }
