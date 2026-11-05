@@ -1,0 +1,9 @@
+/* UMA · logo
+   Шрифт логотипа Working Title: Rubik — чуть скруглённые углы. Включается классом
+   uma-logo-font, когда шрифт загружен (ставит js/logo.js), чтобы не было запасного шрифта. */
+html.uma-logo-font #uma-logo-wrap .logo-bg-text,
+html.uma-logo-font #uma-logo-wrap .logo-fill-text {
+    font-family: 'Rubik', 'Manrope', sans-serif !important;
+    font-weight: 600 !important;
+    letter-spacing: -3px !important;
+}

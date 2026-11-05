@@ -1,6 +1,7 @@
 {
-  "v": "2026-11-05.16",
+  "v": "2026-11-05.18",
   "css": [
+    "css/logo.css",
     "css/image-quality.css",
     "css/cursor.css",
     "css/trail.css",
@@ -22,6 +23,7 @@
     "css/headings.css"
   ],
   "js": [
+    "js/logo.js",
     "js/gsap-loader.js",
     "js/image-quality.js",
     "js/headings.js",
