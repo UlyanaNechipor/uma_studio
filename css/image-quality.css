@@ -1,0 +1,6 @@
+/* UMA · image-quality
+   Фоновые картинки Zero-блоков в полном разрешении (ставит js/image-quality.js).
+   Перекрывает фон, который Тильда ставит своим скриптом подгрузки. */
+html body.t-body #allrecords .uma-hq {
+    background-image: var(--uma-hq) !important;
+}
