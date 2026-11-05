@@ -66,10 +66,13 @@
       }
       if (hit && hitBox) {
         var p = panelFor(hit), ab = hit.closest('.t396__artboard').getBoundingClientRect();
+        var first = !p.__placed;
+        if (first) p.style.transition = 'none';   // первый раз — сразу на место, без выезда из угла
         p.style.left = (hitBox.left - ab.left) + 'px';
         p.style.top = (hitBox.top - ab.top) + 'px';
         p.style.width = (hitBox.right - hitBox.left) + 'px';
         p.style.height = (hitBox.bottom - hitBox.top) + 'px';
+        if (first) { p.offsetWidth; p.style.transition = ''; p.__placed = true; }
         p.classList.add('is-on');
       }
     }
