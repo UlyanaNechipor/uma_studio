@@ -138,6 +138,7 @@ body.light-theme {
     width: 100%;
     height: auto;
     display: block;
+    overflow: visible;
 }
 
 /* Логотип WORKING TITLE: контраст начертаний одного шрифта —
@@ -324,18 +325,14 @@ body.light-theme {
     var stacked = window.innerWidth < 768;
     if (mode !== (stacked ? 's' : 'l')) { mode = stacked ? 's' : 'l'; layout(stacked); wrap.classList.toggle('is-stacked', stacked); }
     var t = wrap.querySelector('.logo-bg-text');
-    var sp = t.querySelectorAll('tspan');
-    var w = 0, h = 100;
-    try {
-      if (stacked) {
-        w = Math.ceil(Math.max(sp[0].getComputedTextLength(), sp[1].getComputedTextLength()) + 12);
-        h = 200;
-      } else {
-        w = Math.ceil(t.getComputedTextLength() + 12);
-      }
-    } catch (e) {}
-    if (!w) return;
-    wrap.querySelectorAll('.uma-logo-svg').forEach(function (s) { s.setAttribute('viewBox', '0 0 ' + w + ' ' + h); });
+    // рамка по фактическим границам текста (getBBox), с запасом PAD по бокам:
+    // у W и других букв ширина «чернил» больше расчётной длины строки, иначе края обрезаются
+    var PAD = 10, bb = null, h = stacked ? 200 : 100, w = 0, x0 = 0;
+    try { bb = t.getBBox(); } catch (e) {}
+    if (!bb || !bb.width) return;
+    x0 = Math.floor(bb.x - PAD);
+    w = Math.ceil(bb.width + PAD * 2);
+    wrap.querySelectorAll('.uma-logo-svg').forEach(function (s) { s.setAttribute('viewBox', x0 + ' 0 ' + w + ' ' + h); });
     wrap.style.setProperty('--pl-k', (w / 255).toFixed(4));
     if (stacked) {
       var mw = MOB_H * w / h, nb = navBox();
