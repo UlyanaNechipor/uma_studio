@@ -90,7 +90,7 @@ html.uma-hd-fly body #custom-preloader.completed #uma-logo-wrap {
     width: var(--hd-pl-w0) !important;
     transform-origin: 0 50% !important;
     transform: translate3d(var(--hd-pl-tx), var(--hd-pl-ty), 0) scale(var(--hd-pl-s)) !important;
-    transition: transform 1.4s cubic-bezier(0.65, 0, 0.15, 1) !important;
+    transition: transform 1.05s cubic-bezier(0.4, 0, 0.1, 1) !important;   /* быстрый старт: логотип уходит из центра сразу, как проявляется страница */
     will-change: transform;
 }
 html.uma-hd-logo-on body #custom-preloader #uma-logo-wrap {
