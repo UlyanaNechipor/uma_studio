@@ -52,7 +52,6 @@ html.uma-hd-logo-on .uma-hd__logo { opacity: 1; }
     transform: translate(-50%, -50%);
     color: var(--hd-muted) !important;
     font-weight: 400;
-    transition: color .3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 /* колонки как в прежней шапке: середины пунктов на 52 %, 67 % и 84 % ширины */
 .uma-hd__link--1 { left: 52%; }
@@ -124,4 +123,31 @@ html.uma-hd-logo-on body #custom-preloader #uma-logo-wrap {
 
 @media (prefers-reduced-motion: reduce) {
     .uma-hd, .uma-hd__link { transition: none; }
+}
+
+/* ---------- появление: пункты меню и переключатель по очереди слева направо ---------- */
+/* стартует, когда логотип из прелоадера сел в шапку (класс uma-hd-logo-on) */
+.uma-hd__link,
+html body .uma-hd .theme-toggle-btn {
+    opacity: 0 !important;
+    translate: 0 8px;
+    animation: none !important;
+    transition:
+        opacity .7s cubic-bezier(0.16, 1, 0.3, 1) var(--hd-d, 0s),
+        translate .9s cubic-bezier(0.16, 1, 0.3, 1) var(--hd-d, 0s),
+        color .3s cubic-bezier(0.16, 1, 0.3, 1),
+        background-color .5s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color .5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.uma-hd__link--1 { --hd-d: 0s; }
+.uma-hd__link--2 { --hd-d: .12s; }
+.uma-hd__link--3 { --hd-d: .24s; }
+html body .uma-hd .theme-toggle-btn { --hd-d: .36s; }
+html.uma-hd-logo-on .uma-hd__link,
+html.uma-hd-logo-on body .uma-hd .theme-toggle-btn {
+    opacity: 1 !important;
+    translate: 0 0;
+}
+@media (prefers-reduced-motion: reduce) {
+    .uma-hd__link, html body .uma-hd .theme-toggle-btn { translate: none; transition: none !important; }
 }
