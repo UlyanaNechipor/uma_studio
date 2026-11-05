@@ -1,6 +1,6 @@
 /* UMA · mobile-header
-   Мобильная шапка в одну строку: слева логотип кеглем меню, справа кнопки
-   Проекты · О нас · Контакты и переключатель темы, между ними 4 px.
+   Мобильная шапка в одну строку: слева логотип кеглем меню, справа пункты
+   Проекты · О нас · Контакты (текстом, без рамок) и переключатель темы, между ними 4 px.
    Размеры ставит js/mobile-header.js. */
 @media screen and (max-width: 767px) {
     /* прежние пункты меню и область логотипа — скрыты (остаются для нажатий из новой строки) */
@@ -26,8 +26,6 @@
         align-items: center;
         height: var(--mh-btn-h);
         padding: 0 var(--mh-pad-x, 8px);
-        border: 1px solid var(--border, rgba(255, 255, 255, 0.25));
-        border-radius: 4px;
         box-sizing: border-box;
         font-family: var(--uma-font-body, 'Manrope', Arial, sans-serif);
         font-size: var(--mh-font, 12px);
@@ -43,7 +41,7 @@
     /* увеличенная зона нажатия без изменения вида */
     .uma-mh__link { position: relative; }
     .uma-mh__link::after { content: ""; position: absolute; left: -2px; right: -2px; top: -10px; bottom: -10px; }
-    .uma-mh__link:active { background: var(--txt, #fbfbfb); color: var(--bg, #111211) !important; border-color: var(--txt, #fbfbfb); }
+    .uma-mh__link:active { color: var(--txt, #fbfbfb) !important; }
 
     /* переключатель темы — последним, той же высоты, квадратный */
     html.uma-mh-on .uma-mh .theme-toggle-btn {
