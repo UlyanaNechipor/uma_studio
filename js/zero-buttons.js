@@ -21,7 +21,7 @@
     var t = document.querySelector('a[name="about"], #about') || document.getElementById(ABOUT_ID);
     if (!t) { location.hash = 'about'; return; }
     // высота фиксированной шапки: у самого блока она 0, берём холст Zero-блока
-    var header = document.getElementById('rec3979597301');
+    var header = document.getElementById('uma-header') || document.getElementById('rec3979597301');
     var board = header && (header.querySelector('.t396__artboard') || header);
     var offset = board ? board.getBoundingClientRect().height : 0;
     var y = t.getBoundingClientRect().top + window.pageYOffset - offset;
