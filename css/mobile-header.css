@@ -22,7 +22,7 @@
         right: 0;
         top: calc(var(--mh-h) - 1px);
         height: 1px;
-        background: var(--mh-line, rgba(127, 127, 127, 0.25));
+        background: var(--border, rgba(255, 255, 255, 0.25));
         pointer-events: none;
     }
 

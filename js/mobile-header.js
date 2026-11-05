@@ -94,15 +94,9 @@
       if (orig) orig.click(); else window.scrollTo({ top: 0, behavior: 'smooth' });
     });
     ab.appendChild(home);
-    // своя линия под шапкой, цветом прежней линии Тильды
+    // своя линия под шапкой (цвет — --border темы)
     var line = document.createElement('div');
     line.className = 'uma-mh__line';
-    var old = rec.querySelector('.uma-header-line .tn-atom');
-    if (old) {
-      var c = getComputedStyle(old);
-      var col = c.backgroundColor && c.backgroundColor !== 'rgba(0, 0, 0, 0)' ? c.backgroundColor : c.borderBottomColor;
-      if (col) line.style.setProperty('--mh-line', col);
-    }
     ab.appendChild(line);
   }
 
