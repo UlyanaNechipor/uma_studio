@@ -12,6 +12,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const ctx = canvas.getContext('2d');
 
     const RES = 0.5; // доля разрешения холста
+    // акцентный цвет из --uma-accent (задаётся во вставке Тильды), по умолчанию #d94f30
+    const ACC = (function () {
+        const v = getComputedStyle(document.documentElement).getPropertyValue('--uma-accent').trim() || '#d94f30';
+        const m = v.match(/^#([0-9a-f]{6})$/i);
+        if (!m) return '217, 79, 48';
+        const n = parseInt(m[1], 16);
+        return [(n >> 16) & 255, (n >> 8) & 255, n & 255].join(', ');
+    })();
     function resizeCanvas() {
         canvas.width = Math.ceil(window.innerWidth * RES);
         canvas.height = Math.ceil(window.innerHeight * RES);
@@ -136,8 +144,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 const gradient = ctx.createRadialGradient(p1.x, p1.y, 0, p1.x, p1.y, ctx.lineWidth);
                 gradient.addColorStop(0, `rgba(255, 240, 215, ${0.85 * currentAlpha})`); 
-                gradient.addColorStop(0.25, `rgba(224, 130, 68, ${0.55 * currentAlpha})`); 
-                gradient.addColorStop(0.65, `rgba(190, 100, 45, ${0.12 * currentAlpha})`); 
+                gradient.addColorStop(0.25, `rgba(${ACC}, ${0.55 * currentAlpha})`); 
+                gradient.addColorStop(0.65, `rgba(170, 55, 30, ${0.12 * currentAlpha})`); 
                 gradient.addColorStop(1, 'rgba(17, 18, 17, 0)');
 
                 ctx.strokeStyle = gradient;

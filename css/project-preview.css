@@ -75,7 +75,7 @@
     padding: 20px 22px;
     box-sizing: border-box;
     background:
-        radial-gradient(120% 140% at 85% 110%, rgba(224, 130, 68, 0.28), transparent 55%),
+        radial-gradient(120% 140% at 85% 110%, color-mix(in srgb, var(--uma-accent, #d94f30) 28%, transparent), transparent 55%),
         linear-gradient(160deg, #262726, #151615);
     color: #ededed;
     font-family: 'Manrope', Arial, sans-serif;

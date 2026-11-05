@@ -104,7 +104,7 @@
 
     h += '</article>';
     mount.innerHTML = h;
-    if (d.title) document.title = d.title.toUpperCase() + ' — UMA';
+    if (d.title) document.title = d.title.toUpperCase() + ' — Working Title';
 
     // картинки: плавное появление и запасной адрес, если CDN не ответил
     mount.querySelectorAll('.uma-project__figure img').forEach(function (img) {

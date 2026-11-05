@@ -1,5 +1,5 @@
 <!-- =========================================================================
-     UMA CORE: единственная вставка с кодом в Тильде.
+     WORKING TITLE CORE: единственная вставка с кодом в Тильде.
      Здесь только то, что должно сработать в первую миллисекунду:
      тема до отрисовки, блокировка скролла, прелоадер. Всё остальное
      загрузчик ниже берёт из GitHub: github.com/UlyanaNechipor/uma_studio
@@ -79,7 +79,8 @@ window.addEventListener('load', function() {
 /* 1. ПРЕЛОАДЕР: ГЛОБАЛЬНАЯ СИСТЕМА ИНВЕРСИИ ЦВЕТОВ */
 /* ========================================================================= */
 :root {
-    --preloader-bg: #111211;       /* Базовый тёмный графит UMA */
+    --uma-accent: #d94f30;         /* акцентный оранжевый: логотип, след курсора */
+    --preloader-bg: #111211;       /* Базовый тёмный графит */
     --preloader-text-bg: #202120;  /* Бледные буквы на старте */
 }
 
@@ -149,7 +150,7 @@ body.light-theme {
     font-weight: 800;
     font-size: 112px;
     letter-spacing: -4px;
-    fill: #e08244 !important; 
+    fill: var(--uma-accent, #d94f30) !important; 
 }
 
 /* Заливка логотипа с мягким краем без маски в анимации.
@@ -213,7 +214,7 @@ body.light-theme {
     #custom-preloader.completed .preloader-logo-container {
         left: 2rem !important;     
         top: 1.5rem !important;    
-        transform: translate3d(0%, -50%, 0) scale(0.041) !important; 
+        transform: translate3d(0%, -50%, 0) scale(calc(0.041 * var(--pl-k, 1))) !important; 
     }
 }
 
@@ -226,7 +227,7 @@ body.light-theme {
         transform: translate3d(-50%, -50%, 0) scale(1);
     }
     #custom-preloader.completed .preloader-logo-container {
-        width: 41px !important;       
+        width: calc(41px * var(--pl-k, 1)) !important;       
         left: 16px !important;        
         top: 28px !important;         
         transform: translate3d(0, 0, 0) scale(1) !important; 
@@ -240,21 +241,44 @@ body.light-theme {
     <div class="preloader-logo-container uma-reveal-wrap" id="uma-logo-wrap">
 
         <!-- Бледные буквы (в потоке, задают размер) -->
-        <svg viewBox="0 0 255 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-bg-text">UMA</text>
+        <svg class="uma-logo-svg" viewBox="0 0 900 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-bg-text">WORKING TITLE</text>
         </svg>
 
         <!-- Оранжевая заливка: окошко едет вправо, слой внутри едет влево -->
         <div class="uma-reveal">
             <div class="uma-reveal-inner">
-                <svg viewBox="0 0 255 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-fill-text">UMA</text>
+                <svg class="uma-logo-svg" viewBox="0 0 900 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="logo-fill-text">WORKING TITLE</text>
                 </svg>
             </div>
         </div>
 
     </div>
 </div>
+
+<script>
+/* Логотип в прелоадере (он же логотип в шапке после вылета).
+   Ширина рамки SVG подгоняется под длину текста, а --pl-k держит высоту букв
+   в шапке такой же, как у прежнего логотипа «UMA» (рамка 255 × 100).
+   Сменить название: текст в двух <text> выше. */
+(function () {
+  var wrap = document.getElementById('uma-logo-wrap');
+  if (!wrap) return;
+  function fit() {
+    var t = wrap.querySelector('.logo-bg-text');
+    var len = 0;
+    try { len = t.getComputedTextLength(); } catch (e) {}
+    if (!len) return;
+    var w = Math.ceil(len + 12);
+    wrap.querySelectorAll('.uma-logo-svg').forEach(function (s) { s.setAttribute('viewBox', '0 0 ' + w + ' 100'); });
+    wrap.style.setProperty('--pl-k', (w / 255).toFixed(4));
+  }
+  fit();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  window.addEventListener('load', fit);
+})();
+</script>
 
 <script>
 /* Страховка: если код из GitHub не загрузился, прелоадер всё равно уходит */
