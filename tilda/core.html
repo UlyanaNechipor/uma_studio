@@ -249,7 +249,7 @@ body.light-theme {
     /* в шапке: кегль пунктов меню, по их линии (--pl-mw, --pl-my ставит скрипт ниже) */
     #custom-preloader.completed .preloader-logo-container {
         width: var(--pl-mw, calc(41px * var(--pl-k, 1))) !important;       
-        left: 16px !important;        
+        left: var(--pl-mx, 16px) !important;
         top: var(--pl-my, 30px) !important;
         transform: translate3d(0, -50%, 0) scale(1) !important; 
     }
@@ -344,10 +344,11 @@ body.light-theme {
     wrap.querySelectorAll('.uma-logo-svg').forEach(function (s) { s.setAttribute('viewBox', x0 + ' 0 ' + w + ' ' + h); });
     wrap.style.setProperty('--pl-k', (w / 255).toFixed(4));
     // кегль пунктов меню в шапке на экране и их базовая линия
-    var nd = navBox(), fpx = 0, base = 0;
+    var nd = navBox(), fpx = 0, base = 0, zoom = 1;
     if (nd && nd.el) {
       var a = nd.el.querySelector('.tn-atom') || nd.el;
       var z = nd.width / (nd.el.offsetWidth || nd.width);              // zoom Тильды
+      zoom = z || 1;
       fpx = parseFloat(getComputedStyle(a).fontSize) * (z || 1);
       base = baseline(a);
     }
@@ -359,11 +360,13 @@ body.light-theme {
     if (window.innerWidth < 768) {
       wrap.style.removeProperty('--pl-ds'); wrap.style.removeProperty('--pl-dy');
       if (target && nd) {
-        var mw = Math.min(target, nd.left - 16 - GAP);                   // не наезжать на меню
+        var mw = Math.min(target, nd.left - 16 * zoom - GAP);            // не наезжать на меню
         hvis = mw * 100 / w;
         y = base ? base - (BASE_Y - 0.5) * hvis : y;
         wrap.style.setProperty('--pl-mw', Math.max(40, mw).toFixed(1) + 'px');
         wrap.style.setProperty('--pl-my', y.toFixed(1) + 'px');
+        // левый край букв — по полю сетки Тильды (16 px макета × zoom), минус запас рамки
+        wrap.style.setProperty('--pl-mx', (16 * (zoom || 1) - PAD * mw / w).toFixed(1) + 'px');
       }
     } else {
       wrap.style.removeProperty('--pl-mw'); wrap.style.removeProperty('--pl-my');
