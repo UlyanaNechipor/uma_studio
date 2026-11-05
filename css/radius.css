@@ -1,0 +1,25 @@
+/* UMA · radius
+   Единое скругление углов у всех изображений сайта и у подсветки карточек проектов на телефоне.
+   Значение — --uma-radius (сейчас 1px). */
+:root { --uma-radius: 1px; }
+
+/* картинки Zero-блоков: элементы-изображения и фигуры с фоновой картинкой */
+html body.t-body #allrecords .t396__elem[data-elem-type="image"] .tn-atom,
+html body.t-body #allrecords .t396__elem[data-elem-type="image"] img,
+html body.t-body #allrecords .t396__elem[data-elem-type="shape"] .tn-atom[data-original],
+html body.t-body #allrecords .tn-atom.t-bgimg,
+html body.t-body #allrecords .uma-hq,
+html body.t-body #allrecords .uma-mc,
+html body.t-body #allrecords .uma-pj {
+    border-radius: var(--uma-radius) !important;
+    overflow: hidden;
+}
+
+/* галерея первого экрана, превью проекта при наведении, подсветка карточек на телефоне */
+.uma-hg,
+.uma-hg__frame,
+.uma-radar-panel {
+    border-radius: var(--uma-radius) !important;
+}
+.uma-hg { overflow: hidden; }
+.uma-pv { --pv-radius: var(--uma-radius); }
