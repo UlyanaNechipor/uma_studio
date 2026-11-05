@@ -176,7 +176,24 @@
     return out;
   }
 
+  function matchButtons(ab) {
+    var mains = ab.querySelectorAll('.uma-btn-dark-view, .uma-btn-light-view');   // две версии под темы
+    var ghosts = ab.querySelectorAll('.uma-blur-btn');
+    if (!mains.length || !ghosts.length) return;
+    var mh = 0;
+    for (var m = 0; m < mains.length; m++) mh = Math.max(mh, mains[m].getBoundingClientRect().height);
+    for (var i = 0; i < ghosts.length; i++) {
+      var g = ghosts[i], gr = g.getBoundingClientRect();
+      if (!mh || !gr.height || !g.offsetHeight) continue;
+      var z = gr.height / g.offsetHeight;                 // zoom Тильды на экране
+      g.style.setProperty('height', (mh / z).toFixed(2) + 'px', 'important');
+      g.setAttribute('data-uma-h', '');
+    }
+  }
+
   function clearShift(ab) {
+    var hs = ab.querySelectorAll('[data-uma-h]');
+    for (var h = 0; h < hs.length; h++) { hs[h].style.removeProperty('height'); hs[h].removeAttribute('data-uma-h'); }
     items(ab).forEach(function (el) { el.style.translate = ''; });
     var atoms = ab.querySelectorAll('.tn-atom[data-uma-ls]');
     for (var i = 0; i < atoms.length; i++) { atoms[i].style.removeProperty('letter-spacing'); atoms[i].removeAttribute('data-uma-ls'); }
@@ -198,6 +215,9 @@
     var all = items(ab);
     var base = ab.getBoundingClientRect();
     var vw = width();
+
+    // «О нас» — той же высоты, что «Написать нам» рядом (у неё высота по тексту, у «О нас» — фиксированная)
+    matchButtons(ab);
 
     // трекинг обычных текстов — в долях кегля, как в макете (иначе он растягивается вместе с раскладкой)
     fontsOff(true);

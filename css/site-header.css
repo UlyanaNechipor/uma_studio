@@ -47,6 +47,7 @@ html.light-theme .uma-hd, body.light-theme .uma-hd { --hd-line: rgba(17, 18, 17,
 }
 .uma-hd__logo b { font-weight: 700; }
 html.uma-hd-logo-on .uma-hd__logo { opacity: 1; }
+.uma-hd__logo { transition: opacity .35s ease; }
 
 .uma-hd__link {
     transform: translate(-50%, -50%);
@@ -79,17 +80,23 @@ html body .uma-hd .theme-toggle-btn {
     height: calc(24 * var(--u)) !important;
 }
 
-/* летящий логотип прелоадера садится точно на логотип шапки, потом прячется */
+/* летящий логотип прелоадера садится точно на логотип шапки, потом прячется.
+   Рамка остаётся на месте (left/top/width как в прелоадере), движется только transform:
+   сдвиг к шапке и уменьшение — плавно, на видеокарте. Значения ставит js/site-header.js.
+   Кривая: мягкий разгон и долгое плавное торможение — логотип «приземляется». */
 html.uma-hd-fly body #custom-preloader.completed #uma-logo-wrap {
-    left: var(--hd-pl-x) !important;
-    top: var(--hd-pl-y) !important;
-    width: var(--hd-pl-w) !important;
-    transform: translate3d(0, -50%, 0) !important;
+    left: var(--hd-pl-l) !important;
+    top: var(--hd-pl-t) !important;
+    width: var(--hd-pl-w0) !important;
+    transform-origin: 0 50% !important;
+    transform: translate3d(var(--hd-pl-tx), var(--hd-pl-ty), 0) scale(var(--hd-pl-s)) !important;
+    transition: transform 1.4s cubic-bezier(0.65, 0, 0.15, 1) !important;
+    will-change: transform;
 }
 html.uma-hd-logo-on body #custom-preloader #uma-logo-wrap {
     opacity: 0 !important;
     visibility: hidden !important;
-    transition: opacity .2s ease, visibility 0s linear .2s !important;
+    transition: opacity .35s ease, visibility 0s linear .35s !important;
 }
 
 /* ---------- телефон: логотип слева, меню и переключатель справа ---------- */

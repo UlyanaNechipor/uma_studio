@@ -82,3 +82,28 @@ body.light-theme .uma-blur-btn {
 }
 
 /* Наведение на кнопки — в css/zero-buttons.css: светлое на тёмном фоне, тёмное на светлом. */
+
+/* ========================================================================= */
+/* «О НАС» В СВЕТЛОЙ ТЕМЕ                                                     */
+/* Заливка кнопки лежит на .tn-molecule (из Тильды — тёмно-серая #3b3b3b) и    */
+/* перекрывает стекло группы, поэтому на светлом фоне кнопка была тёмной.     */
+/* В светлой теме — светло-серая плашка с тёмным текстом (вторичная кнопка    */
+/* рядом с тёмной «Написать нам»), при наведении заливается тёмным.            */
+/* ========================================================================= */
+html body.light-theme #allrecords .uma-blur-btn {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+html body.light-theme #allrecords .uma-blur-btn > .tn-molecule {
+    background-color: rgba(17, 18, 17, 0.08) !important;
+}
+html body.light-theme #allrecords .uma-blur-btn .tn-atom,
+html body.light-theme #allrecords .uma-blur-btn .tn-atom span,
+html body.light-theme #allrecords .uma-blur-btn a {
+    color: #111211 !important;
+}
+@media (hover: hover) and (pointer: fine) {
+    html body.light-theme #allrecords .uma-blur-btn.uma-zb--ghost:hover > .tn-molecule { background-color: #111211 !important; }
+    html body.light-theme #allrecords .uma-blur-btn.uma-zb--ghost:hover .tn-atom,
+    html body.light-theme #allrecords .uma-blur-btn.uma-zb--ghost:hover .tn-atom span { color: #fbfbfb !important; }
+}

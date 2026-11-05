@@ -75,7 +75,12 @@
     el.removeChild(probe);
     return y;
   }
+  // Вылет считается одним transform: рамка логотипа остаётся там, где стояла в прелоадере
+  // (left/top/width не анимируются — от их пересчёта каждый кадр логотип дёргался),
+  // а сдвиг и уменьшение идут на видеокарте. Точка привязки — левый край по центру высоты.
+  var flying = false;
   function aim() {
+    if (flying) return;                       // во время полёта цель не меняем — иначе рывок
     var wrap = document.getElementById('uma-logo-wrap');
     if (!wrap || !logo) return;
     var svg = wrap.querySelector('svg');
@@ -91,9 +96,18 @@
     var ch = cw * h / w;
     var left = rr.left - PAD * cw / w;
     var cy = baseline(logo) - (BASE_Y - 0.5) * ch;
-    root.style.setProperty('--hd-pl-x', left.toFixed(1) + 'px');
-    root.style.setProperty('--hd-pl-y', cy.toFixed(1) + 'px');
-    root.style.setProperty('--hd-pl-w', cw.toFixed(1) + 'px');
+    // где рамка стоит в прелоадере (до вылета)
+    var pre = document.getElementById('custom-preloader');
+    if (pre && pre.classList.contains('completed')) return;   // уже улетел — мерить нечего
+    var cs = getComputedStyle(wrap);
+    var L = parseFloat(cs.left) || 0, T = parseFloat(cs.top) || 0;
+    var w0 = wrap.offsetWidth || 1, h0 = wrap.offsetHeight || 1;
+    root.style.setProperty('--hd-pl-l', L.toFixed(1) + 'px');
+    root.style.setProperty('--hd-pl-t', T.toFixed(1) + 'px');
+    root.style.setProperty('--hd-pl-w0', w0.toFixed(1) + 'px');
+    root.style.setProperty('--hd-pl-tx', (left - L).toFixed(2) + 'px');
+    root.style.setProperty('--hd-pl-ty', (cy - (T + h0 / 2)).toFixed(2) + 'px');
+    root.style.setProperty('--hd-pl-s', (cw / w0).toFixed(5));
     root.classList.add('uma-hd-fly');
   }
 
@@ -127,7 +141,7 @@
     new MutationObserver(function () {
       if (done || !pre.classList.contains('completed')) return;
       done = true;
-      aim();
+      flying = true;
       setTimeout(handoff, FLY);
     }).observe(pre, { attributes: true, attributeFilter: ['class'] });
     setTimeout(function () { if (!done) handoff(); }, 12000);   // страховка
