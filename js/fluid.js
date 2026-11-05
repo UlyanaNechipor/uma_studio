@@ -204,9 +204,27 @@
     }
   }
 
+  // кегль текста элемента (только у текстовых элементов)
+  function atomFont(el) {
+    if (!el.matches('.t396__elem[data-elem-type="text"]')) return 0;
+    var a = el.querySelector('.tn-atom');
+    return a ? parseFloat(getComputedStyle(a).fontSize) || 0 : 0;
+  }
+
+  // прямоугольник элемента; у текста высота — по самим строкам, а не по рамке
+  // (рамка текста в Тильде может быть выше строк, если высота задана вручную)
+  var rng = document.createRange();
   function rect(el) {
-    var r = el.getBoundingClientRect();
-    return { top: r.top, bottom: r.bottom, left: r.left, right: r.right, h: r.height, w: r.width };
+    var r = el.getBoundingClientRect(), h = r.height;
+    if (el.matches('.t396__elem[data-elem-type="text"]')) {
+      var a = el.querySelector('.tn-atom');
+      if (a) {
+        rng.selectNodeContents(a);
+        var ar = rng.getBoundingClientRect();
+        if (ar && ar.height) h = Math.max(0, ar.bottom - r.top);
+      }
+    }
+    return { top: r.top, bottom: r.top + h, left: r.left, right: r.right, h: h, w: r.width };
   }
 
   function reflow(ab) {
@@ -230,6 +248,7 @@
     }
     // размеры по макету
     var design = all.map(rect);
+    var fOff = all.map(atomFont);
     fontsOff(false);
     for (var b = 0; b < atoms.length; b++) {
       if (ls[b] == null || Math.abs(ls[b]) < 0.001) continue;
@@ -237,6 +256,17 @@
       atoms[b].setAttribute('data-uma-ls', '');
     }
     var now = all.map(rect);
+    // у заголовков с заливкой высоту «по макету» считаем из текущей: та же раскладка строк, кегль макета.
+    // Прямой замер с макетным кеглем ненадёжен: строки заголовков с заливкой собраны
+    // под текущий кегль и при подмене кегля разваливаются
+    for (var t = 0; t < all.length; t++) {
+      if (!fOff[t] || !all[t].querySelector('.uma-line')) continue;   // только заголовки с заливкой
+      var fOn = atomFont(all[t]);
+      if (!fOn) continue;
+      var dh = now[t].h * fOff[t] / fOn;
+      design[t].h = dh;
+      design[t].bottom = design[t].top + dh;
+    }
 
     // только видимые элементы раскладки (спрятанные за краем — пропускаем)
     var idx = [];
@@ -255,19 +285,16 @@
     var shift = {}, nb = {}, maxOld = 0, maxNew = 0;
     idx.forEach(function (j) {
       var dj = design[j];
-      // элементы над ним в той же полосе; держимся за ближайшие (самый низкий край)
-      var low = -Infinity, lowNew = -Infinity;
+      // каждый элемент над ним в той же полосе задаёт нижнюю границу: его новый низ
+      // плюс прежний отступ (сжатый в k). Берём самую нижнюю — так ничего не наезжает
+      var top = base.top + (dj.top - base.top) * k;                                   // от верха блока
       idx.forEach(function (i) {
         if (i === j || nb[i] == null) return;
         var di = design[i];
         if (di.bottom > dj.top + 1) return;                                            // не над ним
         if (Math.min(di.right, dj.right) - Math.max(di.left, dj.left) <= 1) return;     // другая полоса
-        if (di.bottom > low + 2) { low = di.bottom; lowNew = nb[i]; }
-        else if (di.bottom >= low - 2) lowNew = Math.max(lowNew, nb[i]);
+        top = Math.max(top, nb[i] + Math.max(0, dj.top - di.bottom) * k);
       });
-      var top;
-      if (low === -Infinity) top = base.top + (dj.top - base.top) * k;                 // от верха блока
-      else top = lowNew + (dj.top - low) * k;
       shift[j] = top - dj.top;
       nb[j] = top + now[j].h;
       maxOld = Math.max(maxOld, dj.bottom - base.top);
@@ -291,7 +318,7 @@
     }
   }
 
-  var sig = '', relW = 0;
+  var sig = '', relW = width();   // ширина, под которую уже собраны строки заголовков
   function reflowAll() {
     var parts = [];
     recs().forEach(function (id) {
@@ -301,6 +328,11 @@
       if (!ab.__umaFluidL) {
         ab.__umaFluidL = true;
         ab.addEventListener('artBoardResized', later);
+        // текст поменял высоту (догрузился шрифт, пересобрались строки заголовков) — пересчитать сдвиги
+        if (window.ResizeObserver) {
+          var ro = new ResizeObserver(function () { if (inFluid()) later(); });
+          items(ab).forEach(function (el) { ro.observe(el); });
+        }
       }
       try { reflow(ab); } catch (e) {}
       parts.push(ab.style.height);
@@ -308,9 +340,11 @@
     // элементы сдвинулись — позиции анимаций по скроллу надо пересчитать
     var s = parts.join(',');
     // Тильда перерисовала блоки под новую ширину (сама, по resize) — строки заголовков пересобрать
-    if (inFluid() && relW !== width()) {
+    if (relW !== width()) {
       relW = width();
       try { window.dispatchEvent(new Event('uma:relayout')); } catch (e) {}
+      // строки заголовков пересоберутся (js/hero-fill.js, js/scroll-fill.js) — их высота может измениться
+      setTimeout(reflowAll, 500);
     }
     if (s !== sig) {
       sig = s;

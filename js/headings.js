@@ -49,8 +49,15 @@
       if (!isHeading(elem, atom)) continue;
       var cs = getComputedStyle(atom);
       var fs = parseFloat(cs.fontSize) || 16;
-      var lhPx = parseFloat(cs.lineHeight);
-      var lh = isNaN(lhPx) ? 1.2 : lhPx / fs;                      // "normal" ≈ 1.2
+      // межстрочный из стилей макета, без строчного значения в px, которое ставит сама Тильда:
+      // она считает его по текущему кеглю, и после смены раскладки (поворот экрана, js/fluid.js)
+      // оно остаётся от прежнего кегля — отсюда слипшиеся строки заголовков
+      var inl = atom.style.getPropertyValue('line-height');
+      if (inl) atom.style.removeProperty('line-height');
+      var lhPx = parseFloat(getComputedStyle(atom).lineHeight);
+      if (inl) atom.style.setProperty('line-height', inl);
+      var lh = isNaN(lhPx) ? 1.2 : lhPx / fs;                        // "normal" ≈ 1.2
+      lh = Math.max(lh, 0.8);
       var ls = cs.letterSpacing === 'normal' ? 0 : (parseFloat(cs.letterSpacing) || 0) / fs;
       // ступень — по размеру на экране (блок Тильды может быть масштабирован)
       var zoom = atom.offsetHeight ? atom.getBoundingClientRect().height / atom.offsetHeight : 1;
