@@ -15,6 +15,16 @@
   var wrap = document.getElementById('uma-logo-wrap');
   if (!wrap) return;
 
+  // старая вставка Тильды (с «UMA» и прежним оранжевым) — обновляем на лету
+  wrap.querySelectorAll('text').forEach(function (t) { if (t.textContent.trim() !== TEXT) t.textContent = TEXT; });
+  var fill = wrap.querySelector('.logo-fill-text');
+  if (fill && /224,\s*130,\s*68/.test(getComputedStyle(fill).fill)) {
+    wrap.querySelectorAll('.logo-fill-text').forEach(function (t) { t.style.setProperty('fill', '#d94f30', 'important'); });
+  }
+  if (!getComputedStyle(document.documentElement).getPropertyValue('--uma-accent').trim()) {
+    document.documentElement.style.setProperty('--uma-accent', '#d94f30');
+  }
+
   var link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = 'https://fonts.googleapis.com/css2?family=' + FAMILY + ':wght@' + WEIGHT +
@@ -40,5 +50,6 @@
     if (!document.fonts || !document.fonts.load) return on();
     document.fonts.load(WEIGHT + ' 112px "' + FAMILY + '"', TEXT).then(on, on);
   };
-  link.onerror = function () {};   // не загрузился — остаётся Manrope
+  link.onerror = function () { requestAnimationFrame(fit); };   // не загрузился — остаётся Manrope
+  fit();
 })();
