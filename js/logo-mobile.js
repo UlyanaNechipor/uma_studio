@@ -1,11 +1,12 @@
 /* UMA · logo-mobile (тест)
    Телефон: переключатель темы 24 × 24, логотип выверен по нему:
-   высота заглавных букв = высоте кнопки, середина букв — на середине кнопки,
+   высота заглавных букв — CAP_PX, середина букв — на середине кнопки,
    левый край букв — по полю сетки Тильды. Пока это проверка до переноса во вставку. */
 (function () {
   var BP = 768;
   var CAP = 0.806;   // высота заглавных Manrope в долях высоты рамки логотипа (0.72 × 112 / 100)
   var PAD = 10;      // запас рамки слева, в единицах viewBox
+  var CAP_PX = 14;   // px: высота заглавных букв логотипа
   var wrap = document.getElementById('uma-logo-wrap');
   if (!wrap) return;
 
@@ -21,8 +22,8 @@
     var vb = svg ? (svg.getAttribute('viewBox') || '').split(/\s+/).map(Number) : [];
     var w = vb[2], h = vb[3] || 100;
     if (!w) return;
-    // рамка такой высоты, чтобы заглавные были ровно как кнопка; её ширина
-    var frameH = b.height / CAP, width = frameH * w / h;
+    // рамка такой высоты, чтобы заглавные были CAP_PX; её ширина
+    var frameH = CAP_PX / CAP, width = frameH * w / h;
     var rec = document.getElementById('rec3979597301');
     var any = rec && rec.querySelector('.t396__elem[data-elem-type="button"]');
     var zoom = any ? any.getBoundingClientRect().width / (any.offsetWidth || 1) : 1;
