@@ -4,7 +4,7 @@
    тексты внутри инвертируются (css/mobile-radar.css).
    Плашка — отдельный слой под карточкой с полями как в макете: по ширине линии-разделителя
    над карточкой, по высоте от этой линии до низа группы с картинками (её нижний отступ входит).
-   При переходе к соседней карточке плашка переезжает к ней. */
+   У каждой карточки своя плашка: карточка просто «загорается» и гаснет на месте. */
 (function () {
   var BAND = 0.1;     // доля высоты экрана: полоса по центру, в которой карточка «в фокусе»
 
@@ -13,19 +13,17 @@
     var cards = [].slice.call(document.querySelectorAll('.project-group-card'));
     if (!cards.length) return;
 
-    var panels = new Map();   // артборд → плашка
+    // своя плашка для каждой карточки, первой в артборде — под всеми элементами
     function panelFor(card) {
+      if (card.__umaPanel) return card.__umaPanel;
       var ab = card.closest('.t396__artboard');
       if (!ab) return null;
-      var p = panels.get(ab);
-      if (!p) {
-        p = document.createElement('div');
-        p.className = 'uma-radar-panel';
-        p.setAttribute('aria-hidden', 'true');
-        var first = ab.querySelector(':scope > .t396__elem, :scope > .t396__group');
-        ab.insertBefore(p, first || null);
-        panels.set(ab, p);
-      }
+      var p = document.createElement('div');
+      p.className = 'uma-radar-panel';
+      p.setAttribute('aria-hidden', 'true');
+      var first = ab.querySelector(':scope > .t396__elem, :scope > .t396__group');
+      ab.insertBefore(p, first || null);
+      card.__umaPanel = p;
       return p;
     }
 
@@ -49,31 +47,28 @@
       return { top: top, bottom: bottom, left: left, right: right };
     }
 
-    var current = null, ticking = false;
+    var ticking = false;
     function update() {
       ticking = false;
       var vh = window.innerHeight, c0 = vh * (0.5 - BAND / 2), c1 = vh * (0.5 + BAND / 2);
-      var hit = null, hitBox = null;
+      var found = false;
       for (var i = 0; i < cards.length; i++) {
-        var b = box(cards[i]);
-        if (b && b.top < c1 && b.bottom > c0) { hit = cards[i]; hitBox = b; break; }
-      }
-      if (hit !== current) {
-        if (current) current.classList.remove('is-focused');
-        if (hit) hit.classList.add('is-focused');
-        panels.forEach(function (p) { p.classList.remove('is-on'); });
-        current = hit;
-      }
-      if (hit && hitBox) {
-        var p = panelFor(hit), ab = hit.closest('.t396__artboard').getBoundingClientRect();
-        var first = !p.__placed;
-        if (first) p.style.transition = 'none';   // первый раз — сразу на место, без выезда из угла
-        p.style.left = (hitBox.left - ab.left) + 'px';
-        p.style.top = (hitBox.top - ab.top) + 'px';
-        p.style.width = (hitBox.right - hitBox.left) + 'px';
-        p.style.height = (hitBox.bottom - hitBox.top) + 'px';
-        if (first) { p.offsetWidth; p.style.transition = ''; p.__placed = true; }
-        p.classList.add('is-on');
+        var card = cards[i], b = box(card);
+        var near = b && b.bottom > -vh && b.top < vh * 2;
+        var on = !!(b && !found && b.top < c1 && b.bottom > c0);
+        if (on) found = true;
+        card.classList.toggle('is-focused', on);
+        if (!near && !card.__umaPanel) continue;
+        var p = panelFor(card);
+        if (!p) continue;
+        if (b) {
+          var ab = card.closest('.t396__artboard').getBoundingClientRect();
+          p.style.left = (b.left - ab.left) + 'px';
+          p.style.top = (b.top - ab.top) + 'px';
+          p.style.width = (b.right - b.left) + 'px';
+          p.style.height = (b.bottom - b.top) + 'px';
+        }
+        p.classList.toggle('is-on', on);
       }
     }
     function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
