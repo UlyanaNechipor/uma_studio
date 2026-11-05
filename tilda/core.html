@@ -133,6 +133,9 @@ body.light-theme {
                 width 1.4s cubic-bezier(0.19, 1, 0.22, 1);
     will-change: transform, left, top, width;
 }
+/* после вылета логотип «пристыкован» к шапке: без плавных переходов,
+   иначе любой пересчёт положения (например, при прокрутке на телефоне) он догоняет с запаздыванием */
+.preloader-logo-container.is-docked { transition: none !important; will-change: auto; }
 
 .preloader-logo-container svg {
     width: 100%;
@@ -401,11 +404,22 @@ body.light-theme {
   // перед вылетом в шапку меряем ещё раз: к этому моменту меню уже на своих местах
   var pre = document.getElementById('custom-preloader');
   if (pre && window.MutationObserver) {
-    new MutationObserver(function () { if (pre.classList.contains('completed')) fit(); })
-      .observe(pre, { attributes: true, attributeFilter: ['class'] });
+    var docked = false;
+    new MutationObserver(function () {
+      if (!pre.classList.contains('completed') || docked) return;
+      docked = true;
+      fit();
+      setTimeout(function () { wrap.classList.add('is-docked'); }, 1500);   // вылет 1.4 с
+    }).observe(pre, { attributes: true, attributeFilter: ['class'] });
   }
-  var tm = 0;
-  window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(fit, 200); });
+  // пересчёт только при смене ширины: на телефоне высота окна меняется при каждой прокрутке
+  // (панель адреса), и логотип из-за этого «дышал»
+  var tm = 0, lastW = window.innerWidth;
+  window.addEventListener('resize', function () {
+    if (window.innerWidth === lastW) return;
+    lastW = window.innerWidth;
+    clearTimeout(tm); tm = setTimeout(fit, 200);
+  });
 })();
 </script>
 
