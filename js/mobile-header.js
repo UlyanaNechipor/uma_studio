@@ -1,7 +1,7 @@
 /* UMA · mobile-header
-   Мобильная шапка (уже BP px): по центру сверху логотип WORKING TITLE кеглем пунктов меню,
-   строкой ниже — Проекты, О нас, Контакты и переключатель темы, ровно распределённые
-   между полями сайта: первый пункт у левого поля, переключатель у правого, промежутки равные.
+   Мобильная шапка (уже BP px), одна строка высотой прежней шапки:
+   слева логотип WORKING TITLE кеглем пунктов меню, справа кнопки Проекты, О нас,
+   Контакты и переключатель темы с отступом NAV_GAP между ними.
    • Прелоадер на телефоне: логотип в одну строку во всю ширину; после загрузки он
      прилетает в шапку по центру.
    • Пункты меню Тильды скрыты; новые ссылки нажимают исходные кнопки Тильды,
@@ -12,12 +12,10 @@
   /* ================= НАСТРОЙКИ ================= */
   var BP     = 768;    // px: уже — мобильная шапка
   var M      = 16;     // px: поля сайта слева и справа
-  var FONT   = 13;     // px: кегль пунктов меню; логотип в шапке — того же кегля
-  var TOP    = 18;     // px: от верха экрана до логотипа
-  var ROW_GAP= 8;      // px: между логотипом и строкой меню
-  var ROW_H  = 32;     // px: высота строки меню
-  var BOTTOM = 10;     // px: под строкой меню
-  var BASE_H = 60;     // px: высота прежней шапки Тильды (её отступ уже заложен в первый блок)
+  var FONT   = 12;     // px: кегль пунктов меню; логотип в шапке — того же кегля
+  var NAV_GAP= 4;      // px: между кнопками меню
+  var BTN_H  = 24;     // px: высота кнопок меню и переключателя
+  var BASE_H = 60;     // px: высота прежней шапки Тильды — шапка остаётся такой же
   /* ============================================= */
 
   var HEADER = 'rec3979597301';
@@ -95,10 +93,6 @@
       if (orig) orig.click(); else window.scrollTo({ top: 0, behavior: 'smooth' });
     });
     ab.appendChild(home);
-    // своя линия под шапкой (цвет — --border темы)
-    var line = document.createElement('div');
-    line.className = 'uma-mh__line';
-    ab.appendChild(line);
   }
 
   // переключатель темы (создаёт js/theme-toggle.js) — последним элементом строки меню
@@ -117,20 +111,18 @@
     if (!isMobile()) { root.classList.remove('uma-mh-on'); if (wrap) wrap.classList.remove('is-mcenter'); restoreToggle(); return; }
     var vw = document.documentElement.clientWidth || window.innerWidth;
     var k = singleLine() || 0.12;
-    // рамка логотипа 100 единиц по высоте при кегле 112 → высота при кегле FONT
+    // рамка логотипа 100 единиц по высоте при кегле 112 → размер при кегле FONT
     var logoH = FONT * 100 / 112, logoW = logoH / k;
-    var rowY = TOP + logoH + ROW_GAP;
-    var h = Math.round(rowY + ROW_H + BOTTOM);
+    var h = BASE_H, cy = h / 2;
     var s = root.style;
     s.setProperty('--mh-h', h + 'px');
-    s.setProperty('--mh-pad', Math.max(0, h - BASE_H) + 'px');
-    s.setProperty('--mh-logo-y', (TOP + logoH / 2).toFixed(1) + 'px');
+    s.setProperty('--mh-pad', '0px');
+    s.setProperty('--mh-logo-y', cy + 'px');
     s.setProperty('--mh-logo-h', logoH.toFixed(1) + 'px');
     s.setProperty('--mh-logo-w', logoW.toFixed(1) + 'px');
     s.setProperty('--mh-font', FONT + 'px');
-    s.setProperty('--mh-top', TOP + 'px');
-    s.setProperty('--mh-row-y', rowY.toFixed(1) + 'px');
-    s.setProperty('--mh-row-h', ROW_H + 'px');
+    s.setProperty('--mh-gap', NAV_GAP + 'px');
+    s.setProperty('--mh-btn-h', BTN_H + 'px');
     s.setProperty('--mh-m', M + 'px');
     root.classList.add('uma-mh-on');
     build();
