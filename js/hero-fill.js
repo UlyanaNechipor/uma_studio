@@ -248,6 +248,7 @@
     return null;
   }
   function headerHeight() {
+    if (window.umaHeaderHeight && document.getElementById('uma-header')) return window.umaHeaderHeight();
     var h = document.getElementById('rec3979597301');
     var b = h && (h.querySelector('.t396__artboard') || h);
     return b ? b.getBoundingClientRect().height : 0;

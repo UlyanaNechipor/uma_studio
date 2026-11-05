@@ -5,7 +5,7 @@ if (localStorage.getItem('theme') === 'light') { document.documentElement.classL
 document.addEventListener("DOMContentLoaded", function() {
     const wipeCanvas = document.createElement('canvas'); wipeCanvas.id = 'theme-wipe-canvas'; document.body.appendChild(wipeCanvas); const wctx = wipeCanvas.getContext('2d');
     function resizeWipe() { wipeCanvas.width = window.innerWidth; wipeCanvas.height = window.innerHeight; } resizeWipe(); window.addEventListener('resize', resizeWipe);
-    const headerArtboard = document.querySelector('#rec3979597301 .t396__artboard'); if (!headerArtboard) return;
+    const headerArtboard = document.querySelector('.uma-hd__toggle') || document.querySelector('#rec3979597301 .t396__artboard'); if (!headerArtboard) return; /* своя шапка (js/site-header.js) или Zero-блок */
 
     const toggleBtn = document.createElement('button'); toggleBtn.className = 'theme-toggle-btn'; toggleBtn.setAttribute('aria-label', 'Переключатель темы');
     const iconContainer = document.createElement('div'); iconContainer.className = 'theme-icon-container';
