@@ -1,0 +1,82 @@
+/* UMA · mobile-header
+   Мобильная шапка: логотип по центру сверху, под ним четыре колонки
+   (Проекты, О нас, Контакты, переключатель темы). Размеры ставит js/mobile-header.js. */
+@media screen and (max-width: 767px) {
+    /* шапка Тильды выше, контент страницы сдвигается на разницу */
+    html.uma-mh-on #rec3979597301 .t396__artboard,
+    html.uma-mh-on #rec3979597301 .t396__carrier,
+    html.uma-mh-on #rec3979597301 .t396__filter { height: var(--mh-h) !important; }
+    html.uma-mh-on #allrecords { padding-top: var(--mh-pad, 0px) !important; }
+
+    /* прежние пункты меню и область логотипа — скрыты (остаются для нажатий из новой строки) */
+    html.uma-mh-on #rec3979597301 .t396__elem[data-elem-type="button"],
+    html.uma-mh-on #rec3979597301 .t396__elem:has(a[href="#logo"]) {
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+    /* линия под шапкой — по новому низу */
+    html.uma-mh-on #rec3979597301 .uma-header-line { top: calc(var(--mh-h) - 1px) !important; }
+
+    /* строка меню: четыре равные колонки по полям сайта */
+    .uma-mh {
+        position: absolute;
+        left: var(--mh-m);
+        right: var(--mh-m);
+        top: var(--mh-row-y);
+        height: var(--mh-row-h);
+        z-index: 5;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        column-gap: var(--mh-gap);
+        align-items: center;
+    }
+    .uma-mh__link {
+        justify-self: start;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        font-family: var(--uma-font-body, 'Manrope', Arial, sans-serif);
+        font-size: 13px;
+        line-height: 1;
+        color: #767575 !important;
+        text-decoration: none !important;
+        -webkit-tap-highlight-color: transparent;
+        opacity: 0;
+        animation: umaMhIn .6s ease forwards 4.2s;
+    }
+    .uma-mh__link:active { color: var(--txt, #fbfbfb) !important; }
+
+    /* область логотипа — ссылка наверх */
+    .uma-mh__home {
+        position: absolute;
+        left: 15vw;
+        width: 70vw;
+        top: var(--mh-top);
+        height: var(--mh-logo-h);
+        z-index: 6;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* переключатель темы — в четвёртую колонку, по середине строки */
+    html.uma-mh-on .theme-toggle-btn {
+        top: calc(var(--mh-row-y) + var(--mh-row-h) / 2) !important;
+        left: calc(var(--mh-m) + 3 * (var(--mh-col) + var(--mh-gap))) !important;
+        right: auto !important;
+    }
+
+    /* логотип: в прелоадере во всю ширину одной строкой, в шапке — по центру, 70% ширины */
+    html.uma-mh-on body #custom-preloader #uma-logo-wrap.is-mcenter {
+        width: calc(100vw - 32px) !important;
+        left: 50vw !important;
+        top: 45vh !important;
+        transform: translate3d(-50%, -50%, 0) !important;
+    }
+    html.uma-mh-on body #custom-preloader.completed #uma-logo-wrap.is-mcenter {
+        width: 70vw !important;
+        left: 50vw !important;
+        top: var(--mh-logo-y) !important;
+        transform: translate3d(-50%, -50%, 0) !important;
+    }
+}
+@keyframes umaMhIn { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .uma-mh__link { animation: none; opacity: 1; } }

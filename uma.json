@@ -1,5 +1,5 @@
 {
-  "v": "2026-11-05.24",
+  "v": "2026-11-05.26",
   "css": [
     "css/logo.css",
     "css/image-quality.css",
@@ -20,7 +20,8 @@
     "css/hero-gallery.css",
     "css/theme.css",
     "css/zero-buttons.css",
-    "css/headings.css"
+    "css/headings.css",
+    "css/mobile-header.css"
   ],
   "js": [
     "js/logo.js",
@@ -40,6 +41,7 @@
     "js/prepositions.js",
     "js/footer.js",
     "js/theme-toggle.js",
+    "js/mobile-header.js",
     "js/project-page.js",
     "js/zero-buttons.js"
   ]
