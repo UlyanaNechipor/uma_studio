@@ -230,8 +230,8 @@ body.light-theme {
     }
     #custom-preloader.completed .preloader-logo-container {
         left: 2rem !important;     
-        top: 1.5rem !important;    
-        transform: translate3d(0%, -50%, 0) scale(calc(0.041 * var(--pl-k, 1))) !important; 
+        top: var(--pl-dy, 1.5rem) !important;
+        transform: translate3d(0%, -50%, 0) scale(var(--pl-ds, calc(0.041 * var(--pl-k, 1)))) !important; 
     }
 }
 
@@ -316,7 +316,7 @@ body.light-theme {
     var box = null;
     for (var i = 0; i < nav.length; i++) {
       var r = nav[i].getBoundingClientRect();
-      if (r.width && r.left > 40 && (!box || r.left < box.left)) box = r;
+      if (r.width && r.left > 40 && (!box || r.left < box.left)) box = { left: r.left, top: r.top, width: r.width, height: r.height, el: nav[i] };
     }
     return box;
   }
@@ -343,6 +343,17 @@ body.light-theme {
     } else {
       wrap.style.removeProperty('--pl-mw');
       wrap.style.removeProperty('--pl-my');
+      // компьютер: кегль логотипа в шапке = кегль пунктов меню, середина — на их линии
+      var nd = navBox();
+      if (nd && nd.el) {
+        var a = nd.el.querySelector('.tn-atom') || nd.el;
+        var z = nd.width / (nd.el.offsetWidth || nd.width);            // zoom Тильды
+        var fpx = parseFloat(getComputedStyle(a).fontSize) * (z || 1); // кегль меню на экране
+        var cw = Math.max(1, window.innerWidth - 64);                   // ширина логотипа до вылета
+        var target = fpx * w / 112;                                     // ширина логотипа в шапке
+        wrap.style.setProperty('--pl-ds', (target / cw).toFixed(5));
+        wrap.style.setProperty('--pl-dy', (nd.top + nd.height / 2).toFixed(1) + 'px');
+      }
     }
   }
 
