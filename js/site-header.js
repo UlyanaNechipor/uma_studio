@@ -18,6 +18,7 @@
   var WORDS = ['WORKING', 'TITLE'];
   var BP    = 768;      // px: уже — мобильная раскладка
   var FLY   = 1500;     // мс: длительность вылета логотипа из прелоадера (во вставке 1.4 с)
+  var GRID_REC = 'rec3979597401';   // блок, по левому краю содержимого которого встаёт логотип
   /* ============================================= */
 
   var root = document.documentElement;
@@ -96,6 +97,25 @@
     root.classList.add('uma-hd-fly');
   }
 
+  // левый край логотипа — по левому краю содержимого первого блока (сетка Тильды)
+  function alignLogo() {
+    if (!hd || !logo) return;
+    var rec = document.getElementById(GRID_REC);
+    if (!rec) return;
+    var left = Infinity;
+    rec.querySelectorAll('.t396__elem').forEach(function (e) {
+      var r = e.getBoundingClientRect();
+      if (r.width > 20 && r.height > 4 && r.left >= 0) left = Math.min(left, r.left);
+    });
+    if (left === Infinity) return;
+    // поправка на боковой отступ первой буквы: сдвигаем так, чтобы край буквы W встал на сетку
+    var r = document.createRange();
+    r.setStart(logo.firstChild.firstChild, 0); r.setEnd(logo.firstChild.firstChild, 1);
+    var glyph = r.getBoundingClientRect(), box = logo.getBoundingClientRect();
+    var bearing = glyph.left - box.left;
+    hd.style.setProperty('--hd-x', Math.max(0, left - bearing).toFixed(1) + 'px');
+  }
+
   function handoff() { root.classList.add('uma-hd-logo-on'); }
 
   function watchPreloader() {
@@ -115,8 +135,10 @@
 
   function boot() {
     build();
+    alignLogo();
     watchPreloader();
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(aim);
+    window.addEventListener('load', function () { alignLogo(); aim(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { alignLogo(); aim(); });
     // переключатель может появиться позже нас
     if (window.MutationObserver) {
       var mo = new MutationObserver(moveToggle);
@@ -126,7 +148,7 @@
     var tm = 0, lw = window.innerWidth;
     window.addEventListener('resize', function () {
       if (window.innerWidth === lw) return;
-      lw = window.innerWidth; clearTimeout(tm); tm = setTimeout(aim, 200);
+      lw = window.innerWidth; clearTimeout(tm); tm = setTimeout(function () { alignLogo(); aim(); }, 200);
     });
   }
 

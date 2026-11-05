@@ -37,7 +37,7 @@ html.light-theme .uma-hd, body.light-theme .uma-hd { --hd-line: rgba(17, 18, 17,
     -webkit-tap-highlight-color: transparent;
 }
 .uma-hd__logo {
-    left: calc(28.3 * var(--u));
+    left: var(--hd-x, calc(28.3 * var(--u)));   /* --hd-x — край сетки, ставит js/site-header.js */
     transform: translateY(-50%);
     color: var(--txt, #fbfbfb) !important;
     font-weight: 300;
@@ -100,7 +100,7 @@ html.uma-hd-logo-on body #custom-preloader #uma-logo-wrap {
     }
     .uma-hd__logo,
     .uma-hd__link { font-size: calc(10 * var(--u)); }
-    .uma-hd__logo { left: calc(16 * var(--u)); }
+    .uma-hd__logo { left: var(--hd-x, calc(16 * var(--u))); }
 
     .uma-hd__nav {
         position: absolute;
