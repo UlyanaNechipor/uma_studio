@@ -14,8 +14,17 @@
         visibility: hidden !important;
         pointer-events: none !important;
     }
-    /* линия под шапкой — по новому низу */
-    html.uma-mh-on #rec3979597301 .uma-header-line { top: calc(var(--mh-h) - 1px) !important; }
+    /* линия под шапкой: прежнюю (её положение масштабирует Тильда) прячем, рисуем свою по новому низу */
+    html.uma-mh-on #rec3979597301 .uma-header-line { visibility: hidden !important; }
+    .uma-mh__line {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(var(--mh-h) - 1px);
+        height: 1px;
+        background: var(--mh-line, rgba(127, 127, 127, 0.25));
+        pointer-events: none;
+    }
 
     /* строка меню: четыре равные колонки по полям сайта */
     .uma-mh {
