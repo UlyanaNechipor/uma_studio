@@ -6,10 +6,10 @@
      Исходник этой вставки лежит в репозитории: tilda/core.html
      ========================================================================= -->
 
-<!-- Шрифт логотипа: Rubik 500 (WORKING) и 300 (TITLE), только буквы названия -->
+<!-- Шрифт логотипа: Manrope 700 (WORKING) и 300 (TITLE), только буквы названия -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;500&display=block&text=WORKINGTITLE">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;700&display=block&text=WORKINGTITLE">
 
 <script>
 /* ========================================================================= */
@@ -141,14 +141,14 @@ body.light-theme {
 }
 
 /* Логотип WORKING TITLE: контраст начертаний одного шрифта —
-   WORKING плотнее (500), TITLE тоньше (300). */
+   WORKING плотнее (700), TITLE тоньше (300). Шрифт — Manrope, как на всём сайте. */
 .logo-bg-text,
 .logo-fill-text {
-    font-family: 'Rubik', 'Manrope', sans-serif;
+    font-family: 'Manrope', Arial, sans-serif;
     font-size: 112px;
-    letter-spacing: -2px;
+    letter-spacing: -3.4px;
 }
-.logo-w1 { font-weight: 500; }
+.logo-w1 { font-weight: 700; }
 .logo-w2 { font-weight: 300; }
 
 /* 1 СЛОЙ: Бледные буквы на старте (в потоке, задаёт размер контейнера) */
@@ -358,8 +358,8 @@ body.light-theme {
   }
   if (document.fonts && document.fonts.load) {
     Promise.all([
-      document.fonts.load('500 112px Rubik', WORDS[0]),
-      document.fonts.load('300 112px Rubik', WORDS[1])
+      document.fonts.load('700 112px Manrope', WORDS[0]),
+      document.fonts.load('300 112px Manrope', WORDS[1])
     ]).then(ready, ready);
   } else ready();
   setTimeout(ready, 1500);

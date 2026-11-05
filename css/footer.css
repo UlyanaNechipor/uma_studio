@@ -57,6 +57,8 @@ body.light-theme .uma-ft { --ft-line: rgba(17, 18, 17, 0.12); }
     white-space: nowrap;
     color: var(--ft-text);
 }
+.uma-ft__logo { font-weight: 300; letter-spacing: -0.03em; }
+.uma-ft__logo b { font-weight: 700; }   /* как в логотипе: WORKING плотнее, TITLE тоньше */
 .uma-ft__made {
     padding-left: calc(4 * var(--u));
     margin-bottom: calc(5 * var(--u)) !important;

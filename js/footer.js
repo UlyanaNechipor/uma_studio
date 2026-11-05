@@ -27,7 +27,7 @@
   var HTML =
     '<footer class="uma-ft" id="uma-footer">' +
       '<div class="uma-ft__brand">' +
-        '<p class="uma-ft__logo">' + BRAND + '</p>' +
+        '<p class="uma-ft__logo">' + BRAND.replace(/^(\S+)\s+(.+)$/, '<b>$1</b> $2') + '</p>' +
         '<p class="uma-ft__made">Made by <span>' + BRAND + '</span> ©' + YEAR + '</p>' +
       '</div>' +
       '<nav class="uma-ft__col" aria-labelledby="uma-ft-company">' +
