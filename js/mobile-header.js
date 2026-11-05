@@ -111,22 +111,34 @@
     if (!isMobile()) { root.classList.remove('uma-mh-on'); if (wrap) wrap.classList.remove('is-mcenter'); restoreToggle(); return; }
     var vw = document.documentElement.clientWidth || window.innerWidth;
     var k = singleLine() || 0.12;
-    // рамка логотипа 100 единиц по высоте при кегле 112 → размер при кегле FONT
-    var logoH = FONT * 100 / 112, logoW = logoH / k;
-    var h = BASE_H, cy = h / 2;
+    var ab = document.querySelector('#' + HEADER + ' .t396__artboard');
+    var h = (ab && ab.getBoundingClientRect().height) || BASE_H;   // высота шапки Тильды как есть
     var s = root.style;
-    s.setProperty('--mh-h', h + 'px');
-    s.setProperty('--mh-pad', '0px');
-    s.setProperty('--mh-logo-y', cy + 'px');
-    s.setProperty('--mh-logo-h', logoH.toFixed(1) + 'px');
-    s.setProperty('--mh-logo-w', logoW.toFixed(1) + 'px');
-    s.setProperty('--mh-font', FONT + 'px');
-    s.setProperty('--mh-gap', NAV_GAP + 'px');
-    s.setProperty('--mh-btn-h', BTN_H + 'px');
-    s.setProperty('--mh-m', M + 'px');
+    function set(font, padX) {
+      // рамка логотипа 100 единиц по высоте при кегле 112 → размер при кегле font
+      var logoH = font * 100 / 112, logoW = logoH / k;
+      s.setProperty('--mh-h', h.toFixed(1) + 'px');
+      s.setProperty('--mh-logo-y', (h / 2).toFixed(1) + 'px');
+      s.setProperty('--mh-logo-h', logoH.toFixed(1) + 'px');
+      s.setProperty('--mh-logo-w', logoW.toFixed(1) + 'px');
+      s.setProperty('--mh-font', font + 'px');
+      s.setProperty('--mh-pad-x', padX + 'px');
+      s.setProperty('--mh-gap', NAV_GAP + 'px');
+      s.setProperty('--mh-btn-h', BTN_H + 'px');
+      s.setProperty('--mh-m', M + 'px');
+      return logoW;
+    }
+    var logoW = set(FONT, 8);
     root.classList.add('uma-mh-on');
     build();
     placeToggle();
+    // узкий экран: если кнопки подходят к логотипу ближе 12 px — кегль 11 и поля кнопок меньше
+    var rr = row && row.getBoundingClientRect();
+    if (rr && rr.left < M + logoW + 12) {
+      logoW = set(FONT - 1, 6);
+      rr = row.getBoundingClientRect();
+      if (rr.left < M + logoW + 12) set(FONT - 1, 4);
+    }
   }
 
   apply();
