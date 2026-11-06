@@ -1,11 +1,12 @@
 /* UMA · year-ticker
    Год-табло в мобильном списке проектов: когда карточка подсвечивается
    (класс is-focused ставит js/mobile-radar.js), цифры года прокручиваются,
-   как на механическом табло, — каждая делает полный оборот и встаёт на место,
+   как на табло: каждая коротко докручивается на своё место с нескольких цифр раньше,
    слева направо с небольшой задержкой. Стили — css/year-ticker.css. */
 (function () {
   /* ================= НАСТРОЙКИ ================= */
-  var STAGGER = 70;      // мс: задержка между соседними цифрами
+  var STAGGER = 45;      // мс: задержка между соседними цифрами
+  var STEPS   = 3;       // на сколько цифр назад откатывается каждая цифра перед тем, как встать на место
   /* ============================================= */
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -34,16 +35,16 @@
     html += '</span>';
     atom.innerHTML = html;
     atom.__umaYr = atom.querySelectorAll('.uma-yr__s');
-    place(atom.__umaYr, 10, false);   // стоит на своей цифре (во втором круге)
+    place(atom.__umaYr, 0, false);    // стоит на своей цифре
     return atom.__umaYr;
   }
 
-  // поставить полосы цифр на цифру года в круге round (0 или 1)
-  function place(strips, round, animate) {
+  // поставить полосы цифр на цифру года, сдвинутую на back назад (полоса 0–9 дважды: 20 строк)
+  function place(strips, back, animate) {
     for (var i = 0; i < strips.length; i++) {
       var s = strips[i], d = +s.getAttribute('data-d');
       s.classList.toggle('is-instant', !animate);
-      s.style.transform = 'translateY(' + (-(d + round) * 10 / 2) + '%)';
+      s.style.transform = 'translateY(' + (-(d + 10 - back) * 5) + '%)';
     }
   }
 
@@ -51,10 +52,10 @@
     var atom = yearAtom(card);
     if (!atom) return;
     var strips = build(atom);
-    // мгновенно на ту же цифру в первом круге, потом с анимацией — во второй: полный оборот
-    place(strips, 0, false);
+    // мгновенно на несколько цифр раньше, потом плавно — на свою
+    place(strips, STEPS, false);
     void atom.offsetHeight;
-    place(strips, 10, true);
+    place(strips, 0, true);
   }
 
   function watch() {
