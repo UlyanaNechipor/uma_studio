@@ -83,16 +83,19 @@ html body.t-body #allrecords .uma-zb--mail:hover .tn-atom { text-decoration-colo
 /* насыщенность текста, у светлой версии «Написать нам» в блоке «О нас» —     */
 /* отступов нет вовсе. Здесь у всех кнопок одна высота, текст и точка по      */
 /* центру, одинаковый текст. Ширина — как в макете.                           */
-/* Высота на экране: 36 px на ширине 320, растёт вместе с раскладкой,         */
-/* но не больше 46 px (на планшете раскладка растянута в 2–3 раза —           */
-/* кнопка не должна раздуваться вместе с ней).                                */
+/* Высота — 36 px макета: масштабируется вместе с раскладкой, как в Тильде.   */
+/* На планшете вертикально (js/fluid.js растягивает телефонную раскладку      */
+/* в 1,5–3 раза) — 36…46 px на экране, чтобы кнопка не раздувалась.            */
 /* ========================================================================= */
 html body.t-body #allrecords .uma-zb:not(.uma-zb--mail) {
-    --zb-h: calc(clamp(36px, 36px * var(--zoom, 1), 46px) / var(--zoom, 1));
+    --zb-h: 36px;
     height: var(--zb-h) !important;
     min-height: 0 !important;
     padding: 0 !important;
     align-items: stretch !important;
+}
+html.uma-fluid-m body.t-body #allrecords .uma-zb:not(.uma-zb--mail) {
+    --zb-h: calc(clamp(36px, 36px * var(--zoom, 1), 46px) / var(--zoom, 1));
 }
 html body.t-body #allrecords .uma-zb:not(.uma-zb--mail) > .tn-molecule {
     box-sizing: border-box !important;
