@@ -63,6 +63,12 @@
     html.uma-radar-hl body.light-theme #allrecords .project-group-card.is-focused [data-elem-type="text"] .tn-atom,
     html.uma-radar-hl body.light-theme #allrecords .project-group-card.is-focused [data-elem-type="text"] .tn-atom * { color: #111211 !important; }
 
+    /* линии-разделители в списке проектов — 0.5 px на экране (в макете 1 px; блок масштабирован,
+       поэтому толщина делится на масштаб Тильды --zoom) */
+    html:not(.uma-fluid-d) #rec3979597501 .t396__group > .tn-molecule {
+        border-top-width: calc(0.5px / var(--zoom, 1)) !important;
+    }
+
     /* Линия-разделитель над карточкой (верхняя граница строки с названием):
        в подсвеченной карточке прячется, заливка выглядит однородной */
     .project-group-card .t396__group .tn-molecule {
