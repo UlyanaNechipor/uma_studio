@@ -1,0 +1,28 @@
+/* UMA · year-ticker — год-табло в мобильном списке проектов (js/year-ticker.js).
+   Каждая цифра — окошко высотой в строку, за ним полоса 0–9 дважды. */
+.uma-yr {
+    display: inline-flex;
+    font-variant-numeric: tabular-nums;
+    vertical-align: top;
+}
+.uma-yr__d {
+    display: inline-block;
+    height: 1lh;                 /* ровно одна строка текста */
+    overflow: hidden;
+}
+@supports not (height: 1lh) {
+    .uma-yr__d { height: 1.2em; }
+    .uma-yr__s > span { height: 1.2em; line-height: 1.2em; }
+}
+.uma-yr__s {
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+    transition: transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.uma-yr__s.is-instant { transition: none !important; }
+.uma-yr__s > span {
+    display: block;
+    height: 1lh;
+    text-align: center;
+}

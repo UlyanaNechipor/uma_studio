@@ -1,5 +1,5 @@
 {
-  "v": "2026-11-07.3",
+  "v": "2026-11-07.4",
   "css": [
     "css/text-adjust.css",
     "css/logo.css",
@@ -11,6 +11,7 @@
     "css/project-preview.css",
     "css/project-grid.css",
     "css/mobile-radar.css",
+    "css/year-ticker.css",
     "css/mobile-covers.css",
     "css/buttons.css",
     "css/neon-button.css",
@@ -40,6 +41,7 @@
     "js/project-preview.js",
     "js/project-grid.js",
     "js/mobile-radar.js",
+    "js/year-ticker.js",
     "js/mobile-covers.js",
     "js/rem.js",
     "js/prepositions.js",
