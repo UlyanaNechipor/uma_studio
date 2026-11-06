@@ -29,4 +29,7 @@ html body.t-body #allrecords .uma-pj {
 /* без мыши (телефон, планшет): фото приближается, пока карточка в середине экрана
    (js/project-grid.js), — медленнее, чем при наведении, чтобы не дёргалось при прокрутке */
 html.uma-pj-touch body.t-body #allrecords .uma-pj { --pj-dur: 1.4s; cursor: default; }
-html.uma-pj-touch .uma-pj.is-near .uma-pj__d { transform: scale(var(--pj-zoom)); }
+html.uma-pj-touch .uma-pj.is-near .uma-pj__d {
+    transform: scale(var(--pj-zoom));
+    transition-delay: var(--pj-delay, 0s);   /* в ряду — по очереди слева направо */
+}

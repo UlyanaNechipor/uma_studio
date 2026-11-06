@@ -9,6 +9,7 @@
   /* ================= НАСТРОЙКИ ================= */
   var REC_IDS = ['rec3979597601'];  // блоки, где работает эффект
   var BAND = 0.36;                  // доля высоты экрана по центру: карточка в ней — «в фокусе» (без мыши)
+  var STEP = 0.22;                  // с: в ряду из двух фото правое приближается позже левого
   /* ============================================= */
 
   var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -39,8 +40,22 @@
 
   // без мыши: приближаются фото, которые сейчас в полосе посередине экрана
   var ticking = false;
+  // порядок слева направо внутри ряда (фото на одной высоте) — задержка приближения
+  function order() {
+    for (var i = 0; i < all.length; i++) {
+      var r = all[i].getBoundingClientRect(), n = 0;
+      for (var j = 0; j < all.length; j++) {
+        if (j === i) continue;
+        var q = all[j].getBoundingClientRect();
+        if (Math.abs((q.top + q.height / 2) - (r.top + r.height / 2)) < 12 && q.left < r.left) n++;
+      }
+      all[i].style.setProperty('--pj-delay', (n * STEP) + 's');
+    }
+  }
+
   function update() {
     ticking = false;
+    order();
     var vh = window.innerHeight, c0 = vh * (0.5 - BAND / 2), c1 = vh * (0.5 + BAND / 2);
     for (var i = 0; i < all.length; i++) {
       var r = all[i].getBoundingClientRect();
