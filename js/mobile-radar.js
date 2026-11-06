@@ -9,9 +9,13 @@
    поверх размытой обложки этого же проекта (слой .uma-radar-panel__img). */
 (function () {
   var BAND = 0.1;     // доля высоты экрана: полоса по центру, в которой карточка «в фокусе»
+  var HIGHLIGHT = false;  // подсветка карточки (стекло, яркий текст, увеличение обложек). Временно выключена:
+                          // карточка в фокусе только отмечается классом is-focused (для года-табло).
+                          // Чтобы вернуть — true.
 
   function boot() {
     if (window.innerWidth > 1024) return;
+    if (HIGHLIGHT) document.documentElement.classList.add('uma-radar-hl');
     var cards = [].slice.call(document.querySelectorAll('.project-group-card'));
     if (!cards.length) return;
 
@@ -84,7 +88,7 @@
         var on = !!(b && !found && b.top < c1 && b.bottom > c0);
         if (on) found = true;
         card.classList.toggle('is-focused', on);
-        if (!near && !card.__umaPanel) continue;
+        if (!HIGHLIGHT || (!near && !card.__umaPanel)) continue;
         var p = panelFor(card);
         if (!p) continue;
         if (b) {
