@@ -106,9 +106,9 @@ body.light-theme .uma-pv__frame { box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.
 }
 
 /* названия проектов в мобильных карточках: цвет текста темы
-   (в Тильде они белые и пропадали на светлой теме).
-   Подсвеченную карточку не трогаем: в ней текст инвертирует css/mobile-radar.css */
-html body.t-body #allrecords .project-group-card:not(.is-focused) .project-link-item .tn-atom,
-html body.t-body #allrecords .project-group-card:not(.is-focused) .project-link-item .tn-atom a {
+   (в Тильде они белые и пропадали на светлой теме); в подсвеченной карточке — так же,
+   подсветка стеклянная и текст не инвертирует */
+html body.t-body #allrecords .project-group-card .project-link-item .tn-atom,
+html body.t-body #allrecords .project-group-card .project-link-item .tn-atom a {
     color: var(--txt, #ffffff) !important;
 }

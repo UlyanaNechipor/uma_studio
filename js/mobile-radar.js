@@ -4,7 +4,9 @@
    тексты внутри инвертируются (css/mobile-radar.css).
    Плашка — отдельный слой под карточкой с полями как в макете: по ширине линии-разделителя
    над карточкой, по высоте от этой линии до низа группы с картинками (её нижний отступ входит).
-   У каждой карточки своя плашка: карточка просто «загорается» и гаснет на месте. */
+   У каждой карточки своя плашка: карточка просто «загорается» и гаснет на месте.
+   Плашка — стекло (css/mobile-radar.css): в тёмной теме с косым бликом, в светлой —
+   поверх размытой обложки этого же проекта (слой .uma-radar-panel__img). */
 (function () {
   var BAND = 0.1;     // доля высоты экрана: полоса по центру, в которой карточка «в фокусе»
 
@@ -25,6 +27,30 @@
       ab.insertBefore(p, first || null);
       card.__umaPanel = p;
       return p;
+    }
+
+    // обложка проекта под стеклом: первая картинка карточки (фон Тильды или подставленная обложка)
+    function coverFor(card, p) {
+      if (p.__umaImg) return;
+      var els = card.querySelectorAll('.t396__elem');
+      for (var i = 0; i < els.length; i++) {
+        var r = els[i].getBoundingClientRect();
+        if (r.width < 40 || r.height < 40) continue;
+        var nodes = [els[i]].concat([].slice.call(els[i].querySelectorAll('*')));
+        var src = '';
+        for (var k = 0; k < nodes.length && !src; k++) {
+          var bg = getComputedStyle(nodes[k]).backgroundImage;
+          if (bg && bg !== 'none' && bg.indexOf('url(') > -1) src = bg;
+          else if (nodes[k].tagName === 'IMG' && nodes[k].currentSrc) src = 'url("' + nodes[k].currentSrc + '")';
+        }
+        if (!src) continue;
+        var d = document.createElement('div');
+        d.className = 'uma-radar-panel__img';
+        d.style.backgroundImage = src;
+        p.appendChild(d);
+        p.__umaImg = true;
+        return;
+      }
     }
 
     // границы карточки по её содержимому (у самой группы Тильды размеров может не быть)
@@ -67,6 +93,7 @@
           p.style.top = (b.top - ab.top) + 'px';
           p.style.width = (b.right - b.left) + 'px';
           p.style.height = (b.bottom - b.top) + 'px';
+          coverFor(card, p);
         }
         p.classList.toggle('is-on', on);
       }

@@ -10,35 +10,58 @@
        (js/mobile-radar.js) с полями как в макете — по ширине линии-разделителя */
     .project-group-card { background-color: transparent !important; }
 
+    /* Стекло без обводки. Тёмная тема — полупрозрачная светлая плашка с косым бликом
+       и мягкой тенью. Светлая — светлое стекло поверх размытой обложки проекта.
+       Тексты не инвертируются: на тёмной теме светлые, на светлой тёмные. */
     .uma-radar-panel {
         position: absolute;
         z-index: 0;
         pointer-events: none;
-        background-color: #fbfbfb;
+        overflow: hidden;
+        border-radius: 4px;
+        background: linear-gradient(160deg, rgba(255, 255, 255, .15), rgba(255, 255, 255, .05) 45%, rgba(255, 255, 255, .09));
+        box-shadow: 0 12px 32px rgba(0, 0, 0, .4);
         opacity: 0;
         /* как раньше: карточка просто «загорается» на месте */
-        transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.5s ease;
+        transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
     .uma-radar-panel.is-on { opacity: 1; }
-    body.light-theme .uma-radar-panel { background-color: #111211; }
+    /* косой блик */
+    .uma-radar-panel::after {
+        content: '';
+        position: absolute;
+        left: -20%; top: -60%;
+        width: 70%; height: 120%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .10), transparent);
+        transform: rotate(20deg);
+    }
+    /* размытая обложка — только в светлой теме */
+    .uma-radar-panel__img { display: none; }
 
-    /* ТОТАЛЬНАЯ ИНВЕРСИЯ ТЕКСТОВ ВНУТРИ АКТИВНОЙ ГРУППЫ */
-    /* Находим все текстовые элементы внутри фокусной группы и перекрашиваем в темный графит */
-    .project-group-card.is-focused [data-elem-type="text"] .tn-atom,
-    .project-group-card.is-focused [data-elem-type="text"] a,
-    .project-group-card.is-focused [data-elem-type="text"] h2,
-    .project-group-card.is-focused [data-elem-type="text"] h3 {
-        color: #111211 !important;
-        transition: color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    body.light-theme .uma-radar-panel {
+        background: #f6f6f4;
+        box-shadow: 0 12px 32px rgba(17, 18, 17, .10);
     }
-    
-    /* Синхронная инверсия текстов для светлой темы (буквы наливаются бежем) */
-    body.light-theme .project-group-card.is-focused [data-elem-type="text"] .tn-atom,
-    body.light-theme .project-group-card.is-focused [data-elem-type="text"] a,
-    body.light-theme .project-group-card.is-focused [data-elem-type="text"] h2,
-    body.light-theme .project-group-card.is-focused [data-elem-type="text"] h3 {
-        color: #F5F4F0 !important;
+    body.light-theme .uma-radar-panel__img {
+        display: block;
+        position: absolute;
+        inset: -30%;
+        background-size: cover;
+        background-position: center;
+        filter: blur(28px) saturate(.7) brightness(1.2);
+        opacity: .45;
     }
+    body.light-theme .uma-radar-panel::after {
+        left: 0; top: 0; width: 100%; height: 100%;
+        transform: none;
+        background: linear-gradient(150deg, rgba(255, 255, 255, .75), rgba(255, 255, 255, .35) 45%, rgba(255, 255, 255, .6));
+    }
+
+    /* в подсвеченной карточке все тексты в полный цвет темы (серые подписи «загораются») */
+    html body #allrecords .project-group-card.is-focused [data-elem-type="text"] .tn-atom,
+    html body #allrecords .project-group-card.is-focused [data-elem-type="text"] .tn-atom * { color: #fbfbfb !important; }
+    html body.light-theme #allrecords .project-group-card.is-focused [data-elem-type="text"] .tn-atom,
+    html body.light-theme #allrecords .project-group-card.is-focused [data-elem-type="text"] .tn-atom * { color: #111211 !important; }
 
     /* Линия-разделитель над карточкой (верхняя граница строки с названием):
        в подсвеченной карточке прячется, заливка выглядит однородной */
