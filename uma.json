@@ -1,6 +1,7 @@
 {
-  "v": "2026-11-06.16",
+  "v": "2026-11-07.1",
   "css": [
+    "css/text-adjust.css",
     "css/logo.css",
     "css/image-quality.css",
     "css/cursor.css",

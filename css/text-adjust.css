@@ -1,0 +1,14 @@
+/* UMA · text-adjust
+   Запрет системного увеличения текста на телефонах.
+   Тильда для не-Safari браузеров ставит текстам -webkit-text-size-adjust: auto
+   (проверяет слово «Safari» в строке браузера). Встроенные браузеры на iPhone —
+   Telegram, Instagram и т. п. — этого слова не пишут, и iOS сам укрупняет текст
+   в масштабированных Zero-блоках: строк становится больше, текст наезжает на
+   кнопки и картинки под ним. Кегль на сайте задан макетом — система его не меняет. */
+html,
+body,
+html body #allrecords .tn-atom,
+html body #allrecords .tn-atom * {
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+}

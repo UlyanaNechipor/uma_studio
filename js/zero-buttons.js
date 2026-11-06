@@ -96,9 +96,43 @@
     });
 
     syncFocus();
+    hookPairs();
     // тема переключает видимую версию кнопки
     new MutationObserver(function () { setTimeout(syncFocus, 50); })
       .observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  /* Светлая и тёмная версии «Написать нам» лежат друг на друге и меняются по теме.
+     В макете они стоят не точно одна на другой (в блоке «О нас» — на 8 px по высоте),
+     и при смене темы кнопка прыгала. Светлая версия ставится точно на место тёмной
+     (через margin: координаты Тильда перезаписывает при каждой перерисовке). */
+  function pairViews() {
+    document.querySelectorAll('.t396__artboard').forEach(function (ab) {
+      var dark = ab.querySelectorAll('.uma-btn-dark-view'), light = ab.querySelectorAll('.uma-btn-light-view');
+      for (var i = 0; i < light.length; i++) {
+        var l = light[i], best = null, bd = Infinity;
+        l.style.removeProperty('margin-top'); l.style.removeProperty('margin-left');
+        var lt = parseFloat(l.style.top), ll = parseFloat(l.style.left);
+        if (isNaN(lt) || isNaN(ll)) continue;
+        for (var j = 0; j < dark.length; j++) {
+          var dt = parseFloat(dark[j].style.top), dl = parseFloat(dark[j].style.left);
+          if (isNaN(dt) || isNaN(dl)) continue;
+          var d = Math.abs(dt - lt) + Math.abs(dl - ll);
+          if (d < bd) { bd = d; best = [dt, dl]; }
+        }
+        if (!best || bd > 60) continue;              // пары нет (другая раскладка или спрятана)
+        if (best[0] !== lt) l.style.setProperty('margin-top', (best[0] - lt) + 'px', 'important');
+        if (best[1] !== ll) l.style.setProperty('margin-left', (best[1] - ll) + 'px', 'important');
+      }
+    });
+  }
+  function hookPairs() {
+    pairViews();
+    document.querySelectorAll('.t396__artboard').forEach(function (ab) {
+      if (ab.__umaPair) return;
+      ab.__umaPair = true;
+      ab.addEventListener('artBoardResized', pairViews);
+    });
   }
 
   // Zero-блоки Тильда дорисовывает не сразу: запускаемся после загрузки и ещё раз чуть позже
