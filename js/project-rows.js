@@ -55,7 +55,7 @@
   function play(rec) {
     rec.classList.add('uma-rows-in');
     // после анимации снимаем задержки, чтобы наведение/смена темы не ждали их
-    var last = (rec.__umaRows.length * ROW + 1.2) * 1000;
+    var last = (rec.__umaRows.length * ROW + 1.7) * 1000;
     setTimeout(function () { rec.classList.add('uma-rows-done'); }, last);
   }
 

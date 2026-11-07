@@ -1,17 +1,18 @@
 /* UMA · project-rows — появление строк списка проектов (js/project-rows.js).
-   Как у Oera Studio: строка целиком (линия + текст) проявляется и въезжает сбоку
-   на 100 px за 1 с, с мягким торможением; строки по очереди с шагом 0.16 с. */
+   За основу — список услуг Oera Studio: строка целиком (линия + текст) проявляется
+   и въезжает на место — слева направо, мягко: короткий путь (48 px), долгое плавное
+   торможение (1.5 с), прозрачность уходит чуть быстрее движения. Строки — по очереди. */
 .uma-row {
     opacity: 0;
-    transform: translate3d(100px, 0, 0);
+    transform: translate3d(-48px, 0, 0);
     backface-visibility: hidden;
 }
 .uma-rows-in .uma-row {
     opacity: 1;
     transform: none;
     transition:
-        opacity 1s cubic-bezier(0.19, 1, 0.22, 1) var(--row-d, 0s),
-        transform 1s cubic-bezier(0.19, 1, 0.22, 1) var(--row-d, 0s);
+        opacity 1.1s cubic-bezier(0.33, 1, 0.68, 1) var(--row-d, 0s),
+        transform 1.5s cubic-bezier(0.22, 1, 0.36, 1) var(--row-d, 0s);
 }
 .uma-rows-done .uma-row { transition: none; }
 
