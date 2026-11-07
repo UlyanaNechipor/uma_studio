@@ -12,9 +12,9 @@ html body.t-body #allrecords .uma-hg-host.t-animate_started {
 }
 
 .uma-hg {
-    --hg-ease: cubic-bezier(0.65, 0, 0.35, 1);
+    --hg-ease: cubic-bezier(0.76, 0, 0.24, 1);   /* резкий разгон и торможение — смена кадра «щелчком» */
     --hg-out:  cubic-bezier(0.16, 1, 0.3, 1);
-    --hg-slide: 1.05s;
+    --hg-slide: .8s;
     --hg-par: 0px;
     position: absolute;
     inset: 0;
@@ -54,8 +54,8 @@ html body.t-body #allrecords .uma-hg-host.t-animate_started {
     height: 116%;                 /* запас под параллакс */
     object-fit: cover;
     display: block;
-    transform: translate3d(0, var(--hg-par), 0) scale(1.14);
-    transition: transform calc(var(--hg-slide) + 0.35s) var(--hg-ease);
+    transform: translate3d(0, var(--hg-par), 0) scale(1.22);
+    transition: transform calc(var(--hg-slide) + 0.25s) var(--hg-out);
 }
 .uma-hg__slide.is-active img { transform: translate3d(0, var(--hg-par), 0) scale(1); }
 
@@ -63,48 +63,41 @@ html body.t-body #allrecords .uma-hg-host.t-animate_started {
 .uma-hg:not(.is-in) .uma-hg__slide.is-active img { transform: translate3d(0, var(--hg-par), 0) scale(1.28); }
 .uma-hg.is-in .uma-hg__slide.is-active img { transition-duration: 1.6s; }
 
-/* счётчик и полоса прогресса поверх фото */
-.uma-hg__ui {
+/* кнопка паузы: две полоски в правом нижнем углу, без подложки */
+.uma-hg__pause {
     position: absolute;
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    right: 6px;
+    bottom: 6px;
+    z-index: 2;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    background: none;
     color: #ffffff;
-    font-family: var(--uma-font-head, 'Manrope', Arial, sans-serif);
-    font-size: 11px;
-    line-height: 1;
-    letter-spacing: 0.04em;
-    font-variant-numeric: tabular-nums;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
     opacity: 0;
-    transform: translateY(6px);
-    transition: opacity .6s ease .9s, transform .6s var(--hg-out) .9s;
-    pointer-events: none;
+    transition: opacity .6s ease .9s, transform .12s ease;
+    -webkit-tap-highlight-color: transparent;
 }
-.uma-hg.is-in .uma-hg__ui { opacity: 1; transform: none; }
-.uma-hg__count b { font-weight: 500; }
-.uma-hg__count { opacity: .9; flex: none; }
-
-/* название проекта: старое уходит вверх, новое выезжает снизу */
-.uma-hg__title {
-    position: relative;
-    flex: none;
-    height: 1.2em;
-    min-width: 7em;
-    overflow: hidden;
+.uma-hg.is-in .uma-hg__pause { opacity: .85; }
+.uma-hg__pause:hover { opacity: 1 !important; }
+.uma-hg__pause:active { transform: scale(.9); }
+.uma-hg__pause:focus { outline: none; }
+.uma-hg__pause:focus-visible { outline: 1px solid #ffffff; outline-offset: -4px; }
+.uma-hg__ic {
+    grid-area: 1 / 1;
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, .45));
+    transition: opacity .2s ease, transform .3s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.uma-hg__title span {
-    position: absolute;
-    left: 0;
-    top: 0;
-    white-space: nowrap;
-    transition: transform .8s var(--hg-out), opacity .8s var(--hg-out);
-}
-.uma-hg__title span.is-enter { transform: translateY(110%); opacity: 0; transition: none; }
-.uma-hg__title span.is-leave { transform: translateY(-110%); opacity: 0; }
+.uma-hg__ic--play { opacity: 0; transform: scale(.6); }
+.uma-hg.is-paused .uma-hg__ic--pause { opacity: 0; transform: scale(.6); }
+.uma-hg.is-paused .uma-hg__ic--play { opacity: 1; transform: none; }
 
 /* для экранных дикторов: какой проект на кадре */
 .uma-hg__live {
@@ -116,31 +109,16 @@ html body.t-body #allrecords .uma-hg-host.t-animate_started {
 .uma-hg.is-reduced .uma-hg__frame { clip-path: none; transition: none; }
 .uma-hg.is-reduced .uma-hg__strip { transition: none; }
 .uma-hg.is-reduced .uma-hg__slide img { transform: none !important; transition: none; }
-.uma-hg.is-reduced .uma-hg__ui { opacity: 1; transform: none; transition: none; }
+.uma-hg.is-reduced .uma-hg__pause { transition: none; }
 
 /* ---------- Десктоп: мышь ---------- */
 
-/* интерфейс крупнее на большом кадре */
-.uma-hg.is-mouse .uma-hg__ui { left: 28px; right: 28px; bottom: 24px; gap: 20px; font-size: 13px; }
+/* на большом кадре кнопка чуть дальше от края */
+.uma-hg.is-mouse .uma-hg__pause { right: 14px; bottom: 14px; }
 
 
 /* фокус с клавиатуры (стрелки листают) */
 .uma-hg.is-mouse:focus { outline: none; }
 .uma-hg.is-mouse:focus-visible { box-shadow: inset 0 0 0 2px #ffffff; }
 
-@media (prefers-reduced-motion: reduce) {
-    .uma-hg__title span { transition: none; }
-}
 
-/* мягкое затемнение снизу: счётчик и название читаются и на светлых фото */
-.uma-hg__frame::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 28%;
-    max-height: 140px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0));
-    pointer-events: none;
-}

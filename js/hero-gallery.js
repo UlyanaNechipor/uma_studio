@@ -4,7 +4,7 @@
    в том же языке, что превью проектов:
      • вертикальная лента: кадр уезжает вверх, следующее фото «дотягивается» из приближения;
      • появление после прелоадера — раскрытие шторкой снизу, фото оседает из увеличения;
-     • счётчик 01/04 и название проекта; вне экрана — пауза.
+     • в правом нижнем углу — только кнопка паузы (две полоски ↔ треугольник); вне экрана — пауза.
    Только телефон: свайп влево/вправо, параллакс при прокрутке.
    Только с мышью: стрелки клавиатуры, когда галерея в фокусе.
    Фото берутся из галереи Тильды (добавляйте их там). Если фото меньше MIN_SLIDES,
@@ -13,7 +13,7 @@
 (function () {
   /* ================= НАСТРОЙКИ ================= */
   var REC_ID     = 'rec3979597401';
-  var INTERVAL   = 3600;  // мс: сколько стоит каждый кадр
+  var INTERVAL   = 2800;  // мс: сколько стоит каждый кадр
   var MIN_SLIDES = 4;     // если в Тильде фото меньше — добавляем обложки
   var EXTRA = [           // Rosi и Black Sable уже есть в галерее Тильды
     { name: 'sure',          title: 'Sure' },
@@ -127,20 +127,18 @@
     if (mouse) box.tabIndex = 0;
     box.innerHTML =
       '<div class="uma-hg__frame"><div class="uma-hg__strip">' + cells + '</div></div>' +
-      '<div class="uma-hg__ui" aria-hidden="true">' +
-        '<span class="uma-hg__count"><b>01</b>/' + pad(slides.length) + '</span>' +
-        '<span class="uma-hg__title"><span>' + esc(slides[0].title) + '</span></span>' +
-      '</div>' +
-
+      '<button type="button" class="uma-hg__pause" aria-label="Пауза" aria-pressed="false">' +
+        '<svg class="uma-hg__ic uma-hg__ic--pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2" height="10" rx=".5"/><rect x="10" y="3" width="2" height="10" rx=".5"/></svg>' +
+        '<svg class="uma-hg__ic uma-hg__ic--play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z"/></svg>' +
+      '</button>' +
       '<p class="uma-hg__live" aria-live="polite"></p>';
     host.appendChild(box);
 
     var strip = box.querySelector('.uma-hg__strip');
     var cellsEl = box.querySelectorAll('.uma-hg__slide');
-    var countEl = box.querySelector('.uma-hg__count b');
-    var titleEl = box.querySelector('.uma-hg__title');
+    var pauseBtn = box.querySelector('.uma-hg__pause');
     var live = box.querySelector('.uma-hg__live');
-    var n = slides.length, i = 0, timer = null, visible = true, shown = false, busy = false;
+    var n = slides.length, i = 0, timer = null, visible = true, shown = false, busy = false, paused = false;
 
     // запасной адрес картинки, если CDN не ответил
     box.querySelectorAll('img').forEach(function (img) {
@@ -153,20 +151,6 @@
     function mark(k) {
       for (var c = 0; c < cellsEl.length; c++) cellsEl[c].classList.toggle('is-active', c === k);
     }
-    function setTitle(k, animate) {
-      var t = slides[k % n].title || '';
-      if (!animate || reduce) { titleEl.innerHTML = '<span>' + esc(t) + '</span>'; return; }
-      // старое название уходит вверх, новое выезжает снизу
-      var old = titleEl.querySelector('span');
-      var nu = document.createElement('span');
-      nu.textContent = t;
-      nu.className = 'is-enter';
-      titleEl.appendChild(nu);
-      if (old) old.className = 'is-leave';
-      nu.offsetWidth;
-      nu.className = '';
-      setTimeout(function () { if (old && old.parentNode) old.parentNode.removeChild(old); }, 900);
-    }
     var settleT = null;
     function go(k, jump) {
       if (busy && !jump) return;
@@ -174,10 +158,8 @@
       strip.style.transition = jump ? 'none' : '';
       strip.style.transform = 'translate3d(0,' + (-100 * i) + '%,0)';
       mark(i);
-      countEl.textContent = pad((i % n) + 1);
       if (!jump) {
         busy = true;
-        setTitle(i, true);
         live.textContent = slides[i % n].title || '';
         // страховка: если transitionend не придёт (фоновая вкладка), лента не застрянет
         clearTimeout(settleT);
@@ -204,9 +186,20 @@
     }
     function schedule() {
       clearTimeout(timer);
-      if (!shown || !visible || document.hidden) return;
+      if (!shown || !visible || paused || document.hidden) return;
       timer = setTimeout(function () { next(); schedule(); }, INTERVAL);
     }
+
+    /* ---------- пауза ---------- */
+    pauseBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      paused = !paused;
+      box.classList.toggle('is-paused', paused);
+      pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      pauseBtn.setAttribute('aria-label', paused ? 'Продолжить' : 'Пауза');
+      if (!paused) { next(); }
+      schedule();
+    });
 
     /* ---------- телефон: свайп ---------- */
     if (!mouse) {
