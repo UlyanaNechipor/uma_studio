@@ -1,9 +1,9 @@
 /* UMA · hero-snap
-   Десктоп: с самого верха страницы первый же жест прокрутки вниз (колесо, тачпад,
-   PageDown, пробел, стрелка вниз) плавно доводит страницу до положения, где низ шапки
-   стоит в GAP px над верхним краем заголовка первого экрана. Дальше прокрутка обычная.
-   Вернулся к самому верху — доводка срабатывает снова.
-   На телефонах и планшетах (без мыши) не работает. */
+   С самого верха страницы первый же жест прокрутки вниз плавно доводит страницу
+   до положения, где низ шапки стоит в GAP px над верхним краем заголовка первого экрана.
+   Дальше прокрутка обычная. Вернулся к самому верху — доводка срабатывает снова.
+     • десктоп: колесо, тачпад, PageDown, пробел, стрелка вниз (окна от MIN_W px);
+     • телефон и планшет: свайп вверх — палец ведёт страницу, после отпускания она доезжает. */
 (function () {
   /* ================= НАСТРОЙКИ ================= */
   var REC_ID   = 'rec3979597401';
@@ -15,11 +15,10 @@
   /* ============================================= */
 
   var mouse = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  if (!mouse) return;
 
   var busy = false, lastWheel = 0, quietT = 0;
 
-  function enabled() { return window.innerWidth >= MIN_W; }
+  function enabled() { return !mouse || window.innerWidth >= MIN_W; }
 
   function target() {
     var rec = document.getElementById(REC_ID);
@@ -34,13 +33,14 @@
 
   function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
 
-  function glide(to) {
+  function glide(to, dur) {
     busy = true;
+    var D = dur || DURATION;
     var from = window.scrollY, t0 = performance.now();
     var html = document.documentElement, prev = html.style.scrollBehavior;
     html.style.scrollBehavior = 'auto';
     function step(now) {
-      var k = Math.min(1, (now - t0) / DURATION);
+      var k = Math.min(1, (now - t0) / D);
       window.scrollTo(0, from + (to - from) * ease(k));
       if (k < 1) requestAnimationFrame(step);
       else { html.style.scrollBehavior = prev; release(); }
@@ -83,4 +83,34 @@
     if (down) tryStart(e);
   });
 
+
+  /* ---------- касание ---------- */
+  // палец у самого верха тянет страницу вверх: до отпускания страница идёт за пальцем,
+  // после — плавно доезжает до заголовка (с учётом того, сколько уже проехали)
+  var tStart = null, tFrom = 0, tY = 0, tracking = false;
+  window.addEventListener('touchstart', function (e) {
+    if (busy) { tStart = null; return; }
+    tStart = window.scrollY <= TOP_ZONE && enabled() ? e.touches[0].clientY : null;
+    tracking = false;
+  }, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    if (busy) { if (e.cancelable) e.preventDefault(); return; }
+    if (tStart == null) return;
+    var dy = tStart - e.touches[0].clientY;          // > 0 — страница едет вниз
+    if (!tracking) {
+      if (dy < 6) { if (dy < -6) tStart = null; return; }   // вниз от верха — обычное поведение
+      tY = target();
+      if (tY == null) { tStart = null; return; }
+      tracking = true; tFrom = window.scrollY;
+    }
+    if (e.cancelable) e.preventDefault();
+    window.scrollTo(0, Math.max(0, Math.min(tY, tFrom + dy)));
+  }, { passive: false });
+  window.addEventListener('touchend', function () {
+    if (!tracking) { tStart = null; return; }
+    tracking = false; tStart = null;
+    var left = Math.abs(tY - window.scrollY);
+    glide(tY, Math.max(350, DURATION * Math.min(1, left / Math.max(1, tY))));
+  }, { passive: true });
+  window.addEventListener('touchcancel', function () { if (tracking) { tracking = false; tStart = null; glide(tY); } }, { passive: true });
 })();
