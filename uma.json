@@ -1,5 +1,5 @@
 {
-  "v": "2026-11-08.4",
+  "v": "2026-11-08.5",
   "css": [
     "css/text-adjust.css",
     "css/logo.css",
@@ -10,6 +10,7 @@
     "css/loops.css",
     "css/project-preview.css",
     "css/project-grid.css",
+    "css/project-rows.css",
     "css/mobile-radar.css",
     "css/year-ticker.css",
     "css/mobile-covers.css",
@@ -42,6 +43,7 @@
     "js/scroll-fill.js",
     "js/project-preview.js",
     "js/project-grid.js",
+    "js/project-rows.js",
     "js/mobile-radar.js",
     "js/year-ticker.js",
     "js/mobile-covers.js",

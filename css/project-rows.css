@@ -1,0 +1,68 @@
+/* UMA · project-rows — появление строк списка проектов (js/project-rows.js).
+   Линия строки рисуется псевдоэлементом и прочерчивается слева направо;
+   родная линия Тильды на это время прозрачная. */
+.uma-row { --row-ease: cubic-bezier(0.16, 1, 0.3, 1); }
+.uma-row > .tn-molecule { position: relative; }
+.uma-row > .tn-molecule::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--row-w, 1px);
+    background: var(--row-line, currentColor);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    pointer-events: none;
+}
+.uma-row--top > .tn-molecule::before { top: calc(-1 * var(--row-w, 1px)); }
+.uma-row:not(.uma-row--top) > .tn-molecule::before { display: none; }
+/* нижняя линия (у последней строки) — второй псевдоэлемент, чуть позже верхней */
+.uma-row--bottom > .tn-molecule::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(-1 * var(--row-wb, 1px));
+    height: var(--row-wb, 1px);
+    background: var(--row-lb, currentColor);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    pointer-events: none;
+}
+.uma-rows-in .uma-row--bottom > .tn-molecule::after {
+    transform: scaleX(1);
+    transition: transform 1.2s var(--row-ease) calc(var(--row-d, 0s) + .12s);
+}
+.uma-rows-done .uma-row > .tn-molecule::after { display: none; }
+#rec3979597501:not(.uma-rows-done) .uma-row--top > .tn-molecule { border-top-color: transparent !important; }
+#rec3979597501:not(.uma-rows-done) .uma-row--bottom > .tn-molecule { border-bottom-color: transparent !important; }
+
+/* содержимое строки: сдвинуто влево, прозрачное, чуть размыто */
+.uma-row__it {
+    opacity: 0;
+    transform: translate3d(-56px, 0, 0);
+    filter: blur(6px);
+}
+
+/* запуск: линия прочерчивается, содержимое догоняет её */
+.uma-rows-in .uma-row > .tn-molecule::before {
+    transform: scaleX(1);
+    transition: transform 1.2s var(--row-ease) var(--row-d, 0s);
+}
+.uma-rows-in .uma-row__it {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition:
+        opacity .8s ease var(--it-d, 0s),
+        transform 1.1s var(--row-ease) var(--it-d, 0s),
+        filter .9s ease var(--it-d, 0s);
+}
+/* после появления: без задержек и без лишних слоёв */
+.uma-rows-done .uma-row__it { transition: none; will-change: auto; }
+.uma-rows-done .uma-row > .tn-molecule::before { display: none; }   /* дальше — родная линия Тильды (цвет по теме) */
+
+@media (prefers-reduced-motion: reduce) {
+    .uma-row__it { opacity: 1; transform: none; filter: none; }
+    .uma-row > .tn-molecule::before, .uma-row > .tn-molecule::after { transform: none; }
+}
