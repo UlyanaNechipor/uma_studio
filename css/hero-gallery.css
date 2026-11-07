@@ -12,7 +12,7 @@ html body.t-body #allrecords .uma-hg-host.t-animate_started {
 }
 
 .uma-hg {
-    --hg-ease: cubic-bezier(0.76, 0, 0.24, 1);   /* резкий разгон и торможение — смена кадра «щелчком» */
+    --hg-ease: var(--m-inout);   /* резкий разгон и торможение — смена кадра «щелчком» */
     --hg-out:  cubic-bezier(0.16, 1, 0.3, 1);
     --hg-slide: .8s;
     --hg-par: 0px;

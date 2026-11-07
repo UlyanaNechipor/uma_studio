@@ -1,7 +1,7 @@
 /* UMA · project-rows — появление строк списка проектов (js/project-rows.js).
    Линия строки рисуется псевдоэлементом и прочерчивается слева направо;
    родная линия Тильды на это время прозрачная. */
-.uma-row { --row-ease: cubic-bezier(0.16, 1, 0.3, 1); }
+.uma-row { --row-ease: var(--m-out); }
 .uma-row > .tn-molecule { position: relative; }
 .uma-row > .tn-molecule::before {
     content: '';
@@ -41,7 +41,7 @@
 .uma-row__it {
     opacity: 0;
     transform: translate3d(-56px, 0, 0);
-    filter: blur(6px);
+    filter: blur(var(--m-blur, 6px));
 }
 
 /* запуск: линия прочерчивается, содержимое догоняет её */

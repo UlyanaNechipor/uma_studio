@@ -1,7 +1,8 @@
 {
-  "v": "2026-11-08.8",
+  "v": "2026-11-08.9",
   "css": [
     "css/text-adjust.css",
+    "css/motion.css",
     "css/logo.css",
     "css/image-quality.css",
     "css/cursor.css",
@@ -44,6 +45,7 @@
     "js/project-preview.js",
     "js/project-grid.js",
     "js/project-rows.js",
+    "js/reveal.js",
     "js/mobile-radar.js",
     "js/year-ticker.js",
     "js/mobile-covers.js",

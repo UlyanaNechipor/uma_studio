@@ -4,7 +4,7 @@
    Сила приближения — --pj-zoom, скорость — --pj-dur. */
 
 html body.t-body #allrecords .uma-pj {
-    --pj-ease: cubic-bezier(0.19, 1, 0.22, 1);
+    --pj-ease: var(--m-out);
     --pj-zoom: 1.06;
     --pj-dur: 1s;
     position: relative;

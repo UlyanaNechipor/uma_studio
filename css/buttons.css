@@ -7,7 +7,7 @@
 .uma-btn-dark-view, 
 .uma-btn-light-view {
     opacity: 1 !important;
-    transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition: color var(--m-hover) var(--m-out) !important;
     /* высота — по самой кнопке, а не по родительской группе: на телефоне группа выше
        (почта переносится под кнопки), и светлая версия «Написать нам» растягивалась */
     height: auto !important;
@@ -53,7 +53,7 @@ body.light-theme .uma-btn-light-view { opacity: 1 !important; pointer-events: au
     background: rgba(37, 38, 37, 0.45) !important;
     
     /* Плавный упругий сдвиг всех состояний по экспоненте Безье */
-    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition: background-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out) !important;
 }
 
 /* Стираем инлайновые технические подложки Tilda Auto Layout */
@@ -68,7 +68,7 @@ body.light-theme .uma-blur-btn .tn-atom, body.light-theme .uma-blur-btn span, bo
     color: #fbfbfb !important;
     background: transparent !important; background-color: transparent !important; border: none !important;
     font-weight: 450 !important;
-    transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition: color var(--m-hover) var(--m-out) !important;
 }
 
 /* ========================================================================= */

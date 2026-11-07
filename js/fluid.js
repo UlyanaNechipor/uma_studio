@@ -230,6 +230,11 @@
   function reflow(ab) {
     clearShift(ab);
     if (!inFluid()) return;
+    // появление при прокрутке (js/reveal.js) сдвигает элементы — на время замеров без сдвига
+    document.documentElement.classList.add('uma-rv-measure');
+    try { reflowInner(ab); } finally { document.documentElement.classList.remove('uma-rv-measure'); }
+  }
+  function reflowInner(ab) {
     var all = items(ab);
     var base = ab.getBoundingClientRect();
     var vw = width();

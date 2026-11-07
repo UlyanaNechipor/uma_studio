@@ -36,8 +36,8 @@
     opacity: 0; /* Изначально свечение полностью выключено */
     
     /* Маслянистая кривая Безье для ультра-плавного зажигания неона */
-    transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    transition: opacity 0.6s var(--m-out), 
+                transform 0.6s var(--m-out) !important;
     will-change: opacity, transform;
 }
 

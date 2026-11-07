@@ -6,7 +6,7 @@
    Галерея раскрывается сама (js/hero-gallery.js, REVEAL_DELAY), заголовок заливается
    после TEXT_DELAY (js/hero-fill.js). */
 html.uma-hero-hold #rec3979597401 .t396__elem:not([data-elem-type="gallery"]) {
-    transition: opacity .9s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    transition: opacity .9s var(--m-out) !important;
 }
 html.uma-hero-hold:not(.uma-hero-in) #rec3979597401 .t396__elem:not([data-elem-type="gallery"]) {
     opacity: 0 !important;

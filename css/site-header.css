@@ -144,7 +144,7 @@ html body .uma-hd .theme-toggle-btn {
     transition:
         opacity .7s cubic-bezier(0.16, 1, 0.3, 1) var(--hd-d, 0s),
         translate .9s cubic-bezier(0.16, 1, 0.3, 1) var(--hd-d, 0s),
-        color .3s cubic-bezier(0.16, 1, 0.3, 1),
+        color var(--m-hover) var(--m-out),
         background-color .5s cubic-bezier(0.16, 1, 0.3, 1),
         border-color .5s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }

@@ -6,7 +6,7 @@
     --pv-h: 240px;
     --pv-radius: 4px;
     --pv-slide: 0.75s;        /* скорость прокрутки ленты между обложками */
-    --pv-ease: cubic-bezier(0.65, 0, 0.35, 1);
+    --pv-ease: var(--m-inout);   /* как смена кадров в галерее первого экрана */
 
     position: fixed;
     top: 0;

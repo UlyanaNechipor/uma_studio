@@ -17,7 +17,7 @@
     --ft-text:  var(--txt, #fbfbfb);
     --ft-muted: #767575;
     --ft-line:  #2e2e2e;
-    --ft-ease:  cubic-bezier(0.16, 1, 0.3, 1);
+    --ft-ease:  var(--m-out);
 
     position: relative;
     box-sizing: border-box;
@@ -85,7 +85,7 @@ body.light-theme .uma-ft { --ft-line: rgba(17, 18, 17, 0.12); }
     color: var(--ft-muted) !important;
     text-decoration: none !important;
     width: fit-content;
-    transition: color .3s var(--ft-ease);
+    transition: color var(--m-hover) var(--ft-ease);
 }
 a.uma-ft__link:focus-visible { color: var(--ft-text) !important; outline: 1px solid currentColor; outline-offset: 2px; }
 

@@ -23,7 +23,7 @@
         box-shadow: 0 12px 32px rgba(0, 0, 0, .4);
         opacity: 0;
         /* как раньше: карточка просто «загорается» на месте */
-        transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        transition: opacity 0.6s var(--m-out);
     }
     .uma-radar-panel.is-on { opacity: 1; }
     /* косой блик */
@@ -72,7 +72,7 @@
     /* Линия-разделитель над карточкой (верхняя граница строки с названием):
        в подсвеченной карточке прячется, заливка выглядит однородной */
     .project-group-card .t396__group .tn-molecule {
-        transition: border-color 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+        transition: border-color 0.6s var(--m-out) !important;
     }
     html.uma-radar-hl .project-group-card.is-focused .t396__group .tn-molecule {
         border-color: transparent !important;
@@ -82,7 +82,7 @@
     .project-group-card [data-elem-type="text"] .tn-atom,
     .project-group-card [data-elem-type="text"] h2,
     .project-group-card [data-elem-type="text"] h3 {
-        transition: color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+        transition: color 0.5s var(--m-out) !important;
     }
 
     /* КИНЕТИЧЕСКИЙ ТАКТИЛЬНЫЙ ИМПУЛЬС ДЛЯ ОБЛОЖЕК ВНУТРИ ГРУППЫ */
