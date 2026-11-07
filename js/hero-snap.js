@@ -20,6 +20,7 @@
   var IDLE     = 140;    // мс без прокрутки — считаем, что остановились
   var MIN_W    = 960;    // десктоп уже этого — без доводки
   var TOP_ZONE = 8;      // px: «самый верх»
+  var SOFT_ON  = false;  // мягкая доводка к остальным заголовкам. Временно выключена — вернуть: true
   /* ============================================= */
 
   var mouse = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -112,7 +113,7 @@
 
   // прокрутка остановилась — к ближайшему заголовку, если он рядом
   function settle() {
-    if (busy || soft || touching || !enabled() || !heroReady()) return;
+    if (!SOFT_ON || busy || soft || touching || !enabled() || !heroReady()) return;
     var y = window.scrollY;
     if (y <= TOP_ZONE) return;
     var vh = window.innerHeight, best = null, bd = Infinity;
