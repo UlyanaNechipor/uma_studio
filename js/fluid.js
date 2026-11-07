@@ -218,7 +218,7 @@
     var r = el.getBoundingClientRect(), h = r.height;
     if (el.matches('.t396__elem[data-elem-type="text"]')) {
       var a = el.querySelector('.tn-atom');
-      if (a) {
+      if (a && !a.querySelector('.uma-yr')) {     // год-табло: полоса цифр выше строки, но спрятана
         rng.selectNodeContents(a);
         var ar = rng.getBoundingClientRect();
         if (ar && ar.height) h = Math.max(0, ar.bottom - r.top);
