@@ -271,18 +271,28 @@
     var b = h && (h.querySelector('.t396__artboard') || h);
     return b ? b.getBoundingClientRect().height : 0;
   }
-  // сколько пикселей прокрутки от верха страницы до момента, когда заголовок целиком под шапкой
-  function drainDistance() {
+  // заливка убывает, только пока заголовок уходит под шапку: от момента, когда его верх
+  // коснулся низа шапки, до момента, когда он целиком под ней. Выше этого — залит целиком
+  // (в том числе в положении доводки js/hero-snap.js, где до шапки ещё 32 px)
+  function drainStart() {
+    var el = heading();
+    if (!el) return 0;
+    var r = el.getBoundingClientRect();
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    return Math.max(0, r.top + y - headerHeight());
+  }
+  function drainEnd() {
     var el = heading();
     if (!el) return 1;
     var r = el.getBoundingClientRect();
     var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-    return Math.max(1, r.top + y + r.height - headerHeight());
+    return Math.max(drainStart() + 1, r.top + y + r.height - headerHeight());
   }
   function targetFromScroll() {
     if (st) return 1 - st.progress;
     var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-    return Math.max(0, Math.min(1, 1 - y / drainDistance()));
+    var a = drainStart(), b = drainEnd();
+    return Math.max(0, Math.min(1, 1 - (y - a) / (b - a)));
   }
   // плавное приближение к цели на тикере GSAP (работает и при инерции прокрутки на iOS)
   function tick() {
@@ -308,8 +318,8 @@
     if (window.ScrollTrigger) {
       gsap.registerPlugin(ScrollTrigger);
       st = ScrollTrigger.create({
-        start: 0,
-        end: drainDistance,
+        start: drainStart,
+        end: drainEnd,
         invalidateOnRefresh: true,
         onUpdate: onScroll,
         onRefresh: onScroll
