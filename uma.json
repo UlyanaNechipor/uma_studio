@@ -1,5 +1,5 @@
 {
-  "v": "2026-11-08.1",
+  "v": "2026-11-08.2",
   "css": [
     "css/text-adjust.css",
     "css/logo.css",
@@ -49,6 +49,7 @@
     "js/prepositions.js",
     "js/footer.js",
     "js/site-header.js",
+    "js/hero-snap.js",
     "js/theme-toggle.js",
     "js/project-page.js",
     "js/zero-buttons.js"
