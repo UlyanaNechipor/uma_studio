@@ -12,10 +12,23 @@
    Отключить для элемента: класс uma-no-hq в Зеро-блоке. */
 (function () {
   /* ================= НАСТРОЙКИ ================= */
-  var MARGIN = '800px 0px';      // за сколько до экрана подгружать
+  var MARGIN = '1600px 0px';     // за сколько до экрана подгружать в первую очередь
+  var EAGER_AFTER = 1200;        // мс после загрузки страницы: дальше — фоном подгружаем все остальные по порядку
+  var EAGER_PAR = 3;             // сколько картинок фоном одновременно
+  var STEP_W = 400, MAX_W = 2400; // ширина, в которой берётся картинка: по размеру на экране ×плотность, шагами
   var MIN_W  = 40;               // px: мельче — иконки, не трогаем
   var SKIP   = ['rec3979597301']; // шапка
   /* ============================================= */
+
+  // ширина под элемент: на экране × плотность пикселей (не больше 2), с запасом до шага STEP_W.
+  // Полный оригинал (часто 4–6 тыс. px) качался долго — фото появлялись с большой задержкой
+  function needW(el) {
+    var w = el.getBoundingClientRect().width || el.offsetWidth || 0;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = Math.max(window.innerWidth < 960 ? window.innerWidth : 0, w);   // телефон: раскладка меняется — с запасом на всю ширину
+    return Math.min(MAX_W, Math.max(STEP_W, Math.ceil(w * dpr / STEP_W) * STEP_W));
+  }
+  function sized(url, w) { return url.replace('/-/format/webp/', '/-/resize/' + w + 'x/-/format/webp/'); }
 
   function hq(url) {
     var m = String(url || '').match(/^https?:\/\/(?:static|optim|thb)\.tildacdn\.[a-z]+\/(til[a-z0-9]{1,2}[\w-]*)\/(?:-\/[^/]+\/(?:[^/]+\/)*)?([^/?#]+)$/i);
@@ -49,15 +62,40 @@
   function upgrade(el) {
     if (el.__umaHqDone) return;
     el.__umaHqDone = true;
-    var url = hq(el.getAttribute('data-original'));
-    if (!url) return;
+    var full = hq(el.getAttribute('data-original'));
+    if (!full) return;
+    var url = sized(full, needW(el));
+    active++;
     var pre = new Image();
     pre.decoding = 'async';
+    var done = function () { active--; pump(); };
     pre.onload = function () {
       if (el.tagName === 'IMG') applyImg(el, url); else applyBg(el, url);
+      done();
+    };
+    pre.onerror = function () {
+      // уменьшенная не отдалась — берём полную
+      if (url !== full) { url = full; pre.src = full; return; }
+      done();
     };
     pre.src = url;
   }
+
+  // фоновая подгрузка всех остальных картинок по порядку на странице — к моменту,
+  // когда блок доходит до экрана, фото уже скачаны и появляются сразу
+  var active = 0, eager = false;
+  function pump() {
+    if (!eager) return;
+    while (active < EAGER_PAR) {
+      var el = null;
+      for (var i = 0; i < pending.length; i++) { var c = pending[i]; if (!c.__umaHqDone && !c.__umaHqHidden && c.getBoundingClientRect().width) { el = c; break; } if (!c.getBoundingClientRect().width) c.__umaHqHidden = true; }
+      if (!el) return;
+      upgrade(el);
+    }
+  }
+  function startEager() { eager = true; pending.sort(function (a, b) { return a.getBoundingClientRect().top - b.getBoundingClientRect().top; }); pump(); }
+  if (document.readyState === 'complete') setTimeout(startEager, EAGER_AFTER);
+  else window.addEventListener('load', function () { setTimeout(startEager, EAGER_AFTER); });
 
   var io = window.IntersectionObserver ? new IntersectionObserver(function (es) {
     es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); upgrade(e.target); } });

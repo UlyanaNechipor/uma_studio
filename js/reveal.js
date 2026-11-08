@@ -17,7 +17,7 @@
   // «подлёт» из Тильды (fadeinup / left / right / down): направление и задержки из настроек
   // элемента в Zero-блоке сохраняются, но в общем ритме — сдвиг не больше FLY_MAX px,
   // задержка не больше DELAY_MAX с, движение — общая кривая сайта
-  var FLY_MIN = 40, FLY_MAX = 100, DELAY_MAX = 0.6;
+  var FLY_MIN = 40, FLY_MAX = 100, DELAY_MAX = 0;   // задержки Тильды не берём: всё — одна очередь «бам-бам-бам» с шагом STEP
   /* ============================================= */
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
