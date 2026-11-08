@@ -1,0 +1,19 @@
+# После каждого выпуска сбрасывает кэш jsDelivr для ветки main.
+# Иначе запасной источник (jsDelivr @main) до 12 часов отдаёт старый uma.json —
+# так на телефонах, где GitHub медленный или недоступен (мобильный интернет), висела старая версия.
+name: purge-cdn
+on:
+  push:
+    branches: [main]
+    paths: ['uma.json']
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Purge jsDelivr
+        run: |
+          for f in uma.json; do
+            for i in 1 2 3; do
+              curl -fsS "https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@main/$f" && break || sleep 10
+            done
+          done
