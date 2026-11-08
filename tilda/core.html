@@ -521,33 +521,57 @@ setTimeout(window.umaReleasePreloader, 20000);
   }
 
   /* ---------- 1. список файлов (uma.json): со всех источников сразу ----------
-     raw.githubusercontent из России часто отвечает очень медленно (десятки секунд),
-     поэтому ждать его по очереди нельзя. Спрашиваем все источники одновременно и
-     берём самую свежую версию из ответивших: raw — если ответил быстро, иначе jsDelivr
-     (его кэш ветки сбрасывается после каждого обновления кода). */
-  var WAIT_FRESH = 1200;   // мс: сколько после первого ответа ждём, не придёт ли версия новее
+     Свежие источники: raw.githubusercontent и GitHub API (номер последнего коммита →
+     uma.json этого коммита с jsDelivr). Из России raw часто отвечает десятки секунд,
+     а jsDelivr по имени ветки (@main) может часами отдавать старую версию — поэтому
+     спрашиваем всех сразу, берём первый свежий ответ, а jsDelivr @main — только если
+     свежие за STALE_WAIT так и не ответили. */
+  var STALE_WAIT = 3500;   // мс
   function vnum(v) {       // "2026-11-08.23" → сравнимое число
     var m = String(v || '').match(/^(\d{4})-(\d{2})-(\d{2})\.(\d+)$/);
     return m ? (+m[1] * 10000 + +m[2] * 100 + +m[3]) * 1000 + +m[4] : 0;
   }
+  function getJSON(url, opt) {
+    return timeout(fetch(url, opt || { cache: 'no-store' }), 8000).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    });
+  }
   function loadManifest() {
-    var list = sources(ref), t = Date.now();
+    var t = Date.now();
+    var raw = 'https://raw.githubusercontent.com/' + REPO + '/' + ref + '/';
+    var stale = sources(ref).slice(1);                     // jsDelivr @ветка
     return new Promise(function (ok, fail) {
-      var best = null, left = list.length, settled = false, timer = 0;
-      function finish() { if (settled) return; settled = true; clearTimeout(timer); if (best) ok(best); else fail(new Error('uma.json недоступен во всех источниках')); }
-      list.forEach(function (base, k) {
-        timeout(fetch(base + 'uma.json?t=' + t, { cache: 'no-store' }), 8000).then(function (r) {
-          if (!r.ok) throw new Error(r.status);
-          return r.json();
-        }).then(function (m) {
-          log('uma.json', base, m.v);
-          if (!best || vnum(m.v) > vnum(best.manifest.v)) best = { base: base, manifest: m };
-          if (k === 0) return finish();                       // raw: самый свежий — сразу
-          if (!timer) timer = setTimeout(finish, WAIT_FRESH);
-        }, function (e) { log('источник не ответил', base, e.message); }).then(function () {
-          if (--left === 0) finish();
-        });
+      var settled = false, freshLeft = 2, staleBest = null, staleLeft = stale.length;
+      function done(x) { if (settled) return; settled = true; ok(x); }
+      function maybeStale() {
+        if (settled) return;
+        if (staleBest && (freshLeft === 0 || Date.now() - t >= STALE_WAIT)) done(staleBest);
+        else if (!staleBest && freshLeft === 0 && staleLeft === 0) { settled = true; fail(new Error('uma.json недоступен во всех источниках')); }
+      }
+      function freshFail(e) { log('свежий источник не ответил', e && e.message); freshLeft--; maybeStale(); }
+      // raw
+      getJSON(raw + 'uma.json?t=' + t).then(function (m) { log('uma.json raw', m.v); done({ base: raw, manifest: m }); }, freshFail);
+      // GitHub API → sha → jsDelivr @sha
+      getJSON('https://api.github.com/repos/' + REPO + '/commits/' + ref, { cache: 'no-store', headers: { Accept: 'application/vnd.github+json' } })
+        .then(function (c) {
+          var sha = c && c.sha;
+          if (!sha) throw new Error('нет sha');
+          var b = 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + sha + '/';
+          return getJSON(b + 'uma.json').then(function (m) {
+            if (!m.sha) m.sha = sha;
+            log('uma.json api', m.v, sha.slice(0, 8));
+            done({ base: b, manifest: m });
+          });
+        }).catch(freshFail);
+      // jsDelivr @ветка — запасной
+      stale.forEach(function (base) {
+        getJSON(base + 'uma.json?t=' + t).then(function (m) {
+          log('uma.json (может быть старым)', base, m.v);
+          if (!staleBest || vnum(m.v) > vnum(staleBest.manifest.v)) staleBest = { base: base, manifest: m };
+        }, function () {}).then(function () { staleLeft--; maybeStale(); });
       });
+      setTimeout(maybeStale, STALE_WAIT);
     });
   }
 
@@ -577,7 +601,7 @@ setTimeout(window.umaReleasePreloader, 20000);
      перезагрузки компьютера, плохой мобильный интернет). Если в GitHub новая
      версия — она скачивается и подключается вместо сохранённой. */
   var CACHE_KEY = 'uma_code_' + ref;
-  var FAST = 1500;   // мс: сколько ждём свежий uma.json, прежде чем взять сохранённую копию
+  var FAST = 3000;   // мс: сколько ждём свежий uma.json, прежде чем взять сохранённую копию (прелоадер всё равно идёт ~3 с)
   function readCache() {
     try { var c = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); return c && c.v && c.css && c.js ? c : null; }
     catch (e) { return null; }
@@ -651,7 +675,8 @@ setTimeout(window.umaReleasePreloader, 20000);
       loadManifest().then(function (r) {
         var version = String(r.manifest.v || Math.floor(Date.now() / 60000));
         log('источник', r.base, 'версия', version);
-        if (cached && cached.v === version) { clearTimeout(waitT); inject(cached, 'cache'); return; }
+        // та же или более старая версия (ответил только запасной источник) — сохранённая копия
+        if (cached && vnum(cached.v) >= vnum(version)) { clearTimeout(waitT); inject(cached, 'cache'); return; }
         return download(version, r.base, r.manifest).then(function (c) {
           clearTimeout(waitT);
           // если сохранённая копия уже подключена — новая версия сохранена и включится при следующем открытии
