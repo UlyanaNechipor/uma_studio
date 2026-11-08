@@ -14,15 +14,18 @@
   /* ================= НАСТРОЙКИ ================= */
   var REC_ID     = 'rec3979597401';
   var INTERVAL   = 2800;  // мс: сколько стоит каждый кадр
-  var MIN_SLIDES = 4;     // если в Тильде фото меньше — добавляем обложки
+  var MIN_SLIDES = 5;     // если в Тильде фото меньше — добавляем обложки (Arine — мокапом из FIRST)
   var EXTRA = [           // Rosi и Black Sable уже есть в галерее Тильды
     { name: 'sure',          title: 'Sure' },
-    { name: 'kara-fox',      title: 'Kara Fox' },
-    { name: 'arine-atelier', title: 'Arine Atelier' }
+    { name: 'kara-fox',      title: 'Kara Fox' }
   ];
   // фото из галереи Тильды, которые подменяются файлами из репозитория (img/gallery)
   var REPLACE = [
     { match: /rosi/i, name: 'rosi', title: 'Rosi', big: 1536 }
+  ];
+  // первыми в очереди — эти кадры из репозитория (img/gallery/<name>-1200.webp и -2400.webp)
+  var FIRST = [
+    { name: 'arine-mockup', title: 'Arine Atelier' }
   ];
   var PARALLAX     = 0;     // телефон: параллакс при прокрутке (0 — без него). Выключен: сдвиг фото при прокрутке
                             // шёл через ту же плавную анимацию, что и смена кадра, и перелистывание
@@ -55,7 +58,10 @@
   }
   function repo(path) {
     var U = window.UMA || {};
-    var ref = U.ref || 'main', v = U.version ? '?v=' + encodeURIComponent(U.version) : '';
+    // загрузчик взял код по точному коммиту (jsDelivr @sha) — картинки оттуда же: по имени ветки
+    // jsDelivr может часами отдавать старый коммит, где новых файлов ещё нет
+    var m = String(U.base || '').match(/@([0-9a-f]{40})\//);
+    var ref = m ? m[1] : (U.ref || 'main'), v = U.version && !m ? '?v=' + encodeURIComponent(U.version) : '';
     return 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + ref + '/' + path + v;
   }
   function repoRaw(path) {
@@ -95,6 +101,12 @@
         list.push({ src: t.src, srcset: t.srcset, raw: it.li_img, title: title, alt: it.li_imgalt || '' });
       });
     } catch (e) {}
+    for (var f = FIRST.length - 1; f >= 0; f--) {
+      var fp = 'img/gallery/' + FIRST[f].name;
+      list.unshift({ src: repo(fp + '-1200.webp'),
+                     srcset: repo(fp + '-1200.webp') + ' 1200w, ' + repo(fp + '-2400.webp') + ' 2400w',
+                     raw: repoRaw(fp + '-1200.webp'), title: FIRST[f].title, alt: FIRST[f].title });
+    }
     for (var k = 0; list.length < MIN_SLIDES && k < EXTRA.length; k++) {
       var p = 'img/gallery/' + EXTRA[k].name;
       list.push({ src: repo(p + '-1200.webp'),
