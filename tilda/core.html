@@ -40,43 +40,51 @@ html, body {
 </style>
 
 <script>
-// В самую первую миллисекунду вешаем замок на скроллбар, чтобы он исчез с экрана
-document.documentElement.classList.add('uma-scroll-locked');
-if (document.body) document.body.classList.add('uma-scroll-locked');
+/* Каждое открытие и обновление страницы — с самого верха, под прелоадером.
+   • память прокрутки браузера выключена;
+   • якорь в адресе (#about и т. п.) убирается, иначе браузер и Тильда после загрузки
+     прыгают к нему — отсюда «то вверху, то в середине»;
+   • пока идёт прелоадер, страница держится на нуле; замок снимается, когда прелоадер ушёл
+     (или через 6 с на всякий случай);
+   • после снятия замка страница больше не дёргается наверх, даже если загрузка
+     картинок закончилась позже — человек уже мог начать прокрутку. */
+(function () {
+  var root = document.documentElement;
+  root.classList.add('uma-scroll-locked');
+  if (document.body) document.body.classList.add('uma-scroll-locked');
+  try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+  if (location.hash && !/^#!/.test(location.hash)) {
+    try { history.replaceState(history.state, '', location.pathname + location.search); } catch (e) {}
+  }
+  window.scrollTo(0, 0);
 
-// Отключаем память скролла браузера
-if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-}
-
-// Мгновенный первичный сброс в ноль
-window.scrollTo(0, 0);
-
-// Цикл удержания страницы на отметке (0,0) под замком
-let isLoaderActive = true;
-function lockScrollToTop() {
-    if (!isLoaderActive) return;
-    window.scrollTo(0, 0);
-    requestAnimationFrame(lockScrollToTop);
-}
-requestAnimationFrame(lockScrollToTop);
-
-// Ровно через 2.5 секунды (когда шторка залилась и начинает улетать) — снимаем замок
-setTimeout(function() {
-    isLoaderActive = false;
-    
-    // Нежно возвращаем вертикальный ползунок на место
-    document.documentElement.classList.remove('uma-scroll-locked');
+  var locked = true;
+  (function hold() {
+    if (!locked) return;
+    if (window.scrollY !== 0) window.scrollTo(0, 0);
+    requestAnimationFrame(hold);
+  })();
+  function unlock() {
+    if (!locked) return;
+    locked = false;
+    root.classList.remove('uma-scroll-locked');
     if (document.body) document.body.classList.remove('uma-scroll-locked');
-    
-    // Финальный закреп на верхушке сайта
     window.scrollTo(0, 0);
-}, 2500);
-
-// Страховочный сброс для медленного интернета
-window.addEventListener('load', function() {
-    window.scrollTo(0, 0);
-});
+  }
+  window.umaUnlockScroll = unlock;
+  // прелоадер ушёл (класс completed) — снимаем замок
+  function watch() {
+    var pre = document.getElementById('custom-preloader');
+    if (!pre) return setTimeout(unlock, 2500);
+    if (pre.classList.contains('completed')) return unlock();
+    new MutationObserver(function () { if (pre.classList.contains('completed')) unlock(); })
+      .observe(pre, { attributes: true, attributeFilter: ['class'] });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watch); else watch();
+  setTimeout(unlock, 6000);
+  // страница вернулась из кэша вкладок (назад/вперёд) — тоже наверх
+  window.addEventListener('pageshow', function (e) { if (e.persisted) window.scrollTo(0, 0); });
+})();
 </script>
 
 <style>

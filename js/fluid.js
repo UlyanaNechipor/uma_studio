@@ -246,7 +246,26 @@
     return el.matches('.t396__elem[data-elem-type="text"]') ||
       (el.matches('.t396__group') && !!el.querySelector('.t396__elem[data-elem-type="text"]'));
   }
+  // элементы, которые в макете стоят на одной линии по верху (галерея и квадрат рядом с ней,
+  // колонки текста), сдвигаются одинаково — иначе один «висит» выше другого.
+  // Строка обрабатывается подряд (порядок по верху), ниже лежащие ещё не посчитаны —
+  // поэтому уже посчитанных соседей по строке можно опустить до общего верха.
+  var ROW_EPS = 1.5;
+  var rowSeen = [];
+  function sameRow(j, top, D, shift, nb, H) {
+    var dj = D[j];
+    rowSeen = rowSeen.filter(function (i) { return Math.abs(D[i].top - dj.top) < ROW_EPS; });
+    rowSeen.forEach(function (i) { top = Math.max(top, D[i].top + shift[i]); });
+    rowSeen.forEach(function (i) {
+      var t = top;
+      if (D[i].top + shift[i] < t) { shift[i] = t - D[i].top; nb[i] = t + H[i].h; }
+    });
+    rowSeen.push(j);
+    return top;
+  }
+
   function guard(ab) {
+    rowSeen = [];
     var all = items(ab);
     var base = ab.getBoundingClientRect();
     var vw = width();
@@ -275,6 +294,7 @@
           top = Math.max(top, nb[i] + GUARD_GAP);
         }
       });
+      top = sameRow(j, top, R, shift, nb, R);
       shift[j] = top - dj.top;
       nb[j] = top + dj.h;
       if (shift[j] > 0.5) moved = true;
@@ -296,6 +316,7 @@
     if (window.UMA_DEBUG_GUARD) console.log('UMA guard', ab.closest('.t-rec').id, idx.filter(function (j) { return shift[j] > 0.5; }).map(function (j) { return (all[j].textContent || all[j].dataset.elemId || '').trim().slice(0, 16) + ' +' + Math.round(shift[j]); }));
   }
   function reflowInner(ab) {
+    rowSeen = [];
     var all = items(ab);
     var base = ab.getBoundingClientRect();
     var vw = width();
@@ -359,6 +380,7 @@
         if (Math.min(di.right, dj.right) - Math.max(di.left, dj.left) <= 1) return;     // другая полоса
         top = Math.max(top, nb[i] + Math.max(0, dj.top - di.bottom) * k);
       });
+      top = sameRow(j, top, design, shift, nb, now);
       shift[j] = top - dj.top;
       nb[j] = top + now[j].h;
       maxOld = Math.max(maxOld, dj.bottom - base.top);

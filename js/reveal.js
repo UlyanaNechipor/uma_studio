@@ -38,6 +38,29 @@
        !!el.querySelector('[data-elem-type="text"]'));
   }
 
+  // группа из нескольких колонок (например, четыре услуги, собранные в Тильде в одну группу)
+  // появляется не целиком, а по колонкам: каждая колонка — свой элемент очереди.
+  // Колонки — прямые части группы, стоящие рядом по горизонтали.
+  function split(el) {
+    if (!el.classList.contains('t396__group') || skip(el)) return null;
+    var mol = el.querySelector(':scope > .tn-molecule') || el;
+    var kids = [].slice.call(mol.children).filter(function (c) {
+      var r = c.getBoundingClientRect();
+      return r.width > 2 && r.height > 2 && (c.classList.contains('t396__group') || c.classList.contains('t396__elem'));
+    });
+    if (kids.length < 2) return null;
+    var lefts = {};
+    kids.forEach(function (c) { lefts[Math.round(c.getBoundingClientRect().left / 8)] = 1; });
+    if (Object.keys(lefts).length < 2) return null;     // всё в одну колонку — оставляем группу целой
+    // анимация из Тильды у самой группы — переносим на колонки
+    var st = el.getAttribute('data-animate-style');
+    if (st) kids.forEach(function (c) {
+      ['data-animate-style', 'data-animate-distance'].forEach(function (a) { if (el.hasAttribute(a) && !c.hasAttribute(a)) c.setAttribute(a, el.getAttribute(a)); });
+    });
+    el.classList.add('uma-rv-split');
+    return kids;
+  }
+
   function fly(el) {
     var rec = el.closest('.t-rec');
     if (rec && PLAIN_RECS.indexOf(rec.id) > -1) return;
@@ -91,7 +114,12 @@
     document.querySelectorAll('.t396__artboard').forEach(function (ab) {
       var rec = ab.closest('.t-rec');
       if (!rec || SKIP_RECS.indexOf(rec.id) > -1) return;
+      var tops = [];
       ab.querySelectorAll(':scope > .t396__elem, :scope > .t396__group').forEach(function (el) {
+        var parts = split(el);
+        if (parts) tops = tops.concat(parts); else tops.push(el);
+      });
+      tops.forEach(function (el) {
         var r = el.getBoundingClientRect();
         if (!r.width || !r.height || r.right < 0 || r.left > window.innerWidth) return;   // спрятан в этой раскладке
         if (skip(el)) return;
