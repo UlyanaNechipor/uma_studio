@@ -97,9 +97,11 @@ html.uma-rv-on .uma-ft.is-lines::after { transition-delay: .15s; }
 .uma-ft__title,
 .uma-ft__link {
     display: block;
-    font-size: calc(15 * var(--u));
+    /* кегль и разрядка — как у основного текста сайта: 12 px Тильды (= 16 ед. макета), 0.45 px;
+       шаг строк списка — как в макете (26 ед.) */
+    font-size: calc(16 * var(--u));
     line-height: calc(26 * var(--u));
-    letter-spacing: 0.03em;             /* в макете 0.45 px при 15 px */
+    letter-spacing: 0.0375em;
     font-weight: 400;
 }
 .uma-ft__title { color: var(--ft-text); }
@@ -132,8 +134,8 @@ a.uma-ft__link:focus-visible { color: var(--ft-text) !important; outline: 1px so
     .uma-ft__brand { display: contents; }
     .uma-ft__logo { grid-column: 1 / -1; order: 0; margin-top: 0 !important; font-size: clamp(32px, 10vw, 64px); }
     .uma-ft__col { order: 1; padding-right: 0 !important; }
-    .uma-ft__made { grid-column: 1 / -1; order: 2; padding-left: 0; margin-bottom: 0 !important; font-size: clamp(12px, 1.4vw + 7px, 15px); }
-    .uma-ft__title, .uma-ft__link { font-size: clamp(13px, 1.2vw + 8.5px, 16px); line-height: 1.85; }
+    .uma-ft__made { grid-column: 1 / -1; order: 2; padding-left: 0; margin-bottom: 0 !important; font-size: calc(16 * var(--u)); letter-spacing: 0.0375em; }
+    .uma-ft__title, .uma-ft__link { font-size: calc(16 * var(--u)); line-height: 1.75; }
 }
 
 @media (prefers-reduced-motion: reduce) {

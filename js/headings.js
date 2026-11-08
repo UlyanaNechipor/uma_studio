@@ -16,6 +16,8 @@
   var HEADER_ID = 'rec3979597301';  // шапка: её не трогаем
   var PHONE_MAX = 480;              // px: на экранах уже этого трекинг из Тильды
   var SAFE      = 16;               // px: минимальный отступ букв от краёв экрана на телефоне
+  var PHONE_BIG = 36;               // px на экране: с этого кегля заголовок на телефоне — «крупный»
+  var PHONE_BIG_LS = -0.02;         // em: трекинг крупного заголовка на телефоне (не больше)
   // ступени по размеру шрифта на экране: межстрочный (в долях кегля) и трекинг (em)
   var STEPS = [
     { from: 60, lh: 0.96, ls: -0.04  },   // крупные заголовки первого экрана (в Тильде было 1.0 и −0.024em)
@@ -66,7 +68,10 @@
       for (var k = 0; k < STEPS.length; k++) { if (fsScreen >= STEPS[k].from) { step = STEPS[k]; break; } }
       atom.style.setProperty('--uma-hlh', Math.min(lh, step.lh).toFixed(3));
       var phone = window.innerWidth < PHONE_MAX;
-      atom.style.setProperty('--uma-hls', (phone ? ls : Math.min(ls, step.ls)).toFixed(4) + 'em');
+      // телефон: трекинг из Тильды, но не разреженный у крупных заголовков (главный был +0.5 px —
+      // выглядел рыхлее остальных); не плотнее ступени
+      var pls = phone ? (fsScreen >= PHONE_BIG ? Math.min(ls, PHONE_BIG_LS) : ls) : Math.min(ls, step.ls);
+      atom.style.setProperty('--uma-hls', pls.toFixed(4) + 'em');
       atom.classList.add('uma-h');
       if (phone) fitPhone(atom, fs, ls, step.ls);
     }

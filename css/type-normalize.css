@@ -1,0 +1,7 @@
+/* UMA · type-normalize — основной текст Zero-блоков (класс ставит js/type-normalize.js):
+   одна разрядка, одно начертание, один межстрочный. Кегль остаётся из Тильды (везде 12 px). */
+html body #allrecords .t396 .tn-atom.uma-body {
+    letter-spacing: 0.45px !important;
+    font-weight: 400 !important;
+    line-height: 1.55 !important;
+}

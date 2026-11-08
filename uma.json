@@ -28,6 +28,7 @@
     "css/theme.css",
     "css/zero-buttons.css",
     "css/headings.css",
+    "css/type-normalize.css",
     "css/site-header.css",
     "css/radius.css"
   ],
@@ -37,6 +38,7 @@
     "js/gsap-loader.js",
     "js/image-quality.js",
     "js/headings.js",
+    "js/type-normalize.js",
     "js/hero-fill.js",
     "js/hero-gallery.js",
     "js/hero-aside.js",
