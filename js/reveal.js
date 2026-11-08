@@ -12,7 +12,7 @@
 (function () {
   /* ================= НАСТРОЙКИ ================= */
   var SKIP_RECS = ['rec3979597401', 'rec3979597301', 'rec3979597201'];   // первый экран, старая шапка, подвал
-  var STEP = 80;        // мс: шаг между элементами, вошедшими вместе
+  var STEP = 140;       // мс: шаг между элементами, вошедшими вместе — подлетают по очереди
   var EDGE_K = 0.12;    // элемент «вошёл», когда его верх поднялся над нижними 12% экрана
   /* ============================================= */
 
@@ -21,7 +21,7 @@
   var html = document.documentElement;
 
   function skip(el) {
-    if (el.querySelector('.uma-row') || el.classList.contains('uma-row')) return true;   // список проектов
+    if (el.querySelector('.uma-row, .uma-card') || el.classList.contains('uma-row') || el.classList.contains('uma-card')) return true;   // список проектов
     if (el.closest('.uma-row')) return true;
     return false;
   }

@@ -4,6 +4,9 @@
    и въезжает на место сбоку, строки по очереди сверху вниз. Без размытия.
    Срабатывает один раз, когда список доходит до экрана.
    Строка — группа Тильды с линией сверху или снизу.
+   Телефон (карточки .project-group-card): каждая карточка — когда доходит до экрана:
+   линия-разделитель над ней прочерчивается «бегунком» слева направо, следом
+   по очереди всплывают название, тип и обложки. Год — табло (js/year-ticker.js).
    Стили — css/project-rows.css. */
 (function () {
   /* ================= НАСТРОЙКИ ================= */
@@ -59,9 +62,57 @@
     setTimeout(function () { rec.classList.add('uma-rows-done'); }, last);
   }
 
+  /* ---------- телефон: карточки ---------- */
+  var CARD_STEP = 0.08;   // с: между элементами внутри карточки
+  function cardsMode(rec) {
+    var cards = [].slice.call(rec.querySelectorAll('.project-group-card')).filter(function (c) {
+      var r = c.getBoundingClientRect();
+      return r.width > 0 && r.height > 0 && r.left < window.innerWidth && r.right > 0;
+    });
+    if (!cards.length) return false;
+    cards.forEach(function (c) {
+      var m = c.querySelector(':scope > .tn-molecule');
+      if (!m) return;
+      var cs = getComputedStyle(m);
+      c.classList.add('uma-card');
+      c.style.setProperty('--row-line', cs.borderTopColor);
+      c.style.setProperty('--row-w', cs.borderTopWidth);
+      // содержимое: строки карточки сверху вниз, внутри строки — слева направо
+      var parts = [].slice.call(m.querySelectorAll(':scope > .t396__elem, :scope > .t396__group'));
+      parts.sort(function (a, b) {
+        var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+        return Math.abs(ra.top - rb.top) > 6 ? ra.top - rb.top : ra.left - rb.left;
+      });
+      parts.forEach(function (el, k) {
+        el.classList.add('uma-card__it');
+        el.style.setProperty('--it-d', (0.18 + k * CARD_STEP).toFixed(2) + 's');
+      });
+    });
+    var left = cards.slice(), ticking = false;
+    function check() {
+      ticking = false;
+      var lim = window.innerHeight * START;
+      left = left.filter(function (c) {
+        var r = c.getBoundingClientRect();
+        if (r.top < lim) {
+          c.classList.add('is-in');
+          setTimeout(function () { c.classList.add('is-done'); }, 2000);
+          return false;
+        }
+        return true;
+      });
+      if (!left.length) window.removeEventListener('scroll', onScroll);
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(check); } }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    check();
+    return true;
+  }
+
   function init() {
     var rec = document.getElementById(REC_ID);
     if (!rec || rec.__umaRowsInit) return;
+    if (cardsMode(rec)) { rec.__umaRowsInit = true; return; }
     var rows = prepare(rec);
     if (!rows) return;
     rec.__umaRowsInit = true;
