@@ -41,7 +41,7 @@ html.uma-rv-on body .uma-rv.is-in,
 html.uma-rv-on #allrecords .t-rec .uma-rv.t-animate.is-in {
     opacity: 1 !important;
     transform: none !important;
-    filter: none;
+    filter: none !important;
     transition:
         opacity calc(var(--m-reveal) * .75) ease var(--rv-d, 0s),
         transform var(--m-reveal) var(--m-out) var(--rv-d, 0s),
