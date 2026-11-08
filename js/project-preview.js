@@ -27,7 +27,7 @@
     { name: 'Rosi',          file: 'img/covers/rosi.webp' },
     { name: 'Sure',          file: 'img/covers/sure.webp' },
     { name: 'Kara Fox',      file: 'img/covers/kara-fox-mockup.webp' },
-    { name: 'Black Sable',   file: 'img/covers/black-sable.webp' },
+    { name: 'Black Sable',   file: 'img/covers/black-sable-mockup.webp' },
     { name: 'Arine Atelier', file: 'img/covers/arine-atelier-mockup.webp' }
   ];
   var FOLLOW    = 0.12;  // насколько быстро окошко догоняет курсор (меньше = ленивее)

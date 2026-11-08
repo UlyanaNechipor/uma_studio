@@ -17,7 +17,7 @@
     '1790337067370000009': ['img/mobile/sure-2.webp',        'Sure'],
     '1790337087864000019': ['img/mobile/kara-fox-mockup.webp', 'Kara Fox'],
     '1790337087864000018': ['img/mobile/kara-fox-2.webp',    'Kara Fox'],
-    '1790337091915000027': ['img/covers/black-sable.webp',   'Black Sable'],
+    '1790337091915000027': ['img/mobile/black-sable-mockup.webp', 'Black Sable'],
     '1790337091915000026': ['img/mobile/black-sable-2.webp', 'Black Sable'],
     '1790337100774000035': ['img/mobile/arine-atelier-mockup.webp', 'Arine Atelier'],
     '1790337100774000034': ['img/mobile/arine-atelier-2.webp','Arine Atelier']
