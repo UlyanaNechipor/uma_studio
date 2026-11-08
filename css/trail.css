@@ -13,8 +13,9 @@ body {
     width: 100vw; height: 100vh;
     pointer-events: none; 
     z-index: 0; 
-    /* мягкость — от малого разрешения холста (js/trail.js), без filter и mix-blend-mode:
-       размытие и смешивание на весь экран пересчитывались каждый кадр и тормозили сайт */
+    /* Мягкий блюр для объема */
+    filter: blur(28px);
+    mix-blend-mode: screen; 
 }
 
 body::before {

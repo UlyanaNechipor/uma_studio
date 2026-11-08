@@ -13,7 +13,7 @@ body.light-theme {
     --txt: #1a1a1a; 
     --border: rgba(26, 26, 26, 0.15); 
 }
-body.light-theme #trail-canvas { opacity: 0.6 !important; }
+body.light-theme #trail-canvas { mix-blend-mode: multiply !important; opacity: 0.85 !important; filter: blur(24px) !important; }
 
 /* СКВОЗНОЙ ПЕРЕХВАТ БАЗОВЫХ ФОНОВ */
 body, .r, [class*="t396__artboard"], [class*="t396__carrier"], 
