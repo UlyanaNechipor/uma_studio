@@ -5,7 +5,7 @@
    Срабатывает один раз, когда список доходит до экрана.
    Строка — группа Тильды с линией сверху или снизу.
    Телефон (карточки .project-group-card): каждая карточка — когда доходит до экрана:
-   линия-разделитель над ней прочерчивается «бегунком» слева направо, следом
+   линия-разделитель над ней прочерчивается слева направо, следом
    по очереди всплывают название, тип и обложки. Год — табло (js/year-ticker.js).
    Стили — css/project-rows.css. */
 (function () {
@@ -65,6 +65,7 @@
   /* ---------- телефон: карточки ---------- */
   var CARD_STEP = 0.08;   // с: между элементами внутри карточки
   function cardsMode(rec) {
+    if (window.innerWidth >= 960) return false;   // десктоп — строки (prepare/run)
     var cards = [].slice.call(rec.querySelectorAll('.project-group-card')).filter(function (c) {
       var r = c.getBoundingClientRect();
       return r.width > 0 && r.height > 0 && r.left < window.innerWidth && r.right > 0;
