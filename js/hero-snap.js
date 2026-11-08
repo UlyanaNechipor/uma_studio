@@ -31,7 +31,8 @@
   var soft = null;         // мягкая доводка идёт: любой жест её прерывает
   var lastWheel = 0, quietT = 0, idleT = 0, lastY = window.scrollY, dir = 1, touching = false;
 
-  function enabled() { return !mouse || window.innerWidth >= MIN_W; }
+  // только компьютер с мышью/тачпадом: на телефоне доводка ощущалась как рывок, убрана
+  function enabled() { return mouse && window.innerWidth >= MIN_W; }
   function heroReady() { return !html.classList.contains('uma-hero-hold') || html.classList.contains('uma-hero-in'); }
   function headerH() { return typeof window.umaHeaderHeight === 'function' ? window.umaHeaderHeight() : 0; }
 

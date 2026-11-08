@@ -5,11 +5,18 @@
    uma-hero-hold — прелоадер ещё не ушёл, uma-hero-in — пора показывать.
    Галерея раскрывается сама (js/hero-gallery.js, REVEAL_DELAY), заголовок заливается
    после TEXT_DELAY (js/hero-fill.js). */
-html.uma-hero-hold #rec3979597401 .t396__elem:not([data-elem-type="gallery"]) {
+/* тексты проявляются и поднимаются снизу, по очереди: описание, затем заголовок */
+html.uma-hero-hold #rec3979597401 .t396__elem[data-elem-type="text"] {
+    transition: opacity .9s var(--m-out), transform 1.2s var(--m-out) !important;
+}
+html.uma-hero-hold #rec3979597401 .t396__elem:not([data-elem-type="gallery"]):not([data-elem-type="text"]) {
     transition: opacity .9s var(--m-out) !important;
 }
 html.uma-hero-hold:not(.uma-hero-in) #rec3979597401 .t396__elem:not([data-elem-type="gallery"]) {
     opacity: 0 !important;
+}
+html.uma-hero-hold:not(.uma-hero-in) #rec3979597401 .t396__elem[data-elem-type="text"] {
+    transform: translate3d(0, var(--m-shift), 0) !important;
 }
 /* заголовок — чуть позже описания */
 html.uma-hero-hold #rec3979597401 .t396__elem[class*="uma-stream-"] { transition-delay: .15s !important; }

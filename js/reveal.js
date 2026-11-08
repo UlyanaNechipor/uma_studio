@@ -17,6 +17,9 @@
   // «подлёт» из Тильды (fadeinup / left / right / down): направление и задержки из настроек
   // элемента в Zero-блоке сохраняются, но в общем ритме — сдвиг не больше FLY_MAX px,
   // задержка не больше DELAY_MAX с, движение — общая кривая сайта
+  // блоки, где подлёт из Тильды не берём — появление как в подвале: проявляются и поднимаются
+  // на --m-shift, один за другим слева направо (услуги Digital / Design / Direction / Ai)
+  var PLAIN_RECS = ['rec4283359601'];
   var FLY_MIN = 40, FLY_MAX = 100, DELAY_MAX = 0;   // задержки Тильды не берём: всё — одна очередь «бам-бам-бам» с шагом STEP
   /* ============================================= */
 
@@ -36,6 +39,8 @@
   }
 
   function fly(el) {
+    var rec = el.closest('.t-rec');
+    if (rec && PLAIN_RECS.indexOf(rec.id) > -1) return;
     var st = el.getAttribute('data-animate-style') || '';
     var m = st.match(/^fadein(up|down|left|right)$/);
     if (!m) return;

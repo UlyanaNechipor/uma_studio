@@ -1,28 +1,25 @@
 /* UMA · project-rows — появление строк списка проектов (js/project-rows.js).
    За основу — список услуг Oera Studio: строка целиком (линия + текст) проявляется
    и въезжает на место — слева направо, мягко: короткий путь (48 px), долгое плавное
-   торможение (1.5 с), прозрачность уходит чуть быстрее движения. Одновременно строка
-   открывается шторкой слева направо — линия и текст «прорисовываются» от левого края.
-   Строки — по очереди. */
+   торможение (1.5 с), прозрачность уходит чуть быстрее движения. Строки — по очереди. */
 .uma-row {
     opacity: 0;
     transform: translate3d(-48px, 0, 0);
-    clip-path: inset(-20% 100% -20% 0);
-    backface-visibility: hidden;
 }
+/* только opacity и transform — их считает видеокарта; шторка (clip-path) перерисовывала
+   строки с картинками на каждом кадре, и список тормозил */
+.uma-rows-in .uma-row:not(.uma-row--done) { will-change: transform, opacity; }
 .uma-rows-in .uma-row {
     opacity: 1;
     transform: none;
-    clip-path: inset(-20% 0 -20% 0);
     transition:
         opacity 1.1s cubic-bezier(0.33, 1, 0.68, 1) var(--row-d, 0s),
-        transform 1.5s cubic-bezier(0.22, 1, 0.36, 1) var(--row-d, 0s),
-        clip-path 1.4s cubic-bezier(0.65, 0, 0.35, 1) var(--row-d, 0s);
+        transform 1.5s cubic-bezier(0.22, 1, 0.36, 1) var(--row-d, 0s);
 }
-.uma-rows-done .uma-row { transition: none; clip-path: none; }
+.uma-rows-done .uma-row { transition: none; will-change: auto; }
 
 @media (prefers-reduced-motion: reduce) {
-    .uma-row { opacity: 1; transform: none; clip-path: none; }
+    .uma-row { opacity: 1; transform: none; }
 }
 
 /* ---------- телефон: карточки проектов ----------

@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
-    const RES = 0.5; // доля разрешения холста
+    const RES = 0.25; // доля разрешения холста: картинка растягивается браузером и сама получается мягкой —
+                      // вместо размытия фильтром на весь экран (оно и смешивание слоёв тормозили всю страницу)
     // акцентный цвет из --uma-accent (задаётся во вставке Тильды), по умолчанию #d94f30
     const ACC = (function () {
         const v = getComputedStyle(document.documentElement).getPropertyValue('--uma-accent').trim() || '#d94f30';
@@ -95,8 +96,11 @@ document.addEventListener("DOMContentLoaded", function() {
         requestAnimationFrame(animate);
     }
 
+    let light = false;
     function animate() {
+        light = document.body.classList.contains('light-theme');
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        ctx.globalCompositeOperation = light ? 'source-over' : 'lighter';
 
         // ИНЕРЦИОННОЕ СГЛАЖИВАНИЕ
         if (mouseX !== -1000) {
