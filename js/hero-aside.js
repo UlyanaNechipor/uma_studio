@@ -19,7 +19,9 @@
   };
   var SPEED = 1.0;      // скорость течения
   var WAKE  = 1.0;      // сила следа от курсора
-  var MAX_DPR = 1.5;    // предел плотности пикселей (экономит видеокарту)
+  var RES   = 0.6;      // во сколько раз холст мельче квадрата на экране (картина мягкая — разницы не видно,
+                        // а видеокарте работы в 3–6 раз меньше: прокрутка не дёргается)
+  var FPS   = 30;       // кадров в секунду: течение медленное, больше не нужно
   /* ============================================= */
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -40,7 +42,7 @@
     'float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}',
     'float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);',
     ' return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);}',
-    'float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<5;i++){v+=a*noise(p);p=m*p;a*=.5;}return v;}',
+    'float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<4;i++){v+=a*noise(p);p=m*p;a*=.5;}return v;}',
     'void main(){',
     ' float asp=uRes.x/uRes.y;',
     ' vec2 uv=vUv;vec2 p=vec2((uv.x-.5)*asp,uv.y-.5);',
@@ -116,7 +118,7 @@
     var W = 0, H = 0;
     function size() {
       var b = cv.getBoundingClientRect();
-      var dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+      var dpr = RES;
       var w = Math.max(1, Math.round(b.width * dpr)), h = Math.max(1, Math.round(b.height * dpr));
       if (w === W && h === H) return;
       W = w; H = h; cv.width = w; cv.height = h;
@@ -137,8 +139,11 @@
     }
 
     var visible = true, raf = 0, t0 = performance.now(), frame = 0, last = t0;
+    var lastDraw = 0;
     function draw(now) {
       raf = 0;
+      if (!reduce && now - lastDraw < 1000 / FPS - 2 && el.classList.contains('is-ready')) { loop(); return; }
+      lastDraw = now;
       size();
       var dt = Math.min(0.05, (now - last) / 1000); last = now;
       var k = 1 - Math.pow(0.0015, dt);            // плавное догоняние курсора

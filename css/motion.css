@@ -36,7 +36,7 @@ html.uma-rv-on body .uma-rv.uma-rv--fly,
 html.uma-rv-on #allrecords .t-rec .uma-rv.uma-rv--fly.t-animate {
     transform: translate3d(var(--rv-x, 0px), var(--rv-y, var(--m-shift)), 0) !important;
 }
-html.uma-rv-on .uma-rv.uma-rv--text:not(.uma-rv--fly) { filter: blur(var(--m-blur)); }
+/* без размытия: «дымка» на всех текстах при загрузке выглядела грязно и нагружала видеокарту */
 html.uma-rv-on body .uma-rv.is-in,
 html.uma-rv-on #allrecords .t-rec .uma-rv.t-animate.is-in {
     opacity: 1 !important;

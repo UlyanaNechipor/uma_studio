@@ -74,12 +74,29 @@
     cards.forEach(function (c) {
       var m = c.querySelector(':scope > .tn-molecule');
       if (!m) return;
-      var cs = getComputedStyle(m);
+      // линия-разделитель — верхняя граница одной из групп внутри карточки (строка с названием).
+      // Цвет и толщину читаем до классов: они прячут родную линию
+      var line = null, col = '', bw = '';
+      [m].concat([].slice.call(c.querySelectorAll('.tn-molecule'))).some(function (x) {
+        var cs = getComputedStyle(x);
+        if (parseFloat(cs.borderTopWidth) > 0 && cs.borderTopStyle !== 'none' && !/rgba\([^)]*,\s*0\)$/.test(cs.borderTopColor) && cs.borderTopColor !== 'transparent') {
+          line = x; col = cs.borderTopColor; bw = cs.borderTopWidth; return true;
+        }
+      });
       c.classList.add('uma-card');
-      c.style.setProperty('--row-line', cs.borderTopColor);
-      c.style.setProperty('--row-w', cs.borderTopWidth);
+      if (line) {
+        line.classList.add('uma-card__line');
+        c.style.setProperty('--row-line', col);
+        c.style.setProperty('--row-w', bw);
+      }
       // содержимое: строки карточки сверху вниз, внутри строки — слева направо
-      var parts = [].slice.call(m.querySelectorAll(':scope > .t396__elem, :scope > .t396__group'));
+      var parts = [];
+      [].slice.call(m.querySelectorAll(':scope > .t396__elem, :scope > .t396__group')).forEach(function (el) {
+        // группа с линией не гаснет целиком (линия в ней рисуется сразу) — гаснет её содержимое
+        if (line && el.contains(line) && el !== line) {
+          parts = parts.concat([].slice.call(line.querySelectorAll(':scope > .t396__elem, :scope > .t396__group')));
+        } else parts.push(el);
+      });
       parts.sort(function (a, b) {
         var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
         return Math.abs(ra.top - rb.top) > 6 ? ra.top - rb.top : ra.left - rb.left;

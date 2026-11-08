@@ -28,9 +28,9 @@
 /* ---------- телефон: карточки проектов ----------
    Линия над карточкой — псевдоэлемент: просто прочерчивается слева направо,
    родная линия Тильды на это время прозрачная. */
-.uma-card > .tn-molecule { position: relative; }
-.uma-card:not(.is-done) > .tn-molecule { border-top-color: transparent !important; }
-.uma-card > .tn-molecule::before {
+.uma-card .uma-card__line { position: relative; }
+.uma-card:not(.is-done) .uma-card__line { border-top-color: transparent !important; }
+.uma-card .uma-card__line::before {
     content: '';
     position: absolute;
     left: 0;
@@ -42,11 +42,11 @@
     transform-origin: 0 50%;
     pointer-events: none;
 }
-.uma-card.is-in > .tn-molecule::before {
+.uma-card.is-in .uma-card__line::before {
     transform: scaleX(1);
     transition: transform 1.1s var(--m-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
-.uma-card.is-done > .tn-molecule::before { display: none; }
+.uma-card.is-done .uma-card__line::before { display: none; }
 
 /* содержимое карточки: всплывает по очереди после старта линии */
 .uma-card__it {
@@ -64,5 +64,5 @@
 
 @media (prefers-reduced-motion: reduce) {
     .uma-card__it { opacity: 1; transform: none; }
-    .uma-card > .tn-molecule::before { transform: none; }
+    .uma-card .uma-card__line::before { transform: none; }
 }

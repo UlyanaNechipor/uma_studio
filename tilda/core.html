@@ -520,33 +520,52 @@ setTimeout(window.umaReleasePreloader, 20000);
     });
   }
 
-  /* ---------- 1. список файлов (uma.json) с первого доступного источника ----------
-     ?t= меняется раз в минуту, чтобы браузер не держал старый список. */
+  /* ---------- 1. список файлов (uma.json): со всех источников сразу ----------
+     raw.githubusercontent из России часто отвечает очень медленно (десятки секунд),
+     поэтому ждать его по очереди нельзя. Спрашиваем все источники одновременно и
+     берём самую свежую версию из ответивших: raw — если ответил быстро, иначе jsDelivr
+     (его кэш ветки сбрасывается после каждого обновления кода). */
+  var WAIT_FRESH = 1200;   // мс: сколько после первого ответа ждём, не придёт ли версия новее
+  function vnum(v) {       // "2026-11-08.23" → сравнимое число
+    var m = String(v || '').match(/^(\d{4})-(\d{2})-(\d{2})\.(\d+)$/);
+    return m ? (+m[1] * 10000 + +m[2] * 100 + +m[3]) * 1000 + +m[4] : 0;
+  }
   function loadManifest() {
-    var list = sources(ref), i = 0, t = Math.floor(Date.now() / 60000);
+    var list = sources(ref), t = Date.now();
     return new Promise(function (ok, fail) {
-      (function next() {
-        if (i >= list.length) return fail(new Error('uma.json недоступен во всех источниках'));
-        var base = list[i++];
-        timeout(fetch(base + 'uma.json?t=' + t, { cache: 'no-store' }), 6000).then(function (r) {
+      var best = null, left = list.length, settled = false, timer = 0;
+      function finish() { if (settled) return; settled = true; clearTimeout(timer); if (best) ok(best); else fail(new Error('uma.json недоступен во всех источниках')); }
+      list.forEach(function (base, k) {
+        timeout(fetch(base + 'uma.json?t=' + t, { cache: 'no-store' }), 8000).then(function (r) {
           if (!r.ok) throw new Error(r.status);
           return r.json();
-        }).then(function (m) { ok({ base: base, manifest: m }); }, function (e) {
-          log('источник не ответил', base, e.message); next();
+        }).then(function (m) {
+          log('uma.json', base, m.v);
+          if (!best || vnum(m.v) > vnum(best.manifest.v)) best = { base: base, manifest: m };
+          if (k === 0) return finish();                       // raw: самый свежий — сразу
+          if (!timer) timer = setTimeout(finish, WAIT_FRESH);
+        }, function (e) { log('источник не ответил', base, e.message); }).then(function () {
+          if (--left === 0) finish();
         });
-      })();
+      });
     });
   }
 
-  // один файл: сначала из того же источника, что и uma.json, потом из остальных.
-  // ?v= из uma.json: новая версия => новый адрес => браузер и CDN не отдадут старое.
-  function loadFile(base, version, path) {
-    var list = [base].concat(sources(ref).filter(function (b) { return b !== base; }));
+  // один файл. Если в uma.json есть sha (коммит кода) — с jsDelivr по этому коммиту:
+  // такой адрес неизменен, CDN никогда не отдаст по нему другую версию, и он быстрый.
+  // Иначе — как раньше: тот же источник, что и uma.json, потом остальные, с ?v=.
+  function loadFile(base, version, path, sha) {
+    var list = sha ? [
+      'https://cdn.jsdelivr.net/gh/' + REPO + '@' + sha + '/',
+      'https://fastly.jsdelivr.net/gh/' + REPO + '@' + sha + '/',
+      'https://raw.githubusercontent.com/' + REPO + '/' + sha + '/',
+      'https://gcore.jsdelivr.net/gh/' + REPO + '@' + sha + '/'
+    ] : [base].concat(sources(ref).filter(function (b) { return b !== base; }));
     var i = 0;
     return new Promise(function (ok, fail) {
       (function next() {
         if (i >= list.length) return fail(new Error('не загрузился ' + path));
-        getText(list[i++] + path + '?v=' + encodeURIComponent(version)).then(ok, next);
+        getText(list[i++] + path + (sha ? '' : '?v=' + encodeURIComponent(version))).then(ok, next);
       })();
     });
   }
@@ -574,7 +593,7 @@ setTimeout(window.umaReleasePreloader, 20000);
     var css = manifest.css || [], js = manifest.js || [];
     var all = css.concat(js);
     return Promise.all(all.map(function (p) {
-      return loadFile(base, version, p).catch(function (e) { console.warn('UMA loader: ' + e.message); return null; });
+      return loadFile(base, version, p, manifest.sha).catch(function (e) { console.warn('UMA loader: ' + e.message); return null; });
     })).then(function (texts) {
       var c = {
         v: version, base: base,
