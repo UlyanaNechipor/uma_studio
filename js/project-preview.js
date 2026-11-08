@@ -28,7 +28,7 @@
     { name: 'Sure',          file: 'img/covers/sure.webp' },
     { name: 'Kara Fox',      file: 'img/covers/kara-fox.webp' },
     { name: 'Black Sable',   file: 'img/covers/black-sable.webp' },
-    { name: 'Arine Atelier', file: 'img/covers/arine-atelier.webp' }
+    { name: 'Arine Atelier', file: 'img/covers/arine-atelier-mockup.webp' }
   ];
   var FOLLOW    = 0.12;  // насколько быстро окошко догоняет курсор (меньше = ленивее)
   var TILT_MAX  = 5;     // наклон окошка от скорости движения мыши, градусы (0 = без наклона)
