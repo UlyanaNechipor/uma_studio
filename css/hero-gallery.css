@@ -34,6 +34,11 @@ html body.t-body #allrecords .uma-hg-host.t-animate_started {
     transition: clip-path 1.25s var(--hg-out);
 }
 .uma-hg.is-in .uma-hg__frame { clip-path: inset(0 0 0 0); }
+/* до раскрытия галерея не видна совсем: обрезанный кадр давал тонкие светлые
+   «обводки» по краям (сглаживание краёв картинок), пока остальной экран ещё пустой */
+html body.t-body #allrecords .uma-hg-host:has(.uma-hg:not(.is-in)) { opacity: 0 !important; }
+html body.t-body #allrecords .uma-hg-host { transition: opacity .3s ease !important; }
+.uma-hg:not(.is-in) .uma-hg__frame { visibility: hidden; }
 
 /* лента кадров: едет по вертикали, как превью проектов на десктопе */
 .uma-hg__strip {

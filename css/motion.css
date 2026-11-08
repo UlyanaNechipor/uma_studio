@@ -20,18 +20,20 @@
    Вместо разнобойных появлений Тильды (разные длительности, задержки до 2.8 с,
    сдвиги 100–300 px) — одно: элемент проявляется, чуть поднимаясь;
    текст — ещё и из лёгкого размытия. Порядок — сверху вниз, слева направо. */
-html.uma-rv-on #allrecords .t-rec:not(#rec3979597401) .t396__elem.t-animate,
-html.uma-rv-on #allrecords .t-rec:not(#rec3979597401) .t396__group.t-animate {
+html.uma-rv-on #allrecords .t-rec:not(#rec3979597401) .t396__elem.t-animate:not(.uma-rv),
+html.uma-rv-on #allrecords .t-rec:not(#rec3979597401) .t396__group.t-animate:not(.uma-rv) {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
 }
-html.uma-rv-on .uma-rv {
+html.uma-rv-on body .uma-rv,
+html.uma-rv-on #allrecords .t-rec .uma-rv.t-animate {
     opacity: 0 !important;
     transform: translate3d(0, var(--m-shift), 0) !important;
 }
 html.uma-rv-on .uma-rv.uma-rv--text { filter: blur(var(--m-blur)); }
-html.uma-rv-on .uma-rv.is-in {
+html.uma-rv-on body .uma-rv.is-in,
+html.uma-rv-on #allrecords .t-rec .uma-rv.t-animate.is-in {
     opacity: 1 !important;
     transform: none !important;
     filter: none;
@@ -45,5 +47,6 @@ html.uma-rv-on .uma-rv.is-done { transition: none !important; }
 html.uma-rv-measure .uma-rv { transform: none !important; transition: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
-    html.uma-rv-on .uma-rv { opacity: 1 !important; transform: none !important; filter: none !important; }
+    html.uma-rv-on body .uma-rv,
+html.uma-rv-on #allrecords .t-rec .uma-rv.t-animate { opacity: 1 !important; transform: none !important; filter: none !important; }
 }
