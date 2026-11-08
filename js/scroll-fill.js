@@ -9,6 +9,9 @@
   /* ================= НАСТРОЙКИ ================= */
   var DEBUG = false;   // true: на странице видны маркеры start/end ScrollTrigger
   var SCRUB = 0.5;     // сглаживание заливки за скроллом, с (было 1: заливка заметно отставала)
+  var LEAD_FILL = 0.12; // доля заливки, которая проходит сама в момент появления заголовка
+                        // (js/reveal.js, класс is-in): заголовок и заливка ощущаются одним движением;
+                        // дальше заливка идёт за прокруткой
 
   /* Для каждого текста:
      el:    класс элемента текста в Зеро-блоке (тот, что раньше был серым слоем)
@@ -245,10 +248,46 @@
       if (p.mode === 'load') tl.duration(p.duration);
 
       it.tl = tl;
+      if (p.mode === 'scroll' && LEAD_FILL > 0) leadFill(it, lines, widths, total, feather);
     } catch (e) {
       // при сбое текст остаётся обычным залитым текстом (см. CSS)
       umaWarn('UMA stream: ошибка сборки текста', p.el, e);
     }
+  }
+
+  // заливка «не ниже пола»: пол поднимается до LEAD_FILL, когда заголовок появился
+  function leadFill(it, lines, widths, total, feather) {
+    var tl = it.tl, zero = it.el.closest('.t396__elem');
+    if (!zero) return;
+    var fl = it.floor || (it.floor = { v: 0 });
+    function renderAt(e) {
+      var acc = 0;
+      lines.forEach(function (line, k) {
+        var a = acc / total, b = (acc + widths[k]) / total;
+        acc += widths[k];
+        var f = e <= a ? 0 : e >= b ? 1 : (e - a) / (b - a);
+        setP(line, f * (widths[k] + feather));
+      });
+    }
+    function apply() { if (fl.v > tl.progress()) renderAt(fl.v); }
+    tl.eventCallback('onUpdate', apply);
+    it._lead = apply;
+    if (fl.v) { apply(); return; }           // пересборка (смена ширины): пол уже поднят
+    function go() {
+      if (it.floorGo) return;
+      it.floorGo = true;
+      gsap.to(fl, { v: LEAD_FILL, duration: 1.1, delay: 0.25, ease: 'power2.out', onUpdate: function () { if (it._lead) it._lead(); } });
+    }
+    var started = function () { return !zero.classList.contains('uma-rv') || zero.classList.contains('is-in'); };
+    if (zero.classList.contains('uma-rv') && started()) return go();
+    if (!zero.classList.contains('uma-rv')) {
+      // появления нет (отключено) — пол поднимаем, когда заголовок дошёл до экрана
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); go(); } }, { rootMargin: '0px 0px -12% 0px' });
+      io.observe(zero);
+      return;
+    }
+    var mo = new MutationObserver(function () { if (started()) { mo.disconnect(); go(); } });
+    mo.observe(zero, { attributes: true, attributeFilter: ['class'] });
   }
 
   function rebuildAll() {

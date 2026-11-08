@@ -11,7 +11,8 @@
 (function () {
   /* ================= НАСТРОЙКИ ================= */
   var REC_ID = 'rec3979597501';
-  var ROW    = 0.16;   // с: задержка между строками
+  var ROW    = 0.14;   // с: задержка между строками — общий шаг сайта (--m-step)
+  var LEAD   = 0.14;   // с: первая строка — сразу за заголовком блока (он появляется первым)
   var START  = 0.82;   // доля высоты экрана: верх списка дошёл до этой линии — запуск
   /* ============================================= */
 
@@ -47,7 +48,7 @@
     if (!rows.length) return null;
     rows.forEach(function (row, i) {
       var g = row.g;
-      g.style.setProperty('--row-d', (i * ROW).toFixed(2) + 's');
+      g.style.setProperty('--row-d', (LEAD + i * ROW).toFixed(2) + 's');
       g.classList.add('uma-row');
     });
     rec.__umaRows = rows;
@@ -58,12 +59,12 @@
   function play(rec) {
     rec.classList.add('uma-rows-in');
     // после анимации снимаем задержки, чтобы наведение/смена темы не ждали их
-    var last = (rec.__umaRows.length * ROW + 1.7) * 1000;
+    var last = (LEAD + rec.__umaRows.length * ROW + 1.4) * 1000;
     setTimeout(function () { rec.classList.add('uma-rows-done'); }, last);
   }
 
   /* ---------- телефон: карточки ---------- */
-  var CARD_STEP = 0.08;   // с: между элементами внутри карточки
+  var CARD_STEP = 0.14;   // с: между элементами внутри карточки — общий шаг сайта
   function cardsMode(rec) {
     if (window.innerWidth >= 960) return false;   // десктоп — строки (prepare/run)
     var cards = [].slice.call(rec.querySelectorAll('.project-group-card')).filter(function (c) {
@@ -103,7 +104,7 @@
       });
       parts.forEach(function (el, k) {
         el.classList.add('uma-card__it');
-        el.style.setProperty('--it-d', (0.18 + k * CARD_STEP).toFixed(2) + 's');
+        el.style.setProperty('--it-d', (0.14 + k * CARD_STEP).toFixed(2) + 's');
       });
     });
     var left = cards.slice(), ticking = false;
@@ -114,7 +115,7 @@
         var r = c.getBoundingClientRect();
         if (r.top < lim) {
           c.classList.add('is-in');
-          setTimeout(function () { c.classList.add('is-done'); }, 2000);
+          setTimeout(function () { c.classList.add('is-done'); }, 2800);
           return false;
         }
         return true;

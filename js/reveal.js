@@ -19,7 +19,8 @@
   // задержка не больше DELAY_MAX с, движение — общая кривая сайта
   // блоки, где подлёт из Тильды не берём — появление как в подвале: проявляются и поднимаются
   // на --m-shift, один за другим слева направо (услуги Digital / Design / Direction / Ai)
-  var PLAIN_RECS = ['rec4283359601'];
+  var FT_LEAD = 300;   // мс: колонки подвала стартуют, когда его линии уже пошли
+  var PLAIN_RECS = ['rec4283359601', 'rec3979597501', 'rec3979597701'];   // + «Избранные проекты», «О нас»
   var FLY_MIN = 40, FLY_MAX = 100, DELAY_MAX = 0;   // задержки Тильды не берём: всё — одна очередь «бам-бам-бам» с шагом STEP
   /* ============================================= */
 
@@ -58,6 +59,10 @@
       ['data-animate-style', 'data-animate-distance'].forEach(function (a) { if (el.hasAttribute(a) && !c.hasAttribute(a)) c.setAttribute(a, el.getAttribute(a)); });
     });
     el.classList.add('uma-rv-split');
+    // в общей очереди колонки стоят по верху самой группы (фото в «О нас» — сразу после
+    // заголовка рядом, а не раньше него), между собой — слева направо
+    var gt = Math.round(el.getBoundingClientRect().top + window.scrollY);
+    kids.forEach(function (c) { c.setAttribute('data-uma-order', gt); });
     return kids;
   }
 
@@ -82,7 +87,10 @@
   function flush() {
     queue.sort(function (a, b) {
       var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
-      return Math.abs(ra.top - rb.top) > 8 ? ra.top - rb.top : ra.left - rb.left;
+      var oa = a.getAttribute('data-uma-order'), ob = b.getAttribute('data-uma-order');
+      var ta = oa != null ? +oa - window.scrollY : ra.top;
+      var tb = ob != null ? +ob - window.scrollY : rb.top;
+      return Math.abs(ta - tb) > 8 ? ta - tb : ra.left - rb.left;
     });
     var k = 0, prev = null, prevD = 0;
     // задержки из Тильды — относительно самого раннего из вошедших вместе:
@@ -93,7 +101,7 @@
       // уже выше экрана (проскочили) — показываем сразу, без очереди: их не видно,
       // а задержка досталась бы тем, что на экране
       var r = el.getBoundingClientRect();
-      var above = r.bottom < 0;
+      var above = r.top < 0;   // уже частично проскочил вверх — сразу, не занимая место в очереди
       var d;
       if (above) d = 0;
       // слои одного заголовка (серый и заливка) лежат друг на друге — появляются вместе
@@ -101,6 +109,12 @@
       else d = (k++) * STEP;
       if (!above && el.__umaDelay != null) d = Math.max(d, el.__umaDelay - base);
       prev = r; prevD = d;
+      // подвал: сначала прочерчиваются его линии (сверху и снизу), колонки — следом
+      var ft = el.closest && el.closest('.uma-ft');
+      if (ft) {
+        if (!ft.classList.contains('is-lines')) ft.classList.add('is-lines');
+        if (!above) d += FT_LEAD;
+      }
       el.style.setProperty('--rv-d', (d / 1000).toFixed(2) + 's');
       el.classList.add('is-in');
       setTimeout(function () { el.classList.add('is-done'); el.style.removeProperty('--rv-d'); }, 1400 + d);

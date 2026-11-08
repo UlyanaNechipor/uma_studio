@@ -36,6 +36,30 @@
 }
 html.light-theme .uma-ft,
 body.light-theme .uma-ft { --ft-line: rgba(17, 18, 17, 0.12); }
+
+/* линии сверху и снизу прочерчиваются слева направо, как под шапкой,
+   когда подвал доходит до экрана (класс is-lines ставит js/reveal.js); колонки — следом */
+html.uma-rv-on .uma-ft { border-top-color: transparent; border-bottom-color: transparent; }
+html.uma-rv-on .uma-ft::before,
+html.uma-rv-on .uma-ft::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--ft-line);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    pointer-events: none;
+}
+html.uma-rv-on .uma-ft::before { top: -1px; }
+html.uma-rv-on .uma-ft::after { bottom: -1px; }
+html.uma-rv-on .uma-ft.is-lines::before,
+html.uma-rv-on .uma-ft.is-lines::after {
+    transform: scaleX(1);
+    transition: transform 1.3s cubic-bezier(0.65, 0, 0.35, 1);
+}
+html.uma-rv-on .uma-ft.is-lines::after { transition-delay: .15s; }
 .uma-ft *, .uma-ft *::before, .uma-ft *::after { box-sizing: border-box; }
 .uma-ft p, .uma-ft h2, .uma-ft ul { margin: 0; padding: 0; }
 
