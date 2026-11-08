@@ -427,14 +427,18 @@ body.light-theme {
 </script>
 
 <script>
-/* Страховка: если код из GitHub не загрузился, прелоадер всё равно уходит */
+/* Страховка: если код из GitHub так и не загрузился, прелоадер всё равно уходит.
+   20 с, а не меньше: при медленной сети (например, вкладка открылась сразу после
+   включения компьютера, пока не подключился Wi-Fi) лучше подождать на прелоадере,
+   чем показать страницу без кода — «разобранную». Обычно код приходит из сохранённой
+   копии в браузере (см. загрузчик ниже) за доли секунды. */
 window.umaReleasePreloader = function () {
   var p = document.getElementById('custom-preloader');
   if (p && !p.classList.contains('completed')) p.classList.add('completed');
   document.documentElement.classList.remove('uma-scroll-locked');
   if (document.body) document.body.classList.remove('uma-scroll-locked');
 };
-setTimeout(window.umaReleasePreloader, 10000);
+setTimeout(window.umaReleasePreloader, 20000);
 </script>
 
 <script>
@@ -547,35 +551,71 @@ setTimeout(window.umaReleasePreloader, 10000);
     });
   }
 
+  /* ---------- 2. сохранённая копия кода в браузере ----------
+     После каждой удачной загрузки весь код (версия + тексты файлов) сохраняется
+     в localStorage. При следующем открытии он берётся оттуда сразу — сайт не ждёт
+     GitHub и не разваливается, если сети ещё нет (вкладка открылась после
+     перезагрузки компьютера, плохой мобильный интернет). Если в GitHub новая
+     версия — она скачивается и подключается вместо сохранённой. */
+  var CACHE_KEY = 'uma_code_' + ref;
+  var FAST = 1500;   // мс: сколько ждём свежий uma.json, прежде чем взять сохранённую копию
+  function readCache() {
+    try { var c = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); return c && c.v && c.css && c.js ? c : null; }
+    catch (e) { return null; }
+  }
+  function writeCache(c) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(c)); }
+    catch (e) { try { localStorage.removeItem(CACHE_KEY); } catch (e2) {} }
+  }
+
   /* ---------- 3. подключение: все файлы качаются параллельно,
                     выполняются строго по порядку из uma.json ---------- */
-  function apply(version, base, manifest) {
+  function download(version, base, manifest) {
     var css = manifest.css || [], js = manifest.js || [];
     var all = css.concat(js);
     return Promise.all(all.map(function (p) {
       return loadFile(base, version, p).catch(function (e) { console.warn('UMA loader: ' + e.message); return null; });
     })).then(function (texts) {
-      var head = document.head || document.documentElement;
-      css.forEach(function (p, k) {
-        if (texts[k] == null) return;
-        var s = document.createElement('style');
-        s.setAttribute('data-uma', p);
-        s.textContent = texts[k];
-        head.appendChild(s);
-      });
-      js.forEach(function (p, k) {
-        var code = texts[css.length + k];
-        if (code == null) return;
-        var s = document.createElement('script');
-        s.setAttribute('data-uma', p);
-        // sourceURL: в DevTools ошибки показываются с именем файла из репозитория
-        s.text = code + '\n//# sourceURL=uma/' + p;
-        head.appendChild(s);
-      });
-      window.UMA = { ref: ref, version: version, base: base, files: all };
-      document.documentElement.classList.add('uma-loaded');
-      log('готово', ref, 'v' + version, all.length + ' файлов');
+      var c = {
+        v: version, base: base,
+        css: css.map(function (p, k) { return [p, texts[k]]; }),
+        js: js.map(function (p, k) { return [p, texts[css.length + k]]; })
+      };
+      // в копию — только полный набор, без пропавших файлов
+      if (texts.every(function (t) { return t != null; })) writeCache(c);
+      return c;
     });
+  }
+
+  var applied = false;
+  function inject(c, from) {
+    if (applied) return;
+    applied = true;
+    var run = function () {
+      var head = document.head || document.documentElement;
+      c.css.forEach(function (f) {
+        if (f[1] == null) return;
+        var s = document.createElement('style');
+        s.setAttribute('data-uma', f[0]);
+        s.textContent = f[1];
+        head.appendChild(s);
+      });
+      c.js.forEach(function (f) {
+        if (f[1] == null) return;
+        var s = document.createElement('script');
+        s.setAttribute('data-uma', f[0]);
+        // sourceURL: в DevTools ошибки показываются с именем файла из репозитория
+        s.text = f[1] + '\n//# sourceURL=uma/' + f[0];
+        head.appendChild(s);
+      });
+      var all = c.css.concat(c.js).map(function (f) { return f[0]; });
+      window.UMA = { ref: ref, version: c.v, base: c.base, from: from, files: all };
+      document.documentElement.classList.add('uma-loaded');
+      log('готово', ref, 'v' + c.v, from, all.length + ' файлов');
+    };
+    // код рассчитан на разобранную страницу (как при загрузке из сети)
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+    else run();
   }
 
   function failsafe(e) {
@@ -584,11 +624,35 @@ setTimeout(window.umaReleasePreloader, 10000);
   }
 
   function start() {
-    loadManifest().then(function (r) {
-      var version = String(r.manifest.v || Math.floor(Date.now() / 60000));
-      log('источник', r.base, 'версия', version);
-      return apply(version, r.base, r.manifest);
-    }).catch(failsafe);
+    var cached = readCache();
+    var waitT = 0;
+    if (cached) waitT = setTimeout(function () { log('сеть не успела — сохранённая копия', cached.v); inject(cached, 'cache'); }, FAST);
+
+    function attempt(n) {
+      loadManifest().then(function (r) {
+        var version = String(r.manifest.v || Math.floor(Date.now() / 60000));
+        log('источник', r.base, 'версия', version);
+        if (cached && cached.v === version) { clearTimeout(waitT); inject(cached, 'cache'); return; }
+        return download(version, r.base, r.manifest).then(function (c) {
+          clearTimeout(waitT);
+          // если сохранённая копия уже подключена — новая версия сохранена и включится при следующем открытии
+          inject(c, 'network');
+        });
+      }).catch(function (e) {
+        if (applied) return;
+        if (cached) { clearTimeout(waitT); inject(cached, 'cache'); return; }
+        // ни сети, ни копии: ждём сеть и пробуем снова (прелоадер пока держится)
+        if (n < 6) {
+          log('повтор', n + 1, e && e.message);
+          var again = function () { window.removeEventListener('online', again); clearTimeout(t); attempt(n + 1); };
+          var t = setTimeout(again, 3000);
+          window.addEventListener('online', again);
+          return;
+        }
+        failsafe(e);
+      });
+    }
+    attempt(0);
   }
   start();
 })();
