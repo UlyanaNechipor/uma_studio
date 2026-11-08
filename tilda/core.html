@@ -64,12 +64,26 @@ html, body {
     if (window.scrollY !== 0) window.scrollTo(0, 0);
     requestAnimationFrame(hold);
   })();
+  // человек сам начал листать — больше не возвращаем наверх
+  var touched = false;
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (t) {
+    window.addEventListener(t, function () { touched = true; }, { passive: true, capture: true });
+  });
   function unlock() {
     if (!locked) return;
     locked = false;
     root.classList.remove('uma-scroll-locked');
     if (document.body) document.body.classList.remove('uma-scroll-locked');
     window.scrollTo(0, 0);
+    // ещё 1.5 с после снятия замка держим верх, пока человек не тронул страницу:
+    // поздняя догрузка картинок, раскладка блоков и восстановление прокрутки браузером
+    // иногда сдвигали страницу вниз — отсюда «то вверху, то нет» после обновления
+    var until = Date.now() + 1500;
+    (function keep() {
+      if (touched || Date.now() > until) return;
+      if (window.scrollY !== 0) window.scrollTo(0, 0);
+      requestAnimationFrame(keep);
+    })();
   }
   window.umaUnlockScroll = unlock;
   // прелоадер ушёл (класс completed) — снимаем замок
@@ -84,6 +98,7 @@ html, body {
   setTimeout(unlock, 6000);
   // страница вернулась из кэша вкладок (назад/вперёд) — тоже наверх
   window.addEventListener('pageshow', function (e) { if (e.persisted) window.scrollTo(0, 0); });
+  window.addEventListener('load', function () { if (!touched && !locked) window.scrollTo(0, 0); });
 })();
 </script>
 

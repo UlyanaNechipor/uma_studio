@@ -24,3 +24,9 @@ html.uma-hero-hold #rec3979597401 .t396__elem[class*="uma-stream-"] { transition
 @media (prefers-reduced-motion: reduce) {
     html.uma-hero-hold #rec3979597401 .t396__elem { transition: none !important; }
 }
+
+/* Анимации появления из Тильды на первом экране выключены: у галереи там подъём на 300 px
+   с задержкой 3.3 с — после загрузки галерея «висела» ниже квадрата справа и потом доезжала.
+   Первый экран проявляется своим кодом (выше и js/hero-gallery.js). */
+html body #allrecords #rec3979597401 .t396__elem.t-animate { opacity: 1; transition-delay: 0s; }
+html body #allrecords #rec3979597401 .t396__elem.t-animate:not([data-elem-type="text"]) { transform: none !important; }

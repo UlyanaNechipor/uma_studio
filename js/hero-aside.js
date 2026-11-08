@@ -86,6 +86,23 @@
     el.__umaAside = true;
     el.classList.add('uma-aside');
 
+    // раскрытие — вместе с галереей первого экрана (её класс is-in)
+    (function syncReveal() {
+      var rec = el.closest('.t-rec');
+      function check() {
+        var hg = rec && rec.querySelector('.uma-hg');
+        if (hg && hg.classList.contains('is-in')) {
+          el.classList.add('is-in');
+          setTimeout(function () { el.classList.add('is-shown'); }, 1500);
+          return true;
+        }
+      }
+      if (check()) return;
+      var mo = new MutationObserver(function () { if (check()) mo.disconnect(); });
+      mo.observe(rec, { attributes: true, childList: true, subtree: true, attributeFilter: ['class'] });
+      setTimeout(function () { mo.disconnect(); el.classList.add('is-in', 'is-shown'); }, 15000);   // страховка
+    })();
+
     var cv = document.createElement('canvas');
     cv.className = 'uma-aside__cv';
     cv.setAttribute('aria-hidden', 'true');

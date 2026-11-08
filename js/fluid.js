@@ -216,12 +216,26 @@
   var rng = document.createRange();
   function rect(el) {
     var r = el.getBoundingClientRect(), h = r.height;
+    // сдвиг анимации появления (подъём снизу у текстов первого экрана, js/reveal.js и т. п.)
+    // не считаем: иначе ещё не появившийся текст «наезжал» на элемент под ним, и тот
+    // зря опускался (галерея первого экрана уезжала ниже квадрата справа)
+    var ty = 0;
+    var tf = getComputedStyle(el).transform;
+    if (tf && tf !== 'none') {
+      var mm = tf.match(/^matrix\(([^)]+)\)$/);
+      if (mm) {
+        var p = mm[1].split(',');
+        var z = el.offsetHeight ? r.height / el.offsetHeight : 1;   // zoom Тильды
+        ty = (parseFloat(p[5]) || 0) * (z > 0.2 && z < 5 ? z : 1);
+      }
+    }
+    if (ty) r = { top: r.top - ty, bottom: r.bottom - ty, left: r.left, right: r.right, height: r.height, width: r.width };
     if (el.matches('.t396__elem[data-elem-type="text"]')) {
       var a = el.querySelector('.tn-atom');
       if (a && !a.querySelector('.uma-yr')) {     // год-табло: полоса цифр выше строки, но спрятана
         rng.selectNodeContents(a);
         var ar = rng.getBoundingClientRect();
-        if (ar && ar.height) h = Math.max(0, ar.bottom - r.top);
+        if (ar && ar.height) h = Math.max(0, ar.bottom - ty - r.top);
       }
     }
     return { top: r.top, bottom: r.top + h, left: r.left, right: r.right, h: h, w: r.width };
