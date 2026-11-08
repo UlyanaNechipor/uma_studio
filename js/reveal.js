@@ -21,6 +21,7 @@
   // на --m-shift, один за другим слева направо (услуги Digital / Design / Direction / Ai)
   var FT_LEAD = 300;   // мс: колонки подвала стартуют, когда его линии уже пошли
   var PLAIN_RECS = ['rec4283359601', 'rec3979597501', 'rec3979597701'];   // + «Избранные проекты», «О нас»
+  var SIDE_REC = 'rec4283359601', SIDE_MAX = 960, SIDE_X = 56;   // мобилка: услуги выезжают слева направо
   var FLY_MIN = 40, FLY_MAX = 100, DELAY_MAX = 0;   // задержки Тильды не берём: всё — одна очередь «бам-бам-бам» с шагом STEP
   /* ============================================= */
 
@@ -50,6 +51,9 @@
       return r.width > 2 && r.height > 2 && (c.classList.contains('t396__group') || c.classList.contains('t396__elem'));
     });
     if (kids.length < 2) return null;
+    // мобилка, услуги: блоки стоят столбиком — всё равно делим, каждый выезжает сам
+    var rec = el.closest('.t-rec');
+    if (rec && rec.id === SIDE_REC && window.innerWidth < SIDE_MAX) { el.classList.add('uma-rv-split'); return kids; }
     var lefts = {};
     kids.forEach(function (c) { lefts[Math.round(c.getBoundingClientRect().left / 8)] = 1; });
     if (Object.keys(lefts).length < 2) return null;     // всё в одну колонку — оставляем группу целой
@@ -68,6 +72,14 @@
 
   function fly(el) {
     var rec = el.closest('.t-rec');
+    // мобилка, услуги (Digital / Design / Direction / Ai стоят столбиком):
+    // каждый блок выезжает слева направо, по очереди
+    if (rec && rec.id === SIDE_REC && window.innerWidth < SIDE_MAX) {
+      el.style.setProperty('--rv-x', -SIDE_X + 'px');
+      el.style.setProperty('--rv-y', '0px');
+      el.classList.add('uma-rv--fly', 'uma-rv--side');
+      return;
+    }
     if (rec && PLAIN_RECS.indexOf(rec.id) > -1) return;
     var st = el.getAttribute('data-animate-style') || '';
     var m = st.match(/^fadein(up|down|left|right)$/);
