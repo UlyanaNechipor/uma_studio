@@ -1,10 +1,10 @@
 /* UMA · project-rows — появление строк списка проектов (js/project-rows.js).
    За основу — список услуг Oera Studio: строка целиком (линия + текст) проявляется
-   и въезжает на место слева направо. Расстояние, длительность, кривая и шаг — общие для
-   сайта (css/motion.css: --m-shift, --m-reveal, --m-out, шаг 0.14 с), как у остальных блоков. */
+   и въезжает на место слева направо, по общей кривой сайта (--m-out). Каждая строка короче
+   (0.95 с) и с шагом 0.22 с — чтобы читалось «линия за линией», а не одна шторка. */
 .uma-row {
     opacity: 0;
-    transform: translate3d(calc(-1 * var(--m-shift, 40px)), 0, 0);
+    transform: translate3d(-56px, 0, 0);
 }
 /* только opacity и transform — их считает видеокарта; шторка (clip-path) перерисовывала
    строки с картинками на каждом кадре, и список тормозил */
@@ -13,8 +13,8 @@
     opacity: 1;
     transform: none;
     transition:
-        opacity calc(var(--m-reveal, 1.1s) * .75) ease var(--row-d, 0s),
-        transform var(--m-reveal, 1.1s) var(--m-out, cubic-bezier(0.16, 1, 0.3, 1)) var(--row-d, 0s);
+        opacity .55s ease var(--row-d, 0s),
+        transform .95s var(--m-out, cubic-bezier(0.16, 1, 0.3, 1)) var(--row-d, 0s);
 }
 .uma-rows-done .uma-row { transition: none; will-change: auto; }
 
