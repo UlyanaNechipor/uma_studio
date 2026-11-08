@@ -14,6 +14,10 @@
   var SKIP_RECS = ['rec3979597401', 'rec3979597301', 'rec3979597201'];   // первый экран, старая шапка, подвал
   var STEP = 140;       // мс: шаг между элементами, вошедшими вместе — подлетают по очереди
   var EDGE_K = 0.12;    // элемент «вошёл», когда его верх поднялся над нижними 12% экрана
+  // «подлёт» из Тильды (fadeinup / left / right / down): направление и задержки из настроек
+  // элемента в Zero-блоке сохраняются, но в общем ритме — сдвиг не больше FLY_MAX px,
+  // задержка не больше DELAY_MAX с, движение — общая кривая сайта
+  var FLY_MIN = 40, FLY_MAX = 100, DELAY_MAX = 0.6;
   /* ============================================= */
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -31,6 +35,21 @@
        !!el.querySelector('[data-elem-type="text"]'));
   }
 
+  function fly(el) {
+    var st = el.getAttribute('data-animate-style') || '';
+    var m = st.match(/^fadein(up|down|left|right)$/);
+    if (!m) return;
+    var dist = parseFloat(el.getAttribute('data-animate-distance')) || 100;
+    dist = Math.max(FLY_MIN, Math.min(FLY_MAX, dist));
+    var x = m[1] === 'left' ? dist : m[1] === 'right' ? -dist : 0;
+    var y = m[1] === 'up' ? dist : m[1] === 'down' ? -dist : 0;
+    el.style.setProperty('--rv-x', x + 'px');
+    el.style.setProperty('--rv-y', y + 'px');
+    el.classList.add('uma-rv--fly');
+    var dl = Math.min(DELAY_MAX, parseFloat(el.getAttribute('data-animate-delay')) || 0);
+    el.__umaDelay = dl * 1000;
+  }
+
   var io = false, queue = [];
   function flush() {
     queue.sort(function (a, b) {
@@ -38,6 +57,10 @@
       return Math.abs(ra.top - rb.top) > 8 ? ra.top - rb.top : ra.left - rb.left;
     });
     var k = 0, prev = null, prevD = 0;
+    // задержки из Тильды — относительно самого раннего из вошедших вместе:
+    // элемент, вошедший в экран один, не ждёт
+    var base = Infinity;
+    queue.forEach(function (el) { if (el.__umaDelay != null && el.getBoundingClientRect().bottom >= 0) base = Math.min(base, el.__umaDelay); });
     queue.forEach(function (el) {
       // уже выше экрана (проскочили) — показываем сразу, без очереди: их не видно,
       // а задержка досталась бы тем, что на экране
@@ -48,6 +71,7 @@
       // слои одного заголовка (серый и заливка) лежат друг на друге — появляются вместе
       else if (prev && Math.abs(prev.top - r.top) < 3 && Math.abs(prev.left - r.left) < 3) d = prevD;
       else d = (k++) * STEP;
+      if (!above && el.__umaDelay != null) d = Math.max(d, el.__umaDelay - base);
       prev = r; prevD = d;
       el.style.setProperty('--rv-d', (d / 1000).toFixed(2) + 's');
       el.classList.add('is-in');
@@ -68,6 +92,7 @@
         if (skip(el)) return;
         el.classList.add('uma-rv');
         if (isText(el)) el.classList.add('uma-rv--text');
+        fly(el);
         list.push(el);
       });
     });
