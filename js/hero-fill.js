@@ -8,7 +8,8 @@
 
   /* ================= НАСТРОЙКИ ================= */
   var REC_ID     = 'rec3979597401';
-  var MIN_TIME   = 2900;  // мс: минимум до вылета логотипа (заливка логотипа к этому моменту закончена)
+  var MIN_TIME   = 2900;  // мс: запасной минимум до вылета логотипа, если анимацию заливки не найти
+  var FILL_DONE  = 0.72;  // доля анимации заливки логотипа, после которой он выглядит залитым (кривая быстро тормозит) — тогда и вылет
   var INNER_MIN_TIME = 1400; // мс: то же на страницах без главного экрана (страницы проектов)
   var MAX_WAIT   = 4500;  // мс: предохранитель, дольше этого прелоадер не держим
   var FONT_WAIT  = 1200;  // мс после минимума: дольше шрифты не ждём
@@ -70,7 +71,21 @@
   function startController() {
     if (!preloader) { textReady = true; return; }
 
-    setTimeout(function () { minDone = true; tryRelease(); }, MIN_TIME);
+    // вылет — сразу как логотип залился (по самой анимации заливки в прелоадере),
+    // а не по таймеру от загрузки кода: если код приходил позже, после заливки была
+    // долгая пауза и казалось, что всё зависло
+    (function waitFill() {
+      var r = document.querySelector('#custom-preloader .uma-reveal');
+      var a = r && r.getAnimations ? r.getAnimations()[0] : null;
+      if (!a) { setTimeout(function () { minDone = true; tryRelease(); }, MIN_TIME); return; }
+      var t = a.effect && a.effect.getTiming ? a.effect.getTiming() : null;
+      var end = t ? (+t.delay || 0) + (+t.duration || 0) * FILL_DONE : MIN_TIME;
+      (function poll() {
+        var now = a.currentTime;
+        if (now != null && now >= end) { minDone = true; tryRelease(); return; }
+        setTimeout(poll, 50);
+      })();
+    })();
 
     // Загрузку всех картинок страницы (событие load) больше не ждём: на медленной
     // сети она тянулась десятки секунд, и логотип «зависал». Ждём только шрифты,
