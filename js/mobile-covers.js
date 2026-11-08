@@ -15,7 +15,7 @@
     '1790190980231000015': ['img/mobile/rosi-2.webp',        'Rosi'],
     '1790337067370000010': ['img/covers/sure.webp',          'Sure'],
     '1790337067370000009': ['img/mobile/sure-2.webp',        'Sure'],
-    '1790337087864000019': ['img/covers/kara-fox.webp',      'Kara Fox'],
+    '1790337087864000019': ['img/mobile/kara-fox-mockup.webp', 'Kara Fox'],
     '1790337087864000018': ['img/mobile/kara-fox-2.webp',    'Kara Fox'],
     '1790337091915000027': ['img/covers/black-sable.webp',   'Black Sable'],
     '1790337091915000026': ['img/mobile/black-sable-2.webp', 'Black Sable'],

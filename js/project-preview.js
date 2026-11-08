@@ -26,7 +26,7 @@
   var PROJECTS = [
     { name: 'Rosi',          file: 'img/covers/rosi.webp' },
     { name: 'Sure',          file: 'img/covers/sure.webp' },
-    { name: 'Kara Fox',      file: 'img/covers/kara-fox.webp' },
+    { name: 'Kara Fox',      file: 'img/covers/kara-fox-mockup.webp' },
     { name: 'Black Sable',   file: 'img/covers/black-sable.webp' },
     { name: 'Arine Atelier', file: 'img/covers/arine-atelier-mockup.webp' }
   ];

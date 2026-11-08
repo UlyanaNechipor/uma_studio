@@ -17,7 +17,7 @@
   var MIN_SLIDES = 5;     // если в Тильде фото меньше — добавляем обложки (Arine — мокапом из FIRST)
   var EXTRA = [           // Rosi и Black Sable уже есть в галерее Тильды
     { name: 'sure',          title: 'Sure' },
-    { name: 'kara-fox',      title: 'Kara Fox' }
+    { name: 'kara-fox-mockup', title: 'Kara Fox' }
   ];
   // фото из галереи Тильды, которые подменяются файлами из репозитория (img/gallery)
   var REPLACE = [
