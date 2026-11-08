@@ -41,7 +41,7 @@ html.light-theme .uma-hd, body.light-theme .uma-hd { --hd-line: rgba(17, 18, 17,
     transition: background-color .5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.uma-hd-logo-on .uma-hd::before {
-    animation: umaHdLine 1.2s cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation: umaHdLine 1.3s cubic-bezier(0.65, 0, 0.35, 1) both;
 }
 @keyframes umaHdLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @media (prefers-reduced-motion: reduce) { .uma-hd::before { animation: none !important; transform: none; } }
@@ -161,11 +161,11 @@ html.uma-fluid-m .uma-hd__toggle { right: 5vw; }
 .uma-hd__link,
 html body .uma-hd .theme-toggle-btn {
     opacity: 0 !important;
-    translate: 0 8px;
+    translate: 0 5px;
     animation: none !important;
     transition:
-        opacity .7s cubic-bezier(0.16, 1, 0.3, 1) var(--hd-d, 0s),
-        translate .9s cubic-bezier(0.16, 1, 0.3, 1) var(--hd-d, 0s),
+        opacity 1s cubic-bezier(0.33, 1, 0.68, 1) var(--hd-d, 0s),
+        translate 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--hd-d, 0s),
         color var(--m-hover) var(--m-out),
         background-color .5s cubic-bezier(0.16, 1, 0.3, 1),
         border-color .5s cubic-bezier(0.16, 1, 0.3, 1) !important;

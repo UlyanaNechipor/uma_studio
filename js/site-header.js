@@ -130,7 +130,24 @@
     hd.style.setProperty('--hd-x', Math.max(0, left - bearing).toFixed(1) + 'px');
   }
 
-  function handoff() { root.classList.add('uma-hd-logo-on'); }
+  // пункты меню и переключатель проявляются там, где их проходит линия под шапкой
+  // (она прочерчивается слева направо, css/site-header.css): задержка каждого — по его
+  // положению на экране. Так шапка появляется одним движением, а не «каждый сам по себе»
+  var LINE_DUR = 1.3;   // с — как у линии
+  function handoff() {
+    var hd = document.querySelector('.uma-hd');
+    if (hd) {
+      var w = window.innerWidth || 1;
+      [].slice.call(hd.querySelectorAll('.uma-hd__link, .theme-toggle-btn')).forEach(function (el) {
+        var b = el.getBoundingClientRect();
+        var x = Math.min(1, Math.max(0, (b.left + b.width / 2) / w));
+        // линия идёт с плавным разгоном и торможением: до точки x она доходит примерно к этой доле времени
+        var k = x < .5 ? Math.cbrt(x / 4) : 1 - Math.cbrt((1 - x) / 4);
+        el.style.setProperty('--hd-d', (LINE_DUR * k * 0.85).toFixed(2) + 's');
+      });
+    }
+    root.classList.add('uma-hd-logo-on');
+  }
 
   function watchPreloader() {
     var pre = document.getElementById('custom-preloader');
