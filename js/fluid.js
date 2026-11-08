@@ -229,10 +229,71 @@
 
   function reflow(ab) {
     clearShift(ab);
-    if (!inFluid()) return;
     // появление при прокрутке (js/reveal.js) сдвигает элементы — на время замеров без сдвига
     document.documentElement.classList.add('uma-rv-measure');
-    try { reflowInner(ab); } finally { document.documentElement.classList.remove('uma-rv-measure'); }
+    try { if (inFluid()) reflowInner(ab); else guard(ab); }
+    finally { document.documentElement.classList.remove('uma-rv-measure'); }
+  }
+
+  /* ---------- 5. страховка от наложений в родных раскладках Тильды (телефон, компьютер) ----------
+     Позиции в Zero-блоке абсолютные: если текст на конкретном устройстве переносится
+     на строку больше, чем в макете (другая ширина экрана, шрифт в Safari, встроенный
+     браузер), он наезжает на то, что под ним, — например, на кнопку. Здесь элемент,
+     на который наехал текст, опускается ровно под этот текст (+ GUARD_GAP), а всё,
+     что ниже в той же полосе, — на столько же. Если наложений нет, ничего не двигается. */
+  var GUARD_GAP = 12;   // px на экране между нижней строкой текста и элементом под ним
+  function hasText(el) {
+    return el.matches('.t396__elem[data-elem-type="text"]') ||
+      (el.matches('.t396__group') && !!el.querySelector('.t396__elem[data-elem-type="text"]'));
+  }
+  function guard(ab) {
+    var all = items(ab);
+    var base = ab.getBoundingClientRect();
+    var vw = width();
+    var R = all.map(rect);
+    var idx = [];
+    for (var i = 0; i < all.length; i++) {
+      var d = R[i];
+      if (!d.h || !d.w) continue;
+      if (d.top - base.top < -5 || d.right < -5 || d.left > vw + 5) continue;
+      idx.push(i);
+    }
+    idx.sort(function (p, q) { return R[p].top - R[q].top; });
+    var shift = {}, nb = {}, moved = false, maxOld = 0, maxNew = 0;
+    idx.forEach(function (j) {
+      var dj = R[j], top = dj.top;
+      idx.forEach(function (i) {
+        if (i === j || nb[i] == null) return;
+        var di = R[i];
+        if (di.top >= dj.top - 1) return;                                              // не выше
+        if (Math.min(di.right, dj.right) - Math.max(di.left, dj.left) <= 1) return;     // другая полоса
+        // то, что выше, сдвинулось — сохраняем отступ до него
+        if (shift[i] > 0 && di.bottom <= dj.top + 1) top = Math.max(top, dj.top + shift[i]);
+        // текст выше наехал на этот элемент: элемент начинается ниже первой строки текста,
+        // а текст заканчивается ниже его верха — значит, это лишний перенос, а не задумка
+        if (hasText(all[i]) && di.bottom > dj.top + 1 && dj.top - di.top > 14) {
+          top = Math.max(top, nb[i] + GUARD_GAP);
+        }
+      });
+      shift[j] = top - dj.top;
+      nb[j] = top + dj.h;
+      if (shift[j] > 0.5) moved = true;
+      maxOld = Math.max(maxOld, dj.bottom - base.top);
+      maxNew = Math.max(maxNew, nb[j] - base.top);
+    });
+    if (!moved) return;
+    idx.forEach(function (j) {
+      var s = shift[j];
+      if (s < 0.5) return;
+      var z = parseFloat(all[j].style.zoom) || 1;
+      all[j].style.translate = '0 ' + (s / z).toFixed(2) + 'px';
+    });
+    if (maxNew > maxOld) {
+      ab.__umaOrigH = ab.style.height;
+      ab.style.setProperty('height', Math.round(base.height + (maxNew - maxOld)) + 'px', 'important');
+      ab.__umaH = ab.style.height;
+    }
+    if (window.UMA_DEBUG_GUARD) console.log('UMA guard', ab.closest('.t-rec').id, idx.filter(function (j) { return shift[j] > 0.5; }).map(function (j) { return (all[j].textContent || all[j].dataset.elemId || '').trim().slice(0, 16) + ' +' + Math.round(shift[j]); }));
   }
   function reflowInner(ab) {
     var all = items(ab);
@@ -333,8 +394,13 @@
         ab.addEventListener('artBoardResized', later);
         // текст поменял высоту (догрузился шрифт, пересобрались строки заголовков) — пересчитать сдвиги
         if (window.ResizeObserver) {
-          var ro = new ResizeObserver(function () { if (inFluid()) later(); });
-          items(ab).forEach(function (el) { ro.observe(el); });
+          var ro = new ResizeObserver(function () { later(); });
+          items(ab).forEach(function (el) {
+            ro.observe(el);
+            // у текста в Тильде рамка часто фиксированной высоты — следим за самими строками
+            el.querySelectorAll('.t396__elem[data-elem-type="text"] .tn-atom').forEach(function (t) { ro.observe(t); });
+            if (el.matches('.t396__elem[data-elem-type="text"]')) { var t0 = el.querySelector('.tn-atom'); if (t0) ro.observe(t0); }
+          });
         }
       }
       try { reflow(ab); } catch (e) {}
@@ -365,6 +431,7 @@
 
   var rf;
   function later() { clearTimeout(rf); rf = setTimeout(reflowAll, 120); }
+  window.umaReflow = later;   // другим скриптам: «тексты поменялись — проверить раскладку»
 
   function run() {
     patch();
