@@ -21,8 +21,8 @@
   ];
   // фото из галереи Тильды, которые подменяются файлами из репозитория (img/gallery)
   var REPLACE = [
-    { match: /rosi/i, name: 'rosi', title: 'Rosi', big: 1536 },
-    { match: /black.?sable/i, name: 'black-sable-mockup', title: 'Black Sable', big: 2400 }
+    { match: /rosi/i, name: 'rosi', title: 'Rosi', big: 1536 }
+    // Black Sable — исходное фото из галереи Тильды, без подмены
   ];
   // первыми в очереди — эти кадры из репозитория (img/gallery/<name>-1200.webp и -2400.webp)
   var FIRST = [
