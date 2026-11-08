@@ -23,6 +23,29 @@ html.uma-hd-on #rec3979597301 { display: none !important; }
     transition: background-color .5s cubic-bezier(0.16, 1, 0.3, 1), border-color .5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 html.light-theme .uma-hd, body.light-theme .uma-hd { --hd-line: rgba(17, 18, 17, 0.12); }
+
+/* линия под шапкой прочерчивается слева направо — после того как логотип сел в шапку
+   (на первом экране — вместе с его появлением, на остальных страницах — сразу) */
+.uma-hd { border-bottom-color: transparent; }
+.uma-hd::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: var(--hd-line);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    pointer-events: none;
+    transition: background-color .5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+html:not(.uma-hero-hold) .uma-hd::before,
+html.uma-hero-in .uma-hd::before {
+    animation: umaHdLine 1.4s var(--m-inout, cubic-bezier(0.76, 0, 0.24, 1)) .1s both;
+}
+@keyframes umaHdLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .uma-hd::before { animation: none !important; transform: none; } }
 .uma-hd * { box-sizing: border-box; }
 
 /* логотип и пункты меню — один кегль */
