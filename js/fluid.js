@@ -402,6 +402,18 @@
             if (el.matches('.t396__elem[data-elem-type="text"]')) { var t0 = el.querySelector('.tn-atom'); if (t0) ro.observe(t0); }
           });
         }
+        // Тильда сама переписывает высоту блока (при прокрутке, догрузке картинок) —
+        // возвращаем нашу, иначе низ блока обрезается (последняя строка списка проектов)
+        if (window.MutationObserver) {
+          (function (ab) {
+            new MutationObserver(function () {
+              if (ab.__umaH && ab.style.height !== ab.__umaH) {
+                ab.__umaOrigH = ab.style.height;
+                ab.style.setProperty('height', ab.__umaH, 'important');
+              }
+            }).observe(ab, { attributes: true, attributeFilter: ['style'] });
+          })(ab);
+        }
       }
       try { reflow(ab); } catch (e) {}
       parts.push(ab.style.height);

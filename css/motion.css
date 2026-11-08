@@ -17,26 +17,15 @@
 }
 
 /* ---------- появление при прокрутке (js/reveal.js) ----------
-   Вместо разнобойных появлений Тильды (разные длительности, задержки до 2.8 с,
-   сдвиги 100–300 px) — одно: элемент проявляется, чуть поднимаясь;
-   текст — ещё и из лёгкого размытия. Порядок — сверху вниз, слева направо. */
-html.uma-rv-on #allrecords .t-rec:not(#rec3979597401) .t396__elem.t-animate:not(.uma-rv),
-html.uma-rv-on #allrecords .t-rec:not(#rec3979597401) .t396__group.t-animate:not(.uma-rv) {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-}
+   Элементы без анимации в Тильде: проявляются, чуть поднимаясь; текст — ещё и
+   из лёгкого размытия. Порядок — сверху вниз, слева направо.
+   Элементы, у которых анимация появления задана в Тильде, появляются по её настройкам. */
 html.uma-rv-on body .uma-rv,
 html.uma-rv-on #allrecords .t-rec .uma-rv.t-animate {
     opacity: 0 !important;
     transform: translate3d(0, var(--m-shift), 0) !important;
 }
-/* подлёт из настроек Тильды (js/reveal.js): своё направление и дистанция, без размытия */
-html.uma-rv-on body .uma-rv.uma-rv--fly,
-html.uma-rv-on #allrecords .t-rec .uma-rv.uma-rv--fly.t-animate {
-    transform: translate3d(var(--rv-x, 0px), var(--rv-y, var(--m-shift)), 0) !important;
-}
-html.uma-rv-on .uma-rv.uma-rv--text:not(.uma-rv--fly) { filter: blur(var(--m-blur)); }
+html.uma-rv-on .uma-rv.uma-rv--text { filter: blur(var(--m-blur)); }
 html.uma-rv-on body .uma-rv.is-in,
 html.uma-rv-on #allrecords .t-rec .uma-rv.t-animate.is-in {
     opacity: 1 !important;
@@ -49,7 +38,11 @@ html.uma-rv-on #allrecords .t-rec .uma-rv.t-animate.is-in {
 }
 html.uma-rv-on .uma-rv.is-done { transition: none !important; }
 /* замеры раскладки (js/fluid.js): без сдвига появления */
-html.uma-rv-measure .uma-rv { transform: none !important; transition: none !important; }
+html.uma-rv-measure body .uma-rv,
+html.uma-rv-measure #allrecords .t-rec .uma-rv,
+html.uma-rv-measure #allrecords .t-rec .uma-rv.t-animate,
+html.uma-rv-measure #allrecords .t-rec .t396__elem.t-animate,
+html.uma-rv-measure #allrecords .t-rec .t396__group.t-animate { transform: none !important; transition: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
     html.uma-rv-on body .uma-rv,
