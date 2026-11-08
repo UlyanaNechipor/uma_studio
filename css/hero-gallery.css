@@ -54,9 +54,10 @@ html body.t-body #allrecords .uma-hg-host { transition: opacity .3s ease !import
 .uma-hg__slide img {
     position: absolute;
     left: 0;
-    top: -8%;
+    top: 0;
     width: 100%;
-    height: 116%;                 /* запас под параллакс */
+    height: 100%;                 /* без запаса под параллакс (он выключен): кадр — ровно размер галереи,
+                                     картинка в пропорциях галереи (1.9) видна целиком */
     object-fit: cover;
     display: block;
     transform: translate3d(0, var(--hg-par), 0) scale(1.22);
