@@ -91,13 +91,19 @@
   }
   function cancelSoft() { if (soft) { soft.stop = true; soft = null; } }
 
-  // доводка с верха: отпускаем, когда она закончилась и инерция тачпада стихла
+  // доводка с верха: отпускаем, когда она закончилась и инерция тачпада стихла,
+  // но не позже HOLD мс после конца — иначе непрерывная прокрутка (тачпад, колесо
+  // без остановки) держала страницу на заголовке, и пролистнуть дальше было трудно
+  var HOLD = 300, endAt = 0;
   function release() {
+    if (!endAt) endAt = performance.now();
     clearTimeout(quietT);
-    var wait = Math.max(0, 200 - (performance.now() - lastWheel));
+    var left = HOLD - (performance.now() - endAt);
+    if (left <= 0) { busy = false; endAt = 0; return; }
+    var wait = Math.min(left, Math.max(0, 160 - (performance.now() - lastWheel)));
     quietT = setTimeout(function () {
-      if (performance.now() - lastWheel < 190) return release();
-      busy = false;
+      if (performance.now() - lastWheel < 150 && performance.now() - endAt < HOLD) return release();
+      busy = false; endAt = 0;
     }, wait);
   }
 
