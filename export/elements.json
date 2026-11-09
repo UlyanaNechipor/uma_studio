@@ -1,0 +1,3283 @@
+[
+ {
+  "id": "rec4219873201",
+  "type": "215",
+  "artboard": {},
+  "elements": [],
+  "html": "<a name=\"logo\" style=\"font-size:0;\"></a>"
+ },
+ {
+  "id": "rec3979597401",
+  "type": "396",
+  "artboard": {
+   "data-artboard-recid": "3979597401",
+   "data-artboard-screens": "320,480,640,960,1200",
+   "data-artboard-height": "1136.3999999999999",
+   "data-artboard-valign": "center",
+   "data-artboard-upscale": "window",
+   "data-artboard-heightmode": "hug",
+   "data-artboard-height-res-320": "496",
+   "data-artboard-proxy-min-offset-top": "0",
+   "data-artboard-proxy-min-height": "1136.3999999999999",
+   "data-artboard-proxy-max-height": "1136.3999999999999"
+  },
+  "elements": [
+   {
+    "id": "1792093560042",
+    "type": "gallery",
+    "classes": [
+     "t-animate",
+     "tn-elem__gallery_arrows-none",
+     "t-animate_started"
+    ],
+    "group": null,
+    "fields": {
+     "top-value": "467",
+     "left-value": "32",
+     "height-value": "480",
+     "width-value": "748",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "14",
+     "top-res-320-value": "296",
+     "left-res-320-value": "16",
+     "height-res-320-value": "200",
+     "width-res-320-value": "288",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed",
+     "imgs-value": "[{\"lid\":\"1792093560042000002\",\"li_img\":\"https://static.tildacdn.com/tild3931-6164-4633-b839-636434643036/__Black_Sable.png\",\"li_imgalt\":\"\",\"li_imgtitle\":\"\",\"li_youtube\":\"\",\"li_vimeo\":\"\",\"li_imgurl\":\"\",\"li_imgtarget\":\"\",\"li_imgnofollow\":\"\",\"li_rutube\":\"\",\"li_vkvideo\":\"\",\"li_kinescope\":\"\",\"li_iframe\":\"\",\"li_webm\":\"\",\"li_mp4\":\"\",\"li_hash\":\"\"},{\"lid\":\"tild3432-3462-4539-a138-363664343661\",\"li_img\":\"https://static.tildacdn.com/tild3432-3462-4539-a138-363664343661/Rosi_4.png\",\"li_imgalt\":\"\",\"li_imgtitle\":\"\",\"li_imgurl\":\"\",\"li_imgtarget\":\"\",\"li_imgnofollow\":\"\",\"li_youtube\":\"\",\"li_vimeo\":\"\",\"li_webm\":\"\",\"li_mp4\":\"\",\"li_rutube\":\"\",\"li_vkvideo\":\"\",\"li_kinescope\":\"\",\"li_iframe\":\"\",\"li_hash\":\"\"}]",
+     "slds_speed-value": "fast",
+     "slds_autoplay-value": "2",
+     "slds_playiconcolor-value": "#ffffff",
+     "slds_stretch-value": "cover",
+     "slds_imgposition-value": "center center",
+     "slds_loop-value": "loop",
+     "slds_arrowalign-value": "center",
+     "slds_arrowbetweenmargin-value": "10",
+     "slds_playiconsize-value": "70",
+     "slds_dotssize-value": "0",
+     "slds_dotscontrols-value": "none",
+     "slds_arrowcontrols-value": "none",
+     "slds_arrowsize-value": "s",
+     "slds_arrowlinesize-value": "1",
+     "slds_captiontopmargin-value": "0",
+     "slds_dotsvmargin-value": "0",
+     "slds_captionwidth-value": "80",
+     "slds_arrowhmargin-value": "0",
+     "slds_dotshmargin-value": "0",
+     "slds_arrowvmargin-value": "10",
+     "borderstyle-value": "solid"
+    }
+   },
+   {
+    "id": "1789473778084000020",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t-animate",
+     "t-animate_started"
+    ],
+    "group": null,
+    "text": "Дизайн-студия полного цикла, которая специализируется на разработке цифровых продуктов и визуальных систем от концепции до реализации.",
+    "html": "Дизайн-студия полного цикла, которая специализируется на разработке цифровых продуктов и визуальных систем от концепции до реализации.",
+    "fields": {
+     "top-value": "120",
+     "left-value": "600",
+     "height-value": "57",
+     "width-value": "335",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "var(--uc-typo-fontsize-g4xuyl,12px)",
+     "top-res-320-value": "96",
+     "left-res-320-value": "16",
+     "height-res-320-value": "220",
+     "width-res-320-value": "288",
+     "heightunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1791375989019000003",
+    "type": "text",
+    "classes": [
+     "uma-stream-bg-lat"
+    ],
+    "group": null,
+    "text": "Design, Direction\n& Production",
+    "html": "Design, Direction<br>&amp; Production",
+    "fields": {
+     "top-value": "267",
+     "left-value": "32",
+     "height-value": "168",
+     "width-value": "628",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "84",
+     "top-res-320-value": "208",
+     "left-res-320-value": "15",
+     "height-res-320-value": "96",
+     "width-res-320-value": "292",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "fixed",
+     "fontsize-res-320-value": "36"
+    }
+   },
+   {
+    "id": "1789837127043000002",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "uma-stream-top-lat"
+    ],
+    "group": null,
+    "text": "Design, Direction\n& Production",
+    "html": "Design, Direction<br>&amp; Production",
+    "fields": {
+     "top-value": "267",
+     "left-value": "32",
+     "height-value": "168",
+     "width-value": "628",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "84",
+     "top-res-320-value": "208",
+     "left-res-320-value": "15",
+     "height-res-320-value": "96",
+     "width-res-320-value": "292",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "fixed",
+     "fontsize-res-320-value": "36"
+    }
+   },
+   {
+    "id": "1794087491311000003",
+    "type": "shape",
+    "classes": [],
+    "group": null,
+    "fields": {
+     "top-value": "467",
+     "left-value": "796",
+     "height-value": "480",
+     "width-value": "372",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "-510",
+     "left-res-320-value": "310"
+    }
+   }
+  ]
+ },
+ {
+  "id": "rec4219705401",
+  "type": "215",
+  "artboard": {},
+  "elements": [],
+  "html": "<a name=\"projects\" style=\"font-size:0;\"></a>"
+ },
+ {
+  "id": "rec3979597501",
+  "type": "396",
+  "artboard": {
+   "data-artboard-recid": "3979597501",
+   "data-artboard-screens": "320,480,640,960,1200",
+   "data-artboard-height": "669.6",
+   "data-artboard-valign": "center",
+   "data-artboard-upscale": "window",
+   "data-artboard-heightmode": "hug",
+   "data-artboard-height-res-320": "1146",
+   "data-artboard-proxy-min-offset-top": "0",
+   "data-artboard-proxy-min-height": "669.6",
+   "data-artboard-proxy-max-height": "669.6"
+  },
+  "elements": [
+   {
+    "id": "1791393658922000001",
+    "type": "text",
+    "classes": [
+     "uma-stream-bg-cyr"
+    ],
+    "group": null,
+    "text": "Избранные проекты",
+    "html": "Избранные проекты",
+    "fields": {
+     "top-value": "223",
+     "left-value": "600",
+     "height-value": "46",
+     "width-value": "383",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "40",
+     "top-res-320-value": "115",
+     "left-res-320-value": "16",
+     "height-res-320-value": "74",
+     "width-res-320-value": "292",
+     "heightunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "fontsize-res-320-value": "24"
+    }
+   },
+   {
+    "id": "1789474724243000016",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "uma-stream-top-cyr"
+    ],
+    "group": null,
+    "text": "Избранные проекты",
+    "html": "Избранные проекты",
+    "fields": {
+     "top-value": "223",
+     "left-value": "600",
+     "height-value": "46",
+     "width-value": "383",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "40",
+     "top-res-320-value": "115",
+     "left-res-320-value": "16",
+     "height-res-320-value": "74",
+     "width-res-320-value": "292",
+     "heightunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "fontsize-res-320-value": "24"
+    }
+   },
+   {
+    "id": "1789935577768000001",
+    "type": "text",
+    "classes": [
+     "uma-keep-grey"
+    ],
+    "group": null,
+    "text": "Проекты клиентов",
+    "html": "Проекты клиентов",
+    "fields": {
+     "top-value": "180",
+     "left-value": "600",
+     "height-value": "19",
+     "width-value": "112",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "80",
+     "left-res-320-value": "16",
+     "height-res-320-value": "19",
+     "width-res-320-value": "112"
+    }
+   },
+   {
+    "id": "1790188422052000001",
+    "type": "text",
+    "classes": [
+     "fog-element",
+     "t-animate",
+     "t-animate_wait"
+    ],
+    "group": null,
+    "text": "О нас",
+    "html": "О нас",
+    "fields": {
+     "top-value": "-177",
+     "left-value": "577",
+     "height-value": "22",
+     "width-value": "39",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "14",
+     "top-res-320-value": "-1000",
+     "left-res-320-value": "386",
+     "height-res-320-value": "19",
+     "width-res-320-value": "34",
+     "fontsize-res-320-value": "12"
+    }
+   },
+   {
+    "id": "1789476475672000005",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011789476475671000002"
+    ],
+    "text": "Rosi",
+    "html": "Rosi",
+    "fields": {
+     "top-value": "309",
+     "left-value": "32",
+     "height-value": "20",
+     "width-value": "568",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "20",
+     "top-res-320-value": "-627",
+     "left-res-320-value": "-338",
+     "height-res-320-value": "20",
+     "width-res-320-value": "568",
+     "container-res-320-value": "grid",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476475672000004",
+    "type": "text",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011789476475671000002"
+    ],
+    "text": "Интернет-магазин",
+    "html": "Интернет-магазин",
+    "fields": {
+     "top-value": "309",
+     "left-value": "600",
+     "height-value": "19",
+     "width-value": "538",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "-627",
+     "left-res-320-value": "230",
+     "height-res-320-value": "19",
+     "width-res-320-value": "531",
+     "container-res-320-value": "grid",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476475671000003",
+    "type": "text",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011789476475671000002"
+    ],
+    "text": "2023",
+    "html": "2023",
+    "fields": {
+     "top-value": "309",
+     "left-value": "1138",
+     "height-value": "19",
+     "width-value": "30",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "-627",
+     "left-res-320-value": "761",
+     "height-res-320-value": "19",
+     "width-res-320-value": "33",
+     "container-res-320-value": "grid",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476914108000024",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011789476914108000021"
+    ],
+    "text": "Sure",
+    "html": "Sure",
+    "fields": {
+     "top-value": "362",
+     "left-value": "32",
+     "height-value": "20",
+     "width-value": "568",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fixed",
+     "heightmode-value": "hug",
+     "fontsize-value": "20",
+     "top-res-320-value": "-582",
+     "left-res-320-value": "-338",
+     "height-res-320-value": "20",
+     "width-res-320-value": "568",
+     "container-res-320-value": "grid",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476914108000023",
+    "type": "text",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011789476914108000021"
+    ],
+    "text": "Интернет-магазин",
+    "html": "Интернет-магазин",
+    "fields": {
+     "top-value": "363",
+     "left-value": "600",
+     "height-value": "19",
+     "width-value": "536",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fixed",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "-581",
+     "left-res-320-value": "230",
+     "height-res-320-value": "19",
+     "width-res-320-value": "531",
+     "container-res-320-value": "grid",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476914108000022",
+    "type": "text",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011789476914108000021"
+    ],
+    "text": "2024",
+    "html": "2024",
+    "fields": {
+     "top-value": "363",
+     "left-value": "1136",
+     "height-value": "19",
+     "width-value": "32",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fixed",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "-581",
+     "left-res-320-value": "761",
+     "height-res-320-value": "19",
+     "width-res-320-value": "35",
+     "container-res-320-value": "grid",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476921354000028",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011793400822163000001"
+    ],
+    "text": "Kara Fox",
+    "html": "Kara Fox",
+    "fields": {
+     "top-value": "415",
+     "left-value": "32",
+     "height-value": "20",
+     "width-value": "568",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "20",
+     "top-res-320-value": "-509",
+     "left-res-320-value": "-338",
+     "height-res-320-value": "20",
+     "width-res-320-value": "86",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476921354000027",
+    "type": "text",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011793400822163000001"
+    ],
+    "text": "Портфолио",
+    "html": "Портфолио",
+    "fields": {
+     "top-value": "415",
+     "left-value": "600",
+     "height-value": "19",
+     "width-value": "536",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "-509",
+     "left-res-320-value": "-200",
+     "height-res-320-value": "19",
+     "width-res-320-value": "70",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476921354000026",
+    "type": "text",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011793400822163000001"
+    ],
+    "text": "2025",
+    "html": "2025",
+    "fields": {
+     "top-value": "415",
+     "left-value": "1136",
+     "height-value": "19",
+     "width-value": "32",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "-509",
+     "left-res-320-value": "-79",
+     "height-res-320-value": "19",
+     "width-res-320-value": "31",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476929786000032",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011793401015713000002"
+    ],
+    "text": "Black Sable",
+    "html": "Black Sable",
+    "fields": {
+     "top-value": "468",
+     "left-value": "32",
+     "height-value": "20",
+     "width-value": "568",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "20",
+     "top-res-320-value": "-456",
+     "left-res-320-value": "-338",
+     "height-res-320-value": "20",
+     "width-res-320-value": "568",
+     "container-res-320-value": "grid",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476929786000031",
+    "type": "text",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011793401015713000002"
+    ],
+    "text": "Интернет-магазин",
+    "html": "Интернет-магазин",
+    "fields": {
+     "top-value": "468",
+     "left-value": "600",
+     "height-value": "19",
+     "width-value": "536",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "-456",
+     "left-res-320-value": "230",
+     "height-res-320-value": "19",
+     "width-res-320-value": "531",
+     "container-res-320-value": "grid",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476929786000030",
+    "type": "text",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011793401015713000002"
+    ],
+    "text": "2025",
+    "html": "2025",
+    "fields": {
+     "top-value": "468",
+     "left-value": "1136",
+     "height-value": "19",
+     "width-value": "32",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "-456",
+     "left-res-320-value": "761",
+     "height-res-320-value": "19",
+     "width-res-320-value": "35",
+     "container-res-320-value": "grid",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476933328000036",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011793401134838000003"
+    ],
+    "text": "Arine Atelier",
+    "html": "Arine Atelier",
+    "fields": {
+     "top-value": "521",
+     "left-value": "32",
+     "height-value": "20",
+     "width-value": "568",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "20",
+     "top-res-320-value": "-403",
+     "left-res-320-value": "-338",
+     "height-res-320-value": "24",
+     "width-res-320-value": "568",
+     "container-res-320-value": "grid",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476933328000035",
+    "type": "text",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011793401134838000003"
+    ],
+    "text": "Дизайн-агентство",
+    "html": "Дизайн-агентство",
+    "fields": {
+     "top-value": "521",
+     "left-value": "600",
+     "height-value": "19",
+     "width-value": "537",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "-403",
+     "left-res-320-value": "230",
+     "height-res-320-value": "22",
+     "width-res-320-value": "531",
+     "container-res-320-value": "grid",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1789476933328000034",
+    "type": "text",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011793401134838000003"
+    ],
+    "text": "2025",
+    "html": "2025",
+    "fields": {
+     "top-value": "521",
+     "left-value": "1137",
+     "height-value": "19",
+     "width-value": "30",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "-403",
+     "left-res-320-value": "761",
+     "height-res-320-value": "22",
+     "width-res-320-value": "30",
+     "container-res-320-value": "grid",
+     "container-res-480-value": "grid",
+     "container-res-640-value": "grid",
+     "container-res-960-value": "grid"
+    }
+   },
+   {
+    "id": "1790190980231000019",
+    "type": "text",
+    "classes": [
+     "project-link-item",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790336916222000004"
+    ],
+    "text": "ROSI",
+    "html": "<a style=\"color: inherit\" href=\"#project-1\">Rosi</a>",
+    "link": "#project-1",
+    "fields": {
+     "top-value": "-1000",
+     "left-value": "-761",
+     "height-value": "31",
+     "width-value": "44",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "fontsize-value": "20",
+     "top-res-320-value": "183",
+     "left-res-320-value": "16",
+     "height-res-320-value": "22",
+     "width-res-320-value": "32",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790190980231000017",
+    "type": "text",
+    "classes": [
+     "fog-element",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790336916222000004"
+    ],
+    "text": "2023",
+    "html": "2023",
+    "fields": {
+     "top-value": "-995",
+     "left-value": "-717",
+     "height-value": "22",
+     "width-value": "34",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "14",
+     "top-res-320-value": "183",
+     "left-res-320-value": "269",
+     "height-res-320-value": "22",
+     "width-res-320-value": "35",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790190980231000018",
+    "type": "text",
+    "classes": [
+     "fog-element",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011793886485031000001"
+    ],
+    "text": "Интернет-магазин",
+    "html": "Интернет-магазин",
+    "fields": {
+     "top-value": "-965",
+     "left-value": "-788",
+     "height-value": "22",
+     "width-value": "133",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "14",
+     "top-res-320-value": "210",
+     "left-res-320-value": "16",
+     "height-res-320-value": "22",
+     "width-res-320-value": "288",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "fixedsize",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790190980231000016",
+    "type": "shape",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790190980231000014"
+    ],
+    "fields": {
+     "top-value": "-939",
+     "left-value": "-1000",
+     "height-value": "206",
+     "width-value": "274",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "top-res-320-value": "240",
+     "left-res-320-value": "16",
+     "height-res-320-value": "94",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1790190980231000015",
+    "type": "shape",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790190980231000014"
+    ],
+    "fields": {
+     "top-value": "-939",
+     "left-value": "-718",
+     "height-value": "206",
+     "width-value": "274",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "top-res-320-value": "240",
+     "left-res-320-value": "164",
+     "height-res-320-value": "94",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1790337067370000014",
+    "type": "text",
+    "classes": [
+     "project-link-item",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337067370000012"
+    ],
+    "text": "SURE",
+    "html": "<a style=\"color: inherit\" href=\"#project-1\">sure</a>",
+    "link": "#project-1",
+    "fields": {
+     "top-value": "-721",
+     "left-value": "-764",
+     "height-value": "31",
+     "width-value": "50",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "fontsize-value": "20",
+     "top-res-320-value": "386",
+     "left-res-320-value": "16",
+     "height-res-320-value": "22",
+     "width-res-320-value": "36",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790337067370000013",
+    "type": "text",
+    "classes": [
+     "fog-element",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337067370000012"
+    ],
+    "text": "2024",
+    "html": "2024",
+    "fields": {
+     "top-value": "-716",
+     "left-value": "-714",
+     "height-value": "22",
+     "width-value": "34",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "14",
+     "top-res-320-value": "386",
+     "left-res-320-value": "269",
+     "height-res-320-value": "22",
+     "width-res-320-value": "35",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790337067370000011",
+    "type": "text",
+    "classes": [
+     "fog-element",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "project-group-card",
+     "tn-group__39795975011790337067370000007"
+    ],
+    "text": "Интернет-магазин",
+    "html": "Интернет-магазин",
+    "fields": {
+     "top-value": "-686",
+     "left-value": "-788",
+     "height-value": "22",
+     "width-value": "133",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "14",
+     "top-res-320-value": "413",
+     "left-res-320-value": "16",
+     "height-res-320-value": "22",
+     "width-res-320-value": "288",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790337067370000010",
+    "type": "shape",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337067370000008"
+    ],
+    "fields": {
+     "top-value": "-660",
+     "left-value": "-1000",
+     "height-value": "206",
+     "width-value": "274",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "443",
+     "left-res-320-value": "16",
+     "height-res-320-value": "94",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1790337067370000009",
+    "type": "shape",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337067370000008"
+    ],
+    "fields": {
+     "top-value": "-660",
+     "left-value": "-718",
+     "height-value": "206",
+     "width-value": "274",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "top-res-320-value": "443",
+     "left-res-320-value": "164",
+     "height-res-320-value": "94",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1790337087864000023",
+    "type": "text",
+    "classes": [
+     "project-link-item",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337087864000021"
+    ],
+    "text": "KARA FOX",
+    "html": "<a style=\"color: inherit\" href=\"#project-1\">KARA FOX</a>",
+    "link": "#project-1",
+    "fields": {
+     "top-value": "-442",
+     "left-value": "-784",
+     "height-value": "31",
+     "width-value": "89",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "fontsize-value": "20",
+     "top-res-320-value": "589",
+     "left-res-320-value": "16",
+     "height-res-320-value": "22",
+     "width-res-320-value": "64",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790337087864000022",
+    "type": "text",
+    "classes": [
+     "fog-element",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337087864000021"
+    ],
+    "text": "2025",
+    "html": "2025",
+    "fields": {
+     "top-value": "-437",
+     "left-value": "-695",
+     "height-value": "22",
+     "width-value": "34",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "14",
+     "top-res-320-value": "589",
+     "left-res-320-value": "269",
+     "height-res-320-value": "22",
+     "width-res-320-value": "35",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790337087864000020",
+    "type": "text",
+    "classes": [
+     "fog-element",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "project-group-card",
+     "tn-group__39795975011790337087863000016"
+    ],
+    "text": "Портфолио",
+    "html": "Портфолио",
+    "fields": {
+     "top-value": "-407",
+     "left-value": "-762",
+     "height-value": "22",
+     "width-value": "80",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "14",
+     "top-res-320-value": "616",
+     "left-res-320-value": "16",
+     "height-res-320-value": "22",
+     "width-res-320-value": "288",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790337087864000019",
+    "type": "shape",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337087864000017"
+    ],
+    "fields": {
+     "top-value": "-381",
+     "left-value": "-1000",
+     "height-value": "206",
+     "width-value": "274",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "top-res-320-value": "646",
+     "left-res-320-value": "16",
+     "height-res-320-value": "94",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1790337087864000018",
+    "type": "shape",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337087864000017"
+    ],
+    "fields": {
+     "top-value": "-381",
+     "left-value": "-718",
+     "height-value": "206",
+     "width-value": "274",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "top-res-320-value": "646",
+     "left-res-320-value": "164",
+     "height-res-320-value": "94",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1790337091915000031",
+    "type": "text",
+    "classes": [
+     "project-link-item",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337091915000029"
+    ],
+    "text": "BLACK SABLE",
+    "html": "black sable",
+    "fields": {
+     "top-value": "-163",
+     "left-value": "-801",
+     "height-value": "31",
+     "width-value": "123",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "fontsize-value": "20",
+     "top-res-320-value": "792",
+     "left-res-320-value": "16",
+     "height-res-320-value": "22",
+     "width-res-320-value": "87",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790337091915000030",
+    "type": "text",
+    "classes": [
+     "fog-element",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337091915000029"
+    ],
+    "text": "2025",
+    "html": "2025",
+    "fields": {
+     "top-value": "-158",
+     "left-value": "-678",
+     "height-value": "22",
+     "width-value": "34",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "14",
+     "top-res-320-value": "792",
+     "left-res-320-value": "269",
+     "height-res-320-value": "22",
+     "width-res-320-value": "35",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790337091915000028",
+    "type": "text",
+    "classes": [
+     "fog-element",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "project-group-card",
+     "tn-group__39795975011790337091914000024"
+    ],
+    "text": "Интернет-магазин",
+    "html": "Интернет-магазин",
+    "fields": {
+     "top-value": "-128",
+     "left-value": "-788",
+     "height-value": "22",
+     "width-value": "133",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "14",
+     "top-res-320-value": "819",
+     "left-res-320-value": "16",
+     "height-res-320-value": "22",
+     "width-res-320-value": "288",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790337091915000027",
+    "type": "shape",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337091915000025"
+    ],
+    "fields": {
+     "top-value": "-102",
+     "left-value": "-1000",
+     "height-value": "206",
+     "width-value": "274",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "top-res-320-value": "849",
+     "left-res-320-value": "16",
+     "height-res-320-value": "94",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1790337091915000026",
+    "type": "shape",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337091915000025"
+    ],
+    "fields": {
+     "top-value": "-102",
+     "left-value": "-718",
+     "height-value": "206",
+     "width-value": "274",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "top-res-320-value": "849",
+     "left-res-320-value": "164",
+     "height-res-320-value": "94",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1790337100775000039",
+    "type": "text",
+    "classes": [
+     "project-link-item",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337100775000037"
+    ],
+    "text": "ARINE ATELIER",
+    "html": "ARINE ATELIER",
+    "fields": {
+     "top-value": "116",
+     "left-value": "-806",
+     "height-value": "31",
+     "width-value": "133",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "fontsize-value": "20",
+     "top-res-320-value": "995",
+     "left-res-320-value": "16",
+     "height-res-320-value": "22",
+     "width-res-320-value": "94",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790337100775000038",
+    "type": "text",
+    "classes": [
+     "fog-element",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337100775000037"
+    ],
+    "text": "2026",
+    "html": "2026",
+    "fields": {
+     "top-value": "121",
+     "left-value": "-673",
+     "height-value": "22",
+     "width-value": "35",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "14",
+     "top-res-320-value": "995",
+     "left-res-320-value": "268",
+     "height-res-320-value": "22",
+     "width-res-320-value": "36",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790337100774000036",
+    "type": "text",
+    "classes": [
+     "fog-element",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "project-group-card",
+     "tn-group__39795975011790337100774000032"
+    ],
+    "text": "Дизайн-агентство",
+    "html": "Дизайн-агентство",
+    "fields": {
+     "top-value": "151",
+     "left-value": "-787",
+     "height-value": "22",
+     "width-value": "131",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "14",
+     "top-res-320-value": "1022",
+     "left-res-320-value": "16",
+     "height-res-320-value": "22",
+     "width-res-320-value": "288",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "14"
+    }
+   },
+   {
+    "id": "1790337100774000035",
+    "type": "shape",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337100774000033"
+    ],
+    "fields": {
+     "top-value": "177",
+     "left-value": "-1000",
+     "height-value": "206",
+     "width-value": "274",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "top-res-320-value": "1052",
+     "left-res-320-value": "16",
+     "height-res-320-value": "94",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1790337100774000034",
+    "type": "shape",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795975011790337100774000033"
+    ],
+    "fields": {
+     "top-value": "177",
+     "left-value": "-718",
+     "height-value": "206",
+     "width-value": "274",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "top-res-320-value": "1052",
+     "left-res-320-value": "164",
+     "height-res-320-value": "94",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   }
+  ]
+ },
+ {
+  "id": "rec3979597601",
+  "type": "396",
+  "artboard": {
+   "data-artboard-recid": "3979597601",
+   "data-artboard-screens": "320,480,640,960,1200",
+   "data-artboard-height": "1066.8",
+   "data-artboard-valign": "center",
+   "data-artboard-upscale": "window",
+   "data-artboard-heightmode": "hug",
+   "data-artboard-height-res-320": "1172",
+   "data-artboard-proxy-min-offset-top": "0",
+   "data-artboard-proxy-min-height": "1066.8",
+   "data-artboard-proxy-max-height": "1066.8"
+  },
+  "elements": [
+   {
+    "id": "1789850946309000004",
+    "type": "shape",
+    "classes": [],
+    "group": null,
+    "image": "https://static.tildacdn.com/tila3032-6463-4064-a239-306335613933/Frame_758532532.jpg",
+    "fields": {
+     "top-value": "526",
+     "left-value": "892",
+     "height-value": "362",
+     "width-value": "276",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "402",
+     "left-res-320-value": "16",
+     "height-res-320-value": "180",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1789850946310000010",
+    "type": "shape",
+    "classes": [],
+    "group": null,
+    "image": "https://static.tildacdn.com/tild6630-3539-4535-b339-363335323461/Frame_758532526_1.jpg",
+    "fields": {
+     "top-value": "330",
+     "left-value": "600",
+     "height-value": "180",
+     "width-value": "276",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "590",
+     "left-res-320-value": "16",
+     "height-res-320-value": "185",
+     "width-res-320-value": "288",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1789850946309000003",
+    "type": "shape",
+    "classes": [],
+    "group": null,
+    "image": "https://static.tildacdn.com/tila3066-3663-4636-a330-353333663237/___CARINUS__.png",
+    "fields": {
+     "top-value": "330",
+     "left-value": "892",
+     "height-value": "180",
+     "width-value": "276",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "991",
+     "left-res-320-value": "16",
+     "height-res-320-value": "181",
+     "width-res-320-value": "288",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1789850946310000005",
+    "type": "shape",
+    "classes": [],
+    "group": null,
+    "image": "https://static.tildacdn.com/tild6631-6231-4036-a236-383665363633/Frame_758532537.jpg",
+    "fields": {
+     "top-value": "526",
+     "left-value": "600",
+     "height-value": "362",
+     "width-value": "276",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "783",
+     "left-res-320-value": "164",
+     "height-res-320-value": "200",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1789850946310000007",
+    "type": "shape",
+    "classes": [],
+    "group": null,
+    "image": "https://static.tildacdn.com/tila3361-3764-4362-a138-363338353231/Cover.jpg",
+    "fields": {
+     "top-value": "-667",
+     "left-value": "275",
+     "height-value": "566",
+     "width-value": "265",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "783",
+     "left-res-320-value": "16",
+     "height-res-320-value": "200",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1789850946310000006",
+    "type": "shape",
+    "classes": [],
+    "group": null,
+    "image": "https://static.tildacdn.com/tila3634-3065-4637-a462-626333633136/Frame_2087325855_1.jpg",
+    "fields": {
+     "top-value": "527",
+     "left-value": "32",
+     "height-value": "362",
+     "width-value": "272",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "402",
+     "left-res-320-value": "164",
+     "height-res-320-value": "180",
+     "width-res-320-value": "140",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1789850946310000012",
+    "type": "shape",
+    "classes": [],
+    "group": null,
+    "image": "https://static.tildacdn.com/tild3165-3763-4634-b135-393065316132/Frame_758532524_2.jpg",
+    "fields": {
+     "top-value": "331",
+     "left-value": "32",
+     "height-value": "180",
+     "width-value": "272",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "214",
+     "left-res-320-value": "16",
+     "height-res-320-value": "180",
+     "width-res-320-value": "288",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1789477006689000011",
+    "type": "text",
+    "classes": [],
+    "group": null,
+    "text": "Проекты, в которых мы исследуем новые идеи и подходы.",
+    "html": "Проекты, в которых мы исследуем новые идеи и подходы.",
+    "fields": {
+     "top-value": "280",
+     "left-value": "437",
+     "height-value": "19",
+     "width-value": "327",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "152",
+     "left-res-320-value": "33",
+     "height-res-320-value": "38",
+     "width-res-320-value": "254",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight"
+    }
+   },
+   {
+    "id": "1791394195725000001",
+    "type": "text",
+    "classes": [
+     "uma-stream-bg-cyr"
+    ],
+    "group": null,
+    "text": "Дизайн. Исследования.\nЭксперименты.",
+    "html": "Дизайн. Исследования.<br>Эксперименты.",
+    "fields": {
+     "top-value": "164",
+     "left-value": "377",
+     "height-value": "92",
+     "width-value": "446",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "40",
+     "top-res-320-value": "80",
+     "left-res-320-value": "0",
+     "height-res-320-value": "56",
+     "width-res-320-value": "320",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "fixedsize",
+     "widthmode-res-320-value": "fixed",
+     "fontsize-res-320-value": "24"
+    }
+   },
+   {
+    "id": "1789477006688000010",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "uma-stream-top-cyr"
+    ],
+    "group": null,
+    "text": "Дизайн. Исследования.\nЭксперименты.",
+    "html": "Дизайн. Исследования.<br>Эксперименты.",
+    "fields": {
+     "top-value": "164",
+     "left-value": "377",
+     "height-value": "92",
+     "width-value": "446",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "40",
+     "top-res-320-value": "80",
+     "left-res-320-value": "0",
+     "height-res-320-value": "56",
+     "width-res-320-value": "320",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "fixedsize",
+     "widthmode-res-320-value": "fixed",
+     "fontsize-res-320-value": "24"
+    }
+   },
+   {
+    "id": "1793829190067000001",
+    "type": "shape",
+    "classes": [],
+    "group": null,
+    "image": "https://static.tildacdn.com/tila3361-3764-4362-a138-363338353231/Cover.jpg",
+    "fields": {
+     "top-value": "330",
+     "left-value": "320",
+     "height-value": "558",
+     "width-value": "264",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "-817",
+     "left-res-320-value": "-94"
+    }
+   }
+  ]
+ },
+ {
+  "id": "rec4219774701",
+  "type": "215",
+  "artboard": {},
+  "elements": [],
+  "html": "<a name=\"about\" style=\"font-size:0;\"></a>"
+ },
+ {
+  "id": "rec3979597701",
+  "type": "396",
+  "artboard": {
+   "data-artboard-recid": "3979597701",
+   "data-artboard-screens": "320,480,640,960,1200",
+   "data-artboard-height": "860.4",
+   "data-artboard-valign": "center",
+   "data-artboard-upscale": "window",
+   "data-artboard-heightmode": "hug",
+   "data-artboard-height-res-320": "674",
+   "data-artboard-proxy-min-offset-top": "0",
+   "data-artboard-proxy-min-height": "860.4",
+   "data-artboard-proxy-max-height": "860.4"
+  },
+  "elements": [
+   {
+    "id": "1792062898957000001",
+    "type": "text",
+    "classes": [
+     "uma-stream-bg-cyr"
+    ],
+    "group": null,
+    "text": "Дизайн-команда\nиз Санкт-Петербурга. Дизайн, арт-дирекшн\nи AI workflows",
+    "html": "Дизайн-команда<br>из Санкт-Петербурга. Дизайн, арт-дирекшн<br>и AI workflows",
+    "fields": {
+     "top-value": "215",
+     "left-value": "32",
+     "height-value": "184",
+     "width-value": "471",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "40",
+     "top-res-320-value": "80",
+     "left-res-320-value": "16",
+     "height-res-320-value": "112",
+     "width-res-320-value": "288",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fixed",
+     "fontsize-res-320-value": "24"
+    }
+   },
+   {
+    "id": "1789477421012000007",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "uma-stream-top-cyr"
+    ],
+    "group": null,
+    "text": "Дизайн-команда\nиз Санкт-Петербурга. Дизайн, арт-дирекшн\nи AI workflows",
+    "html": "Дизайн-команда<br>из Санкт-Петербурга. Дизайн, арт-дирекшн<br>и AI workflows",
+    "fields": {
+     "top-value": "215",
+     "left-value": "32",
+     "height-value": "184",
+     "width-value": "471",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "40",
+     "top-res-320-value": "80",
+     "left-res-320-value": "16",
+     "height-res-320-value": "112",
+     "width-res-320-value": "288",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fixed",
+     "fontsize-res-320-value": "24"
+    }
+   },
+   {
+    "id": "1789477421012000008",
+    "type": "text",
+    "classes": [
+     "fog-element"
+    ],
+    "group": null,
+    "text": "О нас",
+    "html": "О нас",
+    "fields": {
+     "top-value": "180",
+     "left-value": "32",
+     "height-value": "19",
+     "width-value": "94",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "74",
+     "left-res-320-value": "-124"
+    }
+   },
+   {
+    "id": "1789477421013000009",
+    "type": "text",
+    "classes": [
+     "uma-keep-grey",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795977011794142234130000001"
+    ],
+    "text": "Создаём цифровые продукты, сайты и визуальные решения, соединяя дизайн, технологию и AI.",
+    "html": "Создаём цифровые продукты, сайты и визуальные решения, соединяя дизайн, технологию и AI.",
+    "fields": {
+     "top-value": "431",
+     "left-value": "32",
+     "height-value": "38",
+     "width-value": "421",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "fixedsize",
+     "widthmode-value": "fill",
+     "heightmode-value": "fixed",
+     "fontsize-value": "12",
+     "top-res-320-value": "460",
+     "left-res-320-value": "16",
+     "height-res-320-value": "38",
+     "width-res-320-value": "290",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight"
+    }
+   },
+   {
+    "id": "1793830828989000003",
+    "type": "image",
+    "classes": [
+     "uma-layout-dot",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "uma-btn-light-view",
+     "tn-group__39795977011793830828989000001"
+    ],
+    "image": "https://static.tildacdn.com/tild6533-6231-4130-b063-316332646539/svg_1790594882230.svg",
+    "alt": "",
+    "fields": {
+     "top-value": "513",
+     "left-value": "46",
+     "height-value": "10",
+     "width-value": "7",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "imagefit-value": "auto",
+     "filewidth-value": "7",
+     "fileheight-value": "10",
+     "widthmode-value": "fixed",
+     "heightmode-value": "hug",
+     "top-res-320-value": "527",
+     "left-res-320-value": "110",
+     "height-res-320-value": "10",
+     "width-res-320-value": "7",
+     "container-res-320-value": "grid"
+    }
+   },
+   {
+    "id": "1793830828989000002",
+    "type": "text",
+    "classes": [
+     "uma-layout-text",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "uma-btn-light-view",
+     "tn-group__39795977011793830828989000001"
+    ],
+    "text": "Написать нам",
+    "html": "Написать нам",
+    "fields": {
+     "top-value": "509",
+     "left-value": "57",
+     "height-value": "19",
+     "width-value": "86",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "hug",
+     "heightmode-value": "hug",
+     "fontsize-value": "12",
+     "top-res-320-value": "522",
+     "left-res-320-value": "121",
+     "height-res-320-value": "19",
+     "width-res-320-value": "86",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug"
+    }
+   },
+   {
+    "id": "1793830828990000006",
+    "type": "vector",
+    "classes": [
+     "uma-layout-dot",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "uma-btn-dark-view",
+     "tn-group__39795977011793830828989000004",
+     "tn-group__absolute"
+    ],
+    "fields": {
+     "top-value": "514",
+     "left-value": "47",
+     "height-value": "7",
+     "width-value": "7",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "filewidth-value": "7",
+     "fileheight-value": "7",
+     "widthmode-value": "fixed",
+     "heightmode-value": "hug",
+     "top-res-320-value": "528",
+     "left-res-320-value": "111",
+     "height-res-320-value": "10",
+     "width-res-320-value": "7"
+    }
+   },
+   {
+    "id": "1793830828989000005",
+    "type": "text",
+    "classes": [
+     "uma-layout-text",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "uma-btn-dark-view",
+     "tn-group__39795977011793830828989000004",
+     "tn-group__absolute"
+    ],
+    "text": "Написать нам",
+    "html": "Написать нам",
+    "fields": {
+     "top-value": "510",
+     "left-value": "58",
+     "height-value": "19",
+     "width-value": "86",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "hug",
+     "heightmode-value": "hug",
+     "fontsize-value": "12",
+     "top-res-320-value": "523",
+     "left-res-320-value": "122",
+     "height-res-320-value": "19",
+     "width-res-320-value": "86"
+    }
+   },
+   {
+    "id": "1790601631187000003",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795977011790601631187000002"
+    ],
+    "text": "workingtitle@gmail.com",
+    "html": "workingtitle@gmail.com",
+    "fields": {
+     "top-value": "510",
+     "left-value": "175",
+     "height-value": "19",
+     "width-value": "140",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fill",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-g4xuyl,12px)",
+     "top-res-320-value": "567",
+     "left-res-320-value": "16",
+     "height-res-320-value": "19",
+     "width-res-320-value": "140"
+    }
+   },
+   {
+    "id": "1789493129008000004",
+    "type": "shape",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795977011789639728224000001"
+    ],
+    "image": "https://static.tildacdn.com/tild6662-3936-4066-a134-396137633835/Frame_758532525_3.jpg",
+    "fields": {
+     "top-value": "180",
+     "left-value": "600",
+     "height-value": "357",
+     "width-value": "276",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "216",
+     "left-res-320-value": "16",
+     "height-res-320-value": "220",
+     "width-res-320-value": "140",
+     "container-res-320-value": "grid",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1789493110398000003",
+    "type": "shape",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__39795977011789639728224000001"
+    ],
+    "image": "https://static.tildacdn.com/tild3934-3537-4463-b436-666363353961/Frame_758532526_2.jpg",
+    "fields": {
+     "top-value": "180",
+     "left-value": "892",
+     "height-value": "357",
+     "width-value": "276",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "216",
+     "left-res-320-value": "164",
+     "height-res-320-value": "220",
+     "width-res-320-value": "140",
+     "container-res-320-value": "grid",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "fixed"
+    }
+   }
+  ]
+ },
+ {
+  "id": "rec4283359601",
+  "type": "396",
+  "artboard": {
+   "data-artboard-recid": "4283359601",
+   "data-artboard-screens": "320,480,640,960,1200",
+   "data-artboard-height": "360",
+   "data-artboard-valign": "center",
+   "data-artboard-upscale": "window",
+   "data-artboard-heightmode": "hug",
+   "data-artboard-height-res-320": "568",
+   "data-artboard-proxy-min-offset-top": "0",
+   "data-artboard-proxy-min-height": "360",
+   "data-artboard-proxy-max-height": "360"
+  },
+  "elements": [
+   {
+    "id": "1789493306728000001",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__42833596011790187799157000001"
+    ],
+    "text": "Digital",
+    "html": "Digital",
+    "fields": {
+     "top-value": "0",
+     "left-value": "32",
+     "height-value": "19",
+     "width-value": "76",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fixed",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-g4xuyl,12px)",
+     "top-res-320-value": "60",
+     "left-res-320-value": "16",
+     "height-res-320-value": "19",
+     "width-res-320-value": "288",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fill",
+     "heightmode-res-320-value": "hug"
+    }
+   },
+   {
+    "id": "1789493306730000005",
+    "type": "text",
+    "classes": [
+     "uma-balance",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__42833596011790187799157000001"
+    ],
+    "text": "Сайты и интернет-магазины.\nОт структуры до оформления заказа, интеграций с учётными системами и запуска.",
+    "html": "Сайты и интернет-магазины.<br>От структуры до оформления заказа, интеграций с учётными системами и запуска.",
+    "fields": {
+     "top-value": "27",
+     "left-value": "32",
+     "height-value": "76",
+     "width-value": "186",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fill",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "83",
+     "left-res-320-value": "16",
+     "height-res-320-value": "57",
+     "width-res-320-value": "288",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fill",
+     "heightmode-res-320-value": "hug"
+    }
+   },
+   {
+    "id": "1789493306730000002",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__42833596011790187802191000002"
+    ],
+    "text": "Design",
+    "html": "Design",
+    "fields": {
+     "top-value": "0",
+     "left-value": "296",
+     "height-value": "19",
+     "width-value": "76",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fixed",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-g4xuyl,12px)",
+     "top-res-320-value": "176",
+     "left-res-320-value": "16",
+     "height-res-320-value": "19",
+     "width-res-320-value": "288",
+     "heightunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fill",
+     "heightmode-res-320-value": "hug"
+    }
+   },
+   {
+    "id": "1789493306730000006",
+    "type": "text",
+    "classes": [
+     "uma-balance",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__42833596011790187802191000002"
+    ],
+    "text": "Интерфейсы, сайты и цифровые продукты.\nГотовим макеты и дизайн-систему, по которым удобно разрабатывать.",
+    "html": "Интерфейсы, сайты и цифровые продукты.<br>Готовим макеты и дизайн-систему, по которым удобно разрабатывать.",
+    "fields": {
+     "top-value": "27",
+     "left-value": "296",
+     "height-value": "76",
+     "width-value": "231",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fill",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "199",
+     "left-res-320-value": "16",
+     "height-res-320-value": "57",
+     "width-res-320-value": "288",
+     "heightunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fill",
+     "heightmode-res-320-value": "hug"
+    }
+   },
+   {
+    "id": "1789493306730000003",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__42833596011793137246422000001"
+    ],
+    "text": "Direction",
+    "html": "Direction",
+    "fields": {
+     "top-value": "0",
+     "left-value": "605",
+     "height-value": "19",
+     "width-value": "80",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fixed",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-g4xuyl,12px)",
+     "top-res-320-value": "292",
+     "left-res-320-value": "16",
+     "height-res-320-value": "19",
+     "width-res-320-value": "288",
+     "textfit-res-320-value": "fixedsize",
+     "widthmode-res-320-value": "fill",
+     "heightmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1789493306730000007",
+    "type": "text",
+    "classes": [
+     "uma-balance",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__42833596011793137246422000001"
+    ],
+    "text": "Визуальная концепция и арт-дирекшн.\nСъёмки, айдентика, единый стиль бренда на сайте и в соцсетях",
+    "html": "Визуальная концепция и арт-дирекшн.<br>Съёмки, айдентика, единый стиль бренда на сайте и в соцсетях",
+    "fields": {
+     "top-value": "27",
+     "left-value": "605",
+     "height-value": "76",
+     "width-value": "209",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fill",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "315",
+     "left-res-320-value": "16",
+     "height-res-320-value": "57",
+     "width-res-320-value": "288",
+     "heightunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fill",
+     "heightmode-res-320-value": "hug"
+    }
+   },
+   {
+    "id": "1789493306730000004",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__42833596011790187808806000004"
+    ],
+    "text": "Ai",
+    "html": "Ai",
+    "fields": {
+     "top-value": "0",
+     "left-value": "892",
+     "height-value": "19",
+     "width-value": "76",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fixed",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-g4xuyl,12px)",
+     "top-res-320-value": "408",
+     "left-res-320-value": "16",
+     "height-res-320-value": "19",
+     "width-res-320-value": "288",
+     "heightunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fill",
+     "heightmode-res-320-value": "hug"
+    }
+   },
+   {
+    "id": "1789493306730000008",
+    "type": "text",
+    "classes": [
+     "uma-balance",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__42833596011790187808806000004"
+    ],
+    "text": "Встраиваем AI в работу бренда.\nГенерация контента и визуалов, умный поиск, чат-ассистенты и автоматизация.",
+    "html": "Встраиваем AI в работу бренда.<br>Генерация контента и визуалов, умный поиск, чат-ассистенты и автоматизация.",
+    "fields": {
+     "top-value": "27",
+     "left-value": "892",
+     "height-value": "76",
+     "width-value": "194",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fill",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-r01ZP,12px)",
+     "top-res-320-value": "431",
+     "left-res-320-value": "16",
+     "height-res-320-value": "57",
+     "width-res-320-value": "288",
+     "heightunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fill",
+     "heightmode-res-320-value": "hug"
+    }
+   }
+  ]
+ },
+ {
+  "id": "rec4219803101",
+  "type": "215",
+  "artboard": {},
+  "elements": [],
+  "html": "<a name=\"contacts\" style=\"font-size:0;\"></a>"
+ },
+ {
+  "id": "rec4249463601",
+  "type": "396",
+  "artboard": {
+   "data-artboard-recid": "4249463601",
+   "data-artboard-screens": "320,480,640,960,1200",
+   "data-artboard-height": "384",
+   "data-artboard-valign": "center",
+   "data-artboard-upscale": "window",
+   "data-artboard-heightmode": "hug",
+   "data-artboard-height-res-320": "441",
+   "data-artboard-proxy-min-offset-top": "0",
+   "data-artboard-proxy-min-height": "384",
+   "data-artboard-proxy-max-height": "384"
+  },
+  "elements": [
+   {
+    "id": "1789493622774000001",
+    "type": "image",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__42494636011789637664085000004"
+    ],
+    "image": "https://static.tildacdn.com/tila3863-6162-4061-b065-353737303766/uma-cta-laptop.jpg",
+    "alt": "",
+    "fields": {
+     "top-value": "0",
+     "left-value": "32",
+     "height-value": "160",
+     "width-value": "267",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "imagefit-value": "cover",
+     "filewidth-value": "1440",
+     "fileheight-value": "864",
+     "widthmode-value": "fixed",
+     "heightmode-value": "fixed",
+     "top-res-320-value": "0",
+     "left-res-320-value": "16",
+     "height-res-320-value": "195",
+     "width-res-320-value": "288",
+     "widthmode-res-320-value": "fixed"
+    }
+   },
+   {
+    "id": "1789493622775000002",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__42494636011789637658693000003"
+    ],
+    "text": "Есть идея?\nДавайте обсудим.",
+    "html": "Есть идея?<br>Давайте обсудим.",
+    "fields": {
+     "top-value": "0",
+     "left-value": "315",
+     "height-value": "92",
+     "width-value": "344",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "hug",
+     "heightmode-value": "hug",
+     "fontsize-value": "40",
+     "top-res-320-value": "211",
+     "left-res-320-value": "16",
+     "height-res-320-value": "56",
+     "width-res-320-value": "290",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autoheight",
+     "widthmode-res-320-value": "fixed",
+     "heightmode-res-320-value": "hug",
+     "fontsize-res-320-value": "24"
+    }
+   },
+   {
+    "id": "1790594882230000001",
+    "type": "image",
+    "classes": [
+     "uma-layout-dot",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "uma-btn-light-view",
+     "tn-group__42494636011790594287670000006",
+     "tn-group__absolute"
+    ],
+    "image": "https://static.tildacdn.com/tild6533-6231-4130-b063-316332646539/svg_1790594882230.svg",
+    "alt": "",
+    "fields": {
+     "top-value": "136",
+     "left-value": "329",
+     "height-value": "10",
+     "width-value": "7",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "imagefit-value": "auto",
+     "filewidth-value": "7",
+     "fileheight-value": "10",
+     "widthmode-value": "fixed",
+     "heightmode-value": "hug",
+     "top-res-320-value": "304",
+     "left-res-320-value": "36",
+     "height-res-320-value": "10",
+     "width-res-320-value": "7",
+     "container-res-320-value": "grid"
+    }
+   },
+   {
+    "id": "1790594287671000007",
+    "type": "text",
+    "classes": [
+     "uma-layout-text",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "uma-btn-light-view",
+     "tn-group__42494636011790594287670000006",
+     "tn-group__absolute"
+    ],
+    "text": "Написать нам",
+    "html": "Написать нам",
+    "fields": {
+     "top-value": "132",
+     "left-value": "340",
+     "height-value": "19",
+     "width-value": "86",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "hug",
+     "heightmode-value": "hug",
+     "fontsize-value": "12",
+     "top-res-320-value": "299",
+     "left-res-320-value": "47",
+     "height-res-320-value": "19",
+     "width-res-320-value": "86",
+     "container-res-320-value": "grid",
+     "heightunits-res-320-value": "px",
+     "widthunits-res-320-value": "px",
+     "textfit-res-320-value": "autowidth",
+     "widthmode-res-320-value": "hug",
+     "heightmode-res-320-value": "hug"
+    }
+   },
+   {
+    "id": "1790538428210000008",
+    "type": "vector",
+    "classes": [
+     "uma-layout-dot",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "uma-btn-dark-view",
+     "tn-group__42494636011790538409995000006"
+    ],
+    "fields": {
+     "top-value": "137",
+     "left-value": "330",
+     "height-value": "7",
+     "width-value": "7",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "filewidth-value": "7",
+     "fileheight-value": "7",
+     "widthmode-value": "fixed",
+     "heightmode-value": "hug",
+     "top-res-320-value": "305",
+     "left-res-320-value": "37",
+     "height-res-320-value": "10",
+     "width-res-320-value": "7"
+    }
+   },
+   {
+    "id": "1790538409995000007",
+    "type": "text",
+    "classes": [
+     "uma-layout-text",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "uma-btn-dark-view",
+     "tn-group__42494636011790538409995000006"
+    ],
+    "text": "Написать нам",
+    "html": "Написать нам",
+    "fields": {
+     "top-value": "133",
+     "left-value": "341",
+     "height-value": "19",
+     "width-value": "86",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "hug",
+     "heightmode-value": "hug",
+     "fontsize-value": "12",
+     "top-res-320-value": "300",
+     "left-res-320-value": "48",
+     "height-res-320-value": "19",
+     "width-res-320-value": "86"
+    }
+   },
+   {
+    "id": "1789493622778000006",
+    "type": "text",
+    "classes": [
+     "t396__elem-flex"
+    ],
+    "group": [
+     "uma-blur-btn",
+     "tn-group__42494636011789493622778000005"
+    ],
+    "text": "О нас",
+    "html": "О нас",
+    "fields": {
+     "top-value": "133",
+     "left-value": "504",
+     "height-value": "19",
+     "width-value": "34",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autowidth",
+     "widthmode-value": "hug",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-g4xuyl,12px)",
+     "top-res-320-value": "300",
+     "left-res-320-value": "194",
+     "height-res-320-value": "19",
+     "width-res-320-value": "34"
+    }
+   },
+   {
+    "id": "1790537348001000002",
+    "type": "text",
+    "classes": [
+     "uma-invert-white",
+     "t396__elem-flex"
+    ],
+    "group": [
+     "tn-group__42494636011790537348001000001"
+    ],
+    "text": "working_title@gmail.com",
+    "html": "working_title@gmail.com",
+    "fields": {
+     "top-value": "133",
+     "left-value": "601",
+     "height-value": "19",
+     "width-value": "148",
+     "axisy-value": "top",
+     "axisx-value": "left",
+     "container-value": "grid",
+     "topunits-value": "px",
+     "leftunits-value": "px",
+     "heightunits-value": "px",
+     "widthunits-value": "px",
+     "textfit-value": "autoheight",
+     "widthmode-value": "fill",
+     "heightmode-value": "hug",
+     "fontsize-value": "var(--uc-typo-fontsize-g4xuyl,12px)",
+     "top-res-320-value": "342",
+     "left-res-320-value": "16",
+     "height-res-320-value": "19",
+     "width-res-320-value": "148"
+    }
+   }
+  ]
+ },
+ {
+  "id": "rec3979597201",
+  "type": "396",
+  "artboard": {
+   "data-artboard-recid": "3979597201",
+   "data-artboard-screens": "320,480,640,960,1200",
+   "data-artboard-height": "20",
+   "data-artboard-valign": "center",
+   "data-artboard-upscale": "window",
+   "data-artboard-ovrflw": "visible",
+   "data-artboard-isolation": "isolate",
+   "data-artboard-proxy-min-offset-top": "0",
+   "data-artboard-proxy-min-height": "20",
+   "data-artboard-proxy-max-height": "20"
+  },
+  "elements": []
+ },
+ {
+  "id": "rec5227328501",
+  "type": "131",
+  "artboard": {},
+  "elements": [],
+  "html": "<!-- T123 --> <div class=\"t123\"> <div class=\"t-container_100 \"> <div class=\"t-width t-width_100 \"> <!-- nominify begin --> <div id=\"uma-footer-mount\"></div> <!-- nominify end --> </div> </div> </div>"
+ },
+ {
+  "id": "rec4219843901",
+  "type": "270",
+  "artboard": {},
+  "elements": [],
+  "html": "<div class=\"t270\"></div> <script>t_onReady(function() {var hash=window.location.hash;t_onFuncLoad('t270_scroll',function() {t270_scroll(hash,-3);});setTimeout(function() {var curPath=window.location.pathname;var curFullPath=window.location.origin + curPath;var recs=document.querySelectorAll('.r');Array.prototype.forEach.call(recs,function(rec) {var selects='a[href^=\"#\"]:not([href=\"#\"]):not(.carousel-control):not(.t-carousel__control):not([href^=\"#price\"]):not([href^=\"#submenu\"]):not([href^=\"#popup\"]):not([href*=\"#zeropopup\"]):not([href*=\"#closepopup\"]):not([href*=\"#closeallpopup\"]):not([href^=\"#prodpopup\"]):not([href^=\"#order\"]):not([href^=\"#!\"]):not([target=\"_blank\"]),' + 'a[href^=\"' + curPath + '#\"]:not([href*=\"#!/tfeeds/\"]):not([href*=\"#!/tproduct/\"]):not([href*=\"#!/tab/\"]):not([href*=\"#popup\"]):not([href*=\"#zeropopup\"]):not([href*=\"#closepopup\"]):not([href*=\"#closeallpopup\"]):not([target=\"_blank\"]),' + 'a[href^=\"' + curFullPath + '#\"]:not([href*=\"#!/tfeeds/\"]):not([href*=\"#!/tproduct/\"]):not([href*=\"#!/tab/\"]):not([href*=\"#popup\"]):not([href*=\"#zeropopup\"]):not([href*=\"#closepopup\"]):not([href*=\"#closeallpopup\"]):not([target=\"_blank\"])';var elements=rec.querySelectorAll(selects);Array.prototype.forEach.call(elements,function(element) {element.addEventListener('click',function(event) {event.preventDefault();var hash=this.hash.trim();t_onFuncLoad('t270_scroll',function() {t270_scroll(hash,-3);});});});});if(document.querySelectorAll('.js-store').length>0||document.querySelectorAll('.js-feed').length>0) {t_onFuncLoad('t270_scroll',function() {t270_scroll(hash,-3,1);});}},500);setTimeout(function() {var hash=window.location.hash;if(hash&&document.querySelectorAll('a[name=\"' + hash.slice(1) + '\"], div[id=\"' + hash.slice(1) + '\"]').length>0) {if(window.isMobile) {t_onFuncLoad('t270_scroll',function() {t270_scroll(hash,0);});} else {t_onFuncLoad('t270_scroll',function() {t270_scroll(hash,0);});}}},1000);window.addEventListener('popstate',function() {var hash=window.location.hash;if(hash&&document.querySelectorAll('a[name=\"' + hash.slice(1) + '\"], div[id=\"' + hash.slice(1) + '\"]').length>0) {if(window.isMobile) {t_onFuncLoad('t270_scroll',function() {t270_scroll(hash,0);});} else {t_onFuncLoad('t270_scroll',function() {t270_scroll(hash,0);});}}});});</script>"
+ },
+ {
+  "id": "rec5346487201",
+  "type": "131",
+  "artboard": {},
+  "elements": [],
+  "html": "<!-- T123 --> <div class=\"t123\"> <div class=\"t-container_100 \"> <div class=\"t-width t-width_100 \"> <!-- nominify begin --> <!-- ========================================================================= WORKING TITLE CORE: единственная вставка с кодом в Тильде. Здесь только то, что должно сработать в первую миллисекунду: тема до отрисовки, блокировка скролла, прелоадер. Всё остальное загрузчик ниже берёт из GitHub: github.com/UlyanaNechipor/uma_studio Исходник этой вставки лежит в репозитории: tilda/core.html ========================================================================= --> <!-- Шрифт логотипа: Manrope 700 (WORKING) и 300 (TITLE), только буквы названия --> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin=\"\"> <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@300;700&amp;display=block&amp;text=WORKINGTITLE\"> <script> /* ========================================================================= */ /* САМАЯ ПЕРВАЯ МИЛЛИСЕКУНДА: Мгновенный перехват темы ДО отрисовки пикселей. */ /* ========================================================================= */ if (localStorage.getItem('theme') === 'light') { document.documentElement.classList.add('light-theme'); document.addEventListener(\"DOMContentLoaded\", function() { document.body.classList.add('light-theme'); }); } </script> <style> /* 1. БЛОКИРУЕМ ПОЛЗУНОК СКРОЛЛА НА ВРЕМЯ РАБОТЫ ЛОАДЕРА */ /* Этот класс мгновенно прячет вертикальный курсор сбоку и запрещает любые движения */ html.uma-scroll-locked, body.uma-scroll-locked { overflow: hidden !important; height: 100vh !important; touch-action: none !important; /* Защита от тач-скролла на мобильных */ } /* Настраиваем ультра-плавное возвращение ползунка скролла после лоадера */ html, body { transition: background-color 0.6s cubic-bezier(0.25, 1, 0.2, 1); } </style> <script> /* Каждое открытие и обновление страницы — с самого верха, под прелоадером. • память прокрутки браузера выключена; • якорь в адресе (#about и т. п.) убирается, иначе браузер и Тильда после загрузки прыгают к нему — отсюда «то вверху, то в середине»; • пока идёт прелоадер, страница держится на нуле; замок снимается, когда прелоадер ушёл (или через 6 с на всякий случай); • после снятия замка страница больше не дёргается наверх, даже если загрузка картинок закончилась позже — человек уже мог начать прокрутку. */ (function () { var root = document.documentElement; root.classList.add('uma-scroll-locked'); if (document.body) document.body.classList.add('uma-scroll-locked'); try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {} if (location.hash && !/^#!/.test(location.hash)) { try { history.replaceState(history.state, '', location.pathname + location.search); } catch (e) {} } window.scrollTo(0, 0); var locked = true; (function hold() { if (!locked) return; if (window.scrollY !== 0) window.scrollTo(0, 0); requestAnimationFrame(hold); })(); // человек сам начал листать — больше не возвращаем наверх var touched = false; ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (t) { window.addEventListener(t, function () { touched = true; }, { passive: true, capture: true }); }); function unlock() { if (!locked) return; locked = false; root.classList.remove('uma-scroll-locked'); if (document.body) document.body.classList.remove('uma-scroll-locked'); window.scrollTo(0, 0); // ещё 1.5 с после снятия замка держим верх, пока человек не тронул страницу: // поздняя догрузка картинок, раскладка блоков и восстановление прокрутки браузером // иногда сдвигали страницу вниз — отсюда «то вверху, то нет» после обновления var until = Date.now() + 1500; (function keep() { if (touched || Date.now() > until) return; if (window.scrollY !== 0) window.scrollTo(0, 0); requestAnimationFrame(keep); })(); } window.umaUnlockScroll = unlock; // прелоадер ушёл (класс completed) — снимаем замок function watch() { var pre = document.getElementById('custom-preloader'); if (!pre) return setTimeout(unlock, 2500); if (pre.classList.contains('completed')) return unlock(); new MutationObserver(function () { if (pre.classList.contains('completed')) unlock(); }) .observe(pre, { attributes: true, attributeFilter: ['class'] }); } if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watch); else watch(); setTimeout(unlock, 6000); // страница вернулась из кэша вкладок (назад/вперёд) — тоже наверх window.addEventListener('pageshow', function (e) { if (e.persisted) window.scrollTo(0, 0); }); window.addEventListener('load', function () { if (!touched && !locked) window.scrollTo(0, 0); }); })(); </script> <style> /* ========================================================================= */ /* 1. ПРЕЛОАДЕР: ГЛОБАЛЬНАЯ СИСТЕМА ИНВЕРСИИ ЦВЕТОВ */ /* ========================================================================= */ :root { --uma-accent: #d94f30; /* акцентный оранжевый: след курсора */ --preloader-bg: #111211; /* Базовый тёмный графит */ --preloader-text-bg: #202120; /* Бледные буквы на старте */ --uma-logo-ink: #fbfbfb; /* цвет логотипа: цвет текста темы */ } html.light-theme, body.light-theme { --preloader-bg: #F5F4F0; /* Матовая костяная бумага (мягкий беж) */ --preloader-text-bg: #E3E2DE; /* Мягкая подложка букв в светлой теме */ --uma-logo-ink: #111211; } /* Главный экран прелоадера */ #custom-preloader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--preloader-bg) !important; z-index: 9999999 !important; overflow: hidden; display: flex; justify-content: center; align-items: center; transition: background-color 1.2s cubic-bezier(0.19, 1, 0.22, 1), visibility 1.2s; } #custom-preloader.completed { background-color: rgba(17, 18, 17, 0) !important; pointer-events: none; } /* АДАПТИВНЫЙ КОНТЕЙНЕР ДЛЯ ПОЛЕТА ЛОГОТИПА */ .preloader-logo-container { position: absolute; height: auto; z-index: 10; transform-origin: left center; left: 50vw; top: 50vh; transform: translate3d(-50%, -50%, 0) scale(1); /* Вылет: 1.4 секунды на кубической экспоненте Безье */ transition: transform 1.4s cubic-bezier(0.19, 1, 0.22, 1), left 1.4s cubic-bezier(0.19, 1, 0.22, 1), top 1.4s cubic-bezier(0.19, 1, 0.22, 1), width 1.4s cubic-bezier(0.19, 1, 0.22, 1); will-change: transform, left, top, width; } /* после вылета логотип «пристыкован» к шапке: без плавных переходов, иначе любой пересчёт положения (например, при прокрутке на телефоне) он догоняет с запаздыванием */ .preloader-logo-container.is-docked { transition: none !important; will-change: auto; } .preloader-logo-container svg { width: 100%; height: auto; display: block; overflow: visible; } /* Логотип WORKING TITLE: контраст начертаний одного шрифта — WORKING плотнее (700), TITLE тоньше (300). Шрифт — Manrope, как на всём сайте. */ .logo-bg-text, .logo-fill-text { font-family: 'Manrope', Arial, sans-serif; font-size: 112px; letter-spacing: -3.4px; } .logo-w1 { font-weight: 700; } .logo-w2 { font-weight: 300; } /* 1 СЛОЙ: Бледные буквы на старте (в потоке, задаёт размер контейнера) */ .logo-bg-text { fill: var(--preloader-text-bg) !important; opacity: 0; animation: fadeInLogo 0.6s ease forwards 0.2s; } /* 2 СЛОЙ: заливка цветом текста темы */ .logo-fill-text { fill: var(--uma-logo-ink) !important; } /* пока шрифт логотипа не загружен и рамка не подогнана — логотип скрыт и анимации стоят, чтобы буквы не перескакивали из запасного шрифта */ .uma-reveal-wrap:not(.is-ready) { visibility: hidden; } .uma-reveal-wrap:not(.is-ready), .uma-reveal-wrap:not(.is-ready) * { animation-play-state: paused !important; } /* Заливка логотипа с мягким краем без маски в анимации. Окошко (.uma-reveal) едет вправо, слой заливки внутри (.uma-reveal-inner) едет влево на то же расстояние. Мягкий край это статическая маска на окошке. --f: ширина мягкого края в долях ширины логотипа (меньше = уже и чётче). */ .uma-reveal-wrap { --f: 0.10; --s: calc(100% / (1 + var(--f))); } .uma-reveal { position: absolute; top: 0; left: 0; height: 100%; width: calc((1 + var(--f)) * 100%); overflow: hidden; transform: translate3d(-100%, 0, 0); will-change: transform; -webkit-mask-image: linear-gradient(90deg, #000 0, #000 var(--s), rgba(0,0,0,.84) calc(var(--s) + (100% - var(--s)) * .25), rgba(0,0,0,.5) calc(var(--s) + (100% - var(--s)) * .5), rgba(0,0,0,.16) calc(var(--s) + (100% - var(--s)) * .75), transparent 100%); mask-image: linear-gradient(90deg, #000 0, #000 var(--s), rgba(0,0,0,.84) calc(var(--s) + (100% - var(--s)) * .25), rgba(0,0,0,.5) calc(var(--s) + (100% - var(--s)) * .5), rgba(0,0,0,.16) calc(var(--s) + (100% - var(--s)) * .75), transparent 100%); animation: umaRevealOuter 1.8s cubic-bezier(0.25, 1, 0.4, 1) both 1.0s; } .uma-reveal-inner { position: absolute; top: 0; left: 0; width: calc(100% / (1 + var(--f))); height: 100%; transform: translate3d(calc((1 + var(--f)) * 100%), 0, 0); will-change: transform; animation: umaRevealInner 1.8s cubic-bezier(0.25, 1, 0.4, 1) both 1.0s; } @keyframes fadeInLogo { to { opacity: 1; } } @keyframes umaRevealOuter { from { transform: translate3d(-100%, 0, 0); } to { transform: translate3d(0, 0, 0); } } @keyframes umaRevealInner { from { transform: translate3d(calc((1 + var(--f)) * 100%), 0, 0); } to { transform: translate3d(0, 0, 0); } } /* 💻 Финал для десктопа (хедер 48px с autoscale) */ @media screen and (min-width: 768px) { .preloader-logo-container { width: calc(100vw - 64px) !important; } #custom-preloader.completed .preloader-logo-container { left: 2rem !important; top: var(--pl-dy, 1.5rem) !important; transform: translate3d(0%, -50%, 0) scale(var(--pl-ds, calc(0.041 * var(--pl-k, 1)))) !important; } } /* 📱 Финал для мобильных (линия 16px на 28px) */ @media screen and (max-width: 767px) { .preloader-logo-container { width: calc(100vw - 32px) !important; left: 50vw !important; top: 45vh !important; transform: translate3d(-50%, -50%, 0) scale(1); } /* в шапке: кегль пунктов меню, по их линии (--pl-mw, --pl-my ставит скрипт ниже) */ #custom-preloader.completed .preloader-logo-container { width: var(--pl-mw, calc(41px * var(--pl-k, 1))) !important; left: var(--pl-mx, 16px) !important; top: var(--pl-my, 30px) !important; transform: translate3d(0, -50%, 0) scale(1) !important; } /* двухстрочный логотип: по центру шапки по вертикали */ #custom-preloader.completed .preloader-logo-container.is-stacked { top: var(--pl-my, 26px) !important; transform: translate3d(0, -50%, 0) scale(1) !important; } } /* Цвета и стиль заливки текста лежат в блоке стилей темы (раздел «ЗАЛИВКА ТЕКСТА ОДНИМ СЛОЕМ») */ </style> <div id=\"custom-preloader\" class=\"completed\"> <div class=\"preloader-logo-container uma-reveal-wrap is-ready is-docked\" id=\"uma-logo-wrap\" data-uma-core=\"2\" style=\"--pl-k: 3.1882;\"> <!-- Бледные буквы (в потоке, задают размер) --> <svg class=\"uma-logo-svg\" viewBox=\"-10 0 813 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"> <text x=\"0\" y=\"90\" class=\"logo-bg-text\"><tspan class=\"logo-w1\">WORKING</tspan><tspan class=\"logo-w2\" dx=\"26\">TITLE</tspan></text> </svg> <!-- Заливка: окошко едет вправо, слой внутри едет влево --> <div class=\"uma-reveal\"> <div class=\"uma-reveal-inner\"> <svg class=\"uma-logo-svg\" viewBox=\"-10 0 813 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"> <text x=\"0\" y=\"90\" class=\"logo-fill-text\"><tspan class=\"logo-w1\">WORKING</tspan><tspan class=\"logo-w2\" dx=\"26\">TITLE</tspan></text> </svg> </div> </div> </div> </div> <script> /* Логотип в прелоадере (он же логотип в шапке после вылета). 1. Ждём шрифт логотипа (не дольше 1.5 с), чтобы буквы не перескакивали. 2. Компьютер: одна строка WORKING TITLE. Ширина рамки SVG подгоняется под текст, --pl-k держит высоту букв в шапке такой же, как у прежнего логотипа (255 × 100). 3. Телефон: две строки — WORKING над TITLE, чтобы логотип поместился в шапку до первого пункта меню; ширина в шапке — --pl-mw. Сменить название: WORDS ниже и текст в двух <text> в разметке. */ (function () { var wrap = document.getElementById('uma-logo-wrap'); if (!wrap) return; var WORDS = ['WORKING', 'TITLE']; var GAP = 14; // px: отступ логотипа от первого пункта меню на телефоне var MOB_H = 30; // px: высота двухстрочного логотипа в шапке на телефоне var SCALE = 0.9; // кегль логотипа относительно кегля пунктов меню var BASE_Y = 0.9; // базовая линия текста в рамке логотипа (y = 90 из 100) var mode = ''; function layout(stacked) { wrap.querySelectorAll('.uma-logo-svg text').forEach(function (t) { if (stacked) { t.setAttribute('x', '6'); t.removeAttribute('y'); t.setAttribute('text-anchor', 'start'); t.removeAttribute('dominant-baseline'); t.innerHTML = '<tspan class=\"logo-w1\" x=\"6\" y=\"86\">' + WORDS[0] + '</tspan>' + '<tspan class=\"logo-w2\" x=\"6\" y=\"184\">' + WORDS[1] + '</tspan>'; } else { // постоянная точка отсчёта (x = 0) и явная базовая линия: Safari по-своему понимает // dominant-baseline и проценты при смене viewBox — от этого заливка съезжала и резалась t.setAttribute('x', '0'); t.setAttribute('y', '90'); t.removeAttribute('text-anchor'); t.removeAttribute('dominant-baseline'); t.innerHTML = '<tspan class=\"logo-w1\">' + WORDS[0] + '</tspan><tspan class=\"logo-w2\" dx=\"26\">' + WORDS[1] + '</tspan>'; } }); } // первый пункта меню в шапке: левый край и середина по высоте function navBox() { var nav = document.querySelectorAll('#rec3979597301 .t396__elem[data-elem-type=\"button\"]'); var box = null; for (var i = 0; i < nav.length; i++) { var r = nav[i].getBoundingClientRect(); if (r.width && r.left > 40 && (!box || r.left < box.left)) box = { left: r.left, top: r.top, width: r.width, height: r.height, el: nav[i] }; } return box; } function fit() { // логотип всегда в одну строку (на телефоне тоже) var stacked = false; if (mode !== (stacked ? 's' : 'l')) { mode = stacked ? 's' : 'l'; layout(stacked); wrap.classList.toggle('is-stacked', stacked); } var t = wrap.querySelector('.logo-bg-text'); // рамка по фактическим границам текста (getBBox), с запасом PAD по бокам: // у W и других букв ширина «чернил» больше расчётной длины строки, иначе края обрезаются var PAD = 10, bb = null, h = stacked ? 200 : 100, w = 0, x0 = 0; try { bb = t.getBBox(); } catch (e) {} if (!bb || !bb.width) return; x0 = Math.floor(bb.x - PAD); w = Math.ceil(bb.width + PAD * 2); wrap.querySelectorAll('.uma-logo-svg').forEach(function (s) { s.setAttribute('viewBox', x0 + ' 0 ' + w + ' ' + h); }); wrap.style.setProperty('--pl-k', (w / 255).toFixed(4)); // кегль пунктов меню в шапке на экране и их базовая линия var nd = navBox(), fpx = 0, base = 0, zoom = 1; if (nd && nd.el) { var a = nd.el.querySelector('.tn-atom') || nd.el; var z = nd.width / (nd.el.offsetWidth || nd.width); // zoom Тильды zoom = z || 1; fpx = parseFloat(getComputedStyle(a).fontSize) * (z || 1); base = baseline(a); } // логотип набран капсом и плотнее — оптически он крупнее строчных пунктов меню, // поэтому его кегль чуть меньше (SCALE) и он стоит на одной базовой линии с меню var target = fpx ? fpx * SCALE * w / 112 : 0; // ширина логотипа в шапке var hvis = target * 100 / w; // высота рамки логотипа в шапке var y = base ? base - (BASE_Y - 0.5) * hvis : (nd ? nd.top + nd.height / 2 : 0); if (window.innerWidth < 768) { wrap.style.removeProperty('--pl-ds'); wrap.style.removeProperty('--pl-dy'); if (target && nd) { var mw = Math.min(target, nd.left - 16 * zoom - GAP); // не наезжать на меню hvis = mw * 100 / w; y = base ? base - (BASE_Y - 0.5) * hvis : y; wrap.style.setProperty('--pl-mw', Math.max(40, mw).toFixed(1) + 'px'); wrap.style.setProperty('--pl-my', y.toFixed(1) + 'px'); // левый край букв — по полю сетки Тильды (16 px макета × zoom), минус запас рамки wrap.style.setProperty('--pl-mx', (16 * (zoom || 1) - PAD * mw / w).toFixed(1) + 'px'); } } else { wrap.style.removeProperty('--pl-mw'); wrap.style.removeProperty('--pl-my'); if (target && nd) { var cw = Math.max(1, window.innerWidth - 64); // ширина логотипа до вылета wrap.style.setProperty('--pl-ds', (target / cw).toFixed(5)); wrap.style.setProperty('--pl-dy', y.toFixed(1) + 'px'); } } } // базовая линия текста элемента: невидимая метка нулевой высоты на базовой линии function baseline(el) { var probe = document.createElement('span'); probe.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline;'; var host = el.querySelector('a, span') || el; host.appendChild(probe); var y = probe.getBoundingClientRect().top; host.removeChild(probe); return y; } var shown = false; function ready() { if (shown) return; shown = true; fit(); wrap.classList.add('is-ready'); } if (document.fonts && document.fonts.load) { Promise.all([ document.fonts.load('700 112px Manrope', WORDS[0]), document.fonts.load('300 112px Manrope', WORDS[1]) ]).then(ready, ready); } else ready(); setTimeout(ready, 1500); window.addEventListener('load', fit); // перед вылетом в шапку меряем ещё раз: к этому моменту меню уже на своих местах var pre = document.getElementById('custom-preloader'); if (pre && window.MutationObserver) { var docked = false; new MutationObserver(function () { if (!pre.classList.contains('completed') || docked) return; docked = true; fit(); setTimeout(function () { wrap.classList.add('is-docked'); }, 1500); // вылет 1.4 с }).observe(pre, { attributes: true, attributeFilter: ['class'] }); } // пересчёт только при смене ширины: на телефоне высота окна меняется при каждой прокрутке // (панель адреса), и логотип из-за этого «дышал» var tm = 0, lastW = window.innerWidth; window.addEventListener('resize', function () { if (window.innerWidth === lastW) return; lastW = window.innerWidth; clearTimeout(tm); tm = setTimeout(fit, 200); }); })(); </script> <script> /* Страховка: если код из GitHub так и не загрузился, прелоадер всё равно уходит. 20 с, а не меньше: при медленной сети (например, вкладка открылась сразу после включения компьютера, пока не подключился Wi-Fi) лучше подождать на прелоадере, чем показать страницу без кода — «разобранную». Обычно код приходит из сохранённой копии в браузере (см. загрузчик ниже) за доли секунды. */ window.umaReleasePreloader = function () { var p = document.getElementById('custom-preloader'); if (p && !p.classList.contains('completed')) p.classList.add('completed'); document.documentElement.classList.remove('uma-scroll-locked'); if (document.body) document.body.classList.remove('uma-scroll-locked'); }; setTimeout(window.umaReleasePreloader, 20000); </script> <script> /* ========================================================================= UMA LOADER: подтягивает весь остальной код сайта из GitHub Репозиторий: github.com/UlyanaNechipor/uma_studio (ветка main) Список файлов и порядок их подключения: uma.json в корне репозитория. Поле \"v\" в uma.json меняется при каждом изменении кода. ?umaref=dev предпросмотр ветки dev (запоминается до закрытия вкладки) ?umaref=main вернуться к основной версии ?umadebug панель на экране: какая версия загрузилась и откуда, ответы источников ?umareset стереть сохранённую копию кода в браузере и загрузить заново ========================================================================= */ (function () { var REPO = 'UlyanaNechipor/uma_studio'; var CORE_V = '2026-11-09b'; // версия самого загрузчика (этого кода в Тильде) // Источники по порядку. raw.githubusercontent: свежая версия не позже чем через 5 минут после пуша. // jsDelivr (три адреса) — запасной вариант: он кэширует ветку дольше, до 12 часов. function sources(ref) { return [ 'https://raw.githubusercontent.com/' + REPO + '/' + ref + '/', 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + ref + '/', 'https://fastly.jsdelivr.net/gh/' + REPO + '@' + ref + '/' // gcore.jsdelivr.net по ветке не берём: его копия не сбрасывается и отстаёт на сутки ]; } var q = location.search; var DEBUG = /[?&]umadebug/.test(q); function log() { if (DEBUG) console.log.apply(console, ['UMA loader:'].concat([].slice.call(arguments))); } /* ---------- какая ветка ---------- */ var ref = 'main'; try { var m = q.match(/[?&]umaref=([\\w.\\-]+)/); if (m) { ref = m[1]; if (ref === 'main') sessionStorage.removeItem('uma_ref'); else sessionStorage.setItem('uma_ref', ref); } else { ref = sessionStorage.getItem('uma_ref') || 'main'; } } catch (e) {} /* ---------- DOMContentLoaded / load для кода, пришедшего позже ---------- Файлы из GitHub выполняются, когда страница уже разобрана. Обработчик DOMContentLoaded (или load), повешенный после этого события, вызывается сразу. */ (function () { function call(fn, target, type) { var ev; try { ev = new Event(type); } catch (e) { ev = { type: type }; } if (typeof fn === 'function') fn.call(target, ev); else fn.handleEvent(ev); } function wrap(target) { var orig = target.addEventListener; target.addEventListener = function (type, fn, opts) { if (fn && (typeof fn === 'function' || fn.handleEvent)) { if (type === 'DOMContentLoaded' && document.readyState !== 'loading') { setTimeout(function () { call(fn, target, type); }, 0); return; } if (type === 'load' && target === window && document.readyState === 'complete') { setTimeout(function () { call(fn, target, type); }, 0); return; } } return orig.call(this, type, fn, opts); }; } wrap(document); wrap(window); })(); /* ---------- утилиты ---------- */ function timeout(p, ms) { return new Promise(function (ok, fail) { var t = setTimeout(function () { fail(new Error('timeout')); }, ms); p.then(function (v) { clearTimeout(t); ok(v); }, function (e) { clearTimeout(t); fail(e); }); }); } function getText(url) { return timeout(fetch(url), 6000).then(function (r) { if (!r.ok) throw new Error(r.status + ' ' + url); return r.text(); }); } /* ---------- 1. список файлов (uma.json): со всех источников сразу ---------- Свежие источники: raw.githubusercontent и GitHub API (номер последнего коммита → uma.json этого коммита с jsDelivr). Из России raw часто отвечает десятки секунд, а jsDelivr по имени ветки (@main) может часами отдавать старую версию — поэтому спрашиваем всех сразу, берём первый свежий ответ, а jsDelivr @main — только если свежие за STALE_WAIT так и не ответили. */ var STALE_WAIT = 3500; // мс function vnum(v) { // \"2026-11-08.23\" → сравнимое число var m = String(v || '').match(/^(\\d{4})-(\\d{2})-(\\d{2})\\.(\\d+)$/); return m ? (+m[1] * 10000 + +m[2] * 100 + +m[3]) * 1000 + +m[4] : 0; } function getJSON(url, opt) { return timeout(fetch(url, opt || { cache: 'no-store' }), 8000).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); } function loadManifest() { var t = Date.now(); var raw = 'https://raw.githubusercontent.com/' + REPO + '/' + ref + '/'; var stale = sources(ref).slice(1); // jsDelivr @ветка return new Promise(function (ok, fail) { var settled = false, freshLeft = 2, staleBest = null, staleLeft = stale.length; function done(x) { if (settled) return; settled = true; ok(x); } function maybeStale() { if (settled) return; if (staleBest && (freshLeft === 0 || Date.now() - t >= STALE_WAIT)) done(staleBest); else if (!staleBest && freshLeft === 0 && staleLeft === 0) { settled = true; fail(new Error('uma.json недоступен во всех источниках')); } } function freshFail(e) { log('свежий источник не ответил', e && e.message); freshLeft--; maybeStale(); } // raw getJSON(raw + 'uma.json?t=' + t).then(function (m) { log('uma.json raw', m.v); done({ base: raw, manifest: m }); }, freshFail); // GitHub API → sha → jsDelivr @sha getJSON('https://api.github.com/repos/' + REPO + '/commits/' + ref, { cache: 'no-store', headers: { Accept: 'application/vnd.github+json' } }) .then(function (c) { var sha = c && c.sha; if (!sha) throw new Error('нет sha'); // адрес по коммиту неизменен — подходит любой CDN; gcore быстрее всех в России var bases = ['https://gcore.jsdelivr.net/gh/' + REPO + '@' + sha + '/', 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + sha + '/', 'https://raw.githubusercontent.com/' + REPO + '/' + sha + '/']; var k = 0; return (function next() { var b = bases[k++]; return getJSON(b + 'uma.json').then(function (m) { if (!m.sha) m.sha = sha; log('uma.json api', m.v, sha.slice(0, 8), b); done({ base: b, manifest: m }); }, function (e) { if (k < bases.length) return next(); throw e; }); })(); }).catch(freshFail); // jsDelivr @ветка — запасной stale.forEach(function (base) { getJSON(base + 'uma.json?t=' + t).then(function (m) { log('uma.json (может быть старым)', base, m.v); if (!staleBest || vnum(m.v) > vnum(staleBest.manifest.v)) staleBest = { base: base, manifest: m }; }, function () {}).then(function () { staleLeft--; maybeStale(); }); }); setTimeout(maybeStale, STALE_WAIT); }); } // один файл. Если в uma.json есть sha (коммит кода) — с jsDelivr по этому коммиту: // такой адрес неизменен, CDN никогда не отдаст по нему другую версию, и он быстрый. // Иначе — как раньше: тот же источник, что и uma.json, потом остальные, с ?v=. function loadFile(base, version, path, sha) { var list = sha ? [ 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + sha + '/', 'https://fastly.jsdelivr.net/gh/' + REPO + '@' + sha + '/', 'https://raw.githubusercontent.com/' + REPO + '/' + sha + '/', 'https://gcore.jsdelivr.net/gh/' + REPO + '@' + sha + '/' ] : [base].concat(sources(ref).filter(function (b) { return b !== base; })); var i = 0; return new Promise(function (ok, fail) { (function next() { if (i >= list.length) return fail(new Error('не загрузился ' + path)); getText(list[i++] + path + (sha ? '' : '?v=' + encodeURIComponent(version))).then(ok, next); })(); }); } /* ---------- 2. сохранённая копия кода в браузере ---------- После каждой удачной загрузки весь код (версия + тексты файлов) сохраняется в localStorage. При следующем открытии он берётся оттуда сразу — сайт не ждёт GitHub и не разваливается, если сети ещё нет (вкладка открылась после перезагрузки компьютера, плохой мобильный интернет). Если в GitHub новая версия — она скачивается и подключается вместо сохранённой. */ var CACHE_KEY = 'uma_code_' + ref; if (/[?&]umareset/.test(q)) { try { Object.keys(localStorage).forEach(function (k) { if (k.indexOf('uma_code_') === 0) localStorage.removeItem(k); }); sessionStorage.removeItem('uma_ref'); } catch (e) {} } var FAST = 3000; // мс: сколько ждём свежий uma.json, прежде чем взять сохранённую копию (прелоадер всё равно идёт ~3 с) function readCache() { try { var c = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); return c && c.v && c.css && c.js ? c : null; } catch (e) { return null; } } function writeCache(c) { try { localStorage.setItem(CACHE_KEY, JSON.stringify(c)); } catch (e) { try { localStorage.removeItem(CACHE_KEY); } catch (e2) {} } } /* ---------- 3. подключение: все файлы качаются параллельно, выполняются строго по порядку из uma.json ---------- */ function download(version, base, manifest) { var css = manifest.css || [], js = manifest.js || []; var all = css.concat(js); return Promise.all(all.map(function (p) { return loadFile(base, version, p, manifest.sha).catch(function (e) { console.warn('UMA loader: ' + e.message); return null; }); })).then(function (texts) { var c = { v: version, base: base, css: css.map(function (p, k) { return [p, texts[k]]; }), js: js.map(function (p, k) { return [p, texts[css.length + k]]; }) }; // в копию — только полный набор, без пропавших файлов if (texts.every(function (t) { return t != null; })) writeCache(c); return c; }); } var applied = false; function inject(c, from) { if (applied) return; applied = true; var run = function () { var head = document.head || document.documentElement; c.css.forEach(function (f) { if (f[1] == null) return; var s = document.createElement('style'); s.setAttribute('data-uma', f[0]); s.textContent = f[1]; head.appendChild(s); }); c.js.forEach(function (f) { if (f[1] == null) return; var s = document.createElement('script'); s.setAttribute('data-uma', f[0]); // sourceURL: в DevTools ошибки показываются с именем файла из репозитория s.text = f[1] + '\\n//# sourceURL=uma/' + f[0]; head.appendChild(s); }); var all = c.css.concat(c.js).map(function (f) { return f[0]; }); window.UMA = { ref: ref, version: c.v, base: c.base, from: from, files: all }; document.documentElement.classList.add('uma-loaded'); log('готово', ref, 'v' + c.v, from, all.length + ' файлов'); }; // код рассчитан на разобранную страницу (как при загрузке из сети) if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run(); } function failsafe(e) { console.warn('UMA loader: ' + (e && e.message)); if (window.umaReleasePreloader) window.umaReleasePreloader(); } var touched = false; ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) { window.addEventListener(ev, function () { touched = true; }, { passive: true, once: true }); }); function start() { var cached = readCache(); var waitT = 0; if (cached) waitT = setTimeout(function () { log('сеть не успела — сохранённая копия', cached.v); inject(cached, 'cache'); }, FAST); function attempt(n) { loadManifest().then(function (r) { var version = String(r.manifest.v || Math.floor(Date.now() / 60000)); log('источник', r.base, 'версия', version); // та же или более старая версия (ответил только запасной источник) — сохранённая копия if (cached && vnum(cached.v) >= vnum(version)) { clearTimeout(waitT); inject(cached, 'cache'); return; } return download(version, r.base, r.manifest).then(function (c) { clearTimeout(waitT); // сохранённая (старая) копия уже подключена, а пришла новая: если человек ещё // ничего не трогал — сразу перезагружаем (новая уже в копии и встанет мгновенно), // иначе — при возвращении на вкладку if (applied && window.UMA && vnum(c.v) > vnum(window.UMA.version)) { window.UMA.pending = c.v; if (!touched && performance.now() < 15000) { log('новая версия поверх старой — перезагрузка'); location.reload(); } return; } inject(c, 'network'); }); }).catch(function (e) { if (applied) return; if (cached) { clearTimeout(waitT); inject(cached, 'cache'); return; } // ни сети, ни копии: ждём сеть и пробуем снова (прелоадер пока держится) if (n < 6) { log('повтор', n + 1, e && e.message); var again = function () { window.removeEventListener('online', again); clearTimeout(t); attempt(n + 1); }; var t = setTimeout(again, 3000); window.addEventListener('online', again); return; } failsafe(e); }); } attempt(0); } start(); /* ---------- 4. вкладка, к которой вернулись ---------- Телефон часто не перезагружает страницу, а достаёт её из памяти (вернулись в браузер из другого приложения, «назад»). Тогда проверяем версию: если вышла новая — тихо перезагружаем страницу, чтобы не висела старая. */ var hiddenAt = 0, checking = false; function recheck() { if (checking || !window.UMA || !window.UMA.version) return; checking = true; loadManifest().then(function (r) { checking = false; if (window.UMA.pending || vnum(r.manifest.v) > vnum(window.UMA.version)) { log('вышла новая версия', r.manifest.v, '— перезагрузка'); location.reload(); } }, function () { checking = false; }); } window.addEventListener('pageshow', function (e) { if (e.persisted) recheck(); }); /* ---------- 5. ?umadebug — панель на экране (для телефона, где нет консоли) ---------- */ if (DEBUG) { var panel = function () { var d = document.createElement('div'); d.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:2147483647;background:rgba(0,0,0,.88);color:#fff;font:12px/1.45 monospace;padding:10px 12px;border-radius:10px;white-space:pre-wrap;max-height:60vh;overflow:auto'; document.body.appendChild(d); var U = window.UMA || {}, lines = ['загрузчик: ' + CORE_V, 'код: ' + (U.version || '—') + ' (' + (U.from || 'не загрузился') + ')', 'откуда: ' + (U.base || '—'), 'копия в браузере: ' + ((readCache() || {}).v || 'нет'), 'ветка: ' + ref, '']; d.textContent = lines.join('\\n') + 'проверяю источники…'; var t = Date.now(), list = [ ['raw', 'https://raw.githubusercontent.com/' + REPO + '/' + ref + '/uma.json?t=' + t], ['api', 'https://api.github.com/repos/' + REPO + '/commits/' + ref], ['cdn', 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + ref + '/uma.json?t=' + t], ['fastly', 'https://fastly.jsdelivr.net/gh/' + REPO + '@' + ref + '/uma.json?t=' + t], ['gcore', 'https://gcore.jsdelivr.net/gh/' + REPO + '@' + ref + '/uma.json?t=' + t] ]; Promise.all(list.map(function (x) { var s0 = Date.now(); return getJSON(x[1]).then(function (j) { return x[0] + ': ' + (j.v || (j.sha || '').slice(0, 8)) + ' за ' + (Date.now() - s0) + ' мс'; }, function (e) { return x[0] + ': ошибка (' + (e && e.message) + ') за ' + (Date.now() - s0) + ' мс'; }); })).then(function (r) { d.textContent = lines.join('\\n') + r.join('\\n'); }); }; var waitUma = function (n) { if ((window.UMA && window.UMA.version) || n > 40) panel(); else setTimeout(function () { waitUma(n + 1); }, 500); }; if (document.readyState === 'complete') waitUma(0); else window.addEventListener('load', function () { waitUma(0); }); } document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') hiddenAt = Date.now(); else if (hiddenAt && Date.now() - hiddenAt > 60000) recheck(); }); })(); </script> <!-- nominify end --> </div> </div> </div>"
+ }
+]
