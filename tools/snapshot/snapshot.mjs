@@ -10,6 +10,7 @@
 //                                     (сайт без нашего кода — чистая вёрстка Тильды)
 //   export/shots/<ширина>-tilda.png — скриншот всей страницы без нашего кода
 //   export/shots/<ширина>-live.png  — скриншот как на сайте сейчас
+//   export/live/<ширина>.html|json  — отрисованный DOM с нашим кодом и коробки всех видимых элементов
 //   export/images/…                 — оригиналы всех картинок с tildacdn
 //   export/images.json              — откуда взялась каждая картинка и где она на странице
 import { chromium } from 'playwright';
@@ -178,6 +179,41 @@ for (const W of WIDTHS) {
         if (!images.has(orig)) images.set(orig, new Set());
         images.get(orig).add(rec || '?');
       }
+    }
+    if (mode === 'live') {
+      // как сайт выглядит сейчас (с нашим кодом): весь отрисованный DOM и коробки всех видимых элементов
+      await fs.mkdir(path.join(OUT, 'live'), { recursive: true });
+      await fs.writeFile(path.join(OUT, 'live', W + '.html'), await page.content());
+      const boxes = await page.evaluate(() => {
+        const px = v => Math.round(parseFloat(v) * 100) / 100;
+        const out = [];
+        const all = document.body.querySelectorAll('*');
+        for (const el of all) {
+          if (/^(SCRIPT|STYLE|LINK|META|NOSCRIPT|BR|svg|path|g)$/i.test(el.tagName)) continue;
+          const r = el.getBoundingClientRect();
+          if (r.width < 1 || r.height < 1) continue;
+          const cs = getComputedStyle(el);
+          if (cs.visibility === 'hidden' || cs.display === 'none' || +cs.opacity === 0) continue;
+          const ownText = [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.nodeValue).join('').replace(/\s+/g, ' ').trim();
+          const isImg = el.tagName === 'IMG' || el.tagName === 'CANVAS' || el.tagName === 'VIDEO' || (cs.backgroundImage && cs.backgroundImage !== 'none');
+          const isBox = cs.backgroundColor !== 'rgba(0, 0, 0, 0)' || parseFloat(cs.borderTopWidth) > 0 || parseFloat(cs.borderBottomWidth) > 0;
+          if (!ownText && !isImg && !isBox) continue;
+          const o = {
+            tag: el.tagName.toLowerCase(),
+            cls: (typeof el.className === 'string' ? el.className : '').split(/\s+/).filter(c => c && !/^tn-elem__\d+$/.test(c)).slice(0, 8).join(' '),
+            rec: el.closest('.t-rec') ? el.closest('.t-rec').id : null,
+            elem: el.closest('.t396__elem') ? el.closest('.t396__elem').getAttribute('data-elem-id') : null,
+            x: px(r.left), y: px(r.top + scrollY), w: px(r.width), h: px(r.height),
+          };
+          if (ownText) Object.assign(o, { text: ownText.slice(0, 300), font: cs.fontFamily.split(',')[0].replace(/"/g, ''), size: px(cs.fontSize), weight: cs.fontWeight, lh: cs.lineHeight, ls: cs.letterSpacing, color: cs.color, align: cs.textAlign, tt: cs.textTransform });
+          if (isImg) o.src = el.currentSrc || el.src || (cs.backgroundImage.match(/url\("?([^")]+)/) || [])[1];
+          if (isBox) Object.assign(o, { bg: cs.backgroundColor, border: [cs.borderTopWidth, cs.borderBottomWidth, cs.borderTopColor].join(' '), radius: cs.borderRadius });
+          if (el.tagName === 'A') o.href = el.getAttribute('href');
+          out.push(o);
+        }
+        return out;
+      });
+      await fs.writeFile(path.join(OUT, 'live', W + '.json'), JSON.stringify(boxes));
     }
     await page.screenshot({ path: path.join(OUT, 'shots', `${W}-${mode}.png`), fullPage: true }).catch(e => console.log('shot', W, mode, e.message));
     await ctx.close();
