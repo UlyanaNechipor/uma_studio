@@ -1,5 +1,5 @@
 /* UMA · year-ticker
-   Год-табло в мобильном списке проектов: при появлении карточки (вместе со своей строкой)
+   Год-табло в списке проектов. Десктоп: при наведении на строку проекта. Мобилка: при появлении карточки (вместе со своей строкой)
    и когда карточка подсвечивается (класс is-focused ставит js/mobile-radar.js), цифры года прокручиваются,
    как на табло: каждая коротко докручивается на своё место с нескольких цифр раньше,
    слева направо с небольшой задержкой. Стили — css/year-ticker.css. */
@@ -11,6 +11,7 @@
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) return;
+  var hover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   // год карточки: текстовый элемент, в котором ровно четыре цифры
   function yearAtom(card) {
@@ -87,7 +88,49 @@
     }
   }
 
+  /* ---------- десктоп: наведение на строку проекта ----------
+     Строка — горизонтальная полоса вокруг года; границы между строками — посередине
+     между соседними годами. Год прокручивается, когда курсор входит в его строку. */
+  var LIST_REC = 'rec3979597501';
+  function hoverRows() {
+    var rec = document.getElementById(LIST_REC);
+    if (!rec || rec.__umaYrH || !hover) return;
+    rec.__umaYrH = true;
+    var cur = null;
+    function years() {
+      var out = [];
+      rec.querySelectorAll('[data-elem-type="text"] .tn-atom').forEach(function (a) {
+        if (!/^\s*\d{4}\s*$/.test(a.textContent) && !a.querySelector('.uma-yr')) return;
+        var r = a.getBoundingClientRect();
+        if (r.width && r.height && r.right > 0 && r.left < window.innerWidth && !a.closest('.project-group-card')) out.push({ a: a, y: r.top + r.height / 2 });
+      });
+      return out.sort(function (p, q) { return p.y - q.y; });
+    }
+    // табло собираем заранее, чтобы при первом наведении ничего не сдвинулось
+    if (window.innerWidth >= 960) years().forEach(function (y) { build(y.a); });
+    rec.addEventListener('mousemove', function (e) {
+      if (window.innerWidth < 960) return;
+      var ys = years(), hit = null;
+      for (var i = 0; i < ys.length; i++) {
+        var up = i ? (ys[i - 1].y + ys[i].y) / 2 : ys[i].y - (ys[1] ? (ys[1].y - ys[0].y) / 2 : 60);
+        var dn = i < ys.length - 1 ? (ys[i].y + ys[i + 1].y) / 2 : ys[i].y + (ys[i - 1] ? (ys[i].y - ys[i - 1].y) / 2 : 60);
+        if (e.clientY >= up && e.clientY < dn) { hit = ys[i].a; break; }
+      }
+      if (hit === cur) return;
+      cur = hit;
+      if (hit) rollAtom(hit);
+    });
+    rec.addEventListener('mouseleave', function () { cur = null; });
+  }
+  function rollAtom(atom) {
+    var strips = build(atom);
+    place(strips, STEPS, false);
+    void atom.offsetHeight;
+    place(strips, 0, true);
+  }
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watch);
   else watch();
-  window.addEventListener('load', watch);
+  window.addEventListener('load', function () { watch(); hoverRows(); });
+  if (document.readyState !== 'loading') hoverRows(); else document.addEventListener('DOMContentLoaded', hoverRows);
 })();
