@@ -57,7 +57,7 @@ const projects = `
   <h2 class="projects__title t-h2" data-fill>${esc(h.projects.title)}</h2>
   <ul class="projects__list">
     ${h.projects.items.map((p) => `<li class="prow">
-      <a class="prow__link" href="/projects/${esc(p.slug)}/">
+      <a class="prow__link" href="/projects/${esc(p.slug)}/" data-cover="${esc(p.cover)}">
         <span class="prow__name t-name">${esc(p.name)}</span>
         <span class="prow__type t-small t-grey">${esc(p.type)}</span>
         <span class="prow__year t-small t-grey">${esc(p.year)}</span>

@@ -117,3 +117,53 @@ html.js .rv.is-in {
   .hg__frame, .hero__aside { clip-path: none !important; }
   .hg__slide img { transform: none !important; }
 }
+
+/* ---------- «Избранные проекты»: год-табло ---------- */
+.yr { display: inline-flex; font-variant-numeric: tabular-nums; vertical-align: top; }
+.yr__d { display: inline-block; height: 1lh; overflow: hidden; }
+.yr__s { display: flex; flex-direction: column; will-change: transform; transition: transform .8s var(--m-out); }
+.yr__s.is-instant { transition: none !important; }
+.yr__s > span { display: block; height: 1lh; text-align: center; }
+@supports not (height: 1lh) { .yr__d, .yr__s > span { height: 1.2em; line-height: 1.2em; } }
+.prow__year { line-height: 1.2; }
+
+/* десктоп: строки целиком въезжают слева по очереди */
+html.js .prow--rv { opacity: 0; transform: translate3d(-56px, 0, 0); }
+html.js .is-in > .prow--rv { opacity: 1; transform: none; transition: opacity .55s ease var(--row-d, 0s), transform .95s var(--m-out) var(--row-d, 0s); }
+
+/* телефон: линия над карточкой прочерчивается, содержимое всплывает по очереди */
+.prow--card { position: relative; border-top-color: transparent; }
+.prow--card::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--line); transform: scaleX(0); transform-origin: 0 50%; }
+.prow--card.is-in::before { transform: scaleX(1); transition: transform 1.1s var(--m-out); }
+html.js .prow__it { opacity: 0; transform: translate3d(0, var(--m-shift), 0); }
+html.js .is-in .prow__it { opacity: 1; transform: none; transition: opacity calc(var(--m-reveal) * .75) ease var(--it-d, 0s), transform var(--m-reveal) var(--m-out) var(--it-d, 0s); }
+
+/* превью обложки у курсора */
+.pv { position: fixed; left: 0; top: 0; width: 0; height: 0; z-index: 50; pointer-events: none; will-change: transform; --pv-w: 380px; --pv-h: 240px; }
+.pv__frame {
+  position: absolute; left: calc(var(--pv-w) / -2); top: calc(var(--pv-h) / -2); width: var(--pv-w); height: var(--pv-h);
+  overflow: hidden; border-radius: 4px; background: #1b1c1b; box-shadow: 0 30px 60px -20px rgba(0,0,0,.55);
+  opacity: 0; transform: scale(.6); clip-path: inset(50% 50% 50% 50% round 4px);
+  transition: opacity .35s ease, transform .6s var(--m-out), clip-path .6s var(--m-out);
+}
+.pv.is-open .pv__frame { opacity: 1; transform: none; clip-path: inset(0 round 4px); }
+.pv__strip { height: 100%; transition: transform .75s var(--m-inout); will-change: transform; }
+.pv__slide { height: 100%; overflow: hidden; }
+.pv__slide img { transform: scale(1.12); transition: transform 1s var(--m-inout); }
+.pv__slide.is-active img { transform: none; }
+html.light-theme .pv__frame { box-shadow: 0 30px 60px -24px rgba(0,0,0,.3); }
+
+/* ---------- «Эксперименты»: фото приближается ---------- */
+.lab__it img { transition: transform 1s var(--m-out); }
+@media (hover: hover) and (pointer: fine) { .lab__it:hover img { transform: scale(1.06); } }
+.lab__it.is-near img { transform: scale(1.06); transition-duration: 1.4s; transition-delay: var(--pj-delay, 0s); }
+
+/* ---------- подвал: линия прочерчивается ---------- */
+.ft { border-top-color: transparent; position: relative; }
+.ft::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--line); transform: scaleX(0); transform-origin: 0 50%; }
+.ft.is-lines::before { transform: scaleX(1); transition: transform 1.3s cubic-bezier(.65, 0, .35, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .prow--rv, html.js .prow__it { opacity: 1 !important; transform: none !important; }
+  .prow--card::before, .ft::before { transform: none !important; }
+}

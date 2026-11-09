@@ -187,7 +187,7 @@
   /* ---------------- появление при прокрутке ---------------- */
   function reveal() {
     // что появляется: прямые части каждого блока (кроме первого экрана), колонки подвала
-    var items = $$('main > section:not(.hero) > *, .projects .prow, .about__photos > img, .lab__it, .svc, .cta__act > *, .about__act > *, .ft > *')
+    var items = $$('main > section:not(.hero) > *, .about__photos > img, .lab__it, .svc, .cta__act > *, .about__act > *, .ft > *')
       .filter(function (el) { return !el.matches('.projects__list, .lab__grid, .about__photos, .about__act, .cta__act'); });
     items.forEach(function (el) { el.classList.add('rv'); });
     // мобилка, услуги: выезжают слева, по очереди
@@ -211,6 +211,9 @@
       });
       if (queue.length && !timer) timer = setTimeout(flush, 30);
     }, { rootMargin: '0px 0px -12% 0px' });
+    // подвал: линия сверху прочерчивается, когда он дошёл до экрана
+    var ft = $('.ft');
+    if (ft) { if (reduce) ft.classList.add('is-lines'); else new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { o.disconnect(); ft.classList.add('is-lines'); } }, { rootMargin: '0px 0px -8% 0px' }).observe(ft); }
     // до ухода прелоадера ничего не появляется
     ready.push(function () { setTimeout(function () { items.forEach(function (el) { io.observe(el); }); }, reduce ? 0 : HERO_DELAY + 300); });
   }
@@ -411,9 +414,131 @@
     raf = requestAnimationFrame(draw);
   }
 
+  /* ---------------- год-табло ----------------
+     Цифры года прокручиваются, как на табло: каждая встаёт на место с трёх цифр раньше,
+     слева направо с задержкой 45 мс. Десктоп — при наведении на строку,
+     телефон — когда карточка появилась и когда проходит через середину экрана. */
+  function ticker(el) {
+    if (el._yr) return el._yr;
+    var y = el.textContent.trim(), strip = '';
+    for (var r = 0; r < 2; r++) for (var n = 0; n < 10; n++) strip += '<span>' + n + '</span>';
+    el.setAttribute('aria-label', y);
+    el.innerHTML = '<span class="yr" aria-hidden="true">' + y.split('').map(function (d, k) {
+      return '<span class="yr__d"><span class="yr__s" data-d="' + d + '" style="transition-delay:' + k * 45 + 'ms">' + strip + '</span></span>';
+    }).join('') + '</span>';
+    el._yr = $$('.yr__s', el); place(el._yr, 0, false);
+    return el._yr;
+  }
+  function place(strips, back, anim) {
+    strips.forEach(function (s) { s.classList.toggle('is-instant', !anim); s.style.transform = 'translateY(' + (-(+s.getAttribute('data-d') + 10 - back) * 5) + '%)'; });
+  }
+  function roll(el) { if (reduce) return; var s = ticker(el); place(s, 3, false); el.offsetHeight; place(s, 0, true); }
+
+  /* ---------------- «Избранные проекты» ---------------- */
+  function projects() {
+    var list = $('.projects__list'); if (!list) return;
+    var rows = $$('.prow', list), desk = innerWidth >= 960;
+    rows.forEach(function (r) { ticker($('.prow__year', r)); });
+    if (desk) {
+      // строки целиком (линия + текст) въезжают слева, по очереди сверху вниз
+      rows.forEach(function (r, i) { r.classList.add('prow--rv'); r.style.setProperty('--row-d', (0.14 + i * 0.22).toFixed(2) + 's'); });
+      if (mouse) rows.forEach(function (r) { r.addEventListener('mouseenter', function () { roll($('.prow__year', r)); }); });
+      watchTop(list, function () { list.classList.add('is-in'); });
+      if (mouse && innerWidth >= 1024) preview(rows);
+    } else {
+      // карточки: линия прочерчивается, следом по очереди название, год, тип, обложки
+      rows.forEach(function (r) {
+        r.classList.add('prow--card');
+        var parts = [$('.prow__name', r), $('.prow__year', r), $('.prow__type', r)].concat($$('.prow__pics img', r));
+        parts.forEach(function (el, k) { el.classList.add('prow__it'); el.style.setProperty('--it-d', (0.14 + k * 0.14).toFixed(2) + 's'); });
+        var yr = $('.prow__year', r);
+        if (!reduce) place(ticker(yr), 3, false);
+        watchTop(r, function () { r.classList.add('is-in'); setTimeout(function () { roll(yr); }, 140 + 120); });
+      });
+      // карточка в середине экрана — год прокручивается ещё раз
+      var cur = null, tk = false;
+      function focus() {
+        tk = false;
+        var c0 = innerHeight * 0.45, c1 = innerHeight * 0.55, hit = null;
+        rows.some(function (r) { var b = r.getBoundingClientRect(); if (b.top < c1 && b.bottom > c0) { hit = r; return true; } });
+        if (hit !== cur) { cur = hit; if (hit && hit.classList.contains('is-in')) roll($('.prow__year', hit)); }
+      }
+      addEventListener('scroll', function () { if (!tk) { tk = true; requestAnimationFrame(focus); } }, { passive: true });
+    }
+  }
+  // запуск, когда верх элемента дошёл до 82% высоты экрана (после ухода прелоадера)
+  function watchTop(el, fn) {
+    if (reduce) return fn();
+    var done = false;
+    function check() { if (done || !html.classList.contains('is-ready')) return; if (el.getBoundingClientRect().top < innerHeight * 0.82) { done = true; removeEventListener('scroll', check); fn(); } }
+    addEventListener('scroll', check, { passive: true });
+    ready.push(function () { setTimeout(check, HERO_DELAY + 300); });
+  }
+
+  /* превью обложки у курсора (десктоп): окошко следует за мышью с инерцией и наклоном,
+     внутри лента обложек — при переходе на соседнюю строку она прокручивается */
+  function preview(rows) {
+    var root = document.createElement('div');
+    root.className = 'pv'; root.setAttribute('aria-hidden', 'true');
+    root.innerHTML = '<div class="pv__frame"><div class="pv__strip">' + rows.map(function (r) {
+      return '<div class="pv__slide"><img alt="" decoding="async" data-src="' + $('.prow__link', r).getAttribute('data-cover') + '"></div>';
+    }).join('') + '</div></div>';
+    document.body.appendChild(root);
+    var strip = $('.pv__strip', root), slides = $$('.pv__slide', root), loaded = false;
+    var x = 0, y = 0, tx = 0, ty = 0, vx = 0, open = false, cur = -1, hideT = 0, raf = 0;
+    function setIndex(i) { if (i === cur) return; cur = i; strip.style.transform = 'translate3d(0,' + (-100 * i) + '%,0)'; slides.forEach(function (s, k) { s.classList.toggle('is-active', k === i); }); }
+    function show(i) {
+      clearTimeout(hideT); hideT = 0;
+      if (!loaded) { loaded = true; $$('img', root).forEach(function (im) { im.src = im.getAttribute('data-src'); }); }
+      if (!open) { x = tx; y = ty; strip.style.transition = 'none'; setIndex(i); strip.offsetHeight; strip.style.transition = ''; open = true; root.classList.add('is-open'); loop(); }
+      else setIndex(i);
+    }
+    function hide() { if (hideT) return; hideT = setTimeout(function () { hideT = 0; open = false; root.classList.remove('is-open'); }, 140); }
+    function loop() {
+      cancelAnimationFrame(raf);
+      (function step() {
+        var dx = (tx - x) * (reduce ? 1 : 0.12); x += dx; y += (ty - y) * (reduce ? 1 : 0.12);
+        vx += (dx - vx) * 0.2; var tilt = reduce ? 0 : clamp(vx * 0.35, -5, 5);
+        root.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) rotate(' + tilt.toFixed(2) + 'deg)';
+        if (open || Math.abs(tx - x) > .5 || Math.abs(ty - y) > .5) raf = requestAnimationFrame(step);
+      })();
+    }
+    // строка под курсором: полоса во всю ширину списка
+    var pend = false;
+    function check() {
+      pend = false;
+      var hit = -1;
+      rows.forEach(function (r, i) { var b = r.getBoundingClientRect(); if (ty >= b.top && ty < b.bottom && tx >= b.left - 16 && tx <= b.right + 16) hit = i; });
+      if (hit >= 0) show(hit); else if (open) hide();
+    }
+    function sched() { if (!pend) { pend = true; requestAnimationFrame(check); } }
+    addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; sched(); }, { passive: true });
+    addEventListener('scroll', sched, { passive: true });
+    document.addEventListener('mouseleave', function () { if (open) hide(); });
+  }
+
+  /* ---------------- фото в «Экспериментах» ----------------
+     С мышью — фото приближается при наведении (CSS). На телефоне — пока карточка
+     в средней полосе экрана; в ряду из двух правое — позже левого. */
+  function labZoom() {
+    if (mouse || reduce) return;
+    var items = $$('.lab__it'), tk = false;
+    function update() {
+      tk = false;
+      var c0 = innerHeight * 0.32, c1 = innerHeight * 0.68;
+      items.forEach(function (it) {
+        var b = it.getBoundingClientRect(), mid = b.top + b.height / 2;
+        var left = items.some(function (o) { if (o === it) return false; var q = o.getBoundingClientRect(); return Math.abs(q.top - b.top) < 12 && q.left < b.left; });
+        it.style.setProperty('--pj-delay', left ? '.22s' : '0s');
+        it.classList.toggle('is-near', it.classList.contains('is-in') && mid > c0 && mid < c1);
+      });
+    }
+    addEventListener('scroll', function () { if (!tk) { tk = true; requestAnimationFrame(update); } }, { passive: true });
+  }
+
   /* ---------------- запуск ---------------- */
   function init() {
-    theme(); trail(); gallery(); aside(); reveal();
+    theme(); trail(); gallery(); aside(); projects(); labZoom(); reveal();
     var go = function () { fillInit(); preloader(); };
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(go, go); else go();
     // пересборка строк заголовков при смене ширины

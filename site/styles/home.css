@@ -59,8 +59,6 @@
   .prow__year { grid-column: 3; justify-self: end; }
   .prow__type, .prow__year { grid-row: 1; margin: 0; font-size: calc(12 * var(--u)); }
   .prow__pics { display: none; }
-  .projects__list:hover .prow__link { opacity: .45; }
-  .projects__list .prow__link:hover { opacity: 1; }
 }
 
 /* ===== 3. Эксперименты: 1172 / 889 ===== */
