@@ -1,0 +1,30 @@
+{
+  "_about": "Общие данные сайта: название, навигация, контакты. Источник — живой сайт umastudio.tilda.ws и js/footer.js, js/site-header.js (снято 2026-11-09).",
+  "brand": "Working Title",
+  "lang": "ru",
+  "url": "https://umastudio.tilda.ws/",
+  "seo": {
+    "title": "Working Title — дизайн-студия полного цикла",
+    "description": "Дизайн-студия полного цикла: сайты и интернет-магазины, интерфейсы, арт-дирекшн и AI. Санкт-Петербург.",
+    "_note": "На Тильде сейчас title «Main», description пустой, favicon стандартный Тильды — тексты выше черновик, нужна проверка."
+  },
+  "nav": [
+    { "id": "projects", "label": "Проекты" },
+    { "id": "about", "label": "О нас" },
+    { "id": "contacts", "label": "Контакты" }
+  ],
+  "contacts": {
+    "email": "umadigital@gmail.com",
+    "_emailNote": "На сайте три разных адреса: umadigital@gmail.com (футер), workingtitle@gmail.com («О нас»), working_title@gmail.com (блок «Есть идея?»). Нужно выбрать один.",
+    "phone": "+7 (911) 973-66-93",
+    "city": "Санкт-Петербург",
+    "telegram": "",
+    "privacy": ""
+  },
+  "footer": { "year": "2026", "made": "Made by Working Title ©2026" },
+  "themes": {
+    "dark":  { "bg": "#111211", "text": "#ffffff" },
+    "light": { "bg": "#f0f0f0", "text": "#1a1a1a" },
+    "default": "dark"
+  }
+}

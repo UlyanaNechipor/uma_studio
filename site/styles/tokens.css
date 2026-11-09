@@ -1,0 +1,81 @@
+/* Working Title · дизайн-токены
+   Сняты с живого сайта на Тильде (слепок 2026-11-09, ветка export).
+   Тильда масштабирует макет под ширину окна: десктоп нарисован на 1200 px,
+   мобилка — на 320 px. Здесь то же поведение: --u — «один пиксель макета». */
+
+:root {
+  /* ---------- единица масштаба ---------- */
+  --base: 320;                              /* ширина макета мобилки */
+  --u: calc(100vw / var(--base));           /* 1px макета */
+
+  /* ---------- цвета ---------- */
+  --c-ink:        #111211;   /* фон тёмной темы */
+  --c-ink-2:      #1a1a1a;   /* текст светлой темы */
+  --c-paper:      #f0f0f0;   /* фон светлой темы */
+  --c-white:      #ffffff;
+  --c-white-soft: #fbfbfb;   /* подписи, метки */
+  --c-grey:       #767575;   /* второстепенный текст (одинаковый в обеих темах) */
+  --c-line-dark:  rgba(255,255,255,.25);
+  --c-line-light: rgba(26,26,26,.15);
+
+  --bg: var(--c-ink);
+  --txt: var(--c-white);
+  --line: var(--c-line-dark);
+
+  /* ---------- шрифты ---------- */
+  --f-sans:  'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-serif: 'Playfair Display', Georgia, serif;
+
+  /* ---------- шкала кеглей (мобилка, px макета 320) ---------- */
+  /* межбуквенный и межстрочный — в долях кегля, как в Тильде */
+  --t-h1: 36;   --t-h1-lh: 1;    --t-h1-ls: -.02em;
+  --t-h2: 24;   --t-h2-lh: 1;    --t-h2-ls: 0;
+  --t-name: 14; --t-name-lh: 1;  --t-name-ls: 0;
+  --t-body: 14; --t-body-lh: 1.55; --t-body-ls: .45px;
+  --t-small: 12; --t-small-lh: 1.55; --t-small-ls: .45px;
+  --t-label: 12; --t-label-w: 300;
+  --t-btn: 12;   --t-btn-w: 500;
+
+  /* ---------- сетка ---------- */
+  --cols: 4;
+  --margin: 16;      /* поле слева и справа */
+  --gutter: 8;
+
+  /* высоты блоков и точные координаты каждого элемента — в content/layout.json */
+
+  /* ---------- движение (из css/motion.css) ---------- */
+  --m-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --m-inout: cubic-bezier(0.76, 0, 0.24, 1);
+  --m-hover: .35s;
+  --m-reveal: 1.1s;
+  --m-step: .14s;
+  --m-shift: 40px;
+}
+
+/* планшет: макет мобилки до 960, дальше — десктоп */
+@media (min-width: 960px) {
+  :root {
+    --base: 1200;
+    --t-h1: 84;   --t-h1-lh: .96;  --t-h1-ls: -.04em;
+    --t-h2: 40;   --t-h2-lh: 1.02; --t-h2-ls: -.03em;
+    --t-name: 20; --t-name-lh: 1;  --t-name-ls: 1px;
+    --col-split: 600;  /* вторая половина макета: подписи, тексты, описание проектов */
+    --row-step: 53;    /* шаг строк в «Избранных проектах» */
+    --cols: 12;
+    --margin: 32;
+    --gutter: 20;
+  }
+}
+
+body.light-theme { --bg: var(--c-paper); --txt: var(--c-ink-2); --line: var(--c-line-light); }
+
+/* перевод «пикселей макета» в реальные размеры */
+:root {
+  --fs-h1: calc(var(--t-h1) * var(--u));
+  --fs-h2: calc(var(--t-h2) * var(--u));
+  --fs-name: calc(var(--t-name) * var(--u));
+  --fs-body: calc(var(--t-body) * var(--u));
+  --fs-small: calc(var(--t-small) * var(--u));
+  --gap-margin: calc(var(--margin) * var(--u));
+  --gap-gutter: calc(var(--gutter) * var(--u));
+}

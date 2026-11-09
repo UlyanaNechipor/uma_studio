@@ -1,0 +1,60 @@
+{
+  "_about": "Тексты главной по блокам, в порядке на странице. Источник — слепок Тильды (ветка export) 2026-11-09. id — номер блока в Тильде для сверки.",
+  "hero": {
+    "tilda": "rec3979597401",
+    "title": ["Design, Direction", "& Production"],
+    "lead": "Дизайн-студия полного цикла, которая специализируется на разработке цифровых продуктов и визуальных систем от концепции до реализации.",
+    "gallery": [
+      { "name": "arine-mockup", "title": "Arine Atelier", "src": "img/gallery/arine-mockup-{w}.webp", "sizes": [1200, 2400] },
+      { "name": "black-sable", "title": "Black Sable", "src": "tilda:tild3931-6164-4633-b839-636434643036/__Black_Sable.png" },
+      { "name": "rosi", "title": "Rosi", "src": "img/gallery/rosi-{w}.webp", "sizes": [1200, 1536] },
+      { "name": "sure", "title": "Sure", "src": "img/gallery/sure-{w}.webp" },
+      { "name": "kara-fox-mockup", "title": "Kara Fox", "src": "img/gallery/kara-fox-mockup-{w}.webp", "sizes": [1200, 2400] }
+    ]
+  },
+  "projects": {
+    "tilda": "rec3979597501",
+    "anchor": "projects",
+    "label": "Проекты клиентов",
+    "title": "Избранные проекты",
+    "items": [
+      { "name": "Rosi",          "type": "Интернет-магазин", "year": "2023", "slug": "rosi",          "cover": "img/covers/rosi.webp",                 "mobile": "img/mobile/rosi.webp" },
+      { "name": "Sure",          "type": "Интернет-магазин", "year": "2024", "slug": "sure",          "cover": "img/covers/sure.webp",                 "mobile": "img/mobile/sure.webp" },
+      { "name": "Kara Fox",      "type": "Портфолио",        "year": "2024", "slug": "kara-fox",      "cover": "img/covers/kara-fox-mockup.webp",      "mobile": "img/mobile/kara-fox-mockup.webp", "_yearNote": "в мобильной карточке 2025, в строке десктопа 2024 — уточнить" },
+      { "name": "Black Sable",   "type": "Интернет-магазин", "year": "2025", "slug": "black-sable",   "cover": "img/covers/black-sable-mockup.webp",   "mobile": "img/mobile/black-sable-mockup.webp" },
+      { "name": "Arine Atelier", "type": "Дизайн-агентство", "year": "2025", "slug": "arine-atelier", "cover": "img/covers/arine-atelier-mockup.webp", "mobile": "img/mobile/arine-atelier-mockup.webp", "_yearNote": "в мобильной карточке 2026, в строке десктопа 2025 — уточнить" }
+    ]
+  },
+  "lab": {
+    "tilda": "rec3979597601",
+    "title": ["Дизайн. Исследования.", "Эксперименты."],
+    "lead": "Проекты, в которых мы исследуем новые идеи и подходы.",
+    "images": "см. export/images.json (блок rec3979597601) — 7 картинок"
+  },
+  "about": {
+    "tilda": "rec3979597701",
+    "anchor": "about",
+    "label": "О нас",
+    "title": ["Дизайн-команда", "из Санкт-Петербурга. Дизайн, арт-дирекшн", "и AI workflows"],
+    "lead": "Создаём цифровые продукты, сайты и визуальные решения, соединяя дизайн, технологию и AI.",
+    "cta": { "label": "Написать нам", "href": "mailto:{email}" },
+    "photos": ["tild6662-3936-4066-a134-396137633835/Frame_758532525_3.jpg", "tild3934-3537-4463-b436-666363353961/Frame_758532526_2.jpg"]
+  },
+  "services": {
+    "tilda": "rec4283359601",
+    "items": [
+      { "title": "Digital",   "text": ["Сайты и интернет-магазины.", "От структуры до оформления заказа, интеграций с учётными системами и запуска."] },
+      { "title": "Design",    "text": ["Интерфейсы, сайты и цифровые продукты.", "Готовим макеты и дизайн-систему, по которым удобно разрабатывать."] },
+      { "title": "Direction", "text": ["Визуальная концепция и арт-дирекшн.", "Съёмки, айдентика, единый стиль бренда на сайте и в соцсетях."] },
+      { "title": "Ai",        "text": ["Встраиваем AI в работу бренда.", "Генерация контента и визуалов, умный поиск, чат-ассистенты и автоматизация."] }
+    ]
+  },
+  "cta": {
+    "tilda": "rec4249463601",
+    "anchor": "contacts",
+    "title": ["Есть идея?", "Давайте обсудим."],
+    "primary": { "label": "Написать нам", "href": "mailto:{email}" },
+    "secondary": { "label": "О нас", "href": "#about" },
+    "image": "tila3863-6162-4061-b065-353737303766/uma-cta-laptop.jpg"
+  }
+}
