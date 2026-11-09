@@ -377,7 +377,14 @@
   /* ---------------- фигура справа (WebGL) ---------------- */
   function aside() {
     var el = $('.hero__aside'), cv = $('.hero__cv');
-    if (!el || !cv || getComputedStyle(el).display === 'none') return;
+    if (!el || !cv) return;
+    // фигуры нет на мобильной раскладке; если окно потом расширили до десктопа — запускаем тогда
+    if (getComputedStyle(el).display === 'none') {
+      var mq = matchMedia('(min-width: 768px)');
+      var on = function () { if (mq.matches) { mq.removeEventListener ? mq.removeEventListener('change', on) : mq.removeListener(on); aside(); } };
+      mq.addEventListener ? mq.addEventListener('change', on) : mq.addListener(on);
+      return;
+    }
     var gl = cv.getContext('webgl2', { antialias: false, alpha: false });
     if (!gl) return;
     var VS = '#version 300 es\nin vec2 p;out vec2 vUv;void main(){vUv=p*.5+.5;gl_Position=vec4(p,0.,1.);}';

@@ -10,7 +10,7 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 /* ===== 1. Первый экран: 496 / 947 ===== */
 .hero {
   padding-top: calc(96 * var(--u));
-  grid-template-rows: minmax(calc(112 * var(--u)), auto) minmax(calc(88 * var(--u)), auto) calc(200 * var(--u));   /* ряды с текстом растут, если текст крупнее макета */
+  grid-template-rows: minmax(calc(112 * var(--u)), auto) minmax(calc(88 * var(--u)), auto) calc(200 * var(--uw));   /* ряды с текстом растут, если текст крупнее макета */
 }
 .hero__lead { grid-column: 1 / -1; grid-row: 1; color: var(--txt-soft); padding-bottom: calc(24 * var(--u)); }
 .hero__title, .about__title, .about__lead, .about__label { padding-bottom: calc(24 * var(--u)); }
@@ -35,8 +35,8 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 .projects__label, .projects__title, .projects__list { grid-column: 1 / -1; }
 .projects__title { margin-top: calc(16 * var(--u)); }
 .projects__list { margin-top: calc(32 * var(--u)); }
-.prow { border-top: 1px solid var(--line); height: calc(203 * var(--u)); }
-.prow:last-child { height: calc(171 * var(--u)); }
+.prow { border-top: 1px solid var(--line); height: calc(124 * var(--u) + 79 * var(--uw)); }
+.prow:last-child { height: calc(92 * var(--u) + 79 * var(--uw)); }
 .prow__link {
   display: grid; grid-template-columns: 1fr auto; column-gap: calc(8 * var(--u));
   padding-top: calc(12 * var(--u));
@@ -46,8 +46,9 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 .prow__type { grid-row: 2; font-size: max(var(--min-name), calc(14 * var(--u))); margin-top: calc(8 * var(--u)); }
 .prow__pics {
   grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: calc(8 * var(--u));
-  height: calc(79 * var(--u)); margin-top: calc(18 * var(--u));
+  height: calc(79 * var(--uw)); margin-top: calc(18 * var(--u));
 }
+.prow__pics > * { display: block; height: 100%; min-height: 0; overflow: hidden; }
 @media (min-width: 768px) {
   .projects__label, .projects__title { grid-column: 3 / 5; }
   .projects__title { margin-top: calc(24 * var(--u)); }
@@ -74,7 +75,7 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 .lab__grid {
   display: grid; margin-top: calc(24 * var(--u));
   grid-template-columns: subgrid;
-  grid-template-rows: calc(180 * var(--u)) calc(180 * var(--u)) calc(185 * var(--u)) calc(200 * var(--u)) calc(181 * var(--u));
+  grid-template-rows: calc(180 * var(--uw)) calc(180 * var(--uw)) calc(185 * var(--uw)) calc(200 * var(--uw)) calc(181 * var(--uw));
   row-gap: calc(8 * var(--u));
 }
 .lab__it { overflow: hidden; }
@@ -94,11 +95,11 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 
 /* ===== 4. О нас: 674 / 717 ===== */
 .about {
-  grid-template-rows: minmax(calc(136 * var(--u)), auto) calc(244 * var(--u)) minmax(calc(62 * var(--u)), auto) auto;
+  grid-template-rows: minmax(calc(136 * var(--u)), auto) calc(24 * var(--u) + 220 * var(--uw)) minmax(calc(62 * var(--u)), auto) auto;
 }
 .about__label { display: none; }
 .about__title { grid-column: 1 / -1; grid-row: 1; }
-.about__photos { grid-column: 1 / -1; grid-row: 2; display: grid; grid-template-columns: subgrid; height: calc(220 * var(--u)); }
+.about__photos { grid-column: 1 / -1; grid-row: 2; display: grid; grid-template-columns: subgrid; height: calc(220 * var(--uw)); }
 .about__lead { grid-column: 1 / -1; grid-row: 3; }
 .about__act { grid-column: 1 / -1; grid-row: 4; display: flex; flex-direction: column; gap: calc(9 * var(--u)); }
 .about__act .btn { width: 100%; }
@@ -131,7 +132,7 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 
 /* ===== 6. Есть идея?: 441 / 320 ===== */
 
-.cta__img { grid-column: 1 / -1; height: calc(195 * var(--u)); }
+.cta__img { grid-column: 1 / -1; height: calc(195 * var(--uw)); }
 .cta__title { grid-column: 1 / -1; margin-top: calc(16 * var(--u)); }
 .cta__act { grid-column: 1 / -1; margin-top: calc(24 * var(--u)); display: flex; flex-wrap: wrap; gap: calc(8 * var(--u)); align-items: center; }
 .cta__act .btn--light { min-width: calc(140 * var(--u)); } .cta__act .btn--grey { min-width: calc(94 * var(--u)); }   /* как в Тильде: 140 и 94 */
