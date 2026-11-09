@@ -15,11 +15,12 @@
 @media (min-width: 960px) {
   .hero { padding-top: calc(120 * var(--u)); grid-template-rows: calc(147 * var(--u)) calc(200 * var(--u)) calc(480 * var(--u)); }
   .hero__lead { grid-column: 3 / 5; max-width: calc(290 * var(--u)); }
-  /* галерея + правая картинка заканчиваются на линии пункта «О нас» в шапке (790), шаг между ними 8 */
-  .hero__gallery { grid-column: 1 / -1; width: calc(378 * var(--u)); }
+  /* правая картинка начинается на линии пункта «О нас» в шапке (790) и идёт до правого поля (1168);
+     галерея — от левого поля до 782, шаг между ними 8 */
+  .hero__gallery { grid-column: 1 / -1; width: calc(750 * var(--u)); }
   .hero__aside {
     display: block; grid-column: 1 / -1; grid-row: 3; justify-self: start;
-    margin-left: calc(386 * var(--u)); width: calc(372 * var(--u));
+    margin-left: calc(758 * var(--u)); width: calc(378 * var(--u));
     background: radial-gradient(120% 60% at 70% 30%, rgba(255,120,60,.35), transparent 60%), #0d0d0d;
   }
 }
