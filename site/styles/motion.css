@@ -40,7 +40,7 @@ html.light-theme .hd__sun { opacity: 1; transform: none; }
 }
 html.js .pl { display: block; }
 .pl.is-done { background-color: transparent; pointer-events: none; }
-.pl.is-gone { display: none; }
+html.js .pl.is-gone { display: none; }   /* сильнее, чем html.js .pl выше — иначе логотип оставался висеть под шапкой */
 .pl__logo {
   position: absolute; left: 50%; top: 50%; transform-origin: 0 0;
   font-size: clamp(40px, 11.2vw, 160px); line-height: 1; letter-spacing: -.03em; font-weight: 300; white-space: nowrap;

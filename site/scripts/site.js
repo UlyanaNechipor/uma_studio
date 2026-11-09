@@ -57,6 +57,7 @@
     }
     function fly() {
       // долетаем ровно в логотип шапки
+      place();                                                  // окно могло смениться за время заливки
       var t = target.getBoundingClientRect(), w = logo.offsetWidth, h = logo.offsetHeight;
       var k = t.width / w;
       pl.classList.add('is-fly', 'is-done');
