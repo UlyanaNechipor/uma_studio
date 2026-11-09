@@ -2,7 +2,7 @@
    Все размеры — в пикселях макета: calc(N * var(--u)). */
 /* Manrope — свой файл (латиница + кириллица, вес 200–800), без Google Fonts */
 @font-face {
-  font-family: 'Manrope'; src: url('/site/assets/fonts/manrope-var.woff') format('woff');
+  font-family: 'Manrope'; src: url('../site/assets/fonts/manrope-var.woff') format('woff');
   font-weight: 200 800; font-style: normal; font-display: swap;
 }
 *, *::before, *::after { box-sizing: border-box; }

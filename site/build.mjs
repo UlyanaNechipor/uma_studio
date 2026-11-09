@@ -15,13 +15,13 @@ const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<
 const lines = (a) => (Array.isArray(a) ? a : [a]).map(esc).join('<br>');
 const href = (h) => esc(String(h).replace('{email}', site.contacts.email));
 const img = (src, alt = '', cls = '', eager = false) =>
-  `<img class="${cls}" src="/${esc(src)}" alt="${esc(alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
+  `<img class="${cls}" src="${esc(src)}" alt="${esc(alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
 const btn = (b, kind = 'light') =>
   `<a class="btn btn--${kind}" href="${href(b.href)}">${kind === 'light' ? '<span class="btn__dot" aria-hidden="true"></span>' : ''}${esc(b.label)}</a>`;
 
 const header = `
 <header class="hd">
-  <a class="hd__logo" href="/" aria-label="${esc(site.brand)} — на главную"><b>WORKING</b> TITLE</a>
+  <a class="hd__logo" href="./" aria-label="${esc(site.brand)} — на главную"><b>WORKING</b> TITLE</a>
   <nav class="hd__nav" aria-label="Разделы">
     ${site.nav.map((n) => `<a class="hd__link" href="#${n.id}">${esc(n.label)}</a>`).join('\n    ')}
   </nav>
@@ -114,10 +114,10 @@ const html = `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(site.seo.title || site.brand)}</title>
 ${site.seo.description ? `<meta name="description" content="${esc(site.seo.description)}">\n` : ''}<meta name="theme-color" content="${site.themes.dark.bg}">
-<link rel="preload" href="/site/assets/fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="/styles/tokens.css">
-<link rel="stylesheet" href="/styles/base.css">
-<link rel="stylesheet" href="/styles/home.css">
+<link rel="preload" href="site/assets/fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/home.css">
 </head>
 <body>
 ${header}
@@ -130,7 +130,7 @@ ${services}
 ${cta}
 </main>
 ${footer}
-<script src="/scripts/site.js" defer></script>
+<script src="scripts/site.js" defer></script>
 </body>
 </html>`;
 
