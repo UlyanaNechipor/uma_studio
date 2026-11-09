@@ -10,8 +10,9 @@
   /* ================= НАСТРОЙКИ ================= */
   var LIST_REC = 'rec3979597501';
   var NAMES    = ['Rosi', 'Sure', 'Kara Fox', 'Black Sable', 'Arine Atelier'];
-  var DURATION = 520;    // мс на всё слово
-  var FPS_STEP = 34;     // мс между кадрами перемешивания
+  var DURATION = 1000;   // мс на всё слово
+  var FPS_STEP = 80;     // мс между кадрами перемешивания (реже — спокойнее)
+  var CHANGE   = 0.55;   // доля ещё не вставших букв, которые меняются в каждом кадре
   /* ============================================= */
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -42,16 +43,18 @@
     var t0 = performance.now();
     (function frame() {
       var p = Math.min(1, (performance.now() - t0) / DURATION);
-      var fixed = Math.floor(p * idx.length);     // сколько букв слева уже встали на место
+      var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;   // плавный разгон и торможение
+      var fixed = Math.floor(e * idx.length);     // сколько букв слева уже встали на место
       if (p >= 1) { node.nodeValue = orig; atom.__umaNsRun = false; return; }
-      // оставшиеся буквы перемешиваем между собой
-      var pool = idx.slice(fixed).map(function (k) { return chars[k]; });
-      for (var j = pool.length - 1; j > 0; j--) {
-        var r = Math.floor(Math.random() * (j + 1)), tmp = pool[j]; pool[j] = pool[r]; pool[r] = tmp;
-      }
-      var out = chars.slice();
-      idx.slice(fixed).forEach(function (k, m) { out[k] = pool[m]; });
-      node.nodeValue = out.join('');
+      // часть оставшихся букв меняется на другие буквы этого же слова, остальные стоят как были
+      var cur = node.nodeValue.split('');
+      if (cur.length !== chars.length) cur = chars.slice();
+      var rest = idx.slice(fixed);
+      for (var i = 0; i < idx.length; i++) if (i < fixed) cur[idx[i]] = chars[idx[i]];
+      rest.forEach(function (k) {
+        if (Math.random() < CHANGE) cur[k] = chars[rest[Math.floor(Math.random() * rest.length)]];
+      });
+      node.nodeValue = cur.join('');
       setTimeout(frame, FPS_STEP);
     })();
   }
