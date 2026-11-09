@@ -1,0 +1,106 @@
+{
+ "v": 3,
+ "layout": "files",
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-11-09T14:52:07Z"
+ },
+ "title": "Working Title",
+ "namespace": "WorkingTitle",
+ "libraries": [],
+ "sections": {},
+ "groups": [
+  "Projects"
+ ],
+ "assetGroups": {
+  "Projects": {
+   "name": "Projects",
+   "tile": "m",
+   "order": [
+    "rosi-cover.webp",
+    "rosi-mood.webp",
+    "sure-cover.webp",
+    "sure-mood.webp",
+    "kara-fox-cover.webp",
+    "kara-fox-mood.webp",
+    "black-sable-cover.webp",
+    "black-sable-mood.webp",
+    "arine-atelier-cover.webp",
+    "arine-atelier-mood.webp"
+   ],
+   "files": {
+    "rosi-cover.webp": {
+     "name": "rosi-cover.webp",
+     "blob": "17242a61cc03c430f26645811a488969",
+     "size": 29184,
+     "type": "image/webp"
+    },
+    "rosi-mood.webp": {
+     "name": "rosi-mood.webp",
+     "blob": "070f9a580b17cc948aa120c1ddb1c79b",
+     "size": 21756,
+     "type": "image/webp"
+    },
+    "sure-cover.webp": {
+     "name": "sure-cover.webp",
+     "blob": "cd2db8a6fff1b45ecc753179ed9ec151",
+     "size": 20522,
+     "type": "image/webp"
+    },
+    "sure-mood.webp": {
+     "name": "sure-mood.webp",
+     "blob": "cb3504d9b952a887b10ee30de2fb74cd",
+     "size": 33254,
+     "type": "image/webp"
+    },
+    "kara-fox-cover.webp": {
+     "name": "kara-fox-cover.webp",
+     "blob": "fcaf0dd4ff2f6fa32bb14217236c7e28",
+     "size": 170684,
+     "type": "image/webp"
+    },
+    "kara-fox-mood.webp": {
+     "name": "kara-fox-mood.webp",
+     "blob": "c97d1e8c2456b0fcdd4f4707cd875869",
+     "size": 25812,
+     "type": "image/webp"
+    },
+    "black-sable-cover.webp": {
+     "name": "black-sable-cover.webp",
+     "blob": "be0ca307d15563d0a8cb01fab8fbe54e",
+     "size": 84530,
+     "type": "image/webp"
+    },
+    "black-sable-mood.webp": {
+     "name": "black-sable-mood.webp",
+     "blob": "f8cf7ff71a0406cd573b9d556dae1f62",
+     "size": 16738,
+     "type": "image/webp"
+    },
+    "arine-atelier-cover.webp": {
+     "name": "arine-atelier-cover.webp",
+     "blob": "44f0883b6bded233e09ab43a4d8d4872",
+     "size": 35230,
+     "type": "image/webp"
+    },
+    "arine-atelier-mood.webp": {
+     "name": "arine-atelier-mood.webp",
+     "blob": "aa7e040e2dc32024efab5b683c9d4c75",
+     "size": 35190,
+     "type": "image/webp"
+    }
+   }
+  }
+ },
+ "blobs": {},
+ "docs": {
+  "readme": "project/README.md",
+  "sections": []
+ },
+ "lastChange": {
+  "by": "Claude",
+  "at": "2026-11-09T14:52:07Z",
+  "via": "Claude",
+  "note": "Дизайн-система собрана с сайта: токены, брендбук, 9 компонентов, обложки проектов"
+ }
+}

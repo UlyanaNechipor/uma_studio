@@ -1,0 +1,21 @@
+<!-- @dsCard group="Проекты" height=240 width=1200 subtitle="десктоп; наведите на строку — год прокрутится" -->
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><style>html,body{margin:0} body{background:var(--bg)} .pad{padding:24px}</style></head>
+<body>
+<div class="wt pad"><ul class="wt-rows">
+  <li class="wt-row"><span class="wt-row__name">Rosi</span><span class="wt-grey wt-small">Интернет-магазин</span><span class="wt-grey wt-small yr" data-y="2023">2023</span></li>
+  <li class="wt-row"><span class="wt-row__name">Kara Fox</span><span class="wt-grey wt-small">Портфолио</span><span class="wt-grey wt-small yr" data-y="2025">2025</span></li>
+  <li class="wt-row"><span class="wt-row__name">Black Sable</span><span class="wt-grey wt-small">Интернет-магазин</span><span class="wt-grey wt-small yr" data-y="2025">2025</span></li>
+</ul></div>
+<script>
+// год-табло: каждая цифра встаёт на место с трёх цифр раньше, слева направо с шагом 45 мс; повтор при наведении на строку
+document.querySelectorAll('.yr').forEach(function (el) {
+  var y = el.getAttribute('data-y'), col = ''; for (var r = 0; r < 2; r++) for (var n = 0; n < 10; n++) col += '<span>' + n + '</span>';
+  el.innerHTML = '<span class="wt-yr">' + y.split('').map(function (d, k) { return '<span class="wt-yr__d"><span class="wt-yr__s" data-d="' + d + '" style="transition-delay:' + k * 45 + 'ms">' + col + '</span></span>'; }).join('') + '</span>';
+  var s = el.querySelectorAll('.wt-yr__s');
+  function put(b, a) { s.forEach(function (x) { x.style.transition = a ? '' : 'none'; x.style.transform = 'translateY(' + (-(+x.dataset.d + 10 - b) * 5) + '%)'; }); }
+  function roll() { put(3, false); el.offsetHeight; put(0, true); }
+  put(0, false); el.closest('.wt-row').addEventListener('mouseenter', roll); setTimeout(roll, 300);
+});
+</script>
+</body></html>

@@ -1,0 +1,72 @@
+/* Working Title — компоненты. Цвета, шрифт и отступы — только из токенов (tokens.css). */
+.wt { font-family: var(--font-sans); color: var(--txt); background: var(--bg); -webkit-font-smoothing: antialiased; font-weight: 400; }
+[data-theme="light"] .wt { font-weight: 450; }
+.wt *, .wt *::before, .wt *::after { box-sizing: border-box; }
+.wt-grey { color: var(--grey); font-weight: 400; }
+.wt-small { font-size: 12px; line-height: 1.55; letter-spacing: .45px; }
+.wt-h1 { font-size: 84px; line-height: .96; letter-spacing: -.04em; font-weight: 400; margin: 0; }
+.wt-h2 { font-size: 40px; line-height: 1.02; letter-spacing: -.03em; font-weight: 400; margin: 0; }
+[data-theme="light"] .wt-h1, [data-theme="light"] .wt-h2 { font-weight: 480; }
+
+/* кнопки */
+.wt-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: var(--btn-w); height: var(--btn-h);
+  padding: 0 12px; border-radius: var(--radius-btn); font: 500 12px/1 var(--font-sans); letter-spacing: .45px; text-decoration: none; white-space: nowrap;
+  transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out); }
+.wt-btn--primary { background: var(--btn-bg); color: var(--btn-fg); }
+.wt-btn--secondary { background: var(--btn2-bg); color: var(--btn2-fg); }
+.wt-btn--primary:hover, .wt-btn--primary.is-hover { background: var(--btn-bg-hover); }
+.wt-btn--secondary:hover, .wt-btn--secondary.is-hover { background: var(--btn2-bg-hover); }
+[data-theme="light"] .wt-btn--secondary:hover, [data-theme="light"] .wt-btn--secondary.is-hover { color: var(--btn-fg); }
+.wt-btn__dot { width: 5px; height: 5px; border-radius: 50%; background: var(--signal); flex: none; }
+.wt-mail { font-size: 12px; letter-spacing: .45px; color: var(--txt); text-decoration: none; }
+
+/* шапка */
+.wt-hd { display: grid; grid-template-columns: 568px 190px 186px 1fr auto; align-items: center; height: var(--header-h); padding: 0 var(--margin-d);
+  border-bottom: 1px solid var(--line); background: var(--bg); font-size: 12px; }
+.wt-logo { letter-spacing: -.02em; font-weight: 300; color: var(--txt); }
+.wt-logo b { font-weight: 700; }
+.wt-hd__link { color: var(--grey); font-weight: 400; text-decoration: none; transition: color var(--dur-hover) var(--ease-out); }
+.wt-hd__link:hover, .wt-hd__link.is-hover { color: var(--txt); }
+
+/* переключатель темы */
+.wt-theme { position: relative; width: 24px; height: 24px; border: 1px solid var(--line); border-radius: var(--radius-ui); color: var(--grey); background: none; padding: 0; }
+.wt-theme svg { position: absolute; inset: 29%; width: 42%; height: 42%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.wt-theme .moon { fill: currentColor; stroke: none; }
+.wt-theme.is-hover { background: var(--txt); border-color: var(--txt); color: var(--bg); }
+
+/* заголовок с заливкой: --p — где граница заливки (0–100%) */
+.wt-fill { color: transparent; -webkit-text-fill-color: transparent; -webkit-background-clip: text; background-clip: text;
+  background-image: linear-gradient(90deg, var(--txt) 0, var(--txt) calc(var(--p) - 4%), var(--fill-base) calc(var(--p) + 4%), var(--fill-base) 100%); }
+
+/* строка проекта (десктоп) */
+.wt-rows { list-style: none; margin: 0; padding: 0; }
+.wt-row { display: grid; grid-template-columns: 568px 1fr auto; align-items: baseline; height: var(--row-h); padding-top: 16px; border-top: 1px solid var(--line); }
+.wt-row:last-child { border-bottom: 1px solid var(--line); }
+.wt-row__name { font-size: 20px; line-height: 1; letter-spacing: 1px; color: var(--txt-soft); }
+.wt-yr { display: inline-flex; font-variant-numeric: tabular-nums; }
+.wt-yr__d { display: inline-block; height: 1.2em; overflow: hidden; }
+.wt-yr__s { display: flex; flex-direction: column; transition: transform .8s var(--ease-out); }
+.wt-yr__s span { height: 1.2em; line-height: 1.2em; text-align: center; }
+
+/* карточка проекта (телефон) */
+.wt-card { width: 288px; height: var(--card-h); border-top: 1px solid var(--line); padding-top: 12px; }
+.wt-card__top { display: flex; justify-content: space-between; font-size: 14px; line-height: 1; }
+.wt-card__name { text-transform: uppercase; }
+.wt-card__type { font-size: 14px; margin-top: 8px; }
+.wt-card__pics { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter-m); height: 79px; margin-top: 18px; }
+.wt-card__pics img, .wt-pv img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: var(--radius-media); }
+
+/* превью обложки у курсора */
+.wt-pv { width: 380px; height: 240px; overflow: hidden; border-radius: var(--radius-ui); box-shadow: var(--shadow-preview); transform: rotate(-2deg); }
+
+/* услуга */
+.wt-svc__title { font-size: 12px; color: var(--txt-soft); margin: 0; font-weight: inherit; }
+.wt-svc__text { margin: 8px 0 0; }
+
+/* подвал */
+.wt-ft { display: grid; grid-template-columns: 568px 393px 1fr; padding: 36px var(--margin-d) 32px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.6; letter-spacing: .45px; }
+.wt-ft__logo { font-size: 37.5px; line-height: 1; letter-spacing: -.04em; font-weight: 300; margin: 0; }
+.wt-ft__logo b { font-weight: 700; }
+.wt-ft__made { margin: 40px 0 0; }
+.wt-ft__col { display: flex; flex-direction: column; }
+.wt-ft__h { font: inherit; margin: 0; color: var(--txt); }
