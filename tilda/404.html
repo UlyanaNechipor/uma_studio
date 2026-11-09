@@ -81,7 +81,6 @@ body.light-theme .uma404 {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: .5em;
     margin-top: 6px;
     padding: 4px 0;
     font-size: clamp(14px, .9375vw, 18px);
@@ -100,8 +99,6 @@ body.light-theme .uma404 {
     transition: transform .7s var(--e-ease);
 }
 .uma404__link:hover::after, .uma404__link:focus-visible::after { transform: scaleX(1); }
-.uma404__arrow { display: inline-block; transition: transform .5s var(--e-ease); }
-.uma404__link:hover .uma404__arrow { transform: translateX(4px); }
 
 /* ---------- объёмная 404 ---------- */
 .uma404__stage {
@@ -163,7 +160,7 @@ body.light-theme .uma404__stage::before { background: radial-gradient(50% 50% at
     <div class="uma404__copy">
         <h1 class="uma404__title" id="uma404-title">Sorry, page not found</h1>
         <p class="uma404__sub">Страница не существует или переехала. Начните с главной — там все наши проекты.</p>
-        <a class="uma404__link" href="/">На главную <span class="uma404__arrow" aria-hidden="true">→</span></a>
+        <a class="uma404__link" href="/">На главную</a>
     </div>
     <div class="uma404__stage" aria-hidden="true">
         <canvas class="uma404__gl"></canvas>
