@@ -44,7 +44,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .grid {
     grid-template-columns: calc(272 * var(--u)) calc(264 * var(--u)) calc(276 * var(--u)) calc(276 * var(--u));
     column-gap: calc(16 * var(--u));
-    /* поля 32 макета; шире 1600 px — контент по центру, поля растут */
+    /* поля 32 макета; шире 1920 px — контент по центру, поля растут */
     padding-inline: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2));
   }
 }
