@@ -1,0 +1,247 @@
+<!-- =========================================================================
+   UMA · страница 404
+   Вставить в блок T123 («HTML-код») на странице 404 в Тильде.
+   Блок занимает весь экран: внизу по центру — объёмная «404», которая медленно
+   поворачивается и следит за курсором; над ней — «Sorry, page not found»,
+   подпись и ссылка на главную.
+   Сетка как на сайте: поля по краям clamp(16px, 1.667vw, 32px) — 32 на 1920, 16 на телефоне.
+   Цвета: тёмная тема #111211, светлая (body.light-theme) #f0f0f0 — переключаются вместе с сайтом.
+   Объём сделан слоями текста в CSS 3D: без библиотек, шрифт сайта (Manrope).
+   ========================================================================= -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=swap">
+
+<style>
+.uma404 {
+    --e-bg:    #111211;
+    --e-text:  #ededed;
+    --e-muted: #a9a9a9;
+    --e-line:  rgba(237, 237, 237, .22);
+    --e-front2: #bdbdbd;
+    --e-pad:   clamp(16px, 1.667vw, 32px);
+    --e-ease:  cubic-bezier(.22, 1, .36, 1);
+
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: clamp(96px, 6.4vw, 123px) var(--e-pad) var(--e-pad);   /* сверху — место под шапку сайта */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    overflow: hidden;
+    background: var(--e-bg);
+    color: var(--e-text);
+    font-family: 'Manrope', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+body.light-theme .uma404 {
+    --e-bg:    #f0f0f0;
+    --e-text:  #1a1a1a;
+    --e-muted: #5c5c5c;
+    --e-line:  rgba(26, 26, 26, .22);
+    --e-front2: #3a3a3a;
+}
+.uma404 *, .uma404 *::before, .uma404 *::after { box-sizing: border-box; }
+
+/* ---------- текст над цифрами ---------- */
+.uma404__copy {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+    margin-bottom: clamp(8px, 1.2vw, 24px);
+}
+.uma404__title {
+    margin: 0;
+    font-weight: 500;
+    font-size: clamp(30px, 3.334vw, 64px);       /* 64 на 1920 */
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+}
+.uma404__sub {
+    margin: 0;
+    max-width: 30em;
+    font-size: clamp(14px, .9375vw, 18px);
+    line-height: 1.5;
+    letter-spacing: .01em;
+    color: var(--e-muted);
+}
+.uma404__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: .5em;
+    margin-top: 6px;
+    padding: 4px 0;
+    font-size: clamp(14px, .9375vw, 18px);
+    line-height: 1.3;
+    color: var(--e-text);
+    text-decoration: none;
+}
+.uma404__link::after {                             /* линия: рисуется слева направо */
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: currentColor;
+    transform-origin: left center;
+    transform: scaleX(.0001);
+    transition: transform .7s var(--e-ease);
+}
+.uma404__link:hover::after, .uma404__link:focus-visible::after { transform: scaleX(1); }
+.uma404__arrow { display: inline-block; transition: transform .5s var(--e-ease); }
+.uma404__link:hover .uma404__arrow { transform: translateX(4px); }
+
+/* ---------- объёмная 404 ---------- */
+.uma404__stage {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    perspective: 1600px;
+    perspective-origin: 50% 30%;
+    pointer-events: none;
+    user-select: none;
+}
+.uma404__obj {
+    position: relative;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+.uma404__layer {
+    display: block;
+    margin: 0;
+    font-weight: 800;
+    font-size: clamp(150px, 30vw, 620px);
+    line-height: .78;
+    letter-spacing: -0.035em;
+    padding: .02em .04em .03em 0;                  /* компенсация отрицательного трекинга справа */
+    white-space: nowrap;
+    color: var(--e-text);
+    backface-visibility: hidden;
+}
+.uma404__layer + .uma404__layer { position: absolute; left: 0; top: 0; }
+.uma404__layer.is-front {                         /* лицевая грань: лёгкий градиент света сверху вниз */
+    background: linear-gradient(180deg, var(--e-text) 35%, var(--e-front2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+@media (max-width: 639px) {
+    .uma404__layer { font-size: 50vw; }
+    .uma404__stage { perspective: 900px; }
+}
+
+/* ---------- появление ---------- */
+.uma404__copy > * { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--e-ease), transform 1.1s var(--e-ease); }
+.uma404.is-in .uma404__copy > * { opacity: 1; transform: none; }
+.uma404.is-in .uma404__copy > :nth-child(2) { transition-delay: .12s; }
+.uma404.is-in .uma404__copy > :nth-child(3) { transition-delay: .24s; }
+.uma404__stage { opacity: 0; transform: translateY(12%); transition: opacity 1s var(--e-ease) .15s, transform 1.6s var(--e-ease) .15s; }
+.uma404.is-in .uma404__stage { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+    .uma404__copy > *, .uma404__stage { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+</style>
+
+<section class="uma404" aria-labelledby="uma404-title">
+    <div class="uma404__copy">
+        <h1 class="uma404__title" id="uma404-title">Sorry, page not found</h1>
+        <p class="uma404__sub">Страница не существует или переехала. Начните с главной — там все наши проекты.</p>
+        <a class="uma404__link" href="/">На главную <span class="uma404__arrow" aria-hidden="true">→</span></a>
+    </div>
+    <div class="uma404__stage" aria-hidden="true">
+        <div class="uma404__obj"></div>
+    </div>
+</section>
+
+<script>
+(function () {
+    var root = document.querySelector('.uma404');
+    if (!root || root.__uma404) return;
+    root.__uma404 = true;
+
+    // Tilda: блок на весь экран без внутренних отступов T123
+    var rec = root.closest('.t-rec');
+    if (rec) { rec.style.paddingTop = '0'; rec.style.paddingBottom = '0'; }
+
+    var obj = root.querySelector('.uma404__obj');
+    var LAYERS = window.innerWidth < 640 ? 22 : 30;   // слоёв в толщине
+    var DEPTH = 0.17;                                  // толщина, в долях размера шрифта
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function rgb(s) { var m = String(s).match(/[\d.]+/g) || [0, 0, 0]; return [+m[0], +m[1], +m[2]]; }
+    function mix(a, b, t) { return 'rgb(' + a.map(function (v, i) { return Math.round(v + (b[i] - v) * t); }).join(',') + ')'; }
+
+    // слои: передний — цвет текста, дальше к задней стенке — бока, темнеют к фону
+    function build() {
+        obj.innerHTML = '';
+        var text = rgb(getComputedStyle(root).color);
+        var bg = rgb(getComputedStyle(root).backgroundColor);
+        var light = (bg[0] + bg[1] + bg[2]) / 3 > 128;
+        // бока: на тёмном фоне — серые от светлого к тёмному, на светлом — от тёмного к среднему серому
+        var sideA = light ? mix(text, bg, 0.30) : mix(text, bg, 0.42);
+        var sideB = light ? mix(text, bg, 0.62) : mix(text, bg, 0.86);
+        var a = rgb(sideA), b = rgb(sideB);
+        for (var i = 0; i < LAYERS; i++) {
+            var el = document.createElement('span');
+            el.className = 'uma404__layer';
+            el.textContent = '404';
+            var z = (i / (LAYERS - 1) - 0.5) * DEPTH;                    // em; последний слой — передний, ось вращения посередине толщины
+            el.style.transform = 'translateZ(' + z.toFixed(4) + 'em)';
+            if (i < LAYERS - 1) el.style.color = mix(b, a, i / (LAYERS - 2));
+            else el.classList.add('is-front');
+            obj.appendChild(el);
+        }
+        // translateZ в em считается от размера шрифта слоя — толщина масштабируется вместе с цифрами
+    }
+    build();
+
+    // смена темы на сайте — перекрашиваем слои
+    if (window.MutationObserver) {
+        new MutationObserver(function () { build(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    }
+    var w0 = window.innerWidth;
+    window.addEventListener('resize', function () {
+        var mob = window.innerWidth < 640;
+        if (mob !== (w0 < 640)) { LAYERS = mob ? 22 : 30; build(); }
+        w0 = window.innerWidth;
+    });
+
+    // появление
+    requestAnimationFrame(function () { requestAnimationFrame(function () { root.classList.add('is-in'); }); });
+
+    if (reduce) { obj.style.transform = 'rotateX(10deg) rotateY(-18deg)'; return; }
+
+    // движение: медленное покачивание + наклон к курсору (на телефоне — только покачивание)
+    var mx = 0, my = 0, tx = 0, ty = 0, t0 = performance.now(), visible = true;
+    window.addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse') return;
+        mx = (e.clientX / window.innerWidth) * 2 - 1;
+        my = (e.clientY / window.innerHeight) * 2 - 1;
+    }, { passive: true });
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(root);
+    }
+    (function frame(now) {
+        requestAnimationFrame(frame);
+        if (!visible) return;
+        var t = (now - t0) / 1000;
+        tx += (mx - tx) * 0.05;
+        ty += (my - ty) * 0.05;
+        var ry = Math.sin(t * 0.45) * 18 + tx * 14;          // поворот вокруг вертикали
+        var rx = 12 + Math.sin(t * 0.31 + 1) * 6 - ty * 8;    // наклон: видна верхняя грань
+        var rz = Math.sin(t * 0.23) * 1.5;
+        obj.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) rotateZ(' + rz.toFixed(2) + 'deg)';
+    })(t0);
+})();
+</script>
