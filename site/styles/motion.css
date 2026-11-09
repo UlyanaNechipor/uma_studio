@@ -7,7 +7,12 @@
 /* ---------- фон за курсором и смена темы ---------- */
 #trail, #wipe { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; }
 #trail { z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }
-html.light-theme #trail { mix-blend-mode: multiply; opacity: .85; filter: blur(24px); }
+html.light-theme #trail, html.light-theme .hd__trail { mix-blend-mode: multiply; opacity: .85; filter: blur(24px); }
+/* след курсора виден и на шапке: копия общего холста, обрезанная по шапке */
+.hd__trail { position: absolute; left: 0; top: 0; width: 100%; height: calc(100% + 120px);   /* ниже шапки — запас под размытие, обрезается шапкой */
+  pointer-events: none; z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }
+.hd > :not(.hd__trail) { position: relative; z-index: 1; }
+.hd { isolation: isolate; overflow: hidden; }
 #wipe { z-index: -1; }
 main, .ft { position: relative; z-index: 1; }
 body { background: transparent; }
@@ -17,7 +22,7 @@ html.is-wiping { transition: none; }
 /* ---------- переключатель темы: луна ↔ солнце ---------- */
 .hd__ic { position: relative; display: block; width: 100%; height: 100%; transition: transform .6s var(--m-out); }
 .hd__ic svg {
-  position: absolute; inset: 22%; width: 56%; height: 56%;
+  position: absolute; inset: 29%; width: 42%; height: 42%;   /* на 25% меньше прежнего */
   fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
   transition: opacity .4s var(--m-out), transform .6s var(--m-out);
 }

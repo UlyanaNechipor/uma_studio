@@ -251,7 +251,17 @@
   function trail() {
     if (reduce) return;
     var cv = $('#trail'), ctx = cv.getContext('2d'), RES = 0.5;
-    function size() { cv.width = Math.ceil(innerWidth * RES); cv.height = Math.ceil(innerHeight * RES); ctx.setTransform(RES, 0, 0, RES, 0, 0); }
+    // шапка непрозрачная и лежит поверх общего холста — в неё копируется верхняя полоса следа
+    var hc = $('.hd__trail'), hctx = hc && hc.getContext('2d'), hd = $('.hd');
+    function size() {
+      cv.width = Math.ceil(innerWidth * RES); cv.height = Math.ceil(innerHeight * RES); ctx.setTransform(RES, 0, 0, RES, 0, 0);
+      if (hc) { hc.width = cv.width; hc.height = Math.ceil((hd.offsetHeight + 120) * RES); }
+    }
+    function copyHeader() {
+      if (!hc) return;
+      hctx.clearRect(0, 0, hc.width, hc.height);
+      hctx.drawImage(cv, 0, 0, cv.width, hc.height, 0, 0, hc.width, hc.height);
+    }
     size(); addEventListener('resize', size);
     var mx = -1000, my = -1000, sx = -1000, sy = -1000, pts = [], MAX = 55, running = false;
     function input(x, y) { mx = x; my = y; if (sx === -1000) { sx = x; sy = y; } wake(); }
@@ -260,7 +270,7 @@
     addEventListener('touchmove', function (e) { if (e.touches[0]) input(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
     function off() { mx = my = -1000; }
     addEventListener('touchend', off); addEventListener('touchcancel', off); document.addEventListener('mouseleave', off);
-    function wake() { if (running) return; running = true; cv.style.visibility = 'visible'; requestAnimationFrame(frame); }
+    function wake() { if (running) return; running = true; cv.style.visibility = 'visible'; if (hc) hc.style.visibility = 'visible'; requestAnimationFrame(frame); }
     function frame() {
       ctx.clearRect(0, 0, innerWidth, innerHeight);
       if (mx !== -1000) {
@@ -281,7 +291,8 @@
         g.addColorStop(1, 'rgba(17,18,17,0)');
         ctx.strokeStyle = g; ctx.stroke();
       }
-      if (!pts.length && (mx === -1000 || (Math.abs(mx - sx) < 1 && Math.abs(my - sy) < 1))) { running = false; cv.style.visibility = 'hidden'; return; }
+      copyHeader();
+      if (!pts.length && (mx === -1000 || (Math.abs(mx - sx) < 1 && Math.abs(my - sy) < 1))) { running = false; cv.style.visibility = 'hidden'; if (hc) hc.style.visibility = 'hidden'; return; }
       requestAnimationFrame(frame);
     }
   }

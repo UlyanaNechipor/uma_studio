@@ -21,6 +21,7 @@ const btn = (b, kind = 'light') =>
 
 const header = `
 <header class="hd">
+  <canvas class="hd__trail" aria-hidden="true"></canvas>
   <a class="hd__logo" href="./" aria-label="${esc(site.brand)} — на главную"><b>WORKING</b> TITLE</a>
   <nav class="hd__nav" aria-label="Разделы">
     ${site.nav.map((n) => `<a class="hd__link" href="#${n.id}">${esc(n.label)}</a>`).join('\n    ')}
