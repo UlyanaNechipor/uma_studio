@@ -473,18 +473,20 @@ setTimeout(window.umaReleasePreloader, 20000);
 
    ?umaref=dev     предпросмотр ветки dev (запоминается до закрытия вкладки)
    ?umaref=main    вернуться к основной версии
-   ?umadebug       подробный лог загрузки в консоли
+   ?umadebug       панель на экране: какая версия загрузилась и откуда, ответы источников
+   ?umareset       стереть сохранённую копию кода в браузере и загрузить заново
    ========================================================================= */
 (function () {
   var REPO = 'UlyanaNechipor/uma_studio';
+  var CORE_V = '2026-11-09b';   // версия самого загрузчика (этого кода в Тильде)
   // Источники по порядку. raw.githubusercontent: свежая версия не позже чем через 5 минут после пуша.
   // jsDelivr (три адреса) — запасной вариант: он кэширует ветку дольше, до 12 часов.
   function sources(ref) {
     return [
       'https://raw.githubusercontent.com/' + REPO + '/' + ref + '/',
       'https://cdn.jsdelivr.net/gh/' + REPO + '@' + ref + '/',
-      'https://fastly.jsdelivr.net/gh/' + REPO + '@' + ref + '/',
-      'https://gcore.jsdelivr.net/gh/' + REPO + '@' + ref + '/'
+      'https://fastly.jsdelivr.net/gh/' + REPO + '@' + ref + '/'
+      // gcore.jsdelivr.net по ветке не берём: его копия не сбрасывается и отстаёт на сутки
     ];
   }
 
@@ -549,7 +551,7 @@ setTimeout(window.umaReleasePreloader, 20000);
      а jsDelivr по имени ветки (@main) может часами отдавать старую версию — поэтому
      спрашиваем всех сразу, берём первый свежий ответ, а jsDelivr @main — только если
      свежие за STALE_WAIT так и не ответили. */
-  var STALE_WAIT = 1800;   // мс (после каждого выпуска GitHub Action сбрасывает кэш jsDelivr — запасной источник тоже свежий)
+  var STALE_WAIT = 3500;   // мс
   function vnum(v) {       // "2026-11-08.23" → сравнимое число
     var m = String(v || '').match(/^(\d{4})-(\d{2})-(\d{2})\.(\d+)$/);
     return m ? (+m[1] * 10000 + +m[2] * 100 + +m[3]) * 1000 + +m[4] : 0;
@@ -580,12 +582,19 @@ setTimeout(window.umaReleasePreloader, 20000);
         .then(function (c) {
           var sha = c && c.sha;
           if (!sha) throw new Error('нет sha');
-          var b = 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + sha + '/';
-          return getJSON(b + 'uma.json').then(function (m) {
-            if (!m.sha) m.sha = sha;
-            log('uma.json api', m.v, sha.slice(0, 8));
-            done({ base: b, manifest: m });
-          });
+          // адрес по коммиту неизменен — подходит любой CDN; gcore быстрее всех в России
+          var bases = ['https://gcore.jsdelivr.net/gh/' + REPO + '@' + sha + '/',
+                       'https://cdn.jsdelivr.net/gh/' + REPO + '@' + sha + '/',
+                       'https://raw.githubusercontent.com/' + REPO + '/' + sha + '/'];
+          var k = 0;
+          return (function next() {
+            var b = bases[k++];
+            return getJSON(b + 'uma.json').then(function (m) {
+              if (!m.sha) m.sha = sha;
+              log('uma.json api', m.v, sha.slice(0, 8), b);
+              done({ base: b, manifest: m });
+            }, function (e) { if (k < bases.length) return next(); throw e; });
+          })();
         }).catch(freshFail);
       // jsDelivr @ветка — запасной
       stale.forEach(function (base) {
@@ -624,6 +633,7 @@ setTimeout(window.umaReleasePreloader, 20000);
      перезагрузки компьютера, плохой мобильный интернет). Если в GitHub новая
      версия — она скачивается и подключается вместо сохранённой. */
   var CACHE_KEY = 'uma_code_' + ref;
+  if (/[?&]umareset/.test(q)) { try { Object.keys(localStorage).forEach(function (k) { if (k.indexOf('uma_code_') === 0) localStorage.removeItem(k); }); sessionStorage.removeItem('uma_ref'); } catch (e) {} }
   var FAST = 3000;   // мс: сколько ждём свежий uma.json, прежде чем взять сохранённую копию (прелоадер всё равно идёт ~3 с)
   function readCache() {
     try { var c = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); return c && c.v && c.css && c.js ? c : null; }
@@ -689,6 +699,8 @@ setTimeout(window.umaReleasePreloader, 20000);
     if (window.umaReleasePreloader) window.umaReleasePreloader();
   }
 
+  var touched = false;
+  ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) { window.addEventListener(ev, function () { touched = true; }, { passive: true, once: true }); });
   function start() {
     var cached = readCache();
     var waitT = 0;
@@ -702,7 +714,14 @@ setTimeout(window.umaReleasePreloader, 20000);
         if (cached && vnum(cached.v) >= vnum(version)) { clearTimeout(waitT); inject(cached, 'cache'); return; }
         return download(version, r.base, r.manifest).then(function (c) {
           clearTimeout(waitT);
-          // если сохранённая копия уже подключена — новая версия сохранена и включится при следующем открытии
+          // сохранённая (старая) копия уже подключена, а пришла новая: если человек ещё
+          // ничего не трогал — сразу перезагружаем (новая уже в копии и встанет мгновенно),
+          // иначе — при возвращении на вкладку
+          if (applied && window.UMA && vnum(c.v) > vnum(window.UMA.version)) {
+            window.UMA.pending = c.v;
+            if (!touched && performance.now() < 15000) { log('новая версия поверх старой — перезагрузка'); location.reload(); }
+            return;
+          }
           inject(c, 'network');
         });
       }).catch(function (e) {
@@ -733,10 +752,35 @@ setTimeout(window.umaReleasePreloader, 20000);
     checking = true;
     loadManifest().then(function (r) {
       checking = false;
-      if (vnum(r.manifest.v) > vnum(window.UMA.version)) { log('вышла новая версия', r.manifest.v, '— перезагрузка'); location.reload(); }
+      if (window.UMA.pending || vnum(r.manifest.v) > vnum(window.UMA.version)) { log('вышла новая версия', r.manifest.v, '— перезагрузка'); location.reload(); }
     }, function () { checking = false; });
   }
   window.addEventListener('pageshow', function (e) { if (e.persisted) recheck(); });
+
+  /* ---------- 5. ?umadebug — панель на экране (для телефона, где нет консоли) ---------- */
+  if (DEBUG) {
+    var panel = function () {
+      var d = document.createElement('div');
+      d.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:2147483647;background:rgba(0,0,0,.88);color:#fff;font:12px/1.45 monospace;padding:10px 12px;border-radius:10px;white-space:pre-wrap;max-height:60vh;overflow:auto';
+      document.body.appendChild(d);
+      var U = window.UMA || {}, lines = ['загрузчик: ' + CORE_V, 'код: ' + (U.version || '—') + ' (' + (U.from || 'не загрузился') + ')', 'откуда: ' + (U.base || '—'), 'копия в браузере: ' + ((readCache() || {}).v || 'нет'), 'ветка: ' + ref, ''];
+      d.textContent = lines.join('\n') + 'проверяю источники…';
+      var t = Date.now(), list = [
+        ['raw', 'https://raw.githubusercontent.com/' + REPO + '/' + ref + '/uma.json?t=' + t],
+        ['api', 'https://api.github.com/repos/' + REPO + '/commits/' + ref],
+        ['cdn', 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + ref + '/uma.json?t=' + t],
+        ['fastly', 'https://fastly.jsdelivr.net/gh/' + REPO + '@' + ref + '/uma.json?t=' + t],
+        ['gcore', 'https://gcore.jsdelivr.net/gh/' + REPO + '@' + ref + '/uma.json?t=' + t]
+      ];
+      Promise.all(list.map(function (x) {
+        var s0 = Date.now();
+        return getJSON(x[1]).then(function (j) { return x[0] + ': ' + (j.v || (j.sha || '').slice(0, 8)) + ' за ' + (Date.now() - s0) + ' мс'; },
+                                  function (e) { return x[0] + ': ошибка (' + (e && e.message) + ') за ' + (Date.now() - s0) + ' мс'; });
+      })).then(function (r) { d.textContent = lines.join('\n') + r.join('\n'); });
+    };
+    var waitUma = function (n) { if ((window.UMA && window.UMA.version) || n > 40) panel(); else setTimeout(function () { waitUma(n + 1); }, 500); };
+    if (document.readyState === 'complete') waitUma(0); else window.addEventListener('load', function () { waitUma(0); });
+  }
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'hidden') hiddenAt = Date.now();
     else if (hiddenAt && Date.now() - hiddenAt > 60000) recheck();
