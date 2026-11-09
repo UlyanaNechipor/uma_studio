@@ -21,11 +21,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 :focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
 
 /* ---------- типографика ---------- */
-.t-h1 { font-size: calc(var(--t-h1) * var(--u)); line-height: var(--t-h1-lh); letter-spacing: var(--t-h1-ls); font-weight: var(--w-head); }
-.t-h2 { font-size: calc(var(--t-h2) * var(--u)); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); font-weight: var(--w-head); }
-.t-name { font-size: calc(var(--t-name) * var(--u)); line-height: var(--t-name-lh); letter-spacing: var(--t-name-ls); }
-.t-body { font-size: calc(var(--t-body) * var(--u)); line-height: var(--t-body-lh); letter-spacing: var(--t-body-ls); }
-.t-small { font-size: calc(var(--t-small) * var(--u)); line-height: var(--t-small-lh); letter-spacing: var(--t-small-ls); }
+.t-h1 { font-size: max(var(--min-h1), calc(var(--t-h1) * var(--u))); line-height: var(--t-h1-lh); letter-spacing: var(--t-h1-ls); font-weight: var(--w-head); }
+.t-h2 { font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u))); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); font-weight: var(--w-head); }
+.t-name { font-size: max(var(--min-name), calc(var(--t-name) * var(--u))); line-height: var(--t-name-lh); letter-spacing: var(--t-name-ls); }
+.t-body { font-size: max(var(--min-body), calc(var(--t-body) * var(--u))); line-height: var(--t-body-lh); letter-spacing: var(--t-body-ls); }
+.t-small { font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); line-height: var(--t-small-lh); letter-spacing: var(--t-small-ls); }
 .t-grey { color: var(--grey); font-weight: 400; }   /* серые подписи в обеих темах — 400 */
 
 /* слова через дефис не рвутся (класс ставит сборка) */
@@ -44,7 +44,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .grid {
     grid-template-columns: calc(272 * var(--u)) calc(264 * var(--u)) calc(276 * var(--u)) calc(276 * var(--u));
     column-gap: calc(16 * var(--u));
-    padding-inline: calc(32 * var(--u));
+    /* поля 32 макета; шире 1600 px — контент по центру, поля растут */
+    padding-inline: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2));
   }
 }
 
@@ -52,7 +53,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: calc(8 * var(--u));
   height: calc(36 * var(--u)); padding-inline: calc(12 * var(--u)); border-radius: 2px;
-  font-size: calc(12 * var(--u)); font-weight: 500; letter-spacing: .45px; white-space: nowrap;
+  font-size: max(var(--min-small), calc(12 * var(--u))); font-weight: 500; letter-spacing: .45px; white-space: nowrap;
   transition: background-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out);
 }
 .btn--light { background: var(--btn-bg); color: var(--btn-fg); }
@@ -67,7 +68,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   display: flex; align-items: center; gap: calc(12 * var(--u));
   height: calc(48 * var(--u)); padding-inline: 16px;
   background: var(--bg); border-bottom: 1px solid var(--line);
-  font-size: calc(10 * var(--u)); transition: background-color .5s var(--m-out);
+  font-size: max(var(--min-nav), calc(10 * var(--u))); transition: background-color .5s var(--m-out);
 }
 .hd__logo { margin-right: auto; letter-spacing: -.02em; }
 .hd__logo b { font-weight: 700; }
@@ -80,7 +81,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 @media (min-width: 960px) {
   .hd { display: grid; grid-template-columns: calc(568 * var(--u)) calc(190 * var(--u)) calc(186 * var(--u)) 1fr auto;
-        gap: 0; padding-inline: calc(32 * var(--u)); font-size: calc(12 * var(--u)); }
+        gap: 0; padding-inline: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2)); font-size: max(var(--min-nav), calc(12 * var(--u))); }
   .hd__nav { display: contents; }
   .hd__theme { width: calc(24 * var(--u)); height: calc(24 * var(--u)); }
 }
@@ -90,7 +91,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   border-top: 1px solid var(--line);
   padding-block: calc(32 * var(--u)) calc(24 * var(--u));
   row-gap: calc(24 * var(--u));
-  font-size: calc(12 * var(--u)); line-height: 1.6; letter-spacing: .45px;
+  font-size: max(var(--min-small), calc(12 * var(--u))); line-height: 1.6; letter-spacing: .45px;
 }
 .ft__logo { grid-column: 1 / -1; font-size: calc(32 * var(--u)); line-height: 1; letter-spacing: -.04em; font-weight: 300; }
 .ft__logo b { font-weight: 700; }
