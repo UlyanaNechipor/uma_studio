@@ -1,16 +1,19 @@
 <!-- =========================================================================
    UMA · страница 404
    Вставить в блок T123 («HTML-код») на странице 404 в Тильде.
-   Блок занимает весь экран: внизу по центру — объёмная «404», которая медленно
-   поворачивается и следит за курсором; над ней — «Sorry, page not found»,
+   Блок занимает весь экран: внизу по центру — надутая глянцевая «404» глубокого
+   оранжевого цвета: цифры медленно плавают, слипаются друг с другом, по ним
+   переливаются блики, вся фигура наклоняется к курсору; над ней — «Sorry, page not found»,
    подпись и ссылка на главную.
    Сетка как на сайте: поля по краям clamp(16px, 1.667vw, 32px) — 32 на 1920, 16 на телефоне.
    Цвета: тёмная тема #111211, светлая (body.light-theme) #f0f0f0 — переключаются вместе с сайтом.
-   Объём сделан слоями текста в CSS 3D: без библиотек, шрифт сайта (Manrope).
+   Объём рисуется WebGL-шейдером (без библиотек): из цифр строится поле расстояний,
+   цифры «надуваются» по нему, соседние сливаются мягким минимумом — отсюда липкость.
+   Без WebGL показывается плоская оранжевая «404».
    ========================================================================= -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&family=Rubik:wght@900&display=swap">
 
 <style>
 .uma404 {
@@ -104,41 +107,44 @@ body.light-theme .uma404 {
 .uma404__stage {
     position: relative;
     z-index: 1;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    perspective: 1600px;
-    perspective-origin: 50% 30%;
+    width: min(100%, 1180px);
+    aspect-ratio: 2.25 / 1;
+    perspective: 1400px;
     pointer-events: none;
     user-select: none;
 }
-.uma404__obj {
-    position: relative;
-    transform-style: preserve-3d;
+.uma404__stage::before {                           /* тёплое свечение под цифрами */
+    content: '';
+    position: absolute;
+    left: 12%; right: 12%; top: 30%; bottom: -6%;
+    background: radial-gradient(50% 50% at 50% 60%, rgba(255, 90, 10, .28), rgba(255, 90, 10, 0) 70%);
+    filter: blur(30px);
+}
+body.light-theme .uma404__stage::before { background: radial-gradient(50% 50% at 50% 60%, rgba(255, 90, 10, .18), rgba(255, 90, 10, 0) 70%); }
+.uma404__gl {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
     will-change: transform;
 }
-.uma404__layer {
-    display: block;
-    margin: 0;
-    font-weight: 800;
-    font-size: clamp(150px, 30vw, 620px);
-    line-height: .78;
-    letter-spacing: -0.035em;
-    padding: .02em .04em .03em 0;                  /* компенсация отрицательного трекинга справа */
-    white-space: nowrap;
-    color: var(--e-text);
-    backface-visibility: hidden;
-}
-.uma404__layer + .uma404__layer { position: absolute; left: 0; top: 0; }
-.uma404__layer.is-front {                         /* лицевая грань: лёгкий градиент света сверху вниз */
-    background: linear-gradient(180deg, var(--e-text) 35%, var(--e-front2) 100%);
+.uma404__flat {                                   /* запасной вариант без WebGL */
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font: 900 min(42vw, 520px)/1 Rubik, 'Manrope', Arial, sans-serif;
+    letter-spacing: -0.04em;
+    background: linear-gradient(180deg, #ff8a2a, #e0440a 60%, #9c2603);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+.uma404.no-gl .uma404__flat { display: flex; }
 @media (max-width: 639px) {
-    .uma404__layer { font-size: 50vw; }
-    .uma404__stage { perspective: 900px; }
+    .uma404__stage { width: calc(100% + 2 * var(--e-pad)); margin: 0 calc(-1 * var(--e-pad)); aspect-ratio: 1.75 / 1; }
 }
 
 /* ---------- появление ---------- */
@@ -160,7 +166,8 @@ body.light-theme .uma404 {
         <a class="uma404__link" href="/">На главную <span class="uma404__arrow" aria-hidden="true">→</span></a>
     </div>
     <div class="uma404__stage" aria-hidden="true">
-        <div class="uma404__obj"></div>
+        <canvas class="uma404__gl"></canvas>
+        <div class="uma404__flat">404</div>
     </div>
 </section>
 
@@ -174,74 +181,268 @@ body.light-theme .uma404 {
     var rec = root.closest('.t-rec');
     if (rec) { rec.style.paddingTop = '0'; rec.style.paddingBottom = '0'; }
 
-    var obj = root.querySelector('.uma404__obj');
-    var LAYERS = window.innerWidth < 640 ? 22 : 30;   // слоёв в толщине
-    var DEPTH = 0.17;                                  // толщина, в долях размера шрифта
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    function rgb(s) { var m = String(s).match(/[\d.]+/g) || [0, 0, 0]; return [+m[0], +m[1], +m[2]]; }
-    function mix(a, b, t) { return 'rgb(' + a.map(function (v, i) { return Math.round(v + (b[i] - v) * t); }).join(',') + ')'; }
-
-    // слои: передний — цвет текста, дальше к задней стенке — бока, темнеют к фону
-    function build() {
-        obj.innerHTML = '';
-        var text = rgb(getComputedStyle(root).color);
-        var bg = rgb(getComputedStyle(root).backgroundColor);
-        var light = (bg[0] + bg[1] + bg[2]) / 3 > 128;
-        // бока: на тёмном фоне — серые от светлого к тёмному, на светлом — от тёмного к среднему серому
-        var sideA = light ? mix(text, bg, 0.30) : mix(text, bg, 0.42);
-        var sideB = light ? mix(text, bg, 0.62) : mix(text, bg, 0.86);
-        var a = rgb(sideA), b = rgb(sideB);
-        for (var i = 0; i < LAYERS; i++) {
-            var el = document.createElement('span');
-            el.className = 'uma404__layer';
-            el.textContent = '404';
-            var z = (i / (LAYERS - 1) - 0.5) * DEPTH;                    // em; последний слой — передний, ось вращения посередине толщины
-            el.style.transform = 'translateZ(' + z.toFixed(4) + 'em)';
-            if (i < LAYERS - 1) el.style.color = mix(b, a, i / (LAYERS - 2));
-            else el.classList.add('is-front');
-            obj.appendChild(el);
-        }
-        // translateZ в em считается от размера шрифта слоя — толщина масштабируется вместе с цифрами
-    }
-    build();
-
-    // смена темы на сайте — перекрашиваем слои
-    if (window.MutationObserver) {
-        new MutationObserver(function () { build(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
-    }
-    var w0 = window.innerWidth;
-    window.addEventListener('resize', function () {
-        var mob = window.innerWidth < 640;
-        if (mob !== (w0 < 640)) { LAYERS = mob ? 22 : 30; build(); }
-        w0 = window.innerWidth;
-    });
-
-    // появление
     requestAnimationFrame(function () { requestAnimationFrame(function () { root.classList.add('is-in'); }); });
 
-    if (reduce) { obj.style.transform = 'rotateX(10deg) rotateY(-18deg)'; return; }
+    var stage = root.querySelector('.uma404__stage');
+    var canvas = root.querySelector('.uma404__gl');
+    var gl = canvas.getContext('webgl', { premultipliedAlpha: true, antialias: false, alpha: true });
+    if (!gl) { root.classList.add('no-gl'); return; }
 
-    // движение: медленное покачивание + наклон к курсору (на телефоне — только покачивание)
-    var mx = 0, my = 0, tx = 0, ty = 0, t0 = performance.now(), visible = true;
+    /* ---------- 1. поле расстояний цифр (считается один раз) ---------- */
+    var TW = 1024, TH = 456;          // размер текстуры поля
+    var FS = 430;                     // кегль цифр в текстуре
+    var M = 0.2 * FS;                 // диапазон кодирования расстояния, ± px
+    var INF = 1e20;
+
+    function edt1d(f, n, d, v, z) {
+        var k = 0; v[0] = 0; z[0] = -INF; z[1] = INF;
+        for (var q = 1; q < n; q++) {
+            var s2 = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]);
+            while (s2 <= z[k]) { k--; s2 = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]); }
+            k++; v[k] = q; z[k] = s2; z[k + 1] = INF;
+        }
+        k = 0;
+        for (q = 0; q < n; q++) { while (z[k + 1] < q) k++; d[q] = (q - v[k]) * (q - v[k]) + f[v[k]]; }
+    }
+    function edt(g, w, h) {                       // g: 0 там, где цель, INF — остальное; на выходе — расстояние
+        var n = Math.max(w, h), f = new Float64Array(n), d = new Float64Array(n), v = new Int32Array(n), z = new Float64Array(n + 1);
+        var x, y;
+        for (x = 0; x < w; x++) { for (y = 0; y < h; y++) f[y] = g[y * w + x]; edt1d(f, h, d, v, z); for (y = 0; y < h; y++) g[y * w + x] = d[y]; }
+        for (y = 0; y < h; y++) { for (x = 0; x < w; x++) f[x] = g[y * w + x]; edt1d(f, w, d, v, z); for (x = 0; x < w; x++) g[y * w + x] = Math.sqrt(d[x]); }
+        return g;
+    }
+    function sdf(inside, w, h) {                  // знаковое расстояние: внутри < 0
+        var N = w * h, a = new Float64Array(N), b = new Float64Array(N), out = new Float32Array(N);
+        for (var i = 0; i < N; i++) { a[i] = inside[i] ? 0 : INF; b[i] = inside[i] ? INF : 0; }
+        edt(a, w, h); edt(b, w, h);
+        for (i = 0; i < N; i++) out[i] = a[i] - b[i];
+        return out;
+    }
+    function rounded(mask, w, h, r1, r2) {        // скругляем и выпуклые, и вогнутые углы
+        var sA = sdf(mask, w, h), N = w * h, m = new Uint8Array(N), i;
+        for (i = 0; i < N; i++) m[i] = sA[i] < -r1 ? 1 : 0;
+        var s1 = sdf(m, w, h);
+        for (i = 0; i < N; i++) m[i] = (s1[i] - r1) < r2 ? 1 : 0;
+        var s2 = sdf(m, w, h);
+        for (i = 0; i < N; i++) s2[i] += r2;
+        return s2;
+    }
+
+    function blur(a, w, h, r) {                   // три прохода «коробкой» ≈ гаусс
+        var tmp = new Float32Array(a.length), x, y, i, acc, n = 2 * r + 1;
+        for (var pass = 0; pass < 3; pass++) {
+            for (y = 0; y < h; y++) {
+                var o = y * w; acc = 0;
+                for (i = -r; i <= r; i++) acc += a[o + Math.min(w - 1, Math.max(0, i))];
+                for (x = 0; x < w; x++) {
+                    tmp[o + x] = acc / n;
+                    acc += a[o + Math.min(w - 1, x + r + 1)] - a[o + Math.max(0, x - r)];
+                }
+            }
+            for (x = 0; x < w; x++) {
+                acc = 0;
+                for (i = -r; i <= r; i++) acc += tmp[Math.min(h - 1, Math.max(0, i)) * w + x];
+                for (y = 0; y < h; y++) {
+                    a[y * w + x] = acc / n;
+                    acc += tmp[Math.min(h - 1, y + r + 1) * w + x] - tmp[Math.max(0, y - r) * w + x];
+                }
+            }
+        }
+    }
+    var centers = [];                              // центры цифр в текстуре (для покачивания)
+    function buildField() {
+        var c = document.createElement('canvas'); c.width = TW; c.height = TH;
+        var x = c.getContext('2d', { willReadFrequently: true });
+        var font = '900 ' + FS + 'px Rubik, Manrope, Arial, sans-serif';
+        x.font = font;
+        var digits = ['4', '0', '4'], ws = digits.map(function (d) { return x.measureText(d).width; });
+        var gap = -0.07 * FS;                      // цифры почти касаются — при покачивании слипаются
+        var total = ws[0] + ws[1] + ws[2] + 2 * gap, px = (TW - total) / 2;
+        var fl = new Float32Array(TW * TH * 4);
+        for (var k = 0; k < 3; k++) {
+            x.clearRect(0, 0, TW, TH);
+            x.fillStyle = '#fff'; x.textBaseline = 'alphabetic'; x.font = font;
+            var base = TH / 2 + FS * 0.36;
+            x.fillText(digits[k], px, base);
+            centers.push([(px + ws[k] / 2) / TW, (base - FS * 0.36) / TH]);
+            px += ws[k] + gap;
+            var img = x.getImageData(0, 0, TW, TH).data, N = TW * TH, m = new Uint8Array(N);
+            for (var i = 0; i < N; i++) m[i] = img[i * 4 + 3] > 127 ? 1 : 0;
+            var sd = rounded(m, TW, TH, 0.045 * FS, 0.06 * FS);
+            blur(sd, TW, TH, Math.round(0.022 * FS));   // сглаживаем гребень — верх цифр круглый, без складок
+            for (i = 0; i < N; i++) fl[i * 4 + k] = Math.max(0, Math.min(1, 0.5 - sd[i] / (2 * M)));
+        }
+        for (var j = 0; j < TW * TH; j++) fl[j * 4 + 3] = 1;
+        return fl;
+    }
+
+    /* ---------- 2. шейдер ---------- */
+    var VS = 'attribute vec2 p; varying vec2 vUv; void main(){ vUv = p * 0.5 + 0.5; vUv.y = 1.0 - vUv.y; gl_Position = vec4(p, 0.0, 1.0); }';
+    var FSRC = [
+        'precision highp float;',
+        'varying vec2 vUv;',
+        'uniform sampler2D uT; uniform vec2 uTex; uniform float uM; uniform float uPx;',
+        'uniform vec2 uO0; uniform vec2 uO1; uniform vec2 uO2; uniform float uK; uniform float uW;',
+        'uniform float uTime; uniform vec2 uLight; uniform float uLightTheme; uniform vec2 uScale;',
+        'float dec(float v){ return (0.5 - v) * 2.0 * uM; }',
+        'float smin(float a, float b, float k){ float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0); return mix(b, a, h) - k * h * (1.0 - h); }',
+        'float field(vec2 uv){',
+        '  float a = dec(texture2D(uT, uv - uO0).r);',
+        '  float b = dec(texture2D(uT, uv - uO1).g);',
+        '  float c = dec(texture2D(uT, uv - uO2).b);',
+        '  return smin(smin(a, b, uK), c, uK);',
+        '}',
+        // профиль надутой трубки: ширина uW
+        'float hgt(float sd){ float t = clamp(-sd, 0.0, uW); return sqrt(max(t * (2.0 * uW - t), 0.0)); }',
+        'vec3 pal(float t){',
+        '  vec3 a = vec3(1.00, 0.36, 0.05);',       // глубокий оранжевый
+        '  vec3 b = vec3(1.00, 0.62, 0.16);',       // золотистый
+        '  vec3 c = vec3(0.98, 0.30, 0.16);',       // красно-оранжевый
+        '  float s = fract(t);',
+        '  return s < 0.33 ? mix(a, b, s / 0.33) : (s < 0.66 ? mix(b, c, (s - 0.33) / 0.33) : mix(c, a, (s - 0.66) / 0.34));',
+        '}',
+        'float box(vec3 r, vec2 c, vec2 hs, float soft){ vec2 q = abs(r.xy / max(r.z, 0.05) - c) - hs; return 1.0 - smoothstep(0.0, soft, max(q.x, q.y)); }',
+        'void main(){',
+        '  vec2 e = vec2(1.0 / uTex.x, 1.0 / uTex.y);',
+        '  vec2 uv = 0.5 + (vUv - 0.5) * uScale;',
+        '  float sd = field(uv);',
+        '  float aa = uPx * 1.2;',
+        '  float alpha = 1.0 - smoothstep(-aa, aa, sd);',
+        '  if (alpha <= 0.0) { gl_FragColor = vec4(0.0); return; }',
+        '  float h = hgt(sd);',
+        '  float hx = hgt(field(uv + vec2(e.x * 2.0, 0.0))) - hgt(field(uv - vec2(e.x * 2.0, 0.0)));',
+        '  float hy = hgt(field(uv + vec2(0.0, e.y * 2.0))) - hgt(field(uv - vec2(0.0, e.y * 2.0)));',
+        '  vec3 n = normalize(vec3(-hx / 4.0, hy / 4.0, 1.0));',
+        '  vec3 V = vec3(0.0, 0.0, 1.0);',
+        '  vec3 L = normalize(vec3(uLight, 0.9));',
+        '  float ndl = dot(n, L);',
+        '  float wrap = clamp((ndl + 0.45) / 1.45, 0.0, 1.0);',
+        '  float depth = h / uW;',                                  // 0 у кромки, 1 на гребне
+        '  float t = uTime * 0.045 + uv.x * 0.35 + (1.0 - n.z) * 0.55;',
+        '  vec3 film = pal(t);',
+        '  vec3 deep = vec3(0.55, 0.11, 0.01);',
+        '  vec3 base = mix(deep, film, 0.55 + 0.45 * depth);',
+        '  vec3 col = base * (0.28 + 0.85 * wrap);',
+        // подповерхностное свечение в тонких местах
+        '  col += vec3(1.0, 0.35, 0.05) * pow(1.0 - depth, 3.0) * 0.18;',
+        // блики: отражение «софтбоксов»
+        '  vec3 R = reflect(-V, n);',
+        '  float s1 = box(R, vec2(-0.42, 0.55) + uLight * 0.25, vec2(0.10, 0.30), 0.10);',
+        '  float s2 = box(R, vec2(0.48, 0.30) + uLight * 0.15, vec2(0.05, 0.22), 0.08);',
+        '  float s3 = box(R, vec2(0.0, 0.95), vec2(0.9, 0.05), 0.12);',
+        '  float spec = s1 * 0.95 + s2 * 0.55 + s3 * 0.35;',
+        '  float ph = pow(max(dot(R, normalize(L + V)), 0.0), 90.0) * 0.8;',
+        '  float fres = 0.04 + 0.96 * pow(1.0 - max(n.z, 0.0), 4.0);',
+        '  vec3 irid = pal(t + 0.35);',
+        '  col = mix(col, irid * 0.9, fres * 0.55);',
+        '  col += vec3(1.0, 0.93, 0.85) * (spec + ph) * (0.35 + 0.65 * depth);',
+        '  col = col / (1.0 + col * 0.18);',                        // мягкий тон-маппинг
+        '  gl_FragColor = vec4(col * alpha, alpha);',
+        '}'
+    ].join('\n');
+
+    function sh(type, src) {
+        var o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o);
+        if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) { console.warn('UMA 404:', gl.getShaderInfoLog(o)); return null; }
+        return o;
+    }
+    var vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FSRC);
+    if (!vs || !fs) { root.classList.add('no-gl'); return; }
+    var pr = gl.createProgram(); gl.attachShader(pr, vs); gl.attachShader(pr, fs); gl.linkProgram(pr);
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { root.classList.add('no-gl'); return; }
+    gl.useProgram(pr);
+    var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    var loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    var U = {}; ['uT', 'uTex', 'uM', 'uPx', 'uO0', 'uO1', 'uO2', 'uK', 'uW', 'uTime', 'uLight', 'uLightTheme', 'uScale'].forEach(function (n) { U[n] = gl.getUniformLocation(pr, n); });
+    gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+    var ready = false;
+    var f32 = new Float32Array(1), u32 = new Uint32Array(f32.buffer);
+    function toHalf(v) {
+        f32[0] = v; var x = u32[0];
+        var sgn = (x >> 16) & 0x8000, m = (x >> 12) & 0x07ff, e = (x >> 23) & 0xff;
+        if (e < 103) return sgn;
+        if (e > 142) return sgn | 0x7c00;
+        if (e < 113) { m |= 0x0800; return sgn | ((m >> (114 - e)) + ((m >> (113 - e)) & 1)); }
+        sgn |= ((e - 112) << 10) | (m >> 1); sgn += m & 1; return sgn;
+    }
+    function upload() {
+        var fl = buildField();
+        var tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
+        // половинная точность (16 бит) — без ступенек на глянце; если не поддерживается — 8 бит
+        var hf = gl.getExtension('OES_texture_half_float'), hfl = gl.getExtension('OES_texture_half_float_linear');
+        if (hf && hfl) {
+            var h16 = new Uint16Array(fl.length);
+            for (var i = 0; i < fl.length; i++) h16[i] = toHalf(fl[i]);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, TW, TH, 0, gl.RGBA, hf.HALF_FLOAT_OES, h16);
+            if (gl.getError()) hf = null;
+        }
+        if (!(hf && hfl)) {
+            var b8 = new Uint8Array(fl.length);
+            for (var j = 0; j < fl.length; j++) b8[j] = Math.round(fl[j] * 255);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, TW, TH, 0, gl.RGBA, gl.UNSIGNED_BYTE, b8);
+        }
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.uniform1i(U.uT, 0);
+        gl.uniform2f(U.uTex, TW, TH);
+        gl.uniform1f(U.uM, M);
+        gl.uniform1f(U.uK, 0.075 * FS);
+        gl.uniform1f(U.uW, 0.11 * FS);
+        ready = true;
+    }
+    // шрифт должен загрузиться до того, как цифры нарисуются в поле
+    var fontReady = document.fonts && document.fonts.load ? document.fonts.load('900 100px Rubik') : Promise.resolve();
+    Promise.race([fontReady, new Promise(function (r) { setTimeout(r, 2500); })]).then(function () { setTimeout(upload, 0); });
+
+    /* ---------- 3. размер и движение ---------- */
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    function resize() {
+        var r = stage.getBoundingClientRect();
+        canvas.width = Math.max(2, Math.round(r.width * dpr));
+        canvas.height = Math.max(2, Math.round(r.height * dpr));
+        gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    var mx = 0, my = 0, tx = 0, ty = 0, visible = true, t0 = performance.now();
     window.addEventListener('pointermove', function (e) {
         if (e.pointerType !== 'mouse') return;
         mx = (e.clientX / window.innerWidth) * 2 - 1;
         my = (e.clientY / window.innerHeight) * 2 - 1;
     }, { passive: true });
-    if ('IntersectionObserver' in window) {
-        new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(root);
-    }
-    (function frame(now) {
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(root);
+
+    function frame(now) {
         requestAnimationFrame(frame);
-        if (!visible) return;
-        var t = (now - t0) / 1000;
-        tx += (mx - tx) * 0.05;
-        ty += (my - ty) * 0.05;
-        var ry = Math.sin(t * 0.45) * 18 + tx * 14;          // поворот вокруг вертикали
-        var rx = 12 + Math.sin(t * 0.31 + 1) * 6 - ty * 8;    // наклон: видна верхняя грань
-        var rz = Math.sin(t * 0.23) * 1.5;
-        obj.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) rotateZ(' + rz.toFixed(2) + 'deg)';
-    })(t0);
+        if (!visible || !ready) return;
+        var t = reduce ? 4 : (now - t0) / 1000;
+        tx += (mx - tx) * 0.06; ty += (my - ty) * 0.06;
+        // цифры плавают каждая по-своему; соседние то слипаются, то отходят
+        var a = reduce ? 0 : 1, s = 0.012 * a;
+        gl.uniform2f(U.uO0, Math.sin(t * 0.9) * s * 0.9 - 0.004 * a, Math.sin(t * 1.1 + 0.6) * s * 1.6);
+        gl.uniform2f(U.uO1, Math.sin(t * 0.7 + 2.0) * s * 0.5, Math.sin(t * 0.95 + 2.4) * s * 1.9);
+        gl.uniform2f(U.uO2, Math.sin(t * 0.8 + 4.1) * s * 0.9 + 0.004 * a, Math.sin(t * 1.05 + 4.4) * s * 1.6);
+        gl.uniform1f(U.uTime, t);
+        // на телефоне цифры крупнее (ширина экрана), на десктопе — по ширине сцены
+        var zoom = window.innerWidth < 640 ? 1.32 : 1.0;
+        var k = TW / (canvas.width * zoom);          // пикселей поля на пиксель экрана
+        gl.uniform2f(U.uScale, 1 / zoom, canvas.height * k / TH);
+        gl.uniform1f(U.uPx, k);
+        // свет ездит по кругу и чуть следует за курсором — блики переливаются
+        gl.uniform2f(U.uLight, -0.45 + Math.sin(t * 0.35) * 0.25 + tx * 0.25, 0.55 + Math.cos(t * 0.27) * 0.15 - ty * 0.2);
+        gl.uniform1f(U.uLightTheme, document.body.classList.contains('light-theme') ? 1 : 0);
+        gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        // вся фигура слегка наклоняется
+        var ry = (reduce ? 0 : Math.sin(t * 0.4) * 6) + tx * 9, rx = (reduce ? 0 : Math.sin(t * 0.33 + 1) * 3) - ty * 6;
+        canvas.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+    }
+    requestAnimationFrame(frame);
 })();
 </script>
