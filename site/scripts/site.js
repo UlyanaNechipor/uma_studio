@@ -103,9 +103,10 @@
       [].slice.call(n.childNodes).forEach(function (c) {
         if (c.nodeType === 3) {
           var frag = document.createDocumentFragment();
-          c.nodeValue.split(/(\s+)/).forEach(function (w) {
+          // делим только по обычным пробелам: неразрывные (после предлогов) держат слова вместе
+          c.nodeValue.split(/([ \t\n\r]+)/).forEach(function (w) {
             if (!w) return;
-            if (/^\s+$/.test(w)) frag.appendChild(document.createTextNode(w));
+            if (/^[ \t\n\r]+$/.test(w)) frag.appendChild(document.createTextNode(w));
             else { var s = document.createElement('span'); s.textContent = w; words.push(s); frag.appendChild(s); }
           });
           c.replaceWith(frag);
@@ -121,9 +122,29 @@
     el.innerHTML = rows.map(function (r) { return '<span class="fl-line">' + r.join(' ') + '</span>'; }).join('');
     return $$('.fl-line', el);
   }
+  // телефон: если строка заголовка подходит к краю экрана ближе 16 px — трекинг плотнее ровно настолько,
+  // чтобы буквы встали на поле (не плотнее −0.04em)
+  function fitEdges(it, fs) {
+    it.el.style.letterSpacing = '';
+    if (innerWidth >= 480) return;
+    var vw = document.documentElement.clientWidth, ls = parseFloat(getComputedStyle(it.el).letterSpacing) || 0;
+    for (var t = 0; t < 3; t++) {
+      var over = 0, per = 0;
+      it.lines.forEach(function (l) {
+        var b = l.getBoundingClientRect(), o = b.right - (vw - 16), n = l.textContent.length;
+        if (o > over && n > 1) { over = o; per = o / (n - 1); }
+      });
+      if (over <= 0.5) return;
+      ls = Math.max(ls - per - 0.01, -0.04 * fs);
+      it.el.style.letterSpacing = ls + 'px';
+      it.lines = split(it.el);
+      if (ls <= -0.04 * fs) return;
+    }
+  }
   function build(it) {
     var fs = parseFloat(getComputedStyle(it.el).fontSize) || 16;
     it.lines = split(it.el);
+    fitEdges(it, fs);
     it.f = fs * FEATHER;
     it.w = it.lines.map(function (l) { return l.getBoundingClientRect().width; });
     it.total = it.w.reduce(function (a, b) { return a + b; }, 0) || 1;
@@ -437,16 +458,19 @@
   /* ---------------- «Избранные проекты» ---------------- */
   function projects() {
     var list = $('.projects__list'); if (!list) return;
-    var rows = $$('.prow', list), desk = innerWidth >= 960;
+    // обе раскладки готовятся сразу, какая из них работает — решает ширина окна (CSS),
+    // поэтому после поворота телефона или смены ширины окна всё продолжает работать
+    var rows = $$('.prow', list), desk = function () { return innerWidth >= 960; };
     rows.forEach(function (r) { ticker($('.prow__year', r)); });
-    if (desk) {
-      // строки целиком (линия + текст) въезжают слева, по очереди сверху вниз
+    {
+      // десктоп: строки целиком (линия + текст) въезжают слева, по очереди сверху вниз
       rows.forEach(function (r, i) { r.classList.add('prow--rv'); r.style.setProperty('--row-d', (0.14 + i * 0.22).toFixed(2) + 's'); });
-      if (mouse) rows.forEach(function (r) { r.addEventListener('mouseenter', function () { roll($('.prow__year', r)); }); });
+      if (mouse) rows.forEach(function (r) { r.addEventListener('mouseenter', function () { if (desk()) roll($('.prow__year', r)); }); });
       watchTop(list, function () { list.classList.add('is-in'); });
-      if (mouse && innerWidth >= 1024) preview(rows);
-    } else {
-      // карточки: линия прочерчивается, следом по очереди название, год, тип, обложки
+      if (mouse) preview(rows);
+    }
+    {
+      // телефон: карточки — линия прочерчивается, следом по очереди название, год, тип, обложки
       rows.forEach(function (r) {
         r.classList.add('prow--card');
         var parts = [$('.prow__name', r), $('.prow__year', r), $('.prow__type', r)].concat($$('.prow__pics img', r));
@@ -460,6 +484,7 @@
       function focus() {
         tk = false;
         var c0 = innerHeight * 0.45, c1 = innerHeight * 0.55, hit = null;
+        if (desk()) return;
         rows.some(function (r) { var b = r.getBoundingClientRect(); if (b.top < c1 && b.bottom > c0) { hit = r; return true; } });
         if (hit !== cur) { cur = hit; if (hit && hit.classList.contains('is-in')) roll($('.prow__year', hit)); }
       }
@@ -508,6 +533,7 @@
     function check() {
       pend = false;
       var hit = -1;
+      if (innerWidth < 960) { if (open) hide(); return; }
       rows.forEach(function (r, i) { var b = r.getBoundingClientRect(); if (ty >= b.top && ty < b.bottom && tx >= b.left - 16 && tx <= b.right + 16) hit = i; });
       if (hit >= 0) show(hit); else if (open) hide();
     }
@@ -538,6 +564,9 @@
 
   /* ---------------- запуск ---------------- */
   function init() {
+    // после любого обновления — с самого верха страницы (браузер не восстанавливает прокрутку)
+    scrollTo(0, 0); addEventListener('load', function () { scrollTo(0, 0); });
+    addEventListener('pageshow', function (e) { if (e.persisted) scrollTo(0, 0); });
     theme(); trail(); gallery(); aside(); projects(); labZoom(); reveal();
     var go = function () { fillInit(); preloader(); };
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(go, go); else go();

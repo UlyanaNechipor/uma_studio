@@ -12,7 +12,20 @@ const site = j('content/site.json');
 const home = j('content/home.json');
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const lines = (a) => (Array.isArray(a) ? a : [a]).map(esc).join('<br>');
+// типографика: короткие предлоги, союзы и местоимения не остаются в конце строки (неразрывный пробел
+// после них), слова через дефис не рвутся. Применяется ко всем текстам при сборке — без скрипта на странице.
+const GLUE = ['в','во','с','со','из','изо','к','ко','о','об','обо','от','ото','до','по','под','подо','про','на','за','над','надо',
+  'через','сквозь','у','при','пред','предо','перед','передо','а','и','но','да','или','не','ни','бы','же','вы','мы','ты','он','она',
+  'они','оно','я','то','все','что','кто','мой','свой','для','без','безо','ради','около','возле','вокруг','после','кроме','среди',
+  'между','как','чем','ли','это','их','его','её','ее','наш','ваш','&amp;'];
+const GLUE_RE = new RegExp('(^|[\\s(«"„>]|&nbsp;)(' + GLUE.join('|') + ') ', 'giu');
+const typo = (s) => {
+  let t = esc(s), prev;
+  do { prev = t; t = t.replace(GLUE_RE, '$1$2&nbsp;'); } while (t !== prev);       // цепочки вроде «и в»
+  t = t.replace(/([\p{L}\d]+(?:-[\p{L}\d]+)+)/gu, '<span class="nw">$1</span>');   // интернет-магазин, Санкт-Петербург
+  return t;
+};
+const lines = (a) => (Array.isArray(a) ? a : [a]).map(typo).join('<br>');
 const href = (h) => esc(String(h).replace('{email}', site.contacts.email));
 const img = (src, alt = '', cls = '', eager = false) =>
   `<img class="${cls}" src="${esc(src)}" alt="${esc(alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
@@ -37,7 +50,7 @@ const header = `
 const h = home;
 const hero = `
 <section class="hero grid" aria-label="О студии">
-  <p class="hero__lead t-small" data-intro>${esc(h.hero.lead)}</p>
+  <p class="hero__lead t-small" data-intro>${typo(h.hero.lead)}</p>
   <h1 class="hero__title t-h1" data-intro data-fill="load">${lines(h.hero.title)}</h1>
   <div class="hero__gallery hg" data-gallery aria-roledescription="галерея" aria-label="Проекты студии">
     <div class="hg__frame"><div class="hg__strip">
@@ -53,13 +66,13 @@ const hero = `
 
 const projects = `
 <section class="projects grid" id="${h.projects.anchor}">
-  <p class="projects__label t-small t-grey">${esc(h.projects.label)}</p>
-  <h2 class="projects__title t-h2" data-fill>${esc(h.projects.title)}</h2>
+  <p class="projects__label t-small t-grey">${typo(h.projects.label)}</p>
+  <h2 class="projects__title t-h2" data-fill>${typo(h.projects.title)}</h2>
   <ul class="projects__list">
     ${h.projects.items.map((p) => `<li class="prow">
       <a class="prow__link" href="/projects/${esc(p.slug)}/" data-cover="${esc(p.cover)}">
         <span class="prow__name t-name">${esc(p.name)}</span>
-        <span class="prow__type t-small t-grey">${esc(p.type)}</span>
+        <span class="prow__type t-small t-grey">${typo(p.type)}</span>
         <span class="prow__year t-small t-grey">${esc(p.year)}</span>
         <span class="prow__pics">${p.mobile.map((m) => img(m, '')).join('')}</span>
       </a>
@@ -70,7 +83,7 @@ const projects = `
 const lab = `
 <section class="lab grid" aria-labelledby="lab-title">
   <h2 class="lab__title t-h2" id="lab-title" data-fill>${lines(h.lab.title)}</h2>
-  <p class="lab__lead t-small t-grey">${esc(h.lab.lead)}</p>
+  <p class="lab__lead t-small t-grey">${typo(h.lab.lead)}</p>
   <div class="lab__grid">
     ${h.lab.images.map((x) => `<figure class="lab__it lab__it--${x.d} lab__it--m-${x.m}">${img(x.src, '')}</figure>`).join('\n    ')}
   </div>
@@ -78,18 +91,18 @@ const lab = `
 
 const about = `
 <section class="about grid" id="${h.about.anchor}">
-  <p class="about__label t-small t-grey">${esc(h.about.label)}</p>
+  <p class="about__label t-small t-grey">${typo(h.about.label)}</p>
   <h2 class="about__title t-h2" data-fill>${lines(h.about.title)}</h2>
   <div class="about__photos">${h.about.photos.map((p) => img(p, '')).join('')}</div>
-  <p class="about__lead t-small t-grey">${esc(h.about.lead)}</p>
+  <p class="about__lead t-small t-grey">${typo(h.about.lead)}</p>
   <div class="about__act">${btn(h.about.cta)}<a class="t-small mail" href="mailto:${esc(site.contacts.email)}">${esc(site.contacts.email)}</a></div>
 </section>`;
 
 const services = `
 <section class="services grid" aria-label="Услуги">
   ${h.services.items.map((s) => `<div class="svc">
-    <h3 class="svc__title t-small">${esc(s.title)}</h3>
-    <p class="svc__text t-small t-grey">${s.text.map(esc).join('<br>')}</p>
+    <h3 class="svc__title t-small">${typo(s.title)}</h3>
+    <p class="svc__text t-small t-grey">${s.text.map(typo).join('<br>')}</p>
   </div>`).join('\n  ')}
 </section>`;
 
@@ -110,7 +123,7 @@ const footer = `
     ${c.privacy ? `<a href="${esc(c.privacy)}">Политика конфиденциальности</a>` : '<span>Политика конфиденциальности</span>'}
   </nav>
   <div class="ft__col"><h2 class="ft__h">Контакты</h2>
-    <span>${esc(c.city)}</span>
+    <span>${typo(c.city)}</span>
     <a href="mailto:${esc(c.email)}">Почта</a>
     ${c.telegram ? `<a href="${esc(c.telegram)}">Телеграм</a>` : '<span>Телеграм</span>'}
     <a href="tel:${esc(c.phone.replace(/[^\d+]/g, ''))}">${esc(c.phone)}</a>
@@ -129,7 +142,7 @@ ${site.seo.description ? `<meta name="description" content="${esc(site.seo.descr
 <link rel="stylesheet" href="styles/base.css">
 <link rel="stylesheet" href="styles/home.css">
 <link rel="stylesheet" href="styles/motion.css">
-<script>try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js')</script>
+<script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js')</script>
 </head>
 <body>
 <div class="pl" id="preloader" aria-hidden="true">

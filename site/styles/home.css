@@ -1,6 +1,12 @@
 /* Working Title · главная. Отступы сняты с Тильды (content/layout.json):
    мобилка — макет 320, десктоп — макет 1200, всё в calc(N * var(--u)). */
 
+/* ===== Расстояние между блоками: 80 на мобилке, 180 на десктопе (в пикселях макета) =====
+   Блоки сами не имеют отступов сверху и снизу — расстояние задаёт только main, поэтому оно везде одинаковое. */
+main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bottom: var(--block-gap); }
+:root { --block-gap: calc(80 * var(--u)); }
+@media (min-width: 960px) { :root { --block-gap: calc(180 * var(--u)); } }
+
 /* ===== 1. Первый экран: 496 / 947 ===== */
 .hero {
   padding-top: calc(96 * var(--u));
@@ -24,7 +30,7 @@
 }
 
 /* ===== 2. Избранные проекты: 1146 / 558 ===== */
-.projects { padding-top: calc(80 * var(--u)); }
+
 .projects__label, .projects__title, .projects__list { grid-column: 1 / -1; }
 .projects__title { margin-top: calc(16 * var(--u)); }
 .projects__list { margin-top: calc(32 * var(--u)); }
@@ -42,7 +48,6 @@
   height: calc(79 * var(--u)); margin-top: calc(18 * var(--u));
 }
 @media (min-width: 960px) {
-  .projects { padding-top: calc(180 * var(--u)); }
   .projects__label, .projects__title { grid-column: 3 / 5; }
   .projects__title { margin-top: calc(24 * var(--u)); }
   .projects__list { margin-top: calc(29 * var(--u)); }
@@ -62,7 +67,7 @@
 }
 
 /* ===== 3. Эксперименты: 1172 / 889 ===== */
-.lab { padding-top: calc(80 * var(--u)); text-align: center; }
+.lab { text-align: center; }
 .lab__title, .lab__lead, .lab__grid { grid-column: 1 / -1; }
 .lab__lead { margin: calc(24 * var(--u)) auto 0; max-width: calc(254 * var(--u)); }
 .lab__grid {
@@ -77,7 +82,6 @@
 .lab__it--a1 { order: 1; } .lab__it--d2 { order: 2; } .lab__it--a2 { order: 3; }
 .lab__it--c1 { order: 4; } .lab__it--b  { order: 5; } .lab__it--c2 { order: 6; } .lab__it--d1 { order: 7; }
 @media (min-width: 960px) {
-  .lab { padding-top: calc(164 * var(--u)); }
   .lab__lead { margin-top: calc(34 * var(--u)); max-width: none; }
   .lab__grid { margin-top: calc(31 * var(--u)); grid-template-rows: calc(180 * var(--u)) calc(362 * var(--u)); row-gap: calc(16 * var(--u)); }
   .lab__it { order: 0 !important; grid-column: auto; }
@@ -89,7 +93,6 @@
 
 /* ===== 4. О нас: 674 / 717 ===== */
 .about {
-  padding-block: calc(80 * var(--u)) calc(88 * var(--u));
   grid-template-rows: calc(136 * var(--u)) calc(244 * var(--u)) calc(62 * var(--u)) auto;
 }
 .about__label { display: none; }
@@ -100,7 +103,6 @@
 .about__act .btn { width: 100%; }
 @media (min-width: 960px) {
   .about {
-    padding-block: calc(180 * var(--u)) calc(172 * var(--u));
     grid-template-rows: calc(35 * var(--u)) calc(216 * var(--u)) calc(70 * var(--u)) auto;   /* низ кнопки = низ фото (537) */
   }
   .about__label { display: block; grid-column: 1 / 3; grid-row: 1; }
@@ -112,17 +114,16 @@
 }
 
 /* ===== 5. Услуги: 568 / 300 ===== */
-.services { padding-block: calc(60 * var(--u)) calc(44 * var(--u)); }
-.svc { grid-column: 1 / -1; min-height: calc(116 * var(--u)); }
+.services { row-gap: calc(36 * var(--u)); }
+.svc { grid-column: 1 / -1; }
 .svc__title { font-weight: var(--w-text); color: var(--txt-soft); }
 .svc__text { margin-top: calc(4 * var(--u)); }
 @media (min-width: 960px) {
   .services {
-    padding-block: 0; height: calc(300 * var(--u));
     grid-template-columns: calc(264 * var(--u)) calc(309 * var(--u)) calc(287 * var(--u)) calc(276 * var(--u));
     column-gap: 0;
   }
-  .svc { grid-column: auto; min-height: 0; }
+  .svc { grid-column: auto; }
   /* ширины текстов как в Тильде — от них зависят переносы строк */
   .svc:nth-child(1) { max-width: calc(186 * var(--u)); } .svc:nth-child(2) { max-width: calc(231 * var(--u)); }
   .svc:nth-child(3) { max-width: calc(209 * var(--u)); } .svc:nth-child(4) { max-width: calc(194 * var(--u)); }
@@ -130,7 +131,7 @@
 }
 
 /* ===== 6. Есть идея?: 441 / 320 ===== */
-.cta { padding-bottom: calc(87 * var(--u)); }
+
 .cta__img { grid-column: 1 / -1; height: calc(195 * var(--u)); }
 .cta__title { grid-column: 1 / -1; margin-top: calc(16 * var(--u)); }
 .cta__act { grid-column: 1 / -1; margin-top: calc(24 * var(--u)); display: flex; flex-wrap: wrap; gap: calc(8 * var(--u)); align-items: center; }
@@ -138,7 +139,6 @@
 .cta__act .mail { flex-basis: 100%; margin-top: calc(8 * var(--u)); }
 @media (min-width: 960px) {
   .cta {
-    padding-bottom: calc(152 * var(--u));
     grid-template-columns: calc(267 * var(--u)) 1fr; column-gap: calc(16 * var(--u));
     grid-template-rows: calc(124 * var(--u)) calc(36 * var(--u));   /* кнопки встают низом ровно по низу картинки (160) */
   }

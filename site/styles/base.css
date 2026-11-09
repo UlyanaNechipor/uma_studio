@@ -28,14 +28,17 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .t-small { font-size: calc(var(--t-small) * var(--u)); line-height: var(--t-small-lh); letter-spacing: var(--t-small-ls); }
 .t-grey { color: var(--grey); font-weight: 400; }   /* серые подписи в обеих темах — 400 */
 
+/* слова через дефис не рвутся (класс ставит сборка) */
+.nw { white-space: nowrap; }
+
 /* ---------- сетка ----------
    мобилка: поля 16, две колонки по 140, шаг 8 (16+140+8+140+16 = 320)
    десктоп: поля 32, четыре колонки 272/264/276/276, шаг 16; правая половина с 600 */
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, calc(140 * var(--u)));
-  column-gap: calc(8 * var(--u));
-  padding-inline: calc(16 * var(--u));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 8px;
+  padding-inline: 16px;   /* поля мобилки — ровно 16 px на любой ширине */
 }
 @media (min-width: 960px) {
   .grid {
@@ -62,7 +65,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .hd {
   position: fixed; inset: 0 0 auto; z-index: 10;
   display: flex; align-items: center; gap: calc(12 * var(--u));
-  height: calc(48 * var(--u)); padding-inline: calc(16 * var(--u));
+  height: calc(48 * var(--u)); padding-inline: 16px;
   background: var(--bg); border-bottom: 1px solid var(--line);
   font-size: calc(10 * var(--u)); transition: background-color .5s var(--m-out);
 }
