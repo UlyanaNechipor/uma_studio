@@ -40,7 +40,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   column-gap: 8px;
   padding-inline: 16px;   /* поля мобилки — ровно 16 px на любой ширине */
 }
-@media (min-width: 960px) {
+@media (min-width: 768px) {
   .grid {
     grid-template-columns: calc(272 * var(--u)) calc(264 * var(--u)) calc(276 * var(--u)) calc(276 * var(--u));
     column-gap: calc(16 * var(--u));
@@ -52,7 +52,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* ---------- кнопки ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: calc(8 * var(--u));
-  height: calc(36 * var(--u)); padding-inline: calc(12 * var(--u)); border-radius: 2px;
+  /* ширина — по содержимому с одинаковыми полями слева и справа (не меньше 127 макета), высота не меньше 36 px */
+  height: max(36px, calc(36 * var(--u))); min-width: calc(127 * var(--u)); padding-inline: max(14px, calc(16 * var(--u))); border-radius: 2px;
   font-size: max(var(--min-small), calc(12 * var(--u))); font-weight: 500; letter-spacing: .45px; white-space: nowrap;
   transition: background-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out);
 }
@@ -66,7 +67,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .hd {
   position: fixed; inset: 0 0 auto; z-index: 10;
   display: flex; align-items: center; gap: calc(12 * var(--u));
-  height: calc(48 * var(--u)); padding-inline: 16px;
+  height: max(44px, calc(48 * var(--u))); padding-inline: 16px;
   background: var(--bg); border-bottom: 1px solid var(--line);
   font-size: max(var(--min-nav), calc(10 * var(--u))); transition: background-color .5s var(--m-out);
 }
@@ -79,11 +80,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   display: grid; place-items: center; width: calc(20 * var(--u)); height: calc(20 * var(--u));
   border: 1px solid var(--line); border-radius: calc(4 * var(--u)); color: var(--grey);
 }
-@media (min-width: 960px) {
+@media (min-width: 768px) {
   .hd { display: grid; grid-template-columns: calc(568 * var(--u)) calc(190 * var(--u)) calc(186 * var(--u)) 1fr auto;
         gap: 0; padding-inline: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2)); font-size: max(var(--min-nav), calc(12 * var(--u))); }
   .hd__nav { display: contents; }
-  .hd__theme { width: calc(24 * var(--u)); height: calc(24 * var(--u)); }
+  .hd__theme { width: max(24px, calc(24 * var(--u))); height: max(24px, calc(24 * var(--u))); }
 }
 
 /* ---------- футер ---------- */
@@ -100,7 +101,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .ft__col a:hover { color: var(--txt); }
 .ft__h { font: inherit; color: var(--txt); }
 .ft__made { grid-column: 1 / -1; grid-row: 3; }
-@media (min-width: 960px) {
+@media (min-width: 768px) {
   .ft { grid-template-rows: auto auto; padding-block: calc(36 * var(--u)) calc(32 * var(--u)); }
   .ft__logo { grid-column: 1 / 3; grid-row: 1; font-size: calc(37.5 * var(--u)); }
   .ft__made { grid-column: 1 / 3; grid-row: 2; align-self: end; }

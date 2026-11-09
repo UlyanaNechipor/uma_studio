@@ -5,20 +5,21 @@
    Блоки сами не имеют отступов сверху и снизу — расстояние задаёт только main, поэтому оно везде одинаковое. */
 main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bottom: var(--block-gap); }
 :root { --block-gap: calc(80 * var(--u)); }
-@media (min-width: 960px) { :root { --block-gap: calc(180 * var(--u)); } }
+@media (min-width: 768px) { :root { --block-gap: calc(180 * var(--u)); } }
 
 /* ===== 1. Первый экран: 496 / 947 ===== */
 .hero {
   padding-top: calc(96 * var(--u));
-  grid-template-rows: calc(112 * var(--u)) calc(88 * var(--u)) calc(200 * var(--u));
+  grid-template-rows: minmax(calc(112 * var(--u)), auto) minmax(calc(88 * var(--u)), auto) calc(200 * var(--u));   /* ряды с текстом растут, если текст крупнее макета */
 }
-.hero__lead { grid-column: 1 / -1; grid-row: 1; color: var(--txt-soft); }
+.hero__lead { grid-column: 1 / -1; grid-row: 1; color: var(--txt-soft); padding-bottom: calc(24 * var(--u)); }
+.hero__title, .about__title, .about__lead, .about__label { padding-bottom: calc(24 * var(--u)); }
 .hero__title { grid-column: 1 / -1; grid-row: 2; }
 .hero__gallery { grid-column: 1 / -1; grid-row: 3; position: relative; }
 .hero__aside { display: none; }
-@media (min-width: 960px) {
-  .hero { padding-top: calc(120 * var(--u)); grid-template-rows: calc(147 * var(--u)) calc(200 * var(--u)) calc(480 * var(--u)); }
-  .hero__lead { grid-column: 3 / 5; max-width: calc(290 * var(--u)); }
+@media (min-width: 768px) {
+  .hero { padding-top: calc(120 * var(--u)); grid-template-rows: minmax(calc(147 * var(--u)), auto) minmax(calc(200 * var(--u)), auto) calc(480 * var(--u)); }
+  .hero__lead { grid-column: 3 / 5; max-width: max(calc(290 * var(--u)), 15rem); }
   /* правая картинка начинается на линии пункта «О нас» в шапке (790) и идёт до правого поля (1168);
      галерея — от левого поля до 782, шаг между ними 8 */
   .hero__gallery { grid-column: 1 / -1; width: calc(750 * var(--u)); }
@@ -47,11 +48,11 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
   grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: calc(8 * var(--u));
   height: calc(79 * var(--u)); margin-top: calc(18 * var(--u));
 }
-@media (min-width: 960px) {
+@media (min-width: 768px) {
   .projects__label, .projects__title { grid-column: 3 / 5; }
   .projects__title { margin-top: calc(24 * var(--u)); }
   .projects__list { margin-top: calc(29 * var(--u)); }
-  .prow, .prow:last-child { height: calc(53 * var(--u)); }
+  .prow, .prow:last-child { height: max(44px, calc(53 * var(--u))); }
   .prow:last-child { border-bottom: 1px solid var(--line); }
   .prow__link {
     grid-template-columns: calc(568 * var(--u)) 1fr auto; column-gap: 0;
@@ -81,7 +82,7 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 /* порядок на мобилке как в Тильде */
 .lab__it--a1 { order: 1; } .lab__it--d2 { order: 2; } .lab__it--a2 { order: 3; }
 .lab__it--c1 { order: 4; } .lab__it--b  { order: 5; } .lab__it--c2 { order: 6; } .lab__it--d1 { order: 7; }
-@media (min-width: 960px) {
+@media (min-width: 768px) {
   .lab__lead { margin-top: calc(34 * var(--u)); max-width: none; }
   .lab__grid { margin-top: calc(31 * var(--u)); grid-template-rows: calc(180 * var(--u)) calc(362 * var(--u)); row-gap: calc(16 * var(--u)); }
   .lab__it { order: 0 !important; grid-column: auto; }
@@ -93,7 +94,7 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 
 /* ===== 4. О нас: 674 / 717 ===== */
 .about {
-  grid-template-rows: calc(136 * var(--u)) calc(244 * var(--u)) calc(62 * var(--u)) auto;
+  grid-template-rows: minmax(calc(136 * var(--u)), auto) calc(244 * var(--u)) minmax(calc(62 * var(--u)), auto) auto;
 }
 .about__label { display: none; }
 .about__title { grid-column: 1 / -1; grid-row: 1; }
@@ -101,15 +102,15 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 .about__lead { grid-column: 1 / -1; grid-row: 3; }
 .about__act { grid-column: 1 / -1; grid-row: 4; display: flex; flex-direction: column; gap: calc(9 * var(--u)); }
 .about__act .btn { width: 100%; }
-@media (min-width: 960px) {
+@media (min-width: 768px) {
   .about {
-    grid-template-rows: calc(35 * var(--u)) calc(216 * var(--u)) calc(70 * var(--u)) auto;   /* низ кнопки = низ фото (537) */
+    grid-template-rows: minmax(calc(35 * var(--u)), auto) minmax(calc(216 * var(--u)), auto) minmax(calc(70 * var(--u)), auto) auto;   /* низ кнопки = низ фото (537) */
   }
   .about__label { display: block; grid-column: 1 / 3; grid-row: 1; }
   .about__title { grid-column: 1 / 3; grid-row: 2; max-width: calc(471 * var(--u)); }
   .about__lead { grid-column: 1 / 3; grid-row: 3; max-width: calc(421 * var(--u)); }
   .about__act { grid-column: 1 / 3; grid-row: 4; flex-direction: row; align-items: center; gap: calc(16 * var(--u)); }
-  .about__act .btn { width: calc(127 * var(--u)); }
+  .about__act .btn { width: auto; }
   .about__photos { grid-column: 3 / 5; grid-row: 1 / 5; height: calc(357 * var(--u)); column-gap: calc(16 * var(--u)); }
 }
 
@@ -118,10 +119,8 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 .svc { grid-column: 1 / -1; }
 .svc__title { font-weight: var(--w-text); color: var(--txt-soft); }
 .svc__text { margin-top: calc(4 * var(--u)); }
-@media (min-width: 960px) {
+@media (min-width: 768px) {
   .services {
-    grid-template-columns: calc(264 * var(--u)) calc(309 * var(--u)) calc(287 * var(--u)) calc(276 * var(--u));
-    column-gap: 0;
   }
   .svc { grid-column: auto; }
   /* ширины текстов как в Тильде — от них зависят переносы строк */
@@ -135,17 +134,17 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 .cta__img { grid-column: 1 / -1; height: calc(195 * var(--u)); }
 .cta__title { grid-column: 1 / -1; margin-top: calc(16 * var(--u)); }
 .cta__act { grid-column: 1 / -1; margin-top: calc(24 * var(--u)); display: flex; flex-wrap: wrap; gap: calc(8 * var(--u)); align-items: center; }
-.cta__act .btn--light { width: calc(140 * var(--u)); } .cta__act .btn--grey { width: calc(94 * var(--u)); }   /* как в Тильде: 140 и 94 */
+.cta__act .btn--light { min-width: calc(140 * var(--u)); } .cta__act .btn--grey { min-width: calc(94 * var(--u)); }   /* как в Тильде: 140 и 94 */
 .cta__act .mail { flex-basis: 100%; margin-top: calc(8 * var(--u)); }
-@media (min-width: 960px) {
+@media (min-width: 768px) {
   .cta {
     grid-template-columns: calc(267 * var(--u)) 1fr; column-gap: calc(16 * var(--u));
-    grid-template-rows: calc(124 * var(--u)) calc(36 * var(--u));   /* кнопки встают низом ровно по низу картинки (160) */
+    grid-template-rows: 1fr auto;   /* кнопки встают низом ровно по низу картинки (160) */
   }
   .cta__img { grid-column: 1; grid-row: 1 / 3; height: calc(160 * var(--u)); }
   .cta__title { grid-column: 2; grid-row: 1; margin: 0; }
-  .cta__act { grid-column: 2; grid-row: 2; margin: 0; gap: calc(16 * var(--u)); flex-wrap: nowrap; }
-  .cta__act .btn { width: calc(127 * var(--u)); }
+  .cta__act { grid-column: 2; grid-row: 2; align-self: end; margin: 0; gap: calc(16 * var(--u)); flex-wrap: nowrap; }
   .cta__act { align-items: center; }
+  .cta__act .btn--light, .cta__act .btn--grey { min-width: calc(127 * var(--u)); }
   .cta__act .mail { flex-basis: auto; margin: 0; }
 }

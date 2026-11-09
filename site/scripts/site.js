@@ -37,7 +37,7 @@
     if (!pl || reduce) { if (pl) pl.classList.add('is-gone'); html.classList.add('is-docked', 'hero-in'); release(); return; }
     // логотип по центру экрана, шириной экран минус поля
     function place() {
-      var vw = innerWidth, m = vw >= 960 ? 64 : 32, w = logo.offsetWidth;
+      var vw = innerWidth, m = vw >= 768 ? 64 : 32, w = logo.offsetWidth;
       var k = (vw - m) / w;
       logo.style.transform = 'translate(' + (-w * k / 2) + 'px,' + (-logo.offsetHeight * k / 2) + 'px) scale(' + k + ')';
     }
@@ -212,7 +212,7 @@
       .filter(function (el) { return !el.matches('.projects__list, .lab__grid, .about__photos, .about__act, .cta__act'); });
     items.forEach(function (el) { el.classList.add('rv'); });
     // мобилка, услуги: выезжают слева, по очереди
-    if (innerWidth < 960) $$('.svc').forEach(function (el) { el.style.setProperty('--rv-x', '-56px'); el.style.setProperty('--rv-y', '0px'); });
+    if (innerWidth < 768) $$('.svc').forEach(function (el) { el.style.setProperty('--rv-x', '-56px'); el.style.setProperty('--rv-y', '0px'); });
     if (reduce || !window.IntersectionObserver) { items.forEach(function (el) { el.classList.add('is-in'); }); return; }
     var queue = [], timer = 0;
     function flush() {
@@ -460,7 +460,7 @@
     var list = $('.projects__list'); if (!list) return;
     // обе раскладки готовятся сразу, какая из них работает — решает ширина окна (CSS),
     // поэтому после поворота телефона или смены ширины окна всё продолжает работать
-    var rows = $$('.prow', list), desk = function () { return innerWidth >= 960; };
+    var rows = $$('.prow', list), desk = function () { return innerWidth >= 768; };
     rows.forEach(function (r) { ticker($('.prow__year', r)); });
     {
       // десктоп: строки целиком (линия + текст) въезжают слева, по очереди сверху вниз
@@ -533,7 +533,7 @@
     function check() {
       pend = false;
       var hit = -1;
-      if (innerWidth < 960) { if (open) hide(); return; }
+      if (innerWidth < 768) { if (open) hide(); return; }
       rows.forEach(function (r, i) { var b = r.getBoundingClientRect(); if (ty >= b.top && ty < b.bottom && tx >= b.left - 16 && tx <= b.right + 16) hit = i; });
       if (hit >= 0) show(hit); else if (open) hide();
     }
