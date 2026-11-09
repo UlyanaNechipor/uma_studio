@@ -9,7 +9,7 @@
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body {
   margin: 0; background: var(--bg); color: var(--txt);
-  font-family: var(--f-sans); font-weight: 400;
+  font-family: var(--f-sans); font-weight: var(--w-text);
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   transition: background-color .5s var(--m-out), color .5s var(--m-out);
 }
@@ -21,12 +21,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 :focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
 
 /* ---------- типографика ---------- */
-.t-h1 { font-size: calc(var(--t-h1) * var(--u)); line-height: var(--t-h1-lh); letter-spacing: var(--t-h1-ls); font-weight: 400; }
-.t-h2 { font-size: calc(var(--t-h2) * var(--u)); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); font-weight: 400; }
+.t-h1 { font-size: calc(var(--t-h1) * var(--u)); line-height: var(--t-h1-lh); letter-spacing: var(--t-h1-ls); font-weight: var(--w-head); }
+.t-h2 { font-size: calc(var(--t-h2) * var(--u)); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); font-weight: var(--w-head); }
 .t-name { font-size: calc(var(--t-name) * var(--u)); line-height: var(--t-name-lh); letter-spacing: var(--t-name-ls); }
 .t-body { font-size: calc(var(--t-body) * var(--u)); line-height: var(--t-body-lh); letter-spacing: var(--t-body-ls); }
 .t-small { font-size: calc(var(--t-small) * var(--u)); line-height: var(--t-small-lh); letter-spacing: var(--t-small-ls); }
-.t-grey { color: var(--c-grey); }
+.t-grey { color: var(--grey); font-weight: 400; }   /* серые подписи в обеих темах — 400 */
 
 /* ---------- сетка ----------
    мобилка: поля 16, две колонки по 140, шаг 8 (16+140+8+140+16 = 320)
@@ -48,7 +48,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* ---------- кнопки ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: calc(8 * var(--u));
-  height: calc(36 * var(--u)); padding-inline: calc(20 * var(--u));
+  height: calc(36 * var(--u)); padding-inline: calc(12 * var(--u)); border-radius: 2px;
   font-size: calc(12 * var(--u)); font-weight: 500; letter-spacing: .45px; white-space: nowrap;
   transition: background-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out);
 }
@@ -69,11 +69,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .hd__logo { margin-right: auto; letter-spacing: -.02em; }
 .hd__logo b { font-weight: 700; }
 .hd__nav { display: flex; gap: calc(10 * var(--u)); }
-.hd__link { color: var(--c-grey); transition: color var(--m-hover) var(--m-out); }
+.hd__link { color: var(--grey); font-weight: 400; transition: color var(--m-hover) var(--m-out); }
 .hd__link:hover { color: var(--txt); }
 .hd__theme {
   display: grid; place-items: center; width: calc(20 * var(--u)); height: calc(20 * var(--u));
-  border: 1px solid var(--line); border-radius: calc(4 * var(--u)); color: var(--c-grey);
+  border: 1px solid var(--line); border-radius: calc(4 * var(--u)); color: var(--grey);
 }
 @media (min-width: 960px) {
   .hd { display: grid; grid-template-columns: calc(568 * var(--u)) calc(190 * var(--u)) calc(186 * var(--u)) 1fr auto;
@@ -91,7 +91,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 .ft__logo { grid-column: 1 / -1; font-size: calc(32 * var(--u)); line-height: 1; letter-spacing: -.04em; font-weight: 300; }
 .ft__logo b { font-weight: 700; }
-.ft__col { display: flex; flex-direction: column; color: var(--c-grey); }
+.ft__col { display: flex; flex-direction: column; color: var(--grey); font-weight: 400; }
+.ft__h { font-weight: var(--w-text); }
 .ft__col a:hover { color: var(--txt); }
 .ft__h { font: inherit; color: var(--txt); }
 .ft__made { grid-column: 1 / -1; grid-row: 3; }

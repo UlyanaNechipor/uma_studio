@@ -34,8 +34,8 @@ html.light-theme .hd__sun { opacity: 1; transform: none; }
 .hd__theme { transition: background-color var(--m-hover) var(--m-out), border-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out); }
 @media (hover: hover) and (pointer: fine) { .hd__theme:hover { background: var(--txt); border-color: var(--txt); color: var(--bg); } }
 /* смена темы: цвет текстов плавно */
-.hd, .hd__link, .mail, .ft, .ft__h, .svc__title, .prow__name, .t-h1, .t-h2, .hero__lead {
-  transition: color .5s var(--m-out), background-color .5s var(--m-out), border-color .5s var(--m-out);
+body, .hd, .hd__link, .mail, .ft, .ft__h, .svc__title, .prow__name, .t-h1, .t-h2, .hero__lead {
+  transition: color .5s var(--m-out), background-color .5s var(--m-out), border-color .5s var(--m-out), font-weight .5s ease;
 }
 
 /* ---------- прелоадер: логотип заливается и улетает в шапку ---------- */

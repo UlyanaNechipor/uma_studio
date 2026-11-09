@@ -101,7 +101,7 @@
 @media (min-width: 960px) {
   .about {
     padding-block: calc(180 * var(--u)) calc(172 * var(--u));
-    grid-template-rows: calc(35 * var(--u)) calc(216 * var(--u)) calc(78 * var(--u)) auto;
+    grid-template-rows: calc(35 * var(--u)) calc(216 * var(--u)) calc(70 * var(--u)) auto;   /* низ кнопки = низ фото (537) */
   }
   .about__label { display: block; grid-column: 1 / 3; grid-row: 1; }
   .about__title { grid-column: 1 / 3; grid-row: 2; max-width: calc(471 * var(--u)); }
@@ -114,7 +114,7 @@
 /* ===== 5. Услуги: 568 / 300 ===== */
 .services { padding-block: calc(60 * var(--u)) calc(44 * var(--u)); }
 .svc { grid-column: 1 / -1; min-height: calc(116 * var(--u)); }
-.svc__title { font-weight: 400; color: var(--txt-soft); }
+.svc__title { font-weight: var(--w-text); color: var(--txt-soft); }
 .svc__text { margin-top: calc(4 * var(--u)); }
 @media (min-width: 960px) {
   .services {
@@ -134,16 +134,18 @@
 .cta__img { grid-column: 1 / -1; height: calc(195 * var(--u)); }
 .cta__title { grid-column: 1 / -1; margin-top: calc(16 * var(--u)); }
 .cta__act { grid-column: 1 / -1; margin-top: calc(24 * var(--u)); display: flex; flex-wrap: wrap; gap: calc(8 * var(--u)); align-items: center; }
+.cta__act .btn--light { width: calc(140 * var(--u)); } .cta__act .btn--grey { width: calc(94 * var(--u)); }   /* как в Тильде: 140 и 94 */
 .cta__act .mail { flex-basis: 100%; margin-top: calc(8 * var(--u)); }
 @media (min-width: 960px) {
   .cta {
     padding-bottom: calc(152 * var(--u));
     grid-template-columns: calc(267 * var(--u)) 1fr; column-gap: calc(16 * var(--u));
-    grid-template-rows: calc(132 * var(--u)) auto;
+    grid-template-rows: calc(124 * var(--u)) calc(36 * var(--u));   /* кнопки встают низом ровно по низу картинки (160) */
   }
   .cta__img { grid-column: 1; grid-row: 1 / 3; height: calc(160 * var(--u)); }
   .cta__title { grid-column: 2; grid-row: 1; margin: 0; }
   .cta__act { grid-column: 2; grid-row: 2; margin: 0; gap: calc(16 * var(--u)); flex-wrap: nowrap; }
   .cta__act .btn { width: calc(127 * var(--u)); }
+  .cta__act { align-items: center; }
   .cta__act .mail { flex-basis: auto; margin: 0; }
 }

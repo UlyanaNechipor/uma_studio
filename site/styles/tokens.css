@@ -11,16 +11,20 @@
   /* ---------- цвета ---------- */
   --c-ink:        #111211;   /* фон тёмной темы */
   --c-ink-2:      #1a1a1a;   /* текст светлой темы */
-  --c-paper:      #f0f0f0;   /* фон светлой темы */
+  --c-paper:      #f2f1ed;   /* фон светлой темы: тёплая бумага (было #f0f0f0 — холодный и белёсый) */
   --c-white:      #ffffff;
   --c-white-soft: #fbfbfb;   /* подписи, метки */
-  --c-grey:       #767575;   /* второстепенный текст (одинаковый в обеих темах) */
+  --c-grey:       #767575;   /* второстепенный текст в тёмной теме (контраст 4.1:1) */
+  --c-grey-light: #686764;   /* второстепенный текст в светлой теме (контраст 5.0:1 — норма WCAG AA 4.5:1) */
   --c-line-dark:  rgba(255,255,255,.25);
   --c-line-light: rgba(26,26,26,.15);
 
   --bg: var(--c-ink);
   --txt: var(--c-white);
-  --txt-soft: var(--c-white-soft);   /* подписи, описание первого экрана, названия проектов, услуги */
+  --txt-soft: var(--c-white-soft);
+  --grey: var(--c-grey);
+  /* жирность: в светлой теме тёмный текст на светлом выглядит тоньше — добавляем веса (как на Тильде) */
+  --w-text: 400; --w-head: 400;   /* подписи, описание первого экрана, названия проектов, услуги */
   --line: var(--c-line-dark);
   /* кнопки */
   --btn-bg: var(--c-white-soft);   --btn-fg: var(--c-ink);   --btn-bg-h: #ffffff;
@@ -72,7 +76,8 @@
 }
 
 html.light-theme {
-  --bg: var(--c-paper); --txt: var(--c-ink-2); --txt-soft: var(--c-ink-2); --line: var(--c-line-light);
+  --bg: var(--c-paper); --txt: var(--c-ink-2); --txt-soft: var(--c-ink-2); --grey: var(--c-grey-light); --line: var(--c-line-light);
+  --w-text: 450; --w-head: 480;
   --btn-bg: var(--c-ink); --btn-fg: var(--c-white-soft); --btn-bg-h: #000000;
   --btn2-bg: rgba(17,18,17,.08); --btn2-fg: var(--c-ink); --btn2-bg-h: var(--c-ink); --btn2-fg-h: var(--c-white-soft);
 }
