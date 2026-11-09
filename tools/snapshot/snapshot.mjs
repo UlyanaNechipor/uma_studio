@@ -171,7 +171,7 @@ for (const W of WIDTHS) {
       });
       for (const [u, rec] of urls) {
         // оригинал: static.tildacdn.com/<tild-id>/<имя файла>, без /-/resize/…/-/format/… преобразований
-        const mm = u.match(/tildacdn\.(?:com|net)\/(tild[\w-]+)\/(?:-\/[^/]+\/[^/]+\/)*([^/?#]+)/);
+        const mm = u.match(/tildacdn\.(?:com|net)\/(til[a-z][\w-]+)\/(?:-\/[^/]+\/[^/]+\/)*([^/?#]+)/);
         if (!mm) continue;
         let fname = mm[2];
         if (/\.(jpe?g|png|gif)\.webp$/i.test(fname)) fname = fname.replace(/\.webp$/i, '');
@@ -224,7 +224,7 @@ for (const W of WIDTHS) {
 // ---------- 4. оригиналы картинок ----------
 const list = [];
 for (const [u, recs] of images) {
-  const m = u.match(/tildacdn\.com\/(tild[\w-]+)\/(.+)$/);
+  const m = u.match(/tildacdn\.com\/(til[a-z][\w-]+)\/(.+)$/);
   const name = m ? `${m[1]}__${decodeURIComponent(m[2]).replace(/[^\w.\-]+/g, '_')}` : u.replace(/[^\w.\-]+/g, '_').slice(-120);
   let ok = false, bytes = 0;
   try {
