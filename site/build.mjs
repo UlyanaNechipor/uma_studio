@@ -112,11 +112,8 @@ const html = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(site.seo.title)}</title>
-<meta name="description" content="${esc(site.seo.description)}">
-<meta property="og:title" content="${esc(site.seo.title)}">
-<meta property="og:description" content="${esc(site.seo.description)}">
-<meta name="theme-color" content="${site.themes.dark.bg}">
+<title>${esc(site.seo.title || site.brand)}</title>
+${site.seo.description ? `<meta name="description" content="${esc(site.seo.description)}">\n` : ''}<meta name="theme-color" content="${site.themes.dark.bg}">
 <link rel="preload" href="/site/assets/fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/styles/tokens.css">
 <link rel="stylesheet" href="/styles/base.css">
