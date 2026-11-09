@@ -1,0 +1,114 @@
+/* Working Title · движение. Логика — scripts/site.js.
+   Кривые и длительности — из tokens.css (--m-*), те же, что на Тильде (css/motion.css). */
+
+/* ---------- курсор: на компьютере рука везде (как на Тильде) ---------- */
+@media (min-width: 1025px) and (hover: hover) { html, body, a, button { cursor: pointer; } }
+
+/* ---------- фон за курсором и смена темы ---------- */
+#trail, #wipe { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; }
+#trail { z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }
+html.light-theme #trail { mix-blend-mode: multiply; opacity: .85; filter: blur(24px); }
+#wipe { z-index: -1; }
+main, .ft { position: relative; z-index: 1; }
+body { background: transparent; }
+html { background: var(--bg); transition: background-color .5s var(--m-out); }
+html.is-wiping { transition: none; }
+
+/* ---------- переключатель темы: луна ↔ солнце ---------- */
+.hd__ic { position: relative; display: block; width: 100%; height: 100%; transition: transform .6s var(--m-out); }
+.hd__ic svg {
+  position: absolute; inset: 22%; width: 56%; height: 56%;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  transition: opacity .4s var(--m-out), transform .6s var(--m-out);
+}
+.hd__moon { fill: currentColor !important; stroke: none !important; }
+.hd__sun { opacity: 0; transform: scale(.6) rotate(-45deg); }
+html.light-theme .hd__ic { transform: rotate(45deg); }
+html.light-theme .hd__moon { opacity: 0; transform: scale(.6) rotate(45deg); }
+html.light-theme .hd__sun { opacity: 1; transform: none; }
+.hd__theme { transition: background-color var(--m-hover) var(--m-out), border-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out); }
+@media (hover: hover) and (pointer: fine) { .hd__theme:hover { background: var(--txt); border-color: var(--txt); color: var(--bg); } }
+/* смена темы: цвет текстов плавно */
+.hd, .hd__link, .mail, .ft, .ft__h, .svc__title, .prow__name, .t-h1, .t-h2, .hero__lead {
+  transition: color .5s var(--m-out), background-color .5s var(--m-out), border-color .5s var(--m-out);
+}
+
+/* ---------- прелоадер: логотип заливается и улетает в шапку ---------- */
+.pl {
+  position: fixed; inset: 0; z-index: 100; display: none;
+  background: var(--bg); transition: background-color 1.2s cubic-bezier(.19,1,.22,1);
+}
+html.js .pl { display: block; }
+.pl.is-done { background-color: transparent; pointer-events: none; }
+.pl.is-gone { display: none; }
+.pl__logo {
+  position: absolute; left: 50%; top: 50%; transform-origin: 0 0;
+  font-size: clamp(40px, 11.2vw, 160px); line-height: 1; letter-spacing: -.03em; font-weight: 300; white-space: nowrap;
+  opacity: 0; transition: opacity .6s ease .2s;
+}
+.pl__logo b { font-weight: 700; }
+.pl.is-ready .pl__logo { opacity: 1; }
+.pl.is-fly .pl__logo { transition: transform 1.4s cubic-bezier(.19,1,.22,1); }
+.pl__base { color: var(--fill-base); }
+.pl__ink { position: absolute; inset: 0; color: var(--txt); -webkit-mask-image: linear-gradient(90deg, #000 var(--a, 0%), transparent var(--b, 0%)); mask-image: linear-gradient(90deg, #000 var(--a, 0%), transparent var(--b, 0%)); }
+/* пока логотип летит, настоящий логотип и меню в шапке скрыты */
+html.js:not(.is-docked) .hd__logo { opacity: 0; }
+html.js .hd__link, html.js .hd__theme { opacity: 0; translate: 0 5px; transition: opacity .7s var(--m-out) var(--hd-d, 0s), translate .9s var(--m-out) var(--hd-d, 0s), color .35s, background-color .35s, border-color .35s; }
+html.js.is-docked .hd__link, html.js.is-docked .hd__theme { opacity: 1; translate: 0 0; }
+html.js .hd__link:nth-child(2) { --hd-d: .09s; } html.js .hd__link:nth-child(3) { --hd-d: .18s; } html.js .hd__theme { --hd-d: .27s; }
+html.js:not(.is-ready) { overflow: hidden; }
+
+/* ---------- первый экран: тексты проявляются после вылета логотипа ---------- */
+html.js [data-intro] { opacity: 0; transform: translate3d(0, var(--m-shift), 0); transition: opacity .9s var(--m-out), transform 1.2s var(--m-out); }
+html.js .hero__title[data-intro] { transition-delay: .15s; }
+html.js.hero-in [data-intro] { opacity: 1; transform: none; }
+
+/* ---------- галерея первого экрана ---------- */
+.hg { overflow: hidden; background: var(--bg); touch-action: pan-y; }
+.hg__frame { position: absolute; inset: 0; overflow: hidden; clip-path: inset(100% 0 0 0); transition: clip-path 1.25s var(--m-out); }
+.hg.is-in .hg__frame { clip-path: inset(0); }
+.hg:not(.is-in) .hg__frame { visibility: hidden; }
+.hg__strip { height: 100%; transition: transform .8s var(--m-inout); will-change: transform; }
+.hg__slide { position: relative; height: 100%; overflow: hidden; }
+.hg__slide img { transform: scale(1.22); transition: transform 1.05s var(--m-out); }
+.hg__slide.is-active img { transform: none; }
+.hg:not(.is-in) .hg__slide.is-active img { transform: scale(1.28); }
+.hg.is-in .hg__slide.is-active img { transition-duration: 1.6s; }
+.hg__pause {
+  position: absolute; right: 6px; bottom: 6px; z-index: 2; width: 32px; height: 32px;
+  display: grid; place-items: center; color: #fff; opacity: 0; transition: opacity .6s ease .9s, transform .12s ease;
+}
+.hg.is-in .hg__pause { opacity: .85; }
+.hg__pause:hover { opacity: 1; } .hg__pause:active { transform: scale(.9); }
+.hg__ic { grid-area: 1 / 1; width: 16px; height: 16px; fill: currentColor; filter: drop-shadow(0 1px 4px rgba(0,0,0,.45)); transition: opacity .2s ease, transform .3s var(--m-out); }
+.hg__ic--play { opacity: 0; transform: scale(.6); }
+.hg.is-paused .hg__ic--pause { opacity: 0; transform: scale(.6); }
+.hg.is-paused .hg__ic--play { opacity: 1; transform: none; }
+@media (min-width: 960px) { .hg__pause { right: 14px; bottom: 14px; } }
+
+/* ---------- абстрактная фигура справа (WebGL) ---------- */
+.hero__aside {
+  position: relative; overflow: hidden;
+  background: radial-gradient(120% 90% at 100% 115%, rgba(255,180,137,0) 52%, rgba(255,180,137,.55) 57%, rgba(217,79,48,.75) 61%, rgba(58,18,8,.6) 70%, rgba(12,12,13,0) 82%), #0c0c0d;
+  clip-path: inset(100% 0 0 0); transition: clip-path 1.25s var(--m-out) .08s;
+}
+.hero__aside.is-in { clip-path: inset(0); }
+.hero__cv { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .8s ease; }
+.hero__aside.is-ready .hero__cv { opacity: 1; }
+
+/* ---------- заливка заголовков ---------- */
+.fl-line { display: block; width: fit-content; padding-block: .18em; margin-block: -.18em; color: transparent; -webkit-text-fill-color: transparent; -webkit-background-clip: text; background-clip: text; background-color: var(--fill-base); }
+.lab__title .fl-line { margin-inline: auto; }
+
+/* ---------- появление при прокрутке ---------- */
+html.js .rv { opacity: 0; transform: translate3d(var(--rv-x, 0px), var(--rv-y, var(--m-shift)), 0); }
+html.js .rv.is-in {
+  opacity: 1; transform: none;
+  transition: opacity calc(var(--m-reveal) * .75) ease var(--rv-d, 0s), transform var(--m-reveal) var(--m-out) var(--rv-d, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .rv, html.js [data-intro] { opacity: 1 !important; transform: none !important; }
+  .hg__frame, .hero__aside { clip-path: none !important; }
+  .hg__slide img { transform: none !important; }
+}

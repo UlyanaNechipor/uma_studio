@@ -25,26 +25,35 @@ const header = `
   <nav class="hd__nav" aria-label="Разделы">
     ${site.nav.map((n) => `<a class="hd__link" href="#${n.id}">${esc(n.label)}</a>`).join('\n    ')}
   </nav>
-  <button class="hd__theme" type="button" aria-label="Сменить тему" data-theme-toggle>
-    <svg viewBox="0 0 16 16" width="10" height="10" aria-hidden="true"><path d="M8 1a7 7 0 1 0 7 7A5.5 5.5 0 0 1 8 1z" fill="currentColor"/></svg>
+  <button class="hd__theme" type="button" aria-label="Светлая тема" data-theme-toggle>
+    <span class="hd__ic" aria-hidden="true">
+      <svg class="hd__moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="hd__sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </span>
   </button>
 </header>`;
 
 const h = home;
 const hero = `
 <section class="hero grid" aria-label="О студии">
-  <p class="hero__lead t-small">${esc(h.hero.lead)}</p>
-  <h1 class="hero__title t-h1">${lines(h.hero.title)}</h1>
-  <div class="hero__gallery" data-gallery>
-    ${h.hero.gallery.map((g, i) => `<figure class="hero__slide${i ? '' : ' is-on'}">${img(g.src, g.title, '', i === 0)}</figure>`).join('\n    ')}
+  <p class="hero__lead t-small" data-intro>${esc(h.hero.lead)}</p>
+  <h1 class="hero__title t-h1" data-intro data-fill="load">${lines(h.hero.title)}</h1>
+  <div class="hero__gallery hg" data-gallery aria-roledescription="галерея" aria-label="Проекты студии">
+    <div class="hg__frame"><div class="hg__strip">
+      ${h.hero.gallery.map((g, i) => `<figure class="hg__slide${i ? '' : ' is-active'}">${img(g.src, g.title, '', i === 0)}</figure>`).join('\n      ')}
+    </div></div>
+    <button type="button" class="hg__pause" aria-label="Пауза" aria-pressed="false">
+      <svg class="hg__ic hg__ic--pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2" height="10" rx=".5"/><rect x="10" y="3" width="2" height="10" rx=".5"/></svg>
+      <svg class="hg__ic hg__ic--play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6c0 .4.4.6.7.4l7.4-4.8a.5.5 0 0 0 0-.8L5.7 2.8c-.3-.2-.7 0-.7.4z"/></svg>
+    </button>
   </div>
-  <div class="hero__aside" aria-hidden="true"></div>
+  <div class="hero__aside" aria-hidden="true"><canvas class="hero__cv"></canvas></div>
 </section>`;
 
 const projects = `
 <section class="projects grid" id="${h.projects.anchor}">
   <p class="projects__label t-small t-grey">${esc(h.projects.label)}</p>
-  <h2 class="projects__title t-h2">${esc(h.projects.title)}</h2>
+  <h2 class="projects__title t-h2" data-fill>${esc(h.projects.title)}</h2>
   <ul class="projects__list">
     ${h.projects.items.map((p) => `<li class="prow">
       <a class="prow__link" href="/projects/${esc(p.slug)}/">
@@ -59,7 +68,7 @@ const projects = `
 
 const lab = `
 <section class="lab grid" aria-labelledby="lab-title">
-  <h2 class="lab__title t-h2" id="lab-title">${lines(h.lab.title)}</h2>
+  <h2 class="lab__title t-h2" id="lab-title" data-fill>${lines(h.lab.title)}</h2>
   <p class="lab__lead t-small t-grey">${esc(h.lab.lead)}</p>
   <div class="lab__grid">
     ${h.lab.images.map((x) => `<figure class="lab__it lab__it--${x.d} lab__it--m-${x.m}">${img(x.src, '')}</figure>`).join('\n    ')}
@@ -69,7 +78,7 @@ const lab = `
 const about = `
 <section class="about grid" id="${h.about.anchor}">
   <p class="about__label t-small t-grey">${esc(h.about.label)}</p>
-  <h2 class="about__title t-h2">${lines(h.about.title)}</h2>
+  <h2 class="about__title t-h2" data-fill>${lines(h.about.title)}</h2>
   <div class="about__photos">${h.about.photos.map((p) => img(p, '')).join('')}</div>
   <p class="about__lead t-small t-grey">${esc(h.about.lead)}</p>
   <div class="about__act">${btn(h.about.cta)}<a class="t-small mail" href="mailto:${esc(site.contacts.email)}">${esc(site.contacts.email)}</a></div>
@@ -118,8 +127,15 @@ ${site.seo.description ? `<meta name="description" content="${esc(site.seo.descr
 <link rel="stylesheet" href="styles/tokens.css">
 <link rel="stylesheet" href="styles/base.css">
 <link rel="stylesheet" href="styles/home.css">
+<link rel="stylesheet" href="styles/motion.css">
+<script>try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js')</script>
 </head>
 <body>
+<div class="pl" id="preloader" aria-hidden="true">
+  <div class="pl__logo"><span class="pl__base"><b>WORKING</b> TITLE</span><span class="pl__ink"><b>WORKING</b> TITLE</span></div>
+</div>
+<canvas id="trail" aria-hidden="true"></canvas>
+<canvas id="wipe" aria-hidden="true"></canvas>
 ${header}
 <main>
 ${hero}

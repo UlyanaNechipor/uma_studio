@@ -6,11 +6,9 @@
   padding-top: calc(96 * var(--u));
   grid-template-rows: calc(112 * var(--u)) calc(88 * var(--u)) calc(200 * var(--u));
 }
-.hero__lead { grid-column: 1 / -1; grid-row: 1; color: var(--c-white-soft); }
+.hero__lead { grid-column: 1 / -1; grid-row: 1; color: var(--txt-soft); }
 .hero__title { grid-column: 1 / -1; grid-row: 2; }
-.hero__gallery { grid-column: 1 / -1; grid-row: 3; position: relative; overflow: hidden; background: #1b1b1b; }
-.hero__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s var(--m-inout); }
-.hero__slide.is-on { opacity: 1; }
+.hero__gallery { grid-column: 1 / -1; grid-row: 3; position: relative; }
 .hero__aside { display: none; }
 @media (min-width: 960px) {
   .hero { padding-top: calc(120 * var(--u)); grid-template-rows: calc(147 * var(--u)) calc(200 * var(--u)) calc(480 * var(--u)); }
@@ -55,7 +53,7 @@
     align-items: baseline; padding-top: calc(16 * var(--u));
     transition: opacity var(--m-hover) var(--m-out);
   }
-  .prow__name { font-size: calc(var(--t-name) * var(--u)); letter-spacing: var(--t-name-ls); text-transform: none; color: var(--c-white-soft); }
+  .prow__name { font-size: calc(var(--t-name) * var(--u)); letter-spacing: var(--t-name-ls); text-transform: none; color: var(--txt-soft); }
   .prow__name { grid-column: 1; }
   .prow__type { grid-column: 2; }
   .prow__year { grid-column: 3; justify-self: end; }
@@ -118,7 +116,7 @@
 /* ===== 5. Услуги: 568 / 300 ===== */
 .services { padding-block: calc(60 * var(--u)) calc(44 * var(--u)); }
 .svc { grid-column: 1 / -1; min-height: calc(116 * var(--u)); }
-.svc__title { font-weight: 400; color: var(--c-white-soft); }
+.svc__title { font-weight: 400; color: var(--txt-soft); }
 .svc__text { margin-top: calc(4 * var(--u)); }
 @media (min-width: 960px) {
   .services {

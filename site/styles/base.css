@@ -52,10 +52,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   font-size: calc(12 * var(--u)); font-weight: 500; letter-spacing: .45px; white-space: nowrap;
   transition: background-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out);
 }
-.btn--light { background: var(--c-white-soft); color: var(--c-ink); }
-.btn--grey  { background: #3b3b3b; color: var(--c-white-soft); }
+.btn--light { background: var(--btn-bg); color: var(--btn-fg); }
+.btn--grey  { background: var(--btn2-bg); color: var(--btn2-fg); }
 .btn__dot { flex: none; width: calc(5 * var(--u)); height: calc(5 * var(--u)); border-radius: 50%; background: #2fd35a; }
-@media (hover: hover) { .btn--light:hover { background: #fff; } .btn--grey:hover { background: #4a4a4a; } }
+@media (hover: hover) { .btn--light:hover { background: var(--btn-bg-h); } .btn--grey:hover { background: var(--btn2-bg-h); color: var(--btn2-fg-h); } }
 .mail { color: var(--txt); }
 
 /* ---------- шапка ---------- */

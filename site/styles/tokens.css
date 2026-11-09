@@ -20,7 +20,11 @@
 
   --bg: var(--c-ink);
   --txt: var(--c-white);
+  --txt-soft: var(--c-white-soft);   /* подписи, описание первого экрана, названия проектов, услуги */
   --line: var(--c-line-dark);
+  /* кнопки */
+  --btn-bg: var(--c-white-soft);   --btn-fg: var(--c-ink);   --btn-bg-h: #ffffff;
+  --btn2-bg: #3b3b3b;              --btn2-fg: var(--c-white-soft); --btn2-bg-h: #4a4a4a; --btn2-fg-h: var(--c-white-soft);
 
   /* ---------- шрифты ---------- */
   --f-sans:  'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -67,7 +71,15 @@
   }
 }
 
-body.light-theme { --bg: var(--c-paper); --txt: var(--c-ink-2); --line: var(--c-line-light); }
+html.light-theme {
+  --bg: var(--c-paper); --txt: var(--c-ink-2); --txt-soft: var(--c-ink-2); --line: var(--c-line-light);
+  --btn-bg: var(--c-ink); --btn-fg: var(--c-white-soft); --btn-bg-h: #000000;
+  --btn2-bg: rgba(17,18,17,.08); --btn2-fg: var(--c-ink); --btn2-bg-h: var(--c-ink); --btn2-fg-h: var(--c-white-soft);
+}
+
+/* заливка заголовков: слева цвет текста, справа ещё не залитое (как на Тильде) */
+:root { --fill-base: #2a2b2a; --fill-ink: #ffffff; --accent: #d94f30; }
+html.light-theme { --fill-base: #dcdcd9; --fill-ink: #1a1a1a; }
 
 /* перевод «пикселей макета» в реальные размеры */
 :root {
