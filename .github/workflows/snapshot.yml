@@ -1,0 +1,35 @@
+# Слепок сайта с Тильды (tools/snapshot/snapshot.mjs) — запускается при изменении скрипта
+# или вручную. Результат коммитится в ветку export (папка export/), main не трогает.
+name: snapshot
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['tools/snapshot/**', '.github/workflows/snapshot.yml']
+permissions:
+  contents: write
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Playwright
+        run: |
+          cd tools/snapshot
+          npm init -y >/dev/null
+          npm i playwright@1.48.2 >/dev/null
+          npx playwright install --with-deps chromium
+      - name: Snapshot
+        run: cd tools/snapshot && OUT=$GITHUB_WORKSPACE/export node snapshot.mjs
+      - name: Commit to export branch
+        run: |
+          git config user.name "uma-snapshot"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout --orphan export-tmp
+          git rm -rfq --cached . >/dev/null
+          git add export
+          git commit -qm "Слепок сайта с Тильды $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -f origin export-tmp:export
