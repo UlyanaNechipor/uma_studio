@@ -21,12 +21,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 :focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
 
 /* ---------- типографика ---------- */
-.t-h1 { font-size: max(var(--min-h1), calc(var(--t-h1) * var(--u))); line-height: var(--t-h1-lh); letter-spacing: var(--t-h1-ls); font-weight: var(--w-head); }
-.t-h2 { font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u))); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); font-weight: var(--w-head); }
-.t-name { font-size: max(var(--min-name), calc(var(--t-name) * var(--u))); line-height: var(--t-name-lh); letter-spacing: var(--t-name-ls); }
-.t-body { font-size: max(var(--min-body), calc(var(--t-body) * var(--u))); line-height: var(--t-body-lh); letter-spacing: var(--t-body-ls); }
-.t-small { font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); line-height: var(--t-small-lh); letter-spacing: var(--t-small-ls); }
-.t-grey { color: var(--grey); font-weight: 400; }   /* серые подписи в обеих темах — 400 */
+.ty-h1 { font-size: max(var(--min-h1), calc(var(--t-h1) * var(--u))); line-height: var(--t-h1-lh); letter-spacing: var(--t-h1-ls); font-weight: var(--w-head); }
+.ty-h2 { font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u))); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); font-weight: var(--w-head); }
+.ty-name { font-size: max(var(--min-name), calc(var(--t-name) * var(--u))); line-height: var(--t-name-lh); letter-spacing: var(--t-name-ls); }
+.ty-body { font-size: max(var(--min-body), calc(var(--t-body) * var(--u))); line-height: var(--t-body-lh); letter-spacing: var(--t-body-ls); }
+.ty-small { font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); line-height: var(--t-small-lh); letter-spacing: var(--t-small-ls); }
+.ty-grey { color: var(--grey); font-weight: 400; }   /* серые подписи в обеих темах — 400 */
 
 /* слова через дефис не рвутся (класс ставит сборка) */
 .nw { white-space: nowrap; }

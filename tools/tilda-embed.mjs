@@ -90,7 +90,9 @@ if (mode === 'assets') {
     '#allrecords{overflow:visible!important;background:none!important}\n' +
     '#allrecords .t123,#allrecords .t-container_100,#allrecords .t-width_100{max-width:none!important;padding:0!important;margin:0!important}\n' +
     // шрифт задан на body и наследуется; общие стили Тильды могут задать его заголовкам и кнопкам напрямую
-    'html #allrecords h1,html #allrecords h2,html #allrecords h3,html #allrecords h4,html #allrecords p,html #allrecords a,html #allrecords button,html #allrecords input{font-family:inherit}\n');
+    // классы оформления Тильды (.t-name, .t-title, .t-descr…) получают шрифт из её настроек — у нас свой везде
+    'html #allrecords{font-family:var(--f-sans)}\n' +
+    'html #allrecords *{font-family:inherit}\n');
   console.log('site/dist-tilda готова');
 } else if (mode === 'snippets') {
   if (!base || !/\/$/.test(base)) { console.error('нужен BASE, оканчивающийся на /'); process.exit(1); }

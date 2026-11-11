@@ -75,8 +75,8 @@ const header = `
 const h = home;
 const hero = `
 <section class="hero grid" aria-label="О студии">
-  <p class="hero__lead t-small" data-intro>${typo(h.hero.lead)}</p>
-  <h1 class="hero__title t-h1" data-intro data-fill="load">${lines(h.hero.title)}</h1>
+  <p class="hero__lead ty-small" data-intro>${typo(h.hero.lead)}</p>
+  <h1 class="hero__title ty-h1" data-intro data-fill="load">${lines(h.hero.title)}</h1>
   <div class="hero__gallery hg" data-gallery aria-roledescription="галерея" aria-label="Проекты студии">
     <div class="hg__frame"><div class="hg__strip">
       ${h.hero.gallery.map((g, i) => `<figure class="hg__slide${i ? '' : ' is-active'}">${img(g.src, g.title, '', i === 0, '(min-width: 768px) 64vw, 100vw')}</figure>`).join('\n      ')}
@@ -91,14 +91,14 @@ const hero = `
 
 const projects = `
 <section class="projects grid" id="${h.projects.anchor}">
-  <p class="projects__label t-small t-grey">${typo(h.projects.label)}</p>
-  <h2 class="projects__title t-h2" data-fill>${typo(h.projects.title)}</h2>
+  <p class="projects__label ty-small ty-grey">${typo(h.projects.label)}</p>
+  <h2 class="projects__title ty-h2" data-fill>${typo(h.projects.title)}</h2>
   <ul class="projects__list">
     ${h.projects.items.map((p) => `<li class="prow">
       <a class="prow__link" href="/projects/${esc(p.slug)}/" data-cover="${esc(p.cover)}">
-        <span class="prow__name t-name">${esc(p.name)}</span>
-        <span class="prow__type t-small t-grey">${typo(p.type)}</span>
-        <span class="prow__year t-small t-grey">${esc(p.year)}</span>
+        <span class="prow__name ty-name">${esc(p.name)}</span>
+        <span class="prow__type ty-small ty-grey">${typo(p.type)}</span>
+        <span class="prow__year ty-small ty-grey">${esc(p.year)}</span>
         <span class="prow__pics">${p.mobile.map((m) => img(m, '')).join('')}</span>
       </a>
     </li>`).join('\n    ')}
@@ -107,8 +107,8 @@ const projects = `
 
 const lab = `
 <section class="lab grid" aria-labelledby="lab-title">
-  <h2 class="lab__title t-h2" id="lab-title" data-fill>${lines(h.lab.title)}</h2>
-  <p class="lab__lead t-small t-grey">${typo(h.lab.lead)}</p>
+  <h2 class="lab__title ty-h2" id="lab-title" data-fill>${lines(h.lab.title)}</h2>
+  <p class="lab__lead ty-small ty-grey">${typo(h.lab.lead)}</p>
   <div class="lab__grid">
     ${h.lab.images.map((x) => `<figure class="lab__it lab__it--${x.d} lab__it--m-${x.m}">${img(x.src, '', '', false, x.m === 'wide' ? '(min-width: 768px) 25vw, 100vw' : '(min-width: 768px) 25vw, 50vw')}</figure>`).join('\n    ')}
   </div>
@@ -116,33 +116,33 @@ const lab = `
 
 const about = `
 <section class="about grid" id="${h.about.anchor}">
-  <p class="about__label t-small t-grey">${typo(h.about.label)}</p>
-  <h2 class="about__title t-h2" data-fill>${lines(h.about.title)}</h2>
+  <p class="about__label ty-small ty-grey">${typo(h.about.label)}</p>
+  <h2 class="about__title ty-h2" data-fill>${lines(h.about.title)}</h2>
   <div class="about__photos">${h.about.photos.map((p) => img(p, '', '', false, '(min-width: 768px) 25vw, 50vw')).join('')}</div>
-  <p class="about__lead t-small t-grey">${typo(h.about.lead)}</p>
-  <div class="about__act">${btn(h.about.cta)}<a class="t-small mail" href="mailto:${esc(site.contacts.email)}">${esc(site.contacts.email)}</a></div>
+  <p class="about__lead ty-small ty-grey">${typo(h.about.lead)}</p>
+  <div class="about__act">${btn(h.about.cta)}<a class="ty-small mail" href="mailto:${esc(site.contacts.email)}">${esc(site.contacts.email)}</a></div>
 </section>`;
 
 const services = `
 <section class="services grid" aria-label="Услуги">
   ${h.services.items.map((s) => `<div class="svc">
-    <h3 class="svc__title t-small">${typo(s.title)}</h3>
-    <p class="svc__text t-small t-grey">${s.text.map(typo).join('<br>')}</p>
+    <h3 class="svc__title ty-small">${typo(s.title)}</h3>
+    <p class="svc__text ty-small ty-grey">${s.text.map(typo).join('<br>')}</p>
   </div>`).join('\n  ')}
 </section>`;
 
 const cta = `
 <section class="cta grid" id="${h.cta.anchor}">
   ${img(h.cta.image, '', 'cta__img', false, '(min-width: 768px) 24vw, 100vw')}
-  <h2 class="cta__title t-h2">${lines(h.cta.title)}</h2>
-  <div class="cta__act">${btn(h.cta.primary)}${btn(h.cta.secondary, 'grey')}<a class="t-small mail" href="mailto:${esc(site.contacts.email)}">${esc(site.contacts.email)}</a></div>
+  <h2 class="cta__title ty-h2">${lines(h.cta.title)}</h2>
+  <div class="cta__act">${btn(h.cta.primary)}${btn(h.cta.secondary, 'grey')}<a class="ty-small mail" href="mailto:${esc(site.contacts.email)}">${esc(site.contacts.email)}</a></div>
 </section>`;
 
 const c = site.contacts;
 const footer = `
 <footer class="ft grid">
   <p class="ft__logo"><b>WORKING</b> TITLE</p>
-  <p class="ft__made t-small t-grey">Made by WORKING TITLE ©${esc(site.footer.year)}</p>
+  <p class="ft__made ty-small ty-grey">Made by WORKING TITLE ©${esc(site.footer.year)}</p>
   <nav class="ft__col" aria-label="Компания"><h2 class="ft__h">Компания</h2>
     ${site.nav.map((n) => `<a href="#${n.id}">${esc(n.label)}</a>`).join('')}
     ${c.privacy ? `<a href="${esc(c.privacy)}">Политика конфиденциальности</a>` : '<span>Политика конфиденциальности</span>'}
