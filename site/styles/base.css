@@ -36,14 +36,16 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
    десктоп: поля 32, четыре колонки 272/264/276/276, шаг 16; правая половина с 600 */
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 8px;
+  --g-cols: repeat(2, minmax(0, 1fr)); --g-gap: 8px;   /* общие колонки: вложенные сетки повторяют их без subgrid (он только с Safari 16) */
+  grid-template-columns: var(--g-cols);
+  column-gap: var(--g-gap);
   padding-inline: 16px;   /* поля мобилки — ровно 16 px на любой ширине */
 }
 @media (min-width: 768px) {
   .grid {
-    grid-template-columns: calc(272 * var(--u)) calc(264 * var(--u)) calc(276 * var(--u)) calc(276 * var(--u));
-    column-gap: calc(16 * var(--u));
+    --g-cols: calc(272 * var(--u)) calc(264 * var(--u)) calc(276 * var(--u)) calc(276 * var(--u)); --g-gap: calc(16 * var(--u));
+    grid-template-columns: var(--g-cols);
+    column-gap: var(--g-gap);
     /* поля 32 макета; шире 1920 px — контент по центру, поля растут */
     padding-inline: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2));
   }
@@ -65,7 +67,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* ---------- шапка ---------- */
 .hd {
-  position: fixed; inset: 0 0 auto; z-index: 10;
+  position: fixed; top: 0; right: 0; left: 0; z-index: 10;
   display: flex; align-items: center; gap: calc(12 * var(--u));
   height: max(44px, calc(48 * var(--u))); padding-inline: 16px;
   background: var(--bg); border-bottom: 1px solid var(--line);

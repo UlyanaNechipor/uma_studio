@@ -1,7 +1,7 @@
 // Working Title · сборка статического сайта без Тильды и без зависимостей.
 // Запуск: node site/build.mjs  →  папка site/dist (её и заливать на хостинг).
 // Тексты берутся из content/*.json, стили — site/styles, картинки — img/ и site/assets/.
-import { readFileSync, writeFileSync, mkdirSync, cpSync, rmSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, cpSync, rmSync, existsSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -28,8 +28,26 @@ const typo = (s) => {
 };
 const lines = (a) => (Array.isArray(a) ? a : [a]).map(typo).join('<br>');
 const href = (h) => esc(String(h).replace('{email}', site.contacts.email));
-const img = (src, alt = '', cls = '', eager = false) =>
-  `<img class="${cls}" src="${esc(src)}" alt="${esc(alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
+// Адаптивные картинки: к каждому большому фото есть несколько ширин (tools/optimize-images.py делает их в img/opt,
+// у картинок галереи — готовые -1200/-2400 в img/gallery). Браузер сам берёт ту, что нужна экрану, —
+// телефон не качает 2400-пиксельный кадр.
+const OPT = readdirSync(join(ROOT, 'img/opt'));
+const variants = (src) => {
+  let dir, stem;
+  const g = src.match(/^img\/gallery\/(.+)-(\d+)\.webp$/);
+  const t = src.match(/^site\/assets\/tilda\/(.+)\.(?:jpe?g|png)$/i);
+  if (g) { dir = 'img/gallery'; stem = g[1]; } else if (t) { dir = 'img/opt'; stem = t[1]; } else return null;
+  const list = (dir === 'img/opt' ? OPT : readdirSync(join(ROOT, dir)))
+    .map((f) => f.match(new RegExp('^' + stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '-(\\d+)\\.webp$')))
+    .filter(Boolean).map((m) => ({ w: +m[1], path: `${dir}/${m[0]}` })).sort((a, b) => a.w - b.w);
+  return list.length > 1 ? list : null;
+};
+const img = (src, alt = '', cls = '', eager = false, sizes = '100vw') => {
+  const v = variants(src);
+  const set = v ? ` srcset="${v.map((x) => `${esc(x.path)} ${x.w}w`).join(', ')}" sizes="${sizes}"` : '';
+  const main = v ? (v.find((x) => x.w >= 960) || v[v.length - 1]).path : src;
+  return `<img class="${cls}" src="${esc(main)}"${set} alt="${esc(alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
+};
 const btn = (b, kind = 'light') =>
   `<a class="btn btn--${kind}" href="${href(b.href)}">${kind === 'light' ? '<span class="btn__dot" aria-hidden="true"></span>' : ''}${esc(b.label)}</a>`;
 
@@ -55,7 +73,7 @@ const hero = `
   <h1 class="hero__title t-h1" data-intro data-fill="load">${lines(h.hero.title)}</h1>
   <div class="hero__gallery hg" data-gallery aria-roledescription="галерея" aria-label="Проекты студии">
     <div class="hg__frame"><div class="hg__strip">
-      ${h.hero.gallery.map((g, i) => `<figure class="hg__slide${i ? '' : ' is-active'}">${img(g.src, g.title, '', i === 0)}</figure>`).join('\n      ')}
+      ${h.hero.gallery.map((g, i) => `<figure class="hg__slide${i ? '' : ' is-active'}">${img(g.src, g.title, '', i === 0, '(min-width: 768px) 64vw, 100vw')}</figure>`).join('\n      ')}
     </div></div>
     <button type="button" class="hg__pause" aria-label="Пауза" aria-pressed="false">
       <svg class="hg__ic hg__ic--pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="2" height="10" rx=".5"/><rect x="10" y="3" width="2" height="10" rx=".5"/></svg>
@@ -86,7 +104,7 @@ const lab = `
   <h2 class="lab__title t-h2" id="lab-title" data-fill>${lines(h.lab.title)}</h2>
   <p class="lab__lead t-small t-grey">${typo(h.lab.lead)}</p>
   <div class="lab__grid">
-    ${h.lab.images.map((x) => `<figure class="lab__it lab__it--${x.d} lab__it--m-${x.m}">${img(x.src, '')}</figure>`).join('\n    ')}
+    ${h.lab.images.map((x) => `<figure class="lab__it lab__it--${x.d} lab__it--m-${x.m}">${img(x.src, '', '', false, x.m === 'wide' ? '(min-width: 768px) 25vw, 100vw' : '(min-width: 768px) 25vw, 50vw')}</figure>`).join('\n    ')}
   </div>
 </section>`;
 
@@ -94,7 +112,7 @@ const about = `
 <section class="about grid" id="${h.about.anchor}">
   <p class="about__label t-small t-grey">${typo(h.about.label)}</p>
   <h2 class="about__title t-h2" data-fill>${lines(h.about.title)}</h2>
-  <div class="about__photos">${h.about.photos.map((p) => img(p, '')).join('')}</div>
+  <div class="about__photos">${h.about.photos.map((p) => img(p, '', '', false, '(min-width: 768px) 25vw, 50vw')).join('')}</div>
   <p class="about__lead t-small t-grey">${typo(h.about.lead)}</p>
   <div class="about__act">${btn(h.about.cta)}<a class="t-small mail" href="mailto:${esc(site.contacts.email)}">${esc(site.contacts.email)}</a></div>
 </section>`;
@@ -109,7 +127,7 @@ const services = `
 
 const cta = `
 <section class="cta grid" id="${h.cta.anchor}">
-  ${img(h.cta.image, '', 'cta__img')}
+  ${img(h.cta.image, '', 'cta__img', false, '(min-width: 768px) 24vw, 100vw')}
   <h2 class="cta__title t-h2">${lines(h.cta.title)}</h2>
   <div class="cta__act">${btn(h.cta.primary)}${btn(h.cta.secondary, 'grey')}<a class="t-small mail" href="mailto:${esc(site.contacts.email)}">${esc(site.contacts.email)}</a></div>
 </section>`;
@@ -143,7 +161,7 @@ ${site.seo.description ? `<meta name="description" content="${esc(site.seo.descr
 <link rel="stylesheet" href="styles/base.css">
 <link rel="stylesheet" href="styles/home.css">
 <link rel="stylesheet" href="styles/motion.css">
-<script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js')</script>
+<script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js');setTimeout(function(){var h=document.documentElement;if(!window.__umaBoot||!h.classList.contains('is-ready'))h.classList.remove('js')},12000)</script>\n<noscript><style>.pl{display:none!important}</style></noscript>
 </head>
 <body>
 <div class="pl" id="preloader" aria-hidden="true">
@@ -170,7 +188,9 @@ mkdirSync(OUT, { recursive: true });
 cpSync(join(ROOT, 'site/styles'), join(OUT, 'styles'), { recursive: true });
 cpSync(join(ROOT, 'site/scripts'), join(OUT, 'scripts'), { recursive: true });
 cpSync(join(ROOT, 'img'), join(OUT, 'img'), { recursive: true });
-cpSync(join(ROOT, 'site/assets'), join(OUT, 'site/assets'), { recursive: true });
+cpSync(join(ROOT, 'site/assets/fonts'), join(OUT, 'site/assets/fonts'), { recursive: true });
+// исходные картинки Тильды — только те, у которых нет лёгких версий
+for (const m of new Set(html.match(/site\/assets\/tilda\/[^"?\s,]+/g) || [])) { mkdirSync(dirname(join(OUT, m)), { recursive: true }); cpSync(join(ROOT, m), join(OUT, m)); }
 
 // Версия по содержимому: к каждому адресу файла в html дописывается ?v=<хеш>. Файл изменился — адрес новый,
 // и браузер (в том числе Safari на iPhone) не может подставить старую копию из кеша к новой странице.
@@ -180,8 +200,9 @@ const vOf = (p) => {
   if (!hashes.has(p)) hashes.set(p, existsSync(join(OUT, p)) ? createHash('sha1').update(readFileSync(join(OUT, p))).digest('hex').slice(0, 8) : '');
   return hashes.get(p);
 };
-const versioned = html.replace(/\b(src|href|data-cover|data-src)="((?:styles|scripts|img|site\/assets\/tilda)\/[^"?#]+)"/g,
-  (m, a, p) => (vOf(p) ? `${a}="${p}?v=${vOf(p)}"` : m));
+const versioned = html
+  .replace(/\b(src|href|data-cover|data-src)="((?:styles|scripts|img|site\/assets\/tilda)\/[^"?#]+)"/g, (m, a, p) => (vOf(p) ? `${a}="${p}?v=${vOf(p)}"` : m))
+  .replace(/srcset="([^"]+)"/g, (m, list) => 'srcset="' + list.split(', ').map((e) => { const [p, w] = e.split(' '); return vOf(p) ? `${p}?v=${vOf(p)} ${w}` : e; }).join(', ') + '"');
 writeFileSync(join(OUT, 'index.html'), versioned);
 
 // Заголовки кеша для хостинга (Netlify / Cloudflare Pages читают этот файл сами; для других — см. README):

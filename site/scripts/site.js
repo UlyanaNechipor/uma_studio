@@ -329,7 +329,17 @@
     // копия первого кадра в конце — бесконечная лента без рывка
     var clone = slides[0].cloneNode(true); clone.classList.remove('is-active'); clone.setAttribute('aria-hidden', 'true'); strip.appendChild(clone);
     slides.push(clone);
-    slides.forEach(function (s) { var im = $('img', s); if (im) im.loading = 'eager'; });
+    // сначала только первый кадр: остальные не отнимают у него канал на медленной сети и догружаются следом
+    var first = $('img', slides[0]);
+    function whenLoaded(im, cb, max) {
+      var done = false;
+      function fin() { if (done) return; done = true; cb(); }
+      if (!im || (im.complete && im.naturalWidth)) return fin();
+      im.addEventListener('load', fin); im.addEventListener('error', fin); setTimeout(fin, max);
+    }
+    whenLoaded(first, function () {
+      slides.forEach(function (s, k) { var im = $('img', s); if (im && k) setTimeout(function () { im.loading = 'eager'; }, k * 200); });
+    }, 3000);
     var i = 0, timer = 0, paused = false, visible = true, shown = false;
     function go(k, jump) {
       i = k;
@@ -367,9 +377,12 @@
     document.addEventListener('visibilitychange', schedule);
     ready.push(function () {
       setTimeout(function () {
-        box.classList.add('is-in');
-        var aside = $('.hero__aside'); if (aside) aside.classList.add('is-in');
-        shown = true; setTimeout(schedule, 600);
+        // шторка открывается, когда первый кадр уже загружен (но не ждём его дольше 3 секунд)
+        whenLoaded(first, function () {
+          box.classList.add('is-in');
+          var aside = $('.hero__aside'); if (aside) aside.classList.add('is-in');
+          shown = true; setTimeout(schedule, 600);
+        }, 3000);
       }, reduce ? 0 : GALLERY_DELAY);
     });
   }
@@ -571,12 +584,30 @@
 
   /* ---------------- запуск ---------------- */
   function init() {
-    // после любого обновления — с самого верха страницы (браузер не восстанавливает прокрутку)
-    scrollTo(0, 0); addEventListener('load', function () { scrollTo(0, 0); });
-    addEventListener('pageshow', function (e) { if (e.persisted) scrollTo(0, 0); });
-    theme(); trail(); gallery(); aside(); projects(); labZoom(); reveal();
-    var go = function () { fillInit(); preloader(); };
+    window.__umaBoot = 1;   // для страховки в <head>: скрипт запустился
+    // каждая часть — в своём try: сбой одного эффекта (старый браузер, нет API) не должен останавливать остальные,
+    // а главное — не должен оставить прелоадер на экране и скрытые блоки
+    function safe(fn, name) { try { fn(); } catch (e) { try { console.error('Working Title:', name, e); } catch (_) {} } }
+    // если прелоадер не отработал — показываем страницу как есть
+    function rescue() {
+      var pl = $('#preloader'); if (pl) pl.classList.add('is-gone');
+      html.classList.add('is-docked', 'hero-in', 'is-ready');
+      var q = ready; ready = []; q.forEach(function (f) { safe(f, 'ready'); });
+    }
+    safe(function () {
+      // после любого обновления — с самого верха страницы (браузер не восстанавливает прокрутку)
+      scrollTo(0, 0); addEventListener('load', function () { scrollTo(0, 0); });
+      addEventListener('pageshow', function (e) { if (e.persisted) scrollTo(0, 0); });
+    }, 'scroll');
+    safe(theme, 'theme'); safe(trail, 'trail'); safe(gallery, 'gallery'); safe(aside, 'aside');
+    safe(projects, 'projects'); safe(labZoom, 'labZoom'); safe(reveal, 'reveal');
+    var go = function () {
+      safe(fillInit, 'fillInit');
+      try { preloader(); } catch (e) { try { console.error('Working Title: preloader', e); } catch (_) {} rescue(); }
+    };
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(go, go); else go();
+    // совсем без шрифтов и без ответа — не держим экран дольше 10 секунд
+    setTimeout(function () { if (!html.classList.contains('is-ready')) rescue(); }, 10000);
     // пересборка строк заголовков при смене ширины
     var lw = innerWidth, rt = 0;
     addEventListener('resize', function () {
