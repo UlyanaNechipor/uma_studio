@@ -414,6 +414,7 @@
       idx.forEach(function (p) {
         if (p === j || overlapX(j, p) || vD[p] < 40 || Math.abs(bot(p) - bot(j)) > BOTTOM_EPS) return;
         var over = botNow(j) - botNow(p);
+        if (window.UMA_DEBUG_ALIGN) console.log('UMA align', j, p, Math.round(over), idx.map(function (i) { return [i, Math.round(D[i].top), Math.round(D[i].bottom), Math.round(vD[i]), Math.round(vN[i]), Math.round(shift[i]), Math.round(nb[i])].join(' '); }).join(' | '));
         if (over <= 0.5) return;
         var group = [j], cur = [j];
         while (over > 0.5 && !cur.some(topRow)) {
@@ -427,6 +428,7 @@
             });
           });
           var take = Math.min(over, Math.max(0, -floor));
+          if (window.UMA_DEBUG_ALIGN) console.log('UMA lift', cur.join(','), a.join(','), Math.round(floor), Math.round(take));
           group.forEach(function (g) { shift[g] -= take; nb[g] -= take; });
           over -= take;
           if (!a.length) break;
