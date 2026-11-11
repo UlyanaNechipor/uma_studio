@@ -397,13 +397,17 @@
     function topRow(a) {
       return idx.some(function (x) { return x !== a && !overlapX(a, x) && Math.abs(D[x].top - D[a].top) < ROW_EPS; });
     }
-    function above(a) {   // ближайший элемент над a в той же полосе
+    // ближайшие элементы над a в той же полосе (у заголовка с заливкой их два, один на другом)
+    function above(a) {
       var best = -1;
       idx.forEach(function (i) {
         if (i === a || D[i].bottom > D[a].top + 1 || !overlapX(a, i)) return;
         if (best < 0 || D[i].bottom > D[best].bottom) best = i;
       });
-      return best;
+      if (best < 0) return [];
+      return idx.filter(function (i) {
+        return i !== a && overlapX(a, i) && Math.abs(D[i].bottom - D[best].bottom) < 1.5 && Math.abs(D[i].top - D[best].top) < 1.5;
+      });
     }
     idx.forEach(function (j) {
       if (vD[j] < 20) return;
@@ -411,17 +415,23 @@
         if (p === j || overlapX(j, p) || vD[p] < 40 || Math.abs(bot(p) - bot(j)) > BOTTOM_EPS) return;
         var over = botNow(j) - botNow(p);
         if (over <= 0.5) return;
-        var group = [j], cur = j;
-        while (over > 0.5 && !topRow(cur)) {
-          var a = above(cur);
-          var gapMin = a < 0 ? 0 : Math.max(0, D[cur].top - D[a].bottom) * MIN_GAP;
-          var topNow = D[cur].top + shift[cur];
-          var floor = a < 0 ? D[cur].top : nb[a] + gapMin;
-          var take = Math.min(over, Math.max(0, topNow - floor));
+        var group = [j], cur = [j];
+        while (over > 0.5 && !cur.some(topRow)) {
+          var a = above(cur[0]);
+          var floor = -Infinity;
+          cur.forEach(function (c) {
+            if (!a.length) { floor = Math.max(floor, D[c].top - (D[c].top + shift[c])); return; }
+            a.forEach(function (x) {
+              var gapMin = Math.max(0, D[c].top - D[x].bottom) * MIN_GAP;
+              floor = Math.max(floor, nb[x] + gapMin - (D[c].top + shift[c]));
+            });
+          });
+          var take = Math.min(over, Math.max(0, -floor));
           group.forEach(function (g) { shift[g] -= take; nb[g] -= take; });
           over -= take;
-          if (a < 0) break;
-          group.push(a); cur = a;
+          if (!a.length) break;
+          a.forEach(function (x) { if (group.indexOf(x) < 0) group.push(x); });
+          cur = a;
         }
       });
     });
