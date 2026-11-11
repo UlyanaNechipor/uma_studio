@@ -8,7 +8,7 @@ import { createHash } from 'node:crypto';
    'soft' — спокойный режим: прелоадер, проявления, галерея есть, но без смещений и полётов (по умолчанию);
    'full' — настройку не учитывать, анимации как у всех;
    'off'  — движение выключено полностью. */
-const MOTION_REDUCED = 'soft';
+const MOTION_REDUCED = 'full';   // решение 2026-11-11: анимации одинаковые на всех устройствах
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
