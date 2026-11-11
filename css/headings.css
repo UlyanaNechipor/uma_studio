@@ -7,6 +7,13 @@ html body.t-body #allrecords .tn-atom.uma-h {
     letter-spacing: var(--uma-hls, -0.02em) !important;
 }
 
+/* Компьютерная раскладка (от 960 px, в том числе уменьшенная и планшет): строки заголовков заданы в макете переносами,
+   лишних переносов быть не должно. Иначе после загрузки (когда подключился наш кегль и трекинг) заголовок,
+   который стоял в одну строку, «перескакивал» на новую. На телефоне перенос остаётся — там он задуман. */
+@media screen and (min-width: 960px) {
+    html body.t-body #allrecords .tn-atom.uma-h { white-space: nowrap; }
+}
+
 /* страница проекта */
 html body.t-body .uma-project__title { line-height: 1.0; letter-spacing: -0.02em; }
 html body.t-body .uma-project__h2,

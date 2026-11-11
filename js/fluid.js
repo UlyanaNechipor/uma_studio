@@ -195,6 +195,12 @@
     var hs = ab.querySelectorAll('[data-uma-h]');
     for (var h = 0; h < hs.length; h++) { hs[h].style.removeProperty('height'); hs[h].removeAttribute('data-uma-h'); }
     items(ab).forEach(function (el) { el.style.translate = ''; });
+    var ws = ab.querySelectorAll('[data-uma-w]');
+    for (var w = 0; w < ws.length; w++) {
+      // вернуть ширину Тильды, если она с тех пор не поставила новую
+      if (ws[w].style.width === ws[w].__umaW) { ws[w].style.removeProperty('width'); ws[w].style.width = ws[w].getAttribute('data-uma-w'); }
+      ws[w].removeAttribute('data-uma-w');
+    }
     var atoms = ab.querySelectorAll('.tn-atom[data-uma-ls]');
     for (var i = 0; i < atoms.length; i++) { atoms[i].style.removeProperty('letter-spacing'); atoms[i].removeAttribute('data-uma-ls'); }
     // своя высота снимается, только если Тильда с тех пор не поставила новую
@@ -329,6 +335,122 @@
     }
     if (window.UMA_DEBUG_GUARD) console.log('UMA guard', ab.closest('.t-rec').id, idx.filter(function (j) { return shift[j] > 0.5; }).map(function (j) { return (all[j].textContent || all[j].dataset.elemId || '').trim().slice(0, 16) + ' +' + Math.round(shift[j]); }));
   }
+  /* Обычный текст на промежуточных ширинах крупнее уменьшенной раскладки, а рамка у него
+     уменьшена вместе с раскладкой — строки переносятся чаще, чем в макете, текст вырастает
+     и тянет вниз всё, что под ним (кнопки «Написать нам» в «О нас» уезжали ниже фото).
+     Рамка расширяется во столько же раз, во сколько вырос кегль, — строки как в макете, —
+     но не дальше соседа справа (с зазором WIDEN_GAP) и края экрана. Заголовки не трогаются. */
+  var WIDEN_GAP = 16;   // px на экране
+  function widen(ab, all, design, offFont) {
+    var vw = width();
+    ab.querySelectorAll('.t396__elem[data-elem-type="text"]').forEach(function (el) {
+      var a = el.querySelector('.tn-atom');
+      if (!a || a.classList.contains('uma-h') || a.querySelector('.uma-line, .uma-yr')) return;
+      // в строке автолэйаута (название — тип — год в списке проектов) шире станет и сдвинет соседей:
+      // такие тексты не трогаем; если сосед перенесён на следующую строку («О нас»: абзац, под ним кнопки) — можно
+      var pg = el.parentElement;                                     // .tn-molecule группы
+      if (pg && pg.closest('.t396__group') && /flex/.test(getComputedStyle(pg).display)) {
+        var er = el.getBoundingClientRect(), row = false;
+        for (var c = pg.firstElementChild; c; c = c.nextElementSibling) {
+          if (c === el) continue;
+          var cr = c.getBoundingClientRect();
+          if (cr.height && Math.min(cr.bottom, er.bottom) - Math.max(cr.top, er.top) > 1) { row = true; break; }
+        }
+        if (row) return;
+      }
+      var ta = getComputedStyle(a).textAlign;
+      if (ta !== 'left' && ta !== 'start') return;                   // по центру и справа — рамка задаёт положение строк
+      var w0 = parseFloat(el.style.width);
+      if (!w0 || !/px$/.test(el.style.width)) return;               // ширина «по тексту» — сама растёт
+      var f0 = offFont.get(el), f1 = atomFont(el);
+      if (!f0 || !f1 || f1 / f0 < 1.02) return;
+      var r = el.getBoundingClientRect();
+      if (!r.width || !el.offsetWidth) return;
+      var sc = r.width / el.offsetWidth;                             // zoom Тильды на экране
+      var want = r.left + r.width * f1 / f0;
+      var lim = vw - WIDEN_GAP;
+      for (var i = 0; i < all.length; i++) {
+        if (all[i] === el || all[i].contains(el)) continue;
+        var d = design[i];
+        if (!d.h || !d.w || d.left < r.right - 1) continue;          // только то, что правее
+        if (Math.min(d.bottom, r.bottom + r.height) - Math.max(d.top, r.top) <= 0) continue;   // не на одной высоте
+        lim = Math.min(lim, d.left - WIDEN_GAP);
+      }
+      var right = Math.min(want, lim);
+      if (right <= r.right + 1) return;
+      el.setAttribute('data-uma-w', el.style.width);                 // ширина из Тильды
+      el.style.setProperty('width', ((right - r.left) / sc).toFixed(2) + 'px', 'important');
+      el.__umaW = el.style.width;
+    });
+  }
+
+  /* Элементы, которые в макете стоят на одной линии по низу в разных колонках
+     (колонка текста с кнопками и фото рядом), должны и остаться на ней. Сдвиги выше
+     растят отступы, и колонка, где больше элементов, уезжала ниже соседней.
+     Здесь она поднимается обратно — за счёт отступов над ней, но не плотнее MIN_GAP от макета;
+     элемент, стоящий по верху вровень с соседней колонкой («О нас» и фото), не двигается. */
+  var MIN_GAP = 0.45;
+  var BOTTOM_EPS = 10;   // px: настолько могут разойтись низы «на одной линии» после масштабирования Тильды
+  // видимая высота: у группы Тильды рамка бывает выше содержимого — берём низ самих элементов
+  function visH(el) {
+    if (!el.matches('.t396__group')) return rect(el).h;
+    var r = el.getBoundingClientRect();
+    var b = 0, kids = el.querySelectorAll('.t396__elem, .t396__group');   // кнопка — вложенная группа с фоном
+    for (var i = 0; i < kids.length; i++) {
+      var k = rect(kids[i]);                       // без своего сдвига появления у элемента
+      if (k.h && k.w) b = Math.max(b, k.bottom - r.top);
+    }
+    return b || r.height;
+  }
+  function alignBottoms(idx, D, vD, vN, shift, nb) {
+    function bot(a) { return D[a].top + vD[a]; }
+    function botNow(a) { return D[a].top + shift[a] + vN[a]; }
+    function overlapX(a, b) { return Math.min(D[a].right, D[b].right) - Math.max(D[a].left, D[b].left) > 1; }
+    function topRow(a) {
+      return idx.some(function (x) { return x !== a && !overlapX(a, x) && Math.abs(D[x].top - D[a].top) < ROW_EPS; });
+    }
+    // ближайшие элементы над a в той же полосе (у заголовка с заливкой их два, один на другом)
+    function above(a) {
+      var best = -1;
+      idx.forEach(function (i) {
+        if (i === a || D[i].bottom > D[a].top + 1 || !overlapX(a, i)) return;
+        if (best < 0 || D[i].bottom > D[best].bottom) best = i;
+      });
+      if (best < 0) return [];
+      return idx.filter(function (i) {
+        return i !== a && overlapX(a, i) && Math.abs(D[i].bottom - D[best].bottom) < 1.5 && Math.abs(D[i].top - D[best].top) < 1.5;
+      });
+    }
+    idx.forEach(function (j) {
+      if (vD[j] < 20) return;
+      idx.forEach(function (p) {
+        if (p === j || overlapX(j, p) || vD[p] < 40 || Math.abs(bot(p) - bot(j)) > BOTTOM_EPS) return;
+        var over = botNow(j) - botNow(p);
+        if (window.UMA_DEBUG_ALIGN) console.log('UMA align', j, p, Math.round(over), idx.map(function (i) { return [i, Math.round(D[i].top), Math.round(D[i].bottom), Math.round(vD[i]), Math.round(vN[i]), Math.round(shift[i]), Math.round(nb[i])].join(' '); }).join(' | '));
+        if (over <= 0.5) return;
+        var group = [j], cur = [j];
+        while (over > 0.5 && !cur.some(topRow)) {
+          var a = above(cur[0]);
+          var floor = -Infinity;
+          cur.forEach(function (c) {
+            if (!a.length) { floor = Math.max(floor, D[c].top - (D[c].top + shift[c])); return; }
+            a.forEach(function (x) {
+              var gapMin = Math.max(0, D[c].top - D[x].bottom) * MIN_GAP;
+              floor = Math.max(floor, nb[x] + gapMin - (D[c].top + shift[c]));
+            });
+          });
+          var take = Math.min(over, Math.max(0, -floor));
+          if (window.UMA_DEBUG_ALIGN) console.log('UMA lift', cur.join(','), a.join(','), Math.round(floor), Math.round(take));
+          group.forEach(function (g) { shift[g] -= take; nb[g] -= take; });
+          over -= take;
+          if (!a.length) break;
+          a.forEach(function (x) { if (group.indexOf(x) < 0) group.push(x); });
+          cur = a;
+        }
+      });
+    });
+  }
+
   function reflowInner(ab) {
     rowSeen = [];
     var all = items(ab);
@@ -347,14 +469,19 @@
     }
     // размеры по макету
     var design = all.map(rect);
+    var vDesign = all.map(visH);
     var fOff = all.map(atomFont);
+    var offFont = new Map();
+    ab.querySelectorAll('.t396__elem[data-elem-type="text"]').forEach(function (el) { offFont.set(el, atomFont(el)); });
     fontsOff(false);
     for (var b = 0; b < atoms.length; b++) {
       if (ls[b] == null || Math.abs(ls[b]) < 0.001) continue;
       atoms[b].style.setProperty('letter-spacing', ls[b].toFixed(4) + 'em', 'important');
       atoms[b].setAttribute('data-uma-ls', '');
     }
+    widen(ab, all, design, offFont);
     var now = all.map(rect);
+    var vNow = all.map(visH);
     // у заголовков с заливкой высоту «по макету» считаем из текущей: та же раскладка строк, кегль макета.
     // Прямой замер с макетным кеглем ненадёжен: строки заголовков с заливкой собраны
     // под текущий кегль и при подмене кегля разваливаются
@@ -398,8 +525,9 @@
       shift[j] = top - dj.top;
       nb[j] = top + now[j].h;
       maxOld = Math.max(maxOld, dj.bottom - base.top);
-      maxNew = Math.max(maxNew, nb[j] - base.top);
     });
+    alignBottoms(idx, design, vDesign, vNow, shift, nb);
+    idx.forEach(function (j) { maxNew = Math.max(maxNew, nb[j] - base.top); });
     var padOld = base.height - maxOld;
 
     idx.forEach(function (j) {
