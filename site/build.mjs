@@ -149,6 +149,7 @@ const footer = `
   </div>
 </footer>`;
 
+const diag = readFileSync(join(ROOT, 'site/scripts/diag.js'), 'utf8');
 const html = `<!doctype html>
 <html lang="${site.lang}">
 <head>
@@ -161,6 +162,7 @@ ${site.seo.description ? `<meta name="description" content="${esc(site.seo.descr
 <link rel="stylesheet" href="styles/base.css">
 <link rel="stylesheet" href="styles/home.css">
 <link rel="stylesheet" href="styles/motion.css">
+<script>${diag}</script>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js');setTimeout(function(){var h=document.documentElement;if(!window.__umaBoot||!h.classList.contains('is-ready'))h.classList.remove('js')},12000)</script>\n<noscript><style>.pl{display:none!important}</style></noscript>
 </head>
 <body>
