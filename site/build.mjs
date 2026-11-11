@@ -2,6 +2,7 @@
 // Запуск: node site/build.mjs  →  папка site/dist (её и заливать на хостинг).
 // Тексты берутся из content/*.json, стили — site/styles, картинки — img/ и site/assets/.
 import { readFileSync, writeFileSync, mkdirSync, cpSync, rmSync, existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -166,9 +167,38 @@ ${footer}
 
 if (existsSync(OUT)) rmSync(OUT, { recursive: true });
 mkdirSync(OUT, { recursive: true });
-writeFileSync(join(OUT, 'index.html'), html);
 cpSync(join(ROOT, 'site/styles'), join(OUT, 'styles'), { recursive: true });
 cpSync(join(ROOT, 'site/scripts'), join(OUT, 'scripts'), { recursive: true });
 cpSync(join(ROOT, 'img'), join(OUT, 'img'), { recursive: true });
 cpSync(join(ROOT, 'site/assets'), join(OUT, 'site/assets'), { recursive: true });
-console.log('site/dist готов:', html.length, 'байт html');
+
+// Версия по содержимому: к каждому адресу файла в html дописывается ?v=<хеш>. Файл изменился — адрес новый,
+// и браузер (в том числе Safari на iPhone) не может подставить старую копию из кеша к новой странице.
+// Файл не менялся — адрес тот же, и он берётся из кеша без запроса.
+const hashes = new Map();
+const vOf = (p) => {
+  if (!hashes.has(p)) hashes.set(p, existsSync(join(OUT, p)) ? createHash('sha1').update(readFileSync(join(OUT, p))).digest('hex').slice(0, 8) : '');
+  return hashes.get(p);
+};
+const versioned = html.replace(/\b(src|href|data-cover|data-src)="((?:styles|scripts|img|site\/assets\/tilda)\/[^"?#]+)"/g,
+  (m, a, p) => (vOf(p) ? `${a}="${p}?v=${vOf(p)}"` : m));
+writeFileSync(join(OUT, 'index.html'), versioned);
+
+// Заголовки кеша для хостинга (Netlify / Cloudflare Pages читают этот файл сами; для других — см. README):
+// страница не кешируется, файлы с ?v= — на год.
+writeFileSync(join(OUT, '_headers'), `/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/styles/*
+  Cache-Control: public, max-age=31536000, immutable
+/scripts/*
+  Cache-Control: public, max-age=31536000, immutable
+/img/*
+  Cache-Control: public, max-age=31536000, immutable
+/site/assets/tilda/*
+  Cache-Control: public, max-age=31536000, immutable
+/site/assets/fonts/*
+  Cache-Control: public, max-age=604800
+`);
+console.log('site/dist готов:', versioned.length, 'байт html, версий файлов:', [...hashes.values()].filter(Boolean).length);

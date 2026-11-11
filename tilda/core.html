@@ -478,7 +478,7 @@ setTimeout(window.umaReleasePreloader, 20000);
    ========================================================================= */
 (function () {
   var REPO = 'UlyanaNechipor/uma_studio';
-  var CORE_V = '2026-11-09b';   // версия самого загрузчика (этого кода в Тильде)
+  var CORE_V = '2026-11-11';   // версия самого загрузчика (этого кода в Тильде)
   // Источники по порядку. raw.githubusercontent: свежая версия не позже чем через 5 минут после пуша.
   // jsDelivr (три адреса) — запасной вариант: он кэширует ветку дольше, до 12 часов.
   function sources(ref) {
@@ -649,16 +649,34 @@ setTimeout(window.umaReleasePreloader, 20000);
   function download(version, base, manifest) {
     var css = manifest.css || [], js = manifest.js || [];
     var all = css.concat(js);
-    return Promise.all(all.map(function (p) {
-      return loadFile(base, version, p, manifest.sha).catch(function (e) { console.warn('UMA loader: ' + e.message); return null; });
-    })).then(function (texts) {
+    function one(p) { return loadFile(base, version, p, manifest.sha).catch(function (e) { console.warn('UMA loader: ' + e.message); return null; }); }
+    return Promise.all(all.map(one)).then(function (texts) {
+      // не добравшиеся файлы (плохая сеть: ни один из источников не ответил вовремя) — ещё одна попытка,
+      // иначе страница заводится без части эффектов (например, без галереи или табло) и так и остаётся
+      var miss = [];
+      texts.forEach(function (t, k) { if (t == null) miss.push(k); });
+      if (!miss.length) return texts;
+      log('не загрузились, повтор:', miss.map(function (k) { return all[k]; }).join(', '));
+      return Promise.all(miss.map(function (k) { return one(all[k]); })).then(function (again) {
+        miss.forEach(function (k, i) { texts[k] = again[i]; });
+        // всё ещё нет — берём этот файл из сохранённой копии (она может быть чуть старее, но лучше, чем без файла)
+        var old = readCache();
+        if (old) {
+          var byPath = {};
+          old.css.concat(old.js).forEach(function (f) { if (f[1] != null) byPath[f[0]] = f[1]; });
+          miss.forEach(function (k) { if (texts[k] == null && byPath[all[k]] != null) { texts[k] = byPath[all[k]]; log('из сохранённой копии:', all[k]); } });
+        }
+        return texts;
+      });
+    }).then(function (texts) {
       var c = {
         v: version, base: base,
         css: css.map(function (p, k) { return [p, texts[k]]; }),
         js: js.map(function (p, k) { return [p, texts[css.length + k]]; })
       };
+      c.missing = all.filter(function (p, k) { return texts[k] == null; });
       // в копию — только полный набор, без пропавших файлов
-      if (texts.every(function (t) { return t != null; })) writeCache(c);
+      if (!c.missing.length) writeCache(c);
       return c;
     });
   }
@@ -685,7 +703,7 @@ setTimeout(window.umaReleasePreloader, 20000);
         head.appendChild(s);
       });
       var all = c.css.concat(c.js).map(function (f) { return f[0]; });
-      window.UMA = { ref: ref, version: c.v, base: c.base, from: from, files: all };
+      window.UMA = { ref: ref, version: c.v, base: c.base, from: from, files: all, missing: c.missing || [] };
       document.documentElement.classList.add('uma-loaded');
       log('готово', ref, 'v' + c.v, from, all.length + ' файлов');
     };
@@ -763,7 +781,7 @@ setTimeout(window.umaReleasePreloader, 20000);
       var d = document.createElement('div');
       d.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:2147483647;background:rgba(0,0,0,.88);color:#fff;font:12px/1.45 monospace;padding:10px 12px;border-radius:10px;white-space:pre-wrap;max-height:60vh;overflow:auto';
       document.body.appendChild(d);
-      var U = window.UMA || {}, lines = ['загрузчик: ' + CORE_V, 'код: ' + (U.version || '—') + ' (' + (U.from || 'не загрузился') + ')', 'откуда: ' + (U.base || '—'), 'копия в браузере: ' + ((readCache() || {}).v || 'нет'), 'ветка: ' + ref, ''];
+      var U = window.UMA || {}, lines = ['загрузчик: ' + CORE_V, 'код: ' + (U.version || '—') + ' (' + (U.from || 'не загрузился') + ')', 'откуда: ' + (U.base || '—'), 'копия в браузере: ' + ((readCache() || {}).v || 'нет'), 'не загрузились файлы: ' + ((U.missing || []).join(', ') || 'нет'), 'уменьшение движения (отключает анимации): ' + (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches ? 'ВКЛЮЧЕНО' : 'выключено'), 'ветка: ' + ref, ''];
       d.textContent = lines.join('\n') + 'проверяю источники…';
       var t = Date.now(), list = [
         ['raw', 'https://raw.githubusercontent.com/' + REPO + '/' + ref + '/uma.json?t=' + t],
