@@ -378,14 +378,15 @@
      Здесь она поднимается обратно — за счёт отступов над ней, но не плотнее MIN_GAP от макета;
      элемент, стоящий по верху вровень с соседней колонкой («О нас» и фото), не двигается. */
   var MIN_GAP = 0.8;
+  var BOTTOM_EPS = 10;   // px: настолько могут разойтись низы «на одной линии» после масштабирования Тильды
   // видимая высота: у группы Тильды рамка бывает выше содержимого — берём низ самих элементов
   function visH(el) {
-    var r = el.getBoundingClientRect();
     if (!el.matches('.t396__group')) return rect(el).h;
+    var r = el.getBoundingClientRect();
     var b = 0, kids = el.querySelectorAll('.t396__elem');
     for (var i = 0; i < kids.length; i++) {
-      var k = kids[i].getBoundingClientRect();
-      if (k.height && k.width) b = Math.max(b, k.bottom - r.top);
+      var k = rect(kids[i]);                       // без своего сдвига появления у элемента
+      if (k.h && k.w) b = Math.max(b, k.bottom - r.top);
     }
     return b || r.height;
   }
@@ -407,7 +408,7 @@
     idx.forEach(function (j) {
       if (vD[j] < 20) return;
       idx.forEach(function (p) {
-        if (p === j || overlapX(j, p) || vD[p] < 40 || Math.abs(bot(p) - bot(j)) > 2) return;
+        if (p === j || overlapX(j, p) || vD[p] < 40 || Math.abs(bot(p) - bot(j)) > BOTTOM_EPS) return;
         var over = botNow(j) - botNow(p);
         if (over <= 0.5) return;
         var group = [j], cur = j;
