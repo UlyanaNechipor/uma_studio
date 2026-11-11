@@ -94,7 +94,7 @@
   var LIST_REC = 'rec3979597501';
   function hoverRows() {
     var rec = document.getElementById(LIST_REC);
-    if (!rec || rec.__umaYrH || !hover) return;
+    if (!rec || rec.__umaYrH) return;
     rec.__umaYrH = true;
     var cur = null;
     function years() {
@@ -108,6 +108,24 @@
     }
     // табло собираем заранее, чтобы при первом наведении ничего не сдвинулось
     if (window.innerWidth >= 960) years().forEach(function (y) { build(y.a); });
+    // без мыши (планшет: iPad и т. п. с десктопной раскладкой) наведения нет — год прокручивается,
+    // когда его строка проходит через середину экрана (полоса BAND), как «в фокусе» на телефоне
+    if (!hover) {
+      var BAND = 0.36, tk = false, curT = null;
+      var update = function () {
+        tk = false;
+        if (window.innerWidth < 960) return;
+        var vh = window.innerHeight, best = null, bd = Infinity;
+        years().forEach(function (y) { var d = Math.abs(y.y - vh / 2); if (d < vh * BAND / 2 && d < bd) { bd = d; best = y.a; } });
+        if (best !== curT) { curT = best; if (best) rollAtom(best); }
+      };
+      var onScroll = function () { if (!tk) { tk = true; requestAnimationFrame(update); } };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      window.addEventListener('uma:reflow', onScroll);
+      onScroll();
+      return;
+    }
     rec.addEventListener('mousemove', function (e) {
       if (window.innerWidth < 960) return;
       var ys = years(), hit = null;

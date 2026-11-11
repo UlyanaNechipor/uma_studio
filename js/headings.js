@@ -48,7 +48,9 @@
       if (!atom) continue;
       // меряем исходные значения Тильды: снимаем свои на время замера
       atom.classList.remove('uma-h');
+      atom.style.removeProperty('min-height');
       if (!isHeading(elem, atom)) continue;
+      var h0 = atom.offsetHeight;                                    // высота рамки с интервалом Тильды (до нашего)
       var cs = getComputedStyle(atom);
       var fs = parseFloat(cs.fontSize) || 16;
       // межстрочный из стилей макета, без строчного значения в px, которое ставит сама Тильда:
@@ -73,6 +75,10 @@
       var pls = phone ? (fsScreen >= PHONE_BIG ? Math.min(ls, PHONE_BIG_LS) : ls) : Math.min(ls, step.ls);
       atom.style.setProperty('--uma-hls', pls.toFixed(4) + 'em');
       atom.classList.add('uma-h');
+      // Плотный интервал делает строки ниже. Если высота заголовка «по тексту» (hug), Тильда ставит под ним
+      // элементы по его высоте, и они уезжали вверх: кнопки «Есть идеи?» стояли выше низа картинки.
+      // Рамка остаётся той же высоты, что в макете, текст внутри — плотнее.
+      if (h0 > 0) atom.style.setProperty('min-height', h0 + 'px');
       if (phone) fitPhone(atom, fs, ls, step.ls);
     }
   }
