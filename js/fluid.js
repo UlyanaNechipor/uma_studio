@@ -195,6 +195,12 @@
     var hs = ab.querySelectorAll('[data-uma-h]');
     for (var h = 0; h < hs.length; h++) { hs[h].style.removeProperty('height'); hs[h].removeAttribute('data-uma-h'); }
     items(ab).forEach(function (el) { el.style.translate = ''; });
+    var ws = ab.querySelectorAll('[data-uma-w]');
+    for (var w = 0; w < ws.length; w++) {
+      // вернуть ширину Тильды, если она с тех пор не поставила новую
+      if (ws[w].style.width === ws[w].__umaW) { ws[w].style.removeProperty('width'); ws[w].style.width = ws[w].getAttribute('data-uma-w'); }
+      ws[w].removeAttribute('data-uma-w');
+    }
     var atoms = ab.querySelectorAll('.tn-atom[data-uma-ls]');
     for (var i = 0; i < atoms.length; i++) { atoms[i].style.removeProperty('letter-spacing'); atoms[i].removeAttribute('data-uma-ls'); }
     // своя высота снимается, только если Тильда с тех пор не поставила новую
@@ -329,6 +335,82 @@
     }
     if (window.UMA_DEBUG_GUARD) console.log('UMA guard', ab.closest('.t-rec').id, idx.filter(function (j) { return shift[j] > 0.5; }).map(function (j) { return (all[j].textContent || all[j].dataset.elemId || '').trim().slice(0, 16) + ' +' + Math.round(shift[j]); }));
   }
+  /* Обычный текст на промежуточных ширинах крупнее уменьшенной раскладки, а рамка у него
+     уменьшена вместе с раскладкой — строки переносятся чаще, чем в макете, текст вырастает
+     и тянет вниз всё, что под ним (кнопки «Написать нам» в «О нас» уезжали ниже фото).
+     Рамка расширяется во столько же раз, во сколько вырос кегль, — строки как в макете, —
+     но не дальше соседа справа (с зазором WIDEN_GAP) и края экрана. Заголовки не трогаются. */
+  var WIDEN_GAP = 16;   // px на экране
+  function widen(ab, all, design, offFont) {
+    var vw = width();
+    ab.querySelectorAll('.t396__elem[data-elem-type="text"]').forEach(function (el) {
+      var a = el.querySelector('.tn-atom');
+      if (!a || a.classList.contains('uma-h') || a.querySelector('.uma-line, .uma-yr')) return;
+      var w0 = parseFloat(el.style.width);
+      if (!w0 || !/px$/.test(el.style.width)) return;               // ширина «по тексту» — сама растёт
+      var f0 = offFont.get(el), f1 = atomFont(el);
+      if (!f0 || !f1 || f1 / f0 < 1.02) return;
+      var r = el.getBoundingClientRect();
+      if (!r.width || !el.offsetWidth) return;
+      var sc = r.width / el.offsetWidth;                             // zoom Тильды на экране
+      var want = r.left + r.width * f1 / f0;
+      var lim = vw - WIDEN_GAP;
+      for (var i = 0; i < all.length; i++) {
+        if (all[i] === el || all[i].contains(el)) continue;
+        var d = design[i];
+        if (!d.h || !d.w || d.left < r.right - 1) continue;          // только то, что правее
+        if (Math.min(d.bottom, r.bottom + r.height) - Math.max(d.top, r.top) <= 0) continue;   // не на одной высоте
+        lim = Math.min(lim, d.left - WIDEN_GAP);
+      }
+      var right = Math.min(want, lim);
+      if (right <= r.right + 1) return;
+      el.setAttribute('data-uma-w', el.style.width);                 // ширина из Тильды
+      el.style.setProperty('width', ((right - r.left) / sc).toFixed(2) + 'px', 'important');
+      el.__umaW = el.style.width;
+    });
+  }
+
+  /* Элементы, которые в макете стоят на одной линии по низу в разных колонках
+     (колонка текста с кнопками и фото рядом), должны и остаться на ней. Сдвиги выше
+     растят отступы, и колонка, где больше элементов, уезжала ниже соседней.
+     Здесь она поднимается обратно — за счёт отступов над ней, но не плотнее MIN_GAP от макета;
+     элемент, стоящий по верху вровень с соседней колонкой («О нас» и фото), не двигается. */
+  var MIN_GAP = 0.8;
+  function alignBottoms(idx, D, H, shift, nb) {
+    function overlapX(a, b) { return Math.min(D[a].right, D[b].right) - Math.max(D[a].left, D[b].left) > 1; }
+    function topRow(a) {
+      return idx.some(function (x) { return x !== a && !overlapX(a, x) && Math.abs(D[x].top - D[a].top) < ROW_EPS; });
+    }
+    function above(a) {   // ближайший элемент над a в той же полосе
+      var best = -1;
+      idx.forEach(function (i) {
+        if (i === a || D[i].bottom > D[a].top + 1 || !overlapX(a, i)) return;
+        if (best < 0 || D[i].bottom > D[best].bottom) best = i;
+      });
+      return best;
+    }
+    idx.forEach(function (j) {
+      if (D[j].h < 20) return;
+      idx.forEach(function (p) {
+        if (p === j || overlapX(j, p) || D[p].h < 40 || Math.abs(D[p].bottom - D[j].bottom) > 2) return;
+        var over = nb[j] - nb[p];
+        if (over <= 0.5) return;
+        var group = [j], cur = j;
+        while (over > 0.5 && !topRow(cur)) {
+          var a = above(cur);
+          var gapMin = a < 0 ? 0 : Math.max(0, D[cur].top - D[a].bottom) * MIN_GAP;
+          var topNow = D[cur].top + shift[cur];
+          var floor = a < 0 ? D[cur].top : nb[a] + gapMin;
+          var take = Math.min(over, Math.max(0, topNow - floor));
+          group.forEach(function (g) { shift[g] -= take; nb[g] -= take; });
+          over -= take;
+          if (a < 0) break;
+          group.push(a); cur = a;
+        }
+      });
+    });
+  }
+
   function reflowInner(ab) {
     rowSeen = [];
     var all = items(ab);
@@ -348,12 +430,15 @@
     // размеры по макету
     var design = all.map(rect);
     var fOff = all.map(atomFont);
+    var offFont = new Map();
+    ab.querySelectorAll('.t396__elem[data-elem-type="text"]').forEach(function (el) { offFont.set(el, atomFont(el)); });
     fontsOff(false);
     for (var b = 0; b < atoms.length; b++) {
       if (ls[b] == null || Math.abs(ls[b]) < 0.001) continue;
       atoms[b].style.setProperty('letter-spacing', ls[b].toFixed(4) + 'em', 'important');
       atoms[b].setAttribute('data-uma-ls', '');
     }
+    widen(ab, all, design, offFont);
     var now = all.map(rect);
     // у заголовков с заливкой высоту «по макету» считаем из текущей: та же раскладка строк, кегль макета.
     // Прямой замер с макетным кеглем ненадёжен: строки заголовков с заливкой собраны
@@ -398,8 +483,9 @@
       shift[j] = top - dj.top;
       nb[j] = top + now[j].h;
       maxOld = Math.max(maxOld, dj.bottom - base.top);
-      maxNew = Math.max(maxNew, nb[j] - base.top);
     });
+    alignBottoms(idx, design, now, shift, nb);
+    idx.forEach(function (j) { maxNew = Math.max(maxNew, nb[j] - base.top); });
     var padOld = base.height - maxOld;
 
     idx.forEach(function (j) {
