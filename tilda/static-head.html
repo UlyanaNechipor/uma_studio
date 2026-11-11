@@ -1,11 +1,11 @@
-<!-- Working Title · статичный сайт в Тильде. Собрано tools/tilda-embed.mjs 2026-11-11, файлы: https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@4fb18fe96f4661cebd6a2b5cf17f2ede869cc8ea/ -->
+<!-- Working Title · статичный сайт в Тильде. Собрано tools/tilda-embed.mjs 2026-11-11, файлы: https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@5f718393290d295c92e69c34040f48536f8b2542/ -->
 <meta name="theme-color" content="#111211">
-<link rel="preload" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@4fb18fe96f4661cebd6a2b5cf17f2ede869cc8ea/site/assets/fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@4fb18fe96f4661cebd6a2b5cf17f2ede869cc8ea/styles/tokens.css?v=150c46e6">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@4fb18fe96f4661cebd6a2b5cf17f2ede869cc8ea/styles/base.css?v=d93c6a3e">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@4fb18fe96f4661cebd6a2b5cf17f2ede869cc8ea/styles/home.css?v=fd983f27">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@4fb18fe96f4661cebd6a2b5cf17f2ede869cc8ea/styles/motion.css?v=87c4716a">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@4fb18fe96f4661cebd6a2b5cf17f2ede869cc8ea/styles/tilda.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@5f718393290d295c92e69c34040f48536f8b2542/site/assets/fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@5f718393290d295c92e69c34040f48536f8b2542/styles/tokens.css?v=150c46e6">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@5f718393290d295c92e69c34040f48536f8b2542/styles/base.css?v=97742045">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@5f718393290d295c92e69c34040f48536f8b2542/styles/home.css?v=fd983f27">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@5f718393290d295c92e69c34040f48536f8b2542/styles/motion.css?v=d65260c6">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@5f718393290d295c92e69c34040f48536f8b2542/styles/tilda.css">
 <script>/* Диагностика на странице (вставляется в <head> встроенным скриптом — работает, даже если site.js не загрузился).
    Показать: пять быстрых нажатий на строку «Made by …» в подвале, либо ?debug / #debug в адресе.
    Выводит то, что нужно, чтобы понять, почему на устройстве нет анимаций: настройки, возможности браузера, ошибки. */
@@ -24,7 +24,7 @@
     d.id = 'uma-diag';
     d.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:2147483647;margin:0;background:rgba(0,0,0,.92);color:#fff;font:12px/1.5 ui-monospace,Menlo,monospace;padding:12px 14px;border-radius:10px;white-space:pre-wrap;max-height:70vh;overflow:auto;-webkit-user-select:text;user-select:text';
     var L = [
-      'УМЕНЬШЕНИЕ ДВИЖЕНИЯ: ' + mm('(prefers-reduced-motion: reduce)') + '   ← «ДА» отключает все анимации сайта',
+      'УМЕНЬШЕНИЕ ДВИЖЕНИЯ: ' + mm('(prefers-reduced-motion: reduce)') + '   ← «ДА»: анимации в спокойном режиме (без смещений), см. MOTION_REDUCED в build.mjs',
       'скрипт сайта запустился: ' + (window.__umaBoot ? 'да' : 'НЕТ'),
       'классы html: ' + h.className,
       'экран: ' + innerWidth + '×' + innerHeight + ', DPR ' + devicePixelRatio + ', hover ' + mm('(hover: hover)') + ', pointer fine ' + mm('(pointer: fine)'),
@@ -47,5 +47,5 @@
   if (/[?&#]debug/.test(location.search + location.hash)) addEventListener('load', function () { setTimeout(show, 500); });
 })();
 </script>
-<script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js');setTimeout(function(){var h=document.documentElement;if(!window.__umaBoot||!h.classList.contains('is-ready'))h.classList.remove('js')},12000)</script>
+<script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js');try{if(matchMedia('(prefers-reduced-motion: reduce)').matches&&'soft'!=='full')document.documentElement.classList.add('soft'==='off'?'rm-off':'rm')}catch(e){}setTimeout(function(){var h=document.documentElement;if(!window.__umaBoot||!h.classList.contains('is-ready'))h.classList.remove('js')},12000)</script>
 <noscript><style>.pl{display:none!important}</style></noscript>
