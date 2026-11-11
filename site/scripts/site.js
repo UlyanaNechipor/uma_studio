@@ -7,7 +7,12 @@
 (function () {
   'use strict';
   var html = document.documentElement;
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* «Уменьшение движения» в системе (на айфоне: Универсальный доступ → Движение) — режим задаёт
+     MOTION_REDUCED в build.mjs, класс ставит скрипт в <head>:
+       html.rm     — спокойный режим: прелоадер, проявления, галерея и табло есть, но без смещений и полётов;
+       html.rm-off — всё движение выключено (как было раньше). */
+  var reduce = html.classList.contains('rm-off');
+  var calm = html.classList.contains('rm');
   var mouse = matchMedia('(hover: hover) and (pointer: fine)').matches;
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
@@ -56,6 +61,12 @@
       })(performance.now());
     }
     function fly() {
+      if (calm) {                                               // без полёта: логотип и фон тают
+        pl.classList.add('is-fade', 'is-done');
+        setTimeout(function () { html.classList.add('is-docked'); pl.classList.add('is-gone'); }, 700);
+        setTimeout(function () { html.classList.add('hero-in'); }, 500);
+        return release();
+      }
       // долетаем ровно в логотип шапки
       place();                                                  // окно могло смениться за время заливки
       var t = target.getBoundingClientRect(), w = logo.offsetWidth, h = logo.offsetHeight;
@@ -253,7 +264,7 @@
     btn.addEventListener('click', function () {
       if (busy) return;
       var light = !html.classList.contains('light-theme');
-      if (reduce) return set(light);
+      if (reduce || calm) return set(light);           // без расходящегося круга: цвета меняются плавно
       // круг цвета новой темы расходится от кнопки
       busy = true; html.classList.add('is-wiping');
       cv.width = innerWidth; cv.height = innerHeight;
@@ -442,7 +453,7 @@
       var dt = Math.min(.05, (now - last) / 1000); last = now;
       var k = 1 - Math.pow(.0015, dt); mx += (tx - mx) * k; my += (ty - my) * k;
       wake += (wakeT - wake) * (1 - Math.pow(.02, dt));
-      gl.uniform1f(U.uTime, reduce ? 12 : (now - t0) / 1000 + 12); gl.uniform2f(U.uMouse, mx, my);
+      gl.uniform1f(U.uTime, reduce ? 12 : (now - t0) / 1000 * (calm ? 0.3 : 1) + 12);   // спокойный режим — втрое медленнее gl.uniform2f(U.uMouse, mx, my);
       gl.uniform1f(U.uWake, wake); gl.uniform1f(U.uFrame, reduce ? 0 : frame++);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       el.classList.add('is-ready');
@@ -567,7 +578,7 @@
      С мышью — фото приближается при наведении (CSS). На телефоне — пока карточка
      в средней полосе экрана; в ряду из двух правое — позже левого. */
   function labZoom() {
-    if (mouse || reduce) return;
+    if (mouse || reduce || calm) return;
     var items = $$('.lab__it'), tk = false;
     function update() {
       tk = false;

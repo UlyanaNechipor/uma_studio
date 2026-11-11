@@ -114,11 +114,10 @@ html.js .rv.is-in {
   transition: opacity calc(var(--m-reveal) * .75) ease var(--rv-d, 0s), transform var(--m-reveal) var(--m-out) var(--rv-d, 0s);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html.js .rv, html.js [data-intro] { opacity: 1 !important; transform: none !important; }
-  .hg__frame, .hero__aside { clip-path: none !important; }
-  .hg__slide img { transform: none !important; }
-}
+/* всё движение выключено (MOTION_REDUCED = 'off') */
+html.rm-off.js .rv, html.rm-off.js [data-intro] { opacity: 1 !important; transform: none !important; }
+html.rm-off .hg__frame, html.rm-off .hero__aside { clip-path: none !important; }
+html.rm-off .hg__slide img { transform: none !important; }
 
 /* ---------- «Избранные проекты»: год-табло ---------- */
 .yr { display: inline-flex; font-variant-numeric: tabular-nums; vertical-align: top; }
@@ -171,7 +170,24 @@ html.js .ft { border-top-color: transparent; }
 html.js .ft::before { transform: scaleX(0); }
 html.js .ft.is-lines::before { transform: scaleX(1); transition: transform 1.3s cubic-bezier(.65, 0, .35, 1); }
 
-@media (prefers-reduced-motion: reduce) {
-  html.js .prow--rv, html.js .prow__it { opacity: 1 !important; transform: none !important; }
-  .prow--card::before, .ft::before { transform: none !important; }
-}
+html.rm-off.js .prow--rv, html.rm-off.js .prow__it { opacity: 1 !important; transform: none !important; }
+html.rm-off .prow--card::before, html.rm-off .ft::before { transform: none !important; }
+
+/* ---------- спокойный режим (MOTION_REDUCED = 'soft', по умолчанию) ----------
+   Для тех, у кого в системе включено «Уменьшение движения»: всё так же проявляется по очереди,
+   прелоадер и галерея на месте, но ничего не едет, не летит и не приближается — только тает. */
+html.rm.js .rv, html.rm.js [data-intro], html.rm.js .prow--rv, html.rm.js .prow__it { transform: none !important; }
+html.rm.js .hd__link, html.rm.js .hd__theme { translate: none !important; }
+html.rm.js .hg__frame { clip-path: none; opacity: 0; transition: opacity 1s ease; }
+html.rm.js .hg.is-in .hg__frame { opacity: 1; }
+html.rm.js .hero__aside { clip-path: none; opacity: 0; transition: opacity 1s ease .1s; }
+html.rm.js .hero__aside.is-in { opacity: 1; }
+/* галерея: кадры сменяются растворением, а не сдвигом */
+html.rm .hg__strip { display: grid; transform: none !important; transition: none; }
+html.rm .hg__slide { grid-area: 1 / 1; opacity: 0; transition: opacity .9s ease; }
+html.rm .hg__slide.is-active { opacity: 1; }
+html.rm .hg__slide img, html.rm .pv__slide img, html.rm .lab__it img { transform: none !important; }
+html.rm .pv__frame { transform: none; clip-path: none; }
+/* прелоадер: логотип заливается и тает вместе с фоном */
+html.rm .pl.is-fade .pl__logo { opacity: 0; transition: opacity .6s ease; }
+html.rm .pl.is-fade { transition-duration: .7s; }

@@ -3,6 +3,12 @@
 // Тексты берутся из content/*.json, стили — site/styles, картинки — img/ и site/assets/.
 import { readFileSync, writeFileSync, mkdirSync, cpSync, rmSync, existsSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+
+/* Если на устройстве включено «Уменьшение движения» (айфон: Настройки → Универсальный доступ → Движение):
+   'soft' — спокойный режим: прелоадер, проявления, галерея есть, но без смещений и полётов (по умолчанию);
+   'full' — настройку не учитывать, анимации как у всех;
+   'off'  — движение выключено полностью. */
+const MOTION_REDUCED = 'soft';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -163,7 +169,7 @@ ${site.seo.description ? `<meta name="description" content="${esc(site.seo.descr
 <link rel="stylesheet" href="styles/home.css">
 <link rel="stylesheet" href="styles/motion.css">
 <script>${diag}</script>
-<script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js');setTimeout(function(){var h=document.documentElement;if(!window.__umaBoot||!h.classList.contains('is-ready'))h.classList.remove('js')},12000)</script>\n<noscript><style>.pl{display:none!important}</style></noscript>
+<script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js');try{if(matchMedia('(prefers-reduced-motion: reduce)').matches&&'${MOTION_REDUCED}'!=='full')document.documentElement.classList.add('${MOTION_REDUCED}'==='off'?'rm-off':'rm')}catch(e){}setTimeout(function(){var h=document.documentElement;if(!window.__umaBoot||!h.classList.contains('is-ready'))h.classList.remove('js')},12000)</script>\n<noscript><style>.pl{display:none!important}</style></noscript>
 </head>
 <body>
 <div class="pl" id="preloader" aria-hidden="true">

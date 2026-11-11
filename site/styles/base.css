@@ -111,4 +111,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .ft__col:last-child { grid-column: 4; grid-row: 1 / 3; padding-left: calc(100 * var(--u)); }
 }
 
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
+/* «уменьшение движения» в системе: режим задаёт MOTION_REDUCED в build.mjs (см. motion.css) */
+html.rm-off * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+html.rm, html.rm * { scroll-behavior: auto !important; }

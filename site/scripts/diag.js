@@ -16,7 +16,7 @@
     d.id = 'uma-diag';
     d.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:2147483647;margin:0;background:rgba(0,0,0,.92);color:#fff;font:12px/1.5 ui-monospace,Menlo,monospace;padding:12px 14px;border-radius:10px;white-space:pre-wrap;max-height:70vh;overflow:auto;-webkit-user-select:text;user-select:text';
     var L = [
-      'УМЕНЬШЕНИЕ ДВИЖЕНИЯ: ' + mm('(prefers-reduced-motion: reduce)') + '   ← «ДА» отключает все анимации сайта',
+      'УМЕНЬШЕНИЕ ДВИЖЕНИЯ: ' + mm('(prefers-reduced-motion: reduce)') + '   ← «ДА»: анимации в спокойном режиме (без смещений), см. MOTION_REDUCED в build.mjs',
       'скрипт сайта запустился: ' + (window.__umaBoot ? 'да' : 'НЕТ'),
       'классы html: ' + h.className,
       'экран: ' + innerWidth + '×' + innerHeight + ', DPR ' + devicePixelRatio + ', hover ' + mm('(hover: hover)') + ', pointer fine ' + mm('(pointer: fine)'),
