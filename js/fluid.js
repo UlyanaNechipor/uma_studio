@@ -383,7 +383,7 @@
   function visH(el) {
     if (!el.matches('.t396__group')) return rect(el).h;
     var r = el.getBoundingClientRect();
-    var b = 0, kids = el.querySelectorAll('.t396__elem');
+    var b = 0, kids = el.querySelectorAll('.t396__elem, .t396__group');   // кнопка — вложенная группа с фоном
     for (var i = 0; i < kids.length; i++) {
       var k = rect(kids[i]);                       // без своего сдвига появления у элемента
       if (k.h && k.w) b = Math.max(b, k.bottom - r.top);
