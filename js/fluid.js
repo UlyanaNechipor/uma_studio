@@ -346,6 +346,18 @@
     ab.querySelectorAll('.t396__elem[data-elem-type="text"]').forEach(function (el) {
       var a = el.querySelector('.tn-atom');
       if (!a || a.classList.contains('uma-h') || a.querySelector('.uma-line, .uma-yr')) return;
+      // в строке автолэйаута (название — тип — год в списке проектов) шире станет и сдвинет соседей:
+      // такие тексты не трогаем; если сосед перенесён на следующую строку («О нас»: абзац, под ним кнопки) — можно
+      var pg = el.parentElement && el.parentElement.closest('.t396__group');
+      if (pg && /flex/.test(getComputedStyle(pg).display)) {
+        var er = el.getBoundingClientRect(), row = false;
+        for (var c = pg.firstElementChild; c; c = c.nextElementSibling) {
+          if (c === el || c.contains(el)) continue;
+          var cr = c.getBoundingClientRect();
+          if (cr.height && Math.min(cr.bottom, er.bottom) - Math.max(cr.top, er.top) > 1) { row = true; break; }
+        }
+        if (row) return;
+      }
       var ta = getComputedStyle(a).textAlign;
       if (ta !== 'left' && ta !== 'start') return;                   // по центру и справа — рамка задаёт положение строк
       var w0 = parseFloat(el.style.width);
