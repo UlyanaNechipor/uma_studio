@@ -346,6 +346,8 @@
     ab.querySelectorAll('.t396__elem[data-elem-type="text"]').forEach(function (el) {
       var a = el.querySelector('.tn-atom');
       if (!a || a.classList.contains('uma-h') || a.querySelector('.uma-line, .uma-yr')) return;
+      var ta = getComputedStyle(a).textAlign;
+      if (ta !== 'left' && ta !== 'start') return;                   // по центру и справа — рамка задаёт положение строк
       var w0 = parseFloat(el.style.width);
       if (!w0 || !/px$/.test(el.style.width)) return;               // ширина «по тексту» — сама растёт
       var f0 = offFont.get(el), f1 = atomFont(el);
