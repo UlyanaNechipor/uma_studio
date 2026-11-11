@@ -93,7 +93,7 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
   .lab__it--d1 { grid-area: 1 / 4; } .lab__it--d2 { grid-area: 2 / 4; }
 }
 
-/* ===== 4. О нас: 674 / 717 ===== */
+/* ===== 4. О нас: 674 / 736 ===== */
 .about {
   grid-template-rows: minmax(calc(136 * var(--u)), auto) calc(24 * var(--u) + 220 * var(--uw)) minmax(calc(62 * var(--u)), auto) auto;
 }
@@ -105,14 +105,16 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 .about__act .btn { width: 100%; }
 @media (min-width: 768px) {
   .about {
-    grid-template-rows: minmax(calc(35 * var(--u)), auto) minmax(calc(216 * var(--u)), auto) minmax(calc(70 * var(--u)), auto) auto;   /* низ кнопки = низ фото (537) */
+    /* ряд заголовка тянется: низ кнопки = низ фото (556), пока тексты помещаются; если нет — блок растёт */
+    grid-template-rows: calc(35 * var(--u)) minmax(min-content, 1fr) auto auto;
   }
-  .about__label { display: block; grid-column: 1 / 3; grid-row: 1; }
-  .about__title { grid-column: 1 / 3; grid-row: 2; max-width: calc(471 * var(--u)); }
-  .about__lead { grid-column: 1 / 3; grid-row: 3; max-width: calc(421 * var(--u)); }
+  .about__label { display: block; grid-column: 1 / 3; grid-row: 1; padding-bottom: 0; }   /* отступ до заголовка задаёт ряд (35) */
+  .about__title { grid-column: 1 / 3; grid-row: 2; max-width: calc(475 * var(--u)); padding-bottom: calc(16 * var(--u)); }   /* наименьший отступ до абзаца; в макете ряд тянется до 216 */
+  .about__lead { grid-column: 1 / 3; grid-row: 3; max-width: max(calc(293 * var(--u)), 24.4em); padding-bottom: calc(32 * var(--u)); }   /* строки как в макете и при крупном мелком тексте */
   .about__act { grid-column: 1 / 3; grid-row: 4; flex-direction: row; align-items: center; gap: calc(16 * var(--u)); }
   .about__act .btn { width: auto; }
-  .about__photos { grid-column: 3 / 5; grid-row: 1 / 5; height: calc(357 * var(--u)); grid-template-columns: calc(276 * var(--u)) calc(276 * var(--u)); column-gap: calc(16 * var(--u)); }
+  .about__photos { grid-column: 3 / 5; grid-row: 1 / 5; height: auto; min-height: calc(376 * var(--u)); align-self: stretch;   /* выше макета, только если колонка текста не помещается (узкий планшет) — низы остаются вровень */
+    grid-template-columns: calc(276 * var(--u)) calc(276 * var(--u)); column-gap: calc(16 * var(--u)); }
 }
 
 /* ===== 5. Услуги: 568 / 300 ===== */
@@ -125,8 +127,8 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
   }
   .svc { grid-column: auto; }
   /* ширины текстов как в Тильде — от них зависят переносы строк */
-  .svc:nth-child(1) { max-width: calc(186 * var(--u)); } .svc:nth-child(2) { max-width: calc(231 * var(--u)); }
-  .svc:nth-child(3) { max-width: calc(209 * var(--u)); } .svc:nth-child(4) { max-width: calc(194 * var(--u)); }
+  .svc:nth-child(1) { max-width: calc(235 * var(--u)); } .svc:nth-child(2) { max-width: calc(213 * var(--u)); }
+  .svc:nth-child(3) { max-width: calc(235 * var(--u)); } .svc:nth-child(4) { max-width: calc(225 * var(--u)); }
   .svc__text { margin-top: calc(8 * var(--u)); }
 }
 
