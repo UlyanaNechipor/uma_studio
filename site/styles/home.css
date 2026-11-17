@@ -68,29 +68,37 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
   .prow__pics { display: none; }
 }
 
-/* ===== 3. Эксперименты: 1172 / 889 ===== */
+/* ===== 3. Эксперименты: макет Figma «Landing Arine» 2625:27773 =====
+   Десктоп: 4 колонки, под каждой картинкой подпись; низы колонок на одной линии.
+   Мобилка: колонки раскрываются (display: contents), порядок и ширины — как раньше. */
 .lab { text-align: center; }
 .lab__title, .lab__lead, .lab__grid { grid-column: 1 / -1; }
 .lab__lead { margin: calc(24 * var(--u)) auto 0; max-width: calc(254 * var(--u)); }
 .lab__grid {
   display: grid; margin-top: calc(24 * var(--u));
   grid-template-columns: var(--g-cols); column-gap: var(--g-gap);   /* те же колонки, что у .grid (вместо subgrid — он только с Safari 16) */
-  grid-template-rows: calc(180 * var(--uw)) calc(180 * var(--uw)) calc(185 * var(--uw)) calc(200 * var(--uw)) calc(181 * var(--uw));
-  row-gap: calc(8 * var(--u));
+  row-gap: calc(16 * var(--u)); align-items: start;
 }
-.lab__it { overflow: hidden; }
+.lab__col { display: contents; }
+.lab__it { margin: 0; text-align: left; min-width: 0; }
+.lab__ph { overflow: hidden; height: calc(180 * var(--uw)); }
+.lab__ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lab__cap { margin-top: calc(6 * var(--u)); }
 .lab__it--m-wide { grid-column: 1 / -1; }
-/* порядок на мобилке как в Тильде */
+/* порядок и высоты на мобилке как в Тильде */
 .lab__it--a1 { order: 1; } .lab__it--d2 { order: 2; } .lab__it--a2 { order: 3; }
 .lab__it--c1 { order: 4; } .lab__it--b  { order: 5; } .lab__it--c2 { order: 6; } .lab__it--d1 { order: 7; }
+.lab__it--c1 .lab__ph { height: calc(185 * var(--uw)); }
+.lab__it--b .lab__ph, .lab__it--c2 .lab__ph { height: calc(200 * var(--uw)); }
+.lab__it--d1 .lab__ph { height: calc(181 * var(--uw)); }
 @media (min-width: 768px) {
   .lab__lead { margin-top: calc(34 * var(--u)); max-width: none; }
-  .lab__grid { margin-top: calc(31 * var(--u)); grid-template-rows: calc(180 * var(--u)) calc(362 * var(--u)); row-gap: calc(16 * var(--u)); }
-  .lab__it { order: 0 !important; grid-column: auto; }
-  .lab__it--a1 { grid-area: 1 / 1; } .lab__it--a2 { grid-area: 2 / 1; }
-  .lab__it--b  { grid-area: 1 / 2 / 3 / 3; }
-  .lab__it--c1 { grid-area: 1 / 3; } .lab__it--c2 { grid-area: 2 / 3; }
-  .lab__it--d1 { grid-area: 1 / 4; } .lab__it--d2 { grid-area: 2 / 4; }
+  .lab__grid { margin-top: calc(36 * var(--u)); }
+  .lab__col { display: flex; flex-direction: column; gap: calc(12 * var(--u)); }
+  .lab__it { order: 0 !important; grid-column: auto !important; }
+  /* высоты по макету: px макета при колонке 372 → колонка 272 (одинаково для всех колонок, чтобы низы совпали) */
+  .lab__ph, .lab__it .lab__ph { height: calc(var(--h) * 272 / 372 * var(--u)); }
+  .lab__cap { margin-top: calc(6 * var(--u)); min-height: calc(2 * var(--t-small-lh) * 1em); }
 }
 
 /* ===== 4. О нас: 674 / 736 ===== */

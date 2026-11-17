@@ -110,7 +110,12 @@ const lab = `
   <h2 class="lab__title ty-h2" id="lab-title" data-fill>${lines(h.lab.title)}</h2>
   <p class="lab__lead ty-small ty-grey">${typo(h.lab.lead)}</p>
   <div class="lab__grid">
-    ${h.lab.images.map((x) => `<figure class="lab__it lab__it--${x.d} lab__it--m-${x.m}">${img(x.src, '', '', false, x.m === 'wide' ? '(min-width: 768px) 25vw, 100vw' : '(min-width: 768px) 25vw, 50vw')}</figure>`).join('\n    ')}
+    ${[['a1', 'a2'], ['b'], ['c2', 'c1'], ['d1', 'd2']].map((col) => `<div class="lab__col">${col.map((k) => h.lab.images.find((x) => x.d === k)).map((x) => `
+      <figure class="lab__it lab__it--${x.d} lab__it--m-${x.m}" style="--h:${x.h}">
+        <div class="lab__ph">${img(x.src, '', '', false, x.m === 'wide' ? '(min-width: 768px) 25vw, 100vw' : '(min-width: 768px) 25vw, 50vw')}</div>
+        <figcaption class="lab__cap ty-small ty-grey">${typo(x.cap)}</figcaption>
+      </figure>`).join('')}
+    </div>`).join('\n    ')}
   </div>
 </section>`;
 

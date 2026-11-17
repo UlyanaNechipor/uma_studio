@@ -159,6 +159,7 @@ html.rm-off .hg__slide img { transform: none !important; }
 html.light-theme .pv__frame { box-shadow: 0 30px 60px -24px rgba(0,0,0,.3); }
 
 /* ---------- «Эксперименты»: фото приближается ---------- */
+/* картинка приближается внутри своей рамки, подпись не двигается */
 .lab__it img { transition: transform 1s var(--m-out); }
 @media (hover: hover) and (pointer: fine) { .lab__it:hover img { transform: scale(1.06); } }
 .lab__it.is-near img { transform: scale(1.06); transition-duration: 1.4s; transition-delay: var(--pj-delay, 0s); }
