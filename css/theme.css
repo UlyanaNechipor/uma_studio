@@ -9,7 +9,7 @@
     --border: rgba(255, 255, 255, 0.25); 
 }
 body.light-theme { 
-    --bg: #f0f0f0; 
+    --bg: #f2f1ed;   /* тёплая бумага, как в статичной версии (было #f0f0f0 — холодный, белёсый) */
     --txt: #1a1a1a; 
     --border: rgba(26, 26, 26, 0.15); 
 }
@@ -28,6 +28,8 @@ body.light-theme .uma-invert-white, body.light-theme .uma-invert-white .tn-atom,
 body.light-theme h1.uma-invert-white, body.light-theme h2.uma-invert-white, body.light-theme h3.uma-invert-white, body.light-theme .uma-invert-white h1, body.light-theme .uma-invert-white h2, body.light-theme .uma-invert-white h3 {
     font-weight: 480 !important;
 }
+/* «Услуги»: заголовки чуть плотнее в светлой теме — по весу как белые на тёмном */
+body.light-theme #rec5645367701 .uma-invert-white, body.light-theme #rec5645367701 .uma-invert-white .tn-atom { font-weight: 520 !important; }
 body.light-theme .t-menu__link-item { color: var(--txt) !important; font-weight: 450 !important; }
 
 /* 🛡️ АБСОЛЮТНАЯ НЕПРИКОСНОВЕННОСТЬ ДЛЯ СЕРОГО ЦВЕТА #767575 */
