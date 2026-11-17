@@ -337,9 +337,6 @@
     var box = $('[data-gallery]'); if (!box) return;
     var strip = $('.hg__strip', box), btn = $('.hg__pause', box);
     var slides = $$('.hg__slide', box), n = slides.length;
-    // копия первого кадра в конце — бесконечная лента без рывка
-    var clone = slides[0].cloneNode(true); clone.classList.remove('is-active'); clone.setAttribute('aria-hidden', 'true'); strip.appendChild(clone);
-    slides.push(clone);
     // сначала только первый кадр: остальные не отнимают у него канал на медленной сети и догружаются следом
     var first = $('img', slides[0]);
     function whenLoaded(im, cb, max) {
@@ -351,19 +348,29 @@
     whenLoaded(first, function () {
       slides.forEach(function (s, k) { var im = $('img', s); if (im && k) setTimeout(function () { im.loading = 'eager'; }, k * 200); });
     }, 3000);
+    /* Кадры лежат друг на друге. Новый въезжает с одной стороны и выталкивает старый в другую;
+       направление меняется по кругу: сверху вниз, снизу вверх, слева направо, справа налево.
+       [x, y] — откуда въезжает новый кадр (в долях кадра); старый уходит в противоположную сторону. */
+    var DIRS = [[0, -1], [0, 1], [-1, 0], [1, 0]], d = 0;
     var i = 0, timer = 0, paused = false, visible = true, shown = false;
-    function go(k, jump) {
-      i = k;
-      strip.style.transition = jump ? 'none' : '';
-      strip.style.transform = 'translate3d(0,' + (-100 * i) + '%,0)';
-      slides.forEach(function (s, j) { s.classList.toggle('is-active', j === i); });
-      if (jump) { strip.offsetHeight; strip.style.transition = ''; }
+    function place(sl, x, y, anim) {
+      sl.style.transition = anim ? '' : 'none';
+      sl.style.transform = 'translate3d(' + (x * 100) + '%,' + (y * 100) + '%,0)';
     }
-    strip.addEventListener('transitionend', function (e) {
-      if (e.target === strip && i === n) { slides[0].classList.add('is-active'); slides[n].classList.remove('is-active'); go(0, true); }
-    });
-    function next() { if (i === n) go(0, true); go(i + 1); }
-    function prev() { if (i === 0) go(n, true); go(i - 1); }
+    slides.forEach(function (sl, k) { place(sl, 0, k ? 1 : 0, false); sl.style.visibility = k ? 'hidden' : ''; });
+    function go(k, dir) {
+      if (k === i) return;
+      var inc = slides[k], out = slides[i];
+      // новый — за краем, без анимации
+      place(inc, dir[0], dir[1], false); inc.style.visibility = ''; inc.style.zIndex = 2; out.style.zIndex = 1;
+      inc.offsetHeight;
+      place(inc, 0, 0, true); place(out, -dir[0], -dir[1], true);
+      out.classList.remove('is-active'); inc.classList.add('is-active');
+      var o = out; setTimeout(function () { if (!o.classList.contains('is-active')) o.style.visibility = 'hidden'; }, 1000);
+      i = k;
+    }
+    function next(dir) { go((i + 1) % n, dir || DIRS[d++ % DIRS.length]); }
+    function prev(dir) { go((i - 1 + n) % n, dir); }
     function schedule() {
       clearTimeout(timer);
       if (!shown || paused || !visible || document.hidden || reduce) return;
@@ -381,9 +388,9 @@
     box.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
     box.addEventListener('touchend', function (e) {
       if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null;
-      if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); schedule(); }
+      if (Math.abs(dx) > 40) { dx < 0 ? next([1, 0]) : prev([-1, 0]); schedule(); }
     });
-    if (mouse) { box.tabIndex = 0; box.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { next(); schedule(); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { prev(); schedule(); } }); }
+    if (mouse) { box.tabIndex = 0; box.addEventListener('keydown', function (e) { var K = { ArrowRight: [1, 0], ArrowLeft: [-1, 0], ArrowDown: [0, 1], ArrowUp: [0, -1] }[e.key]; if (K) { e.preventDefault(); (e.key === 'ArrowRight' || e.key === 'ArrowDown' ? next : prev)(K); schedule(); } }); }
     if (window.IntersectionObserver) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; schedule(); }).observe(box);
     document.addEventListener('visibilitychange', schedule);
     ready.push(function () {
