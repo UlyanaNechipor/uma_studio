@@ -75,8 +75,9 @@ html.js.hero-in [data-intro] { opacity: 1; transform: none; }
 html.js .hg__frame { clip-path: inset(100% 0 0 0); transition: clip-path 1.25s var(--m-out); }
 html.js .hg.is-in .hg__frame { clip-path: inset(0); }
 html.js .hg:not(.is-in) .hg__frame { visibility: hidden; }
-.hg__strip { height: 100%; transition: transform .8s var(--m-inout); will-change: transform; }
-.hg__slide { position: relative; height: 100%; overflow: hidden; }
+.hg__strip { position: relative; height: 100%; }
+/* кадры друг на друге: въезжают с разных сторон (направление задаёт site.js) */
+.hg__slide { position: absolute; top: 0; right: 0; bottom: 0; left: 0; overflow: hidden; transition: transform .8s var(--m-inout); will-change: transform; }
 .hg__slide img { transform: scale(1.22); transition: transform 1.05s var(--m-out); }
 .hg__slide.is-active img { transform: none; }
 .hg:not(.is-in) .hg__slide.is-active img { transform: scale(1.28); }
@@ -185,7 +186,7 @@ html.rm.js .hero__aside { clip-path: none; opacity: 0; transition: opacity 1s ea
 html.rm.js .hero__aside.is-in { opacity: 1; }
 /* галерея: кадры сменяются растворением, а не сдвигом */
 html.rm .hg__strip { display: grid; transform: none !important; transition: none; }
-html.rm .hg__slide { grid-area: 1 / 1; opacity: 0; transition: opacity .9s ease; }
+html.rm .hg__slide { grid-area: 1 / 1; opacity: 0; transform: none !important; visibility: visible !important; transition: opacity .9s ease; }
 html.rm .hg__slide.is-active { opacity: 1; }
 html.rm .hg__slide img, html.rm .pv__slide img, html.rm .lab__it img { transform: none !important; }
 html.rm .pv__frame { transform: none; clip-path: none; }
