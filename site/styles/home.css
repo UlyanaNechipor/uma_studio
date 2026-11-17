@@ -137,6 +137,7 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 .services { row-gap: calc(36 * var(--u)); }
 .svc { grid-column: 1 / -1; }
 .svc__title { font-weight: var(--w-text); color: var(--txt-soft); }
+html.light-theme .svc__title { font-weight: 520; }   /* в светлой теме чуть плотнее — по весу как белые на тёмном */
 .svc__text { margin-top: calc(4 * var(--u)); }
 @media (min-width: 768px) {
   .services {
