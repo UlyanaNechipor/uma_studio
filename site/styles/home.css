@@ -103,6 +103,8 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
   .lab__grid { align-items: stretch; }
   .lab__col > .lab__it:last-child { flex: 1 0 auto; display: flex; flex-direction: column; }
   .lab__col > .lab__it:last-child > .lab__ph { flex: 1 0 auto; }
+  /* у нижних карточек место под подпись в две строки у всех: картинки кончаются на одной линии, даже если одна подпись переносится */
+  .lab__col > .lab__it:last-child > .lab__cap { min-height: calc(2 * var(--t-small-lh) * 1em); }
   /* высокая карточка = две соседние + подпись и отступ между ними */
   .lab__it--b .lab__ph { height: calc((293 + 509) * 272 / 372 * var(--u) + 38 * var(--u)); }
 }
