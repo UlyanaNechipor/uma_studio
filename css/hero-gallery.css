@@ -40,7 +40,7 @@ html body.t-body #allrecords .uma-hg-host:has(.uma-hg:not(.is-in)) { opacity: 0 
 html body.t-body #allrecords .uma-hg-host { transition: opacity .3s ease !important; }
 .uma-hg:not(.is-in) .uma-hg__frame { visibility: hidden; }
 
-/* кадры друг на друге: новый проявляется через мягкую шторку (js/hero-gallery.js) */
+/* кадры друг на друге: въезжают с разных сторон (направление задаёт js/hero-gallery.js) */
 .uma-hg__strip {
     position: relative;
     height: 100%;
@@ -49,6 +49,8 @@ html body.t-body #allrecords .uma-hg-host { transition: opacity .3s ease !import
     position: absolute;
     top: 0; right: 0; bottom: 0; left: 0;
     overflow: hidden;
+    transition: transform var(--hg-slide) var(--hg-ease);
+    will-change: transform;
 }
 .uma-hg__slide img {
     position: absolute;
