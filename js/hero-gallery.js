@@ -166,31 +166,40 @@
     function mark(k) {
       for (var c = 0; c < cellsEl.length; c++) cellsEl[c].classList.toggle('is-active', c === k);
     }
-    /* Новый кадр въезжает с одной стороны и выталкивает старый в другую; направление меняется по кругу:
-       сверху вниз, снизу вверх, слева направо, справа налево. [x, y] — откуда въезжает новый кадр. */
-    var DIRS = [[0, -1], [0, 1], [-1, 0], [1, 0]], d = 0, settleT = null;
-    function place(el, x, y, anim) {
-      el.style.transition = anim ? '' : 'none';
-      el.style.transform = 'translate3d(' + (x * 100) + '%,' + (y * 100) + '%,0)';
+    /* Кадры лежат друг на друге и не двигаются: новый проявляется поверх старого через мягкую
+       размытую границу (как переходы в шоуриле khasiyev.com). Направление шторки меняется по кругу:
+       сверху вниз, снизу вверх, слева направо, справа налево и по диагоналям. */
+    var ANG = [180, 0, 90, 270, 135, 315], WIPE = 1100, FEATHER = 35, d = 0, raf = 0, endT = null, outEl = null;
+    function maskOf(el, v) { el.style.webkitMaskImage = v; el.style.maskImage = v; }
+    function finish() {
+      cancelAnimationFrame(raf); clearTimeout(endT);
+      var cur = cellsEl[i]; maskOf(cur, ''); cur.style.zIndex = '';
+      if (outEl) { outEl.classList.remove('is-active'); outEl.style.visibility = 'hidden'; outEl.style.zIndex = ''; outEl = null; }
+      busy = false;
     }
-    function go(k, dir) {
+    function go(k, ang) {
       if (busy || k === i) return;
       var inc = cellsEl[k], out = cellsEl[i];
-      place(inc, dir[0], dir[1], false); inc.style.visibility = ''; inc.style.zIndex = 2; out.style.zIndex = 1;
+      outEl = out; out.style.zIndex = 1;
+      inc.style.zIndex = 2; inc.style.visibility = '';
+      maskOf(inc, 'linear-gradient(' + ang + 'deg, #000 -' + FEATHER + '%, transparent 0%)');
       inc.offsetHeight;
-      place(inc, 0, 0, true); place(out, -dir[0], -dir[1], true);
-      i = k; mark(i);
-      busy = true;
+      inc.classList.add('is-active');
+      i = k; busy = true;
       live.textContent = slides[i].title || '';
-      clearTimeout(settleT);
-      settleT = setTimeout(function () { settle(out); }, 1000);   // по времени: transitionend в фоновой вкладке может не прийти
+      var t0 = 0;
+      function step(t) {
+        if (!t0) t0 = t;
+        var p = Math.min(1, (t - t0) / WIPE), e = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        var edge = e * (100 + FEATHER);
+        maskOf(inc, 'linear-gradient(' + ang + 'deg, #000 ' + (edge - FEATHER).toFixed(2) + '%, transparent ' + edge.toFixed(2) + '%)');
+        if (p < 1) raf = requestAnimationFrame(step); else finish();
+      }
+      raf = requestAnimationFrame(step);
+      endT = setTimeout(finish, WIPE + 400);   // фоновая вкладка: кадры анимации не идут — доводим по таймеру
     }
-    function settle(out) {
-      busy = false;
-      if (out && !out.classList.contains('is-active')) out.style.visibility = 'hidden';
-    }
-    function next(dir) { go((i + 1) % n, dir || DIRS[d++ % DIRS.length]); }
-    function prev(dir) { go((i - 1 + n) % n, dir || [-1, 0]); }
+    function next(ang) { go((i + 1) % n, ang == null ? ANG[d++ % ANG.length] : ang); }
+    function prev(ang) { go((i - 1 + n) % n, ang == null ? 90 : ang); }
     function schedule() {
       clearTimeout(timer);
       if (!shown || !visible || paused || document.hidden) return;
@@ -217,7 +226,7 @@
       box.addEventListener('touchend', function (e) {
         var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
         if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3 && Date.now() - t0 < 800) {
-          if (dx < 0) next([1, 0]); else prev([-1, 0]);
+          if (dx < 0) next(270); else prev(90);
           schedule();
         }
       }, { passive: true });
@@ -226,8 +235,8 @@
     /* ---------- клавиатура ---------- */
     if (mouse) {
       box.addEventListener('keydown', function (e) {
-        var K = { ArrowRight: [1, 0], ArrowLeft: [-1, 0], ArrowDown: [0, 1], ArrowUp: [0, -1] }[e.key];
-        if (K) { e.preventDefault(); (e.key === 'ArrowRight' || e.key === 'ArrowDown' ? next : prev)(K); schedule(); }
+        var K = { ArrowRight: 270, ArrowLeft: 90, ArrowDown: 180, ArrowUp: 0 }[e.key];
+        if (K != null) { e.preventDefault(); (e.key === 'ArrowRight' || e.key === 'ArrowDown' ? next : prev)(K); schedule(); }
       });
     }
 
@@ -255,7 +264,7 @@
       onScroll();
     }
 
-    for (var c = 0; c < cellsEl.length; c++) { place(cellsEl[c], 0, c ? 1 : 0, false); cellsEl[c].style.visibility = c ? 'hidden' : ''; }
+    for (var c = 0; c < cellsEl.length; c++) cellsEl[c].style.visibility = c ? 'hidden' : '';
     mark(0);
 
     // раскрытие: после прелоадера (или сразу, если его нет)
