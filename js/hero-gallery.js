@@ -125,8 +125,8 @@
     host.classList.add('uma-hg-host');
 
     var w = Math.round(host.getBoundingClientRect().width) || 1200;
-    // последняя ячейка — копия первой: из конца в начало лента едет дальше, а не назад
-    var cells = slides.concat([slides[0]]).map(function (s, i) {
+    // кадры лежат друг на друге и въезжают с разных сторон (см. go)
+    var cells = slides.map(function (s, i) {
       return '<div class="uma-hg__slide">' +
         '<img alt="' + esc(s.alt || s.title) + '" decoding="async"' + (i < 2 ? '' : ' loading="lazy"') +
         ' src="' + esc(s.src) + '"' + (s.srcset ? ' srcset="' + esc(s.srcset) + '" sizes="' + w + 'px"' : '') +
@@ -166,39 +166,31 @@
     function mark(k) {
       for (var c = 0; c < cellsEl.length; c++) cellsEl[c].classList.toggle('is-active', c === k);
     }
-    var settleT = null;
-    function go(k, jump) {
-      if (busy && !jump) return;
-      i = k;
-      strip.style.transition = jump ? 'none' : '';
-      strip.style.transform = 'translate3d(0,' + (-100 * i) + '%,0)';
-      mark(i);
-      if (!jump) {
-        busy = true;
-        live.textContent = slides[i % n].title || '';
-        // страховка: если transitionend не придёт (фоновая вкладка), лента не застрянет
-        clearTimeout(settleT);
-        settleT = setTimeout(settle, 1400);
-      }
+    /* Новый кадр въезжает с одной стороны и выталкивает старый в другую; направление меняется по кругу:
+       сверху вниз, снизу вверх, слева направо, справа налево. [x, y] — откуда въезжает новый кадр. */
+    var DIRS = [[0, -1], [0, 1], [-1, 0], [1, 0]], d = 0, settleT = null;
+    function place(el, x, y, anim) {
+      el.style.transition = anim ? '' : 'none';
+      el.style.transform = 'translate3d(' + (x * 100) + '%,' + (y * 100) + '%,0)';
     }
-    function settle() {
+    function go(k, dir) {
+      if (busy || k === i) return;
+      var inc = cellsEl[k], out = cellsEl[i];
+      place(inc, dir[0], dir[1], false); inc.style.visibility = ''; inc.style.zIndex = 2; out.style.zIndex = 1;
+      inc.offsetHeight;
+      place(inc, 0, 0, true); place(out, -dir[0], -dir[1], true);
+      i = k; mark(i);
+      busy = true;
+      live.textContent = slides[i].title || '';
       clearTimeout(settleT);
-      if (!busy) return;
+      settleT = setTimeout(function () { settle(out); }, 1000);   // по времени: transitionend в фоновой вкладке может не прийти
+    }
+    function settle(out) {
       busy = false;
-      if (i === n) {
-        go(0, true);
-        strip.offsetHeight;
-        strip.style.transition = '';
-      }
+      if (out && !out.classList.contains('is-active')) out.style.visibility = 'hidden';
     }
-    strip.addEventListener('transitionend', function (e) { if (e.target === strip) settle(); });
-
-    function next() { if (busy) return; if (i < n) go(i + 1); }
-    function prev() {
-      if (busy) return;
-      if (i === 0) { go(n, true); strip.offsetHeight; strip.style.transition = ''; }
-      go(i - 1);
-    }
+    function next(dir) { go((i + 1) % n, dir || DIRS[d++ % DIRS.length]); }
+    function prev(dir) { go((i - 1 + n) % n, dir || [-1, 0]); }
     function schedule() {
       clearTimeout(timer);
       if (!shown || !visible || paused || document.hidden) return;
@@ -225,7 +217,7 @@
       box.addEventListener('touchend', function (e) {
         var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
         if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3 && Date.now() - t0 < 800) {
-          if (dx < 0) next(); else prev();
+          if (dx < 0) next([1, 0]); else prev([-1, 0]);
           schedule();
         }
       }, { passive: true });
@@ -234,8 +226,8 @@
     /* ---------- клавиатура ---------- */
     if (mouse) {
       box.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowRight') { e.preventDefault(); next(); schedule(); }
-        else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); schedule(); }
+        var K = { ArrowRight: [1, 0], ArrowLeft: [-1, 0], ArrowDown: [0, 1], ArrowUp: [0, -1] }[e.key];
+        if (K) { e.preventDefault(); (e.key === 'ArrowRight' || e.key === 'ArrowDown' ? next : prev)(K); schedule(); }
       });
     }
 
@@ -263,9 +255,8 @@
       onScroll();
     }
 
-    go(0, true);
-    strip.offsetHeight;
-    strip.style.transition = '';
+    for (var c = 0; c < cellsEl.length; c++) { place(cellsEl[c], 0, c ? 1 : 0, false); cellsEl[c].style.visibility = c ? 'hidden' : ''; }
+    mark(0);
 
     // раскрытие: после прелоадера (или сразу, если его нет)
     function reveal() {

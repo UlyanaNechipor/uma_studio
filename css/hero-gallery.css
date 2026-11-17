@@ -40,16 +40,17 @@ html body.t-body #allrecords .uma-hg-host:has(.uma-hg:not(.is-in)) { opacity: 0 
 html body.t-body #allrecords .uma-hg-host { transition: opacity .3s ease !important; }
 .uma-hg:not(.is-in) .uma-hg__frame { visibility: hidden; }
 
-/* лента кадров: едет по вертикали, как превью проектов на десктопе */
+/* кадры друг на друге: въезжают с разных сторон (направление задаёт js/hero-gallery.js) */
 .uma-hg__strip {
-    height: 100%;
-    transition: transform var(--hg-slide) var(--hg-ease);
-    will-change: transform;
-}
-.uma-hg__slide {
     position: relative;
     height: 100%;
+}
+.uma-hg__slide {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
     overflow: hidden;
+    transition: transform var(--hg-slide) var(--hg-ease);
+    will-change: transform;
 }
 .uma-hg__slide img {
     position: absolute;
@@ -113,7 +114,7 @@ html body.t-body #allrecords .uma-hg-host { transition: opacity .3s ease !import
 
 /* без анимаций по настройке системы: кадры просто сменяются */
 .uma-hg.is-reduced .uma-hg__frame { clip-path: none; transition: none; }
-.uma-hg.is-reduced .uma-hg__strip { transition: none; }
+.uma-hg.is-reduced .uma-hg__slide { transition: none !important; }
 .uma-hg.is-reduced .uma-hg__slide img { transform: none !important; transition: none; }
 .uma-hg.is-reduced .uma-hg__pause { transition: none; }
 
