@@ -77,11 +77,11 @@ html.js .hg.is-in .hg__frame { clip-path: inset(0); }
 html.js .hg:not(.is-in) .hg__frame { visibility: hidden; }
 .hg__strip { position: relative; height: 100%; }
 /* кадры друг на друге: въезжают с разных сторон (направление задаёт site.js) */
-.hg__slide { position: absolute; top: 0; right: 0; bottom: 0; left: 0; overflow: hidden; transition: transform .8s var(--m-inout); will-change: transform; }
+.hg__slide { position: absolute; top: 0; right: 0; bottom: 0; left: 0; overflow: hidden; transition: transform .7s var(--m-inout); will-change: transform; }
 .hg__slide img { transform: scale(1.22); transition: transform 1.05s var(--m-out); }
 .hg__slide.is-active img { transform: none; }
 .hg:not(.is-in) .hg__slide.is-active img { transform: scale(1.28); }
-.hg.is-in .hg__slide.is-active img { transition-duration: 1.6s; }
+.hg.is-in .hg__slide.is-active img { transition-duration: 1.1s; }
 .hg__pause {
   position: absolute; right: 6px; bottom: 6px; z-index: 2; width: 32px; height: 32px;
   display: grid; place-items: center; color: #fff; opacity: 0; transition: opacity .6s ease .9s, transform .12s ease;
