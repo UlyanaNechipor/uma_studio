@@ -13,3 +13,6 @@ html.uma-old-core #uma-logo-wrap .logo-fill-text { fill: var(--txt, #fbfbfb) !im
         width: min(calc(41px * var(--pl-k, 1)), 72px) !important;
     }
 }
+
+/* название студии: все слова одной плотности (и при старой вставке core.html, где второе слово тоньше) */
+.logo-w2 { font-weight: 700 !important; }
