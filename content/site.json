@@ -1,6 +1,6 @@
 {
   "_about": "Общие данные сайта: название, навигация, контакты. Источник — живой сайт umastudio.tilda.ws и js/footer.js, js/site-header.js (снято 2026-11-09).",
-  "brand": "Working Title",
+  "brand": "Shape of Sense",
   "lang": "ru",
   "url": "https://umastudio.tilda.ws/",
   "seo": {
@@ -33,7 +33,7 @@
   },
   "footer": {
     "year": "2026",
-    "made": "Made by Working Title ©2026"
+    "made": "Made by Shape of Sense ©2026"
   },
   "themes": {
     "dark": {

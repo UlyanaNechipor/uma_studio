@@ -1,4 +1,4 @@
-/* Working Title · поведение страницы. Без библиотек.
+/* Shape of Sense · поведение страницы. Без библиотек.
    Порядок при загрузке:
      прелоадер (логотип заливается и улетает в шапку) → меню в шапке →
      тексты первого экрана → галерея и фигура справа раскрываются шторкой → заливка заголовка.
@@ -605,7 +605,7 @@
     window.__umaBoot = 1;   // для страховки в <head>: скрипт запустился
     // каждая часть — в своём try: сбой одного эффекта (старый браузер, нет API) не должен останавливать остальные,
     // а главное — не должен оставить прелоадер на экране и скрытые блоки
-    function safe(fn, name) { try { fn(); } catch (e) { try { console.error('Working Title:', name, e); } catch (_) {} } }
+    function safe(fn, name) { try { fn(); } catch (e) { try { console.error('Shape of Sense:', name, e); } catch (_) {} } }
     // если прелоадер не отработал — показываем страницу как есть
     function rescue() {
       var pl = $('#preloader'); if (pl) pl.classList.add('is-gone');
@@ -621,7 +621,7 @@
     safe(projects, 'projects'); safe(labZoom, 'labZoom'); safe(reveal, 'reveal');
     var go = function () {
       safe(fillInit, 'fillInit');
-      try { preloader(); } catch (e) { try { console.error('Working Title: preloader', e); } catch (_) {} rescue(); }
+      try { preloader(); } catch (e) { try { console.error('Shape of Sense: preloader', e); } catch (_) {} rescue(); }
     };
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(go, go); else go();
     // совсем без шрифтов и без ответа — не держим экран дольше 10 секунд

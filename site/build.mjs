@@ -1,4 +1,4 @@
-// Working Title · сборка статического сайта без Тильды и без зависимостей.
+// Shape of Sense · сборка статического сайта без Тильды и без зависимостей.
 // Запуск: node site/build.mjs  →  папка site/dist (её и заливать на хостинг).
 // Тексты берутся из content/*.json, стили — site/styles, картинки — img/ и site/assets/.
 import { readFileSync, writeFileSync, mkdirSync, cpSync, rmSync, existsSync, readdirSync } from 'node:fs';
@@ -9,6 +9,7 @@ import { createHash } from 'node:crypto';
    'full' — настройку не учитывать, анимации как у всех;
    'off'  — движение выключено полностью. */
 const MOTION_REDUCED = 'full';   // решение 2026-11-11: анимации одинаковые на всех устройствах
+
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -19,6 +20,8 @@ const site = j('content/site.json');
 const home = j('content/home.json');
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+// логотип: название капсом, первое слово плотнее (SHAPE), остальные тоньше (OF SENSE)
+const logo = (() => { const w = site.brand.toUpperCase().split(/\s+/); return '<b>' + esc(w[0]) + '</b> ' + esc(w.slice(1).join(' ')); })();
 // типографика: короткие предлоги, союзы и местоимения не остаются в конце строки (неразрывный пробел
 // после них), слова через дефис не рвутся. Применяется ко всем текстам при сборке — без скрипта на странице.
 const GLUE = ['в','во','с','со','из','изо','к','ко','о','об','обо','от','ото','до','по','под','подо','про','на','за','над','надо',
@@ -60,7 +63,7 @@ const btn = (b, kind = 'light') =>
 const header = `
 <header class="hd">
   <canvas class="hd__trail" aria-hidden="true"></canvas>
-  <a class="hd__logo" href="./" aria-label="${esc(site.brand)} — на главную"><b>WORKING</b> TITLE</a>
+  <a class="hd__logo" href="./" aria-label="${esc(site.brand)} — на главную">${logo}</a>
   <nav class="hd__nav" aria-label="Разделы">
     ${site.nav.map((n) => `<a class="hd__link" href="#${n.id}">${esc(n.label)}</a>`).join('\n    ')}
   </nav>
@@ -146,8 +149,8 @@ const cta = `
 const c = site.contacts;
 const footer = `
 <footer class="ft grid">
-  <p class="ft__logo"><b>WORKING</b> TITLE</p>
-  <p class="ft__made ty-small ty-grey">Made by WORKING TITLE ©${esc(site.footer.year)}</p>
+  <p class="ft__logo">${logo}</p>
+  <p class="ft__made ty-small ty-grey">Made by ${esc(site.brand.toUpperCase())} ©${esc(site.footer.year)}</p>
   <nav class="ft__col" aria-label="Компания"><h2 class="ft__h">Компания</h2>
     ${site.nav.map((n) => `<a href="#${n.id}">${esc(n.label)}</a>`).join('')}
     ${c.privacy ? `<a href="${esc(c.privacy)}">Политика конфиденциальности</a>` : '<span>Политика конфиденциальности</span>'}
@@ -178,7 +181,7 @@ ${site.seo.description ? `<meta name="description" content="${esc(site.seo.descr
 </head>
 <body>
 <div class="pl" id="preloader" aria-hidden="true">
-  <div class="pl__logo"><span class="pl__base"><b>WORKING</b> TITLE</span><span class="pl__ink"><b>WORKING</b> TITLE</span></div>
+  <div class="pl__logo"><span class="pl__base">${logo}</span><span class="pl__ink">${logo}</span></div>
 </div>
 <canvas id="trail" aria-hidden="true"></canvas>
 <canvas id="wipe" aria-hidden="true"></canvas>

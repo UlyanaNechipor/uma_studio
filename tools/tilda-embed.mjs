@@ -106,7 +106,7 @@ if (mode === 'assets') {
     .replace(/<meta charset[^>]*>\s*/, '').replace(/<meta name="viewport"[^>]*>\s*/, '').replace(/<title>[^<]*<\/title>\s*/, '')
     .replace(/(<link rel="stylesheet" href="styles\/motion\.css[^>]*>)/, '$1\n<link rel="stylesheet" href="styles/tilda.css">');
   const body = html.slice(html.indexOf('<body>') + 6, html.indexOf('</body>'));
-  const stamp = `<!-- Working Title · статичный сайт в Тильде. Собрано tools/tilda-embed.mjs ${new Date().toISOString().slice(0, 10)}, файлы: ${base} -->\n`;
+  const stamp = `<!-- Shape of Sense · статичный сайт в Тильде. Собрано tools/tilda-embed.mjs ${new Date().toISOString().slice(0, 10)}, файлы: ${base} -->\n`;
   mkdirSync(join(root, 'tilda'), { recursive: true });
   writeFileSync(join(root, 'tilda/static-head.html'), stamp + fix(keep).trim() + '\n');
   writeFileSync(join(root, 'tilda/static-body.html'), stamp + fix(body).trim() + '\n');

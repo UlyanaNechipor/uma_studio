@@ -1,4 +1,4 @@
-/* Working Title — компоненты. Цвета, шрифт и отступы — только из токенов (tokens.css). */
+/* Shape of Sense — компоненты. Цвета, шрифт и отступы — только из токенов (tokens.css). */
 .wt { font-family: var(--font-sans); color: var(--txt); background: var(--bg); -webkit-font-smoothing: antialiased; font-weight: 400; }
 [data-theme="light"] .wt { font-weight: 450; }
 .wt *, .wt *::before, .wt *::after { box-sizing: border-box; }
