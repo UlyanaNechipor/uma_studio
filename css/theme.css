@@ -1,3 +1,6 @@
+/* Manrope с любым весом 200–800: шрифт из настроек Тильды подключён отдельными начертаниями
+   (300/400/500/600/700), и вес 540 светлой темы иначе округлялся бы до 600. Должно стоять первым в файле. */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 /* UMA · theme
    Перенесено из блока Тильды rec4823650601. */
 
@@ -29,7 +32,11 @@ body.light-theme h1.uma-invert-white, body.light-theme h2.uma-invert-white, body
     font-weight: 480 !important;
 }
 /* «Услуги»: заголовки чуть плотнее в светлой теме — по весу как белые на тёмном */
-html body.light-theme #allrecords #rec5645367701 .uma-invert-white .tn-atom { font-weight: 520 !important; }   /* сильнее type-normalize (.tn-atom.uma-body = 400) */
+/* светлая тема: весь текст заметно плотнее (референс liars.co — всё medium). Сильнее type-normalize (.tn-atom.uma-body = 400)
+   и правил отдельных элементов; логотип не трогаем. */
+html body.light-theme #allrecords .t396 .tn-atom:not(.logo-fill-text):not(.logo-bg-text),
+html body.light-theme #allrecords .t396 .tn-atom:not(.logo-fill-text):not(.logo-bg-text) span { font-weight: 540 !important; }
+html body.light-theme .uma-hd__link, html body.light-theme .uma-ft__link, html body.light-theme .uma-ft__col, html body.light-theme .uma-ft__col span { font-weight: 540 !important; }
 body.light-theme .t-menu__link-item { color: var(--txt) !important; font-weight: 450 !important; }
 
 /* 🛡️ АБСОЛЮТНАЯ НЕПРИКОСНОВЕННОСТЬ ДЛЯ СЕРОГО ЦВЕТА #767575 */
