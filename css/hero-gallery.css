@@ -14,7 +14,7 @@ html body.t-body #allrecords .uma-hg-host.t-animate_started {
 .uma-hg {
     --hg-ease: var(--m-inout);   /* резкий разгон и торможение — смена кадра «щелчком» */
     --hg-out:  cubic-bezier(0.16, 1, 0.3, 1);
-    --hg-slide: .8s;
+    --hg-slide: .7s;
     --hg-par: 0px;
     position: absolute;
     inset: 0;
@@ -68,7 +68,7 @@ html body.t-body #allrecords .uma-hg-host { transition: opacity .3s ease !import
 
 /* при первом раскрытии фото «оседает» дольше и сильнее */
 .uma-hg:not(.is-in) .uma-hg__slide.is-active img { transform: translate3d(0, var(--hg-par), 0) scale(1.28); }
-.uma-hg.is-in .uma-hg__slide.is-active img { transition-duration: 1.6s; }
+.uma-hg.is-in .uma-hg__slide.is-active img { transition-duration: 1.1s; }
 
 /* кнопка паузы: две полоски в правом нижнем углу, без подложки */
 .uma-hg__pause {
