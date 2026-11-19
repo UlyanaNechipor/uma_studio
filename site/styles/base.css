@@ -26,7 +26,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .ty-name { font-size: max(var(--min-name), calc(var(--t-name) * var(--u))); line-height: var(--t-name-lh); letter-spacing: var(--t-name-ls); }
 .ty-body { font-size: max(var(--min-body), calc(var(--t-body) * var(--u))); line-height: var(--t-body-lh); letter-spacing: var(--t-body-ls); }
 .ty-small { font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); line-height: var(--t-small-lh); letter-spacing: var(--t-small-ls); }
-.ty-grey { color: var(--grey); font-weight: 400; }   /* серые подписи в обеих темах — 400 */
+.ty-grey { color: var(--grey); font-weight: 400; }   /* серые подписи: 400 в тёмной теме */
+html.light-theme .ty-grey, html.light-theme .hd__link, html.light-theme .ft__col { font-weight: var(--w-text); }   /* в светлой — как весь текст */
 
 /* слова через дефис не рвутся (класс ставит сборка) */
 .nw { white-space: nowrap; }
@@ -56,7 +57,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   display: inline-flex; align-items: center; justify-content: center; gap: calc(8 * var(--u));
   /* ширина — по содержимому с одинаковыми полями слева и справа (не меньше 127 макета), высота не меньше 36 px */
   height: max(36px, calc(36 * var(--u))); min-width: calc(127 * var(--u)); padding-inline: max(14px, calc(16 * var(--u))); border-radius: 2px;
-  font-size: max(var(--min-small), calc(12 * var(--u))); font-weight: 500; letter-spacing: .45px; white-space: nowrap;
+  font-size: max(var(--min-small), calc(12 * var(--u))); font-weight: 500; letter-spacing: .45px; white-space: nowrap;   /* кнопка; в светлой теме 580 — ниже */
   transition: background-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out);
 }
 .btn--light { background: var(--btn-bg); color: var(--btn-fg); }
@@ -114,3 +115,5 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* «уменьшение движения» в системе: режим задаёт MOTION_REDUCED в build.mjs (см. motion.css) */
 html.rm-off * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 html.rm, html.rm * { scroll-behavior: auto !important; }
+
+html.light-theme .btn { font-weight: 580; }
