@@ -1,5 +1,5 @@
 <!-- =========================================================================
-     WORKING TITLE CORE: единственная вставка с кодом в Тильде.
+     SHAPE OF SENSE CORE: единственная вставка с кодом в Тильде.
      Здесь только то, что должно сработать в первую миллисекунду:
      тема до отрисовки, блокировка скролла, прелоадер. Всё остальное
      загрузчик ниже берёт из GitHub: github.com/UlyanaNechipor/uma_studio
@@ -9,7 +9,7 @@
 <!-- Шрифт логотипа: Manrope 700 (WORKING) и 300 (TITLE), только буквы названия -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;700&display=block&text=WORKINGTITLE">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;700&display=block&text=SHAPEOFSENSE">
 
 <script>
 /* ========================================================================= */
@@ -167,7 +167,7 @@ body.light-theme {
     overflow: visible;
 }
 
-/* Логотип WORKING TITLE: контраст начертаний одного шрифта —
+/* Логотип SHAPE OF SENSE: контраст начертаний одного шрифта —
    WORKING плотнее (700), TITLE тоньше (300). Шрифт — Manrope, как на всём сайте. */
 .logo-bg-text,
 .logo-fill-text {
@@ -291,14 +291,14 @@ body.light-theme {
 
         <!-- Бледные буквы (в потоке, задают размер) -->
         <svg class="uma-logo-svg" viewBox="0 0 900 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <text x="0" y="90" class="logo-bg-text"><tspan class="logo-w1">WORKING</tspan><tspan class="logo-w2" dx="26">TITLE</tspan></text>
+            <text x="0" y="90" class="logo-bg-text"><tspan class="logo-w1">SHAPE</tspan><tspan class="logo-w2" dx="26">OF SENSE</tspan></text>
         </svg>
 
         <!-- Заливка: окошко едет вправо, слой внутри едет влево -->
         <div class="uma-reveal">
             <div class="uma-reveal-inner">
                 <svg class="uma-logo-svg" viewBox="0 0 900 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <text x="0" y="90" class="logo-fill-text"><tspan class="logo-w1">WORKING</tspan><tspan class="logo-w2" dx="26">TITLE</tspan></text>
+                    <text x="0" y="90" class="logo-fill-text"><tspan class="logo-w1">SHAPE</tspan><tspan class="logo-w2" dx="26">OF SENSE</tspan></text>
                 </svg>
             </div>
         </div>
@@ -309,15 +309,15 @@ body.light-theme {
 <script>
 /* Логотип в прелоадере (он же логотип в шапке после вылета).
    1. Ждём шрифт логотипа (не дольше 1.5 с), чтобы буквы не перескакивали.
-   2. Компьютер: одна строка WORKING TITLE. Ширина рамки SVG подгоняется под текст,
+   2. Компьютер: одна строка SHAPE OF SENSE. Ширина рамки SVG подгоняется под текст,
       --pl-k держит высоту букв в шапке такой же, как у прежнего логотипа (255 × 100).
-   3. Телефон: две строки — WORKING над TITLE, чтобы логотип поместился в шапку
+   3. Телефон: две строки — SHAPE над OF SENSE, чтобы логотип поместился в шапку
       до первого пункта меню; ширина в шапке — --pl-mw.
    Сменить название: WORDS ниже и текст в двух <text> в разметке. */
 (function () {
   var wrap = document.getElementById('uma-logo-wrap');
   if (!wrap) return;
-  var WORDS = ['WORKING', 'TITLE'];
+  var WORDS = ['SHAPE', 'OF SENSE'];
   var GAP = 14;        // px: отступ логотипа от первого пункта меню на телефоне
   var MOB_H = 30;      // px: высота двухстрочного логотипа в шапке на телефоне
   var SCALE = 0.9;     // кегль логотипа относительно кегля пунктов меню

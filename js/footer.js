@@ -16,7 +16,7 @@
   var ABOUT    = '/#about';
   var PRIVACY  = '';                       // ссылка на страницу политики (например /privacy); пусто — строка без ссылки
   var YEAR     = '2026';
-  var BRAND    = 'Working Title';         // название студии (в футере пишется капсом)
+  var BRAND    = 'Shape of Sense';         // название студии (в футере пишется капсом)
   /* ============================================= */
 
   function link(href, text, ext) {
@@ -27,8 +27,8 @@
   var HTML =
     '<footer class="uma-ft" id="uma-footer">' +
       '<div class="uma-ft__brand">' +
-        '<p class="uma-ft__logo">' + BRAND.replace(/^(\S+)\s+(.+)$/, '<b>$1</b> $2') + '</p>' +
-        '<p class="uma-ft__made">Made by <span>' + BRAND + '</span> ©' + YEAR + '</p>' +
+        '<p class="uma-ft__logo">' + BRAND.toUpperCase().replace(/^(\S+)\s+(.+)$/, '<b>$1</b> $2') + '</p>' +
+        '<p class="uma-ft__made">Made by <span>' + BRAND.toUpperCase() + '</span> ©' + YEAR + '</p>' +
       '</div>' +
       '<nav class="uma-ft__col" aria-labelledby="uma-ft-company">' +
         '<h2 class="uma-ft__title" id="uma-ft-company">Компания</h2>' +

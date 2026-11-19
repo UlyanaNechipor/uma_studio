@@ -1,7 +1,7 @@
 /* UMA · site-header
    Шапка сайта кодом (вместо Zero-блока rec3979597301).
    Вставляется в <div id="uma-header-mount"></div>; если такого блока нет — в начало страницы.
-   • Слева логотип WORKING TITLE (WORKING плотнее, TITLE тоньше) тем же кеглем, что пункты меню.
+   • Слева логотип SHAPE OF SENSE (SHAPE плотнее, OF SENSE тоньше) тем же кеглем, что пункты меню.
    • Пункты «Проекты», «О нас», «Контакты» — плавная прокрутка к якорям Тильды с учётом высоты шапки.
    • Справа переключатель темы (создаёт js/theme-toggle.js): рамка 24 px, луна/солнце чуть меньше.
    • Прелоадер из вставки Тильды улетает точно на место логотипа шапки, после чего логотип
@@ -15,7 +15,7 @@
     ['about',    'О нас'],
     ['contacts', 'Контакты']
   ];
-  var WORDS = ['WORKING', 'TITLE'];
+  var WORDS = ['SHAPE', 'OF SENSE'];
   var BP    = 768;      // px: уже — мобильная раскладка
   var FLY   = 1150;     // мс: вылет логотипа из прелоадера (переход 1.05 с в css/site-header.css) + запас
   var GRID_REC = 'rec3979597401';   // блок, по левому краю содержимого которого встаёт логотип
@@ -31,7 +31,7 @@
     hd.className = 'uma-hd';
     hd.id = 'uma-header';
     hd.innerHTML =
-      '<a class="uma-hd__logo" href="#top" aria-label="Working Title — наверх">' +
+      '<a class="uma-hd__logo" href="#top" aria-label="Shape of Sense — наверх">' +
         '<b>' + WORDS[0] + '</b> ' + WORDS[1] + '</a>' +
       '<nav class="uma-hd__nav" aria-label="Меню">' +
         LINKS.map(function (l, i) {

@@ -1,11 +1,11 @@
 /* UMA · logo
    Страховка на время, пока в Тильде стоит старая вставка (логотип «UMA» в оранжевом).
-   Новая вставка (tilda/core.html, data-uma-core="2") сама рисует WORKING TITLE шрифтом
+   Новая вставка (tilda/core.html, data-uma-core="2") сама рисует SHAPE OF SENSE шрифтом
    Rubik с контрастом начертаний и подгоняет размер — тогда этот файл ничего не делает. */
 (function () {
   var wrap = document.getElementById('uma-logo-wrap');
   if (!wrap || wrap.getAttribute('data-uma-core')) return;
-  var TEXT = 'WORKING TITLE';
+  var TEXT = 'SHAPE OF SENSE';
   wrap.querySelectorAll('text').forEach(function (t) { if (t.textContent.trim() !== TEXT) t.textContent = TEXT; });
   document.documentElement.classList.add('uma-old-core');
   function fit() {

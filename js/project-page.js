@@ -104,7 +104,7 @@
 
     h += '</article>';
     mount.innerHTML = h;
-    if (d.title) document.title = d.title.toUpperCase() + ' — Working Title';
+    if (d.title) document.title = d.title.toUpperCase() + ' — Shape of Sense';
 
     // картинки: плавное появление и запасной адрес, если CDN не ответил
     mount.querySelectorAll('.uma-project__figure img').forEach(function (img) {

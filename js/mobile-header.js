@@ -1,6 +1,6 @@
 /* UMA · mobile-header
    Мобильная шапка (уже BP px), одна строка высотой прежней шапки:
-   слева логотип WORKING TITLE кеглем пунктов меню, справа кнопки Проекты, О нас,
+   слева логотип SHAPE OF SENSE кеглем пунктов меню, справа кнопки Проекты, О нас,
    Контакты и переключатель темы с отступом NAV_GAP между ними.
    • Прелоадер на телефоне: логотип в одну строку во всю ширину; после загрузки он
      прилетает в шапку по центру.
@@ -28,7 +28,7 @@
   // логотип в одну строку и рамка по границам текста
   function singleLine() {
     if (!wrap) return 0;
-    var words = ['WORKING', 'TITLE'];
+    var words = ['SHAPE', 'OF SENSE'];
     var ratio = 0;
     wrap.querySelectorAll('svg').forEach(function (svg) {
       var t = svg.querySelector('text');
@@ -86,7 +86,7 @@
     home = document.createElement('a');
     home.className = 'uma-mh__home';
     home.href = '#logo';
-    home.setAttribute('aria-label', 'Working Title — наверх');
+    home.setAttribute('aria-label', 'Shape of Sense — наверх');
     home.addEventListener('click', function (e) {
       var orig = navButtons().logo;
       e.preventDefault();
