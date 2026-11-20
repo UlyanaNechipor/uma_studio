@@ -115,6 +115,12 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
   .uma-project__count { grid-column: auto; grid-row: auto; width: calc(40 * var(--u)); height: calc(40 * var(--u)); }
 }
 
+/* планшет: двух колонок под «Проект» и «Задачи» мало — берём четыре */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .uma-project__left { grid-column: 1 / 9; }
+  .uma-project__meta { grid-column: 9 / 13; }
+}
+
 /* вступление: абзацы отделены пустой строкой (в разделах отбивки заданы в тексте) */
 .uma-project__intro .uma-project__col p + p { margin-top: calc(var(--t-small-lh) * 1em); }
 
