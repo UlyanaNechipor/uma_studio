@@ -81,7 +81,7 @@
     --base: 1200;
     --uw: var(--u);
     --u-min: 0.64px; --u-max: 1.6px;      /* 768–1920 px окна */
-    --t-h1: 84;   --t-h1-lh: .96;  --t-h1-ls: -.04em;
+    --t-h1: 66;   --t-h1-lh: .96;  --t-h1-ls: -.04em;   /* 5.5% ширины, как заголовок khasiyev.com (79 px на 1440) */
     --t-h2: 40;   --t-h2-lh: 1.02; --t-h2-ls: -.03em;
     --t-name: 20; --t-name-lh: 1;  --t-name-ls: 1px;
     --col-split: 600;  /* вторая половина макета: подписи, тексты, описание проектов */
@@ -109,5 +109,5 @@ html.light-theme { --fill-base: #dcdcd9; --fill-ink: #1a1a1a; }
   --min-body: 0.875rem; --min-small: 0.75rem; --min-nav: 0.625rem;
 }
 @media (min-width: 768px) {
-  :root { --min-h1: 4.2rem; --min-h2: 2rem; --min-name: 1rem; --min-nav: 0.75rem; }
+  :root { --min-h1: 3rem; --min-h2: 2rem; --min-name: 1rem; --min-nav: 0.75rem; }
 }
