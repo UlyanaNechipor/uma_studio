@@ -109,7 +109,7 @@ html.light-theme .ty-grey, html.light-theme .hd__link, html.light-theme .ft__col
   .ft__logo { grid-column: 1 / 3; grid-row: 1; font-size: calc(37.5 * var(--u)); }
   .ft__made { grid-column: 1 / 3; grid-row: 2; align-self: end; }
   .ft__col:nth-of-type(1) { grid-column: 3; grid-row: 1 / 3; }
-  .ft__col:last-child { grid-column: 4; grid-row: 1 / 3; padding-left: calc(100 * var(--u)); }
+  .ft__col:last-child { grid-column: 4; grid-row: 1 / 3; padding-left: calc(84 * var(--u)); }   /* 860 + 84 = 944 — линия «Контакты» в шапке */
 }
 
 /* «уменьшение движения» в системе: режим задаёт MOTION_REDUCED в build.mjs (см. motion.css) */
