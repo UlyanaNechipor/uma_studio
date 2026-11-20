@@ -20,9 +20,12 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 .hero__gallery { grid-column: 1 / -1; grid-row: 3; position: relative; }
 .hero__aside { display: none; }
 @media (min-width: 768px) {
-  .hero { padding-top: calc(120 * var(--u)); grid-template-rows: auto minmax(calc(200 * var(--u)), auto) calc(480 * var(--u)); }
+  .hero { padding-top: calc(120 * var(--u)); grid-template-rows: auto auto calc(480 * var(--u)); }
+  /* видимые расстояния по буквам: текст → заголовок → галерея по 60. Строки заголовка плотные (.96),
+     буквы выходят за строку на .19em сверху и снизу — это добавлено к отступам */
+  .hero__title { padding-bottom: calc(60 * var(--u) + .19em); }
   /* текст первого экрана: каждое предложение с новой строки, переносы заданы в контенте; до заголовка — 60 */
-  .hero__lead { grid-column: 3 / 5; max-width: none; white-space: nowrap; padding-bottom: calc(58 * var(--u)); }   /* + верхний зазор строки заголовка = 60 */
+  .hero__lead { grid-column: 3 / 5; max-width: none; white-space: nowrap; padding-bottom: calc(60 * var(--u) + .19 * max(var(--min-h1), calc(var(--t-h1) * var(--u)))); }
   /* правая картинка начинается на линии пункта «О нас» в шапке (790) и идёт до правого поля (1168);
      галерея — от левого поля до 782, шаг между ними 8 */
   .hero__gallery { grid-column: 1 / -1; width: calc(750 * var(--u)); }
@@ -54,8 +57,8 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 .prow__pics > * { display: block; height: 100%; min-height: 0; overflow: hidden; }
 @media (min-width: 768px) {
   .projects__label, .projects__title { grid-column: 3 / 5; }
-  .projects__title { margin-top: calc(24 * var(--u)); }
-  .projects__list { margin-top: calc(29 * var(--u)); }
+  .projects__title { margin-top: calc(22 * var(--u)); }   /* надпись → заголовок 16 по буквам */
+  .projects__list { margin-top: calc(68 * var(--u)); }    /* заголовок → список 60, как в первом экране */
   .prow, .prow:last-child { height: max(44px, calc(53 * var(--u))); }
   .prow:last-child { border-bottom: 1px solid var(--line); }
   .prow__link {
@@ -95,8 +98,9 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 .lab__it--b .lab__ph, .lab__it--c2 .lab__ph { height: calc(200 * var(--uw)); }
 .lab__it--d1 .lab__ph { height: calc(181 * var(--uw)); }
 @media (min-width: 768px) {
-  .lab__lead { margin-top: calc(34 * var(--u)); max-width: none; }
-  .lab__grid { margin-top: calc(36 * var(--u)); }
+  .lab__lead { margin-top: calc(31 * var(--u)); max-width: none; }   /* заголовок → подпись 24 */
+  .lab__grid { margin-top: calc(58 * var(--u)); }                   /* подпись → карточки 60 */
+  .lab__title { margin-top: calc(8 * var(--u)); }                    /* верх букв на 180 от предыдущего блока */
   .lab__col { display: flex; flex-direction: column; gap: calc(12 * var(--u)); }
   .lab__it { order: 0 !important; grid-column: auto !important; }
   /* высоты по макету: px макета при колонке 372 → колонка 272 (одинаково для всех колонок, чтобы низы совпали) */
@@ -125,11 +129,11 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 @media (min-width: 768px) {
   .about {
     /* ряд заголовка тянется: низ кнопки = низ фото (556), пока тексты помещаются; если нет — блок растёт */
-    grid-template-rows: calc(35 * var(--u)) minmax(min-content, 1fr) auto auto;
+    grid-template-rows: calc(41 * var(--u)) minmax(min-content, 1fr) auto auto;   /* надпись → заголовок 16 */
   }
   .about__label { display: block; grid-column: 1 / 3; grid-row: 1; padding-bottom: 0; }   /* отступ до заголовка задаёт ряд (35) */
-  .about__title { grid-column: 1 / 3; grid-row: 2; max-width: calc(475 * var(--u)); padding-bottom: calc(16 * var(--u)); }   /* наименьший отступ до абзаца; в макете ряд тянется до 216 */
-  .about__lead { grid-column: 1 / 3; grid-row: 3; max-width: max(calc(293 * var(--u)), 24.4em); padding-bottom: calc(32 * var(--u)); }   /* строки как в макете и при крупном мелком тексте */
+  .about__title { grid-column: 1 / 3; grid-row: 2; max-width: calc(475 * var(--u)); padding-bottom: calc(18 * var(--u)); }   /* заголовок → абзац 24 по буквам */   /* наименьший отступ до абзаца; в макете ряд тянется до 216 */
+  .about__lead { grid-column: 1 / 3; grid-row: 3; max-width: max(calc(293 * var(--u)), 24.4em); padding-bottom: calc(31 * var(--u)); }   /* абзац → кнопки 32 */   /* строки как в макете и при крупном мелком тексте */
   .about__act { grid-column: 1 / 3; grid-row: 4; flex-direction: row; align-items: center; gap: calc(16 * var(--u)); }
   .about__act .btn { width: auto; }
   .about__photos { grid-column: 3 / 5; grid-row: 1 / 5; height: auto; min-height: calc(376 * var(--u)); align-self: stretch;   /* выше макета, только если колонка текста не помещается (узкий планшет) — низы остаются вровень */
@@ -164,7 +168,7 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
     grid-template-rows: 1fr auto;   /* кнопки встают низом ровно по низу картинки (160) */
   }
   .cta__img { grid-column: 1; grid-row: 1 / 3; height: calc(160 * var(--u)); }
-  .cta__title { grid-column: 2; grid-row: 1; margin: 0; }
+  .cta__title { grid-column: 2; grid-row: 1; margin: calc(8 * var(--u)) 0 0; }   /* верх букв = верх картинки */
   .cta__act { grid-column: 2; grid-row: 2; align-self: end; margin: 0; gap: calc(16 * var(--u)); flex-wrap: nowrap; }
   .cta__act { align-items: center; }
   .cta__act .btn--light, .cta__act .btn--grey { min-width: calc(127 * var(--u)); }
