@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Статичный сайт для Тильды: сборка → ветка static (файлы для jsDelivr) → вставки tilda/static-head.html и tilda/static-body.html.
+# Статичный сайт для Тильды: сборка → ветка static (файлы для jsDelivr) → tilda/static.json (номер версии).
+# Вставки в Тильде постоянные (tilda/sos-head.html + tilda/sos-page-*.html): загрузчик сам берёт свежую версию.
 # Использование: tools/tilda-static.sh   (FOOT — необязательная приписка к сообщению коммита)
 set -e
 cd "$(dirname "$0")/.."
@@ -10,5 +11,7 @@ git fetch -q origin static 2>/dev/null && git worktree add -q "$WT" origin/stati
 (cd "$WT" && find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} + && cp -R "$OLDPWD/site/dist-tilda/." . && git add -A && { git diff --cached --quiet || git commit -qm "Статичный сайт для Тильды (собрано из main $(git -C "$OLDPWD" rev-parse --short HEAD))${FOOT:-}"; } && git push -q origin HEAD:refs/heads/static)
 SHA=$(git -C "$WT" rev-parse HEAD)
 git worktree remove --force "$WT"
-node tools/tilda-embed.mjs snippets "https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@$SHA/"
+# указатель на свежую версию (запасной путь загрузчика, если GitHub API не ответил)
+printf '{ "sha": "%s" }\n' "$SHA" > tilda/static.json
+node tools/tilda-embed.mjs snippets
 echo "static: $SHA"

@@ -93,29 +93,36 @@ if (mode === 'assets') {
     // классы оформления Тильды (.t-name, .t-title, .t-descr…) получают шрифт из её настроек — у нас свой везде
     'html #allrecords{font-family:var(--f-sans)}\n' +
     'html #allrecords *{font-family:inherit}\n');
-  console.log('site/dist-tilda готова');
-} else if (mode === 'snippets') {
-  if (!base || !/\/$/.test(base)) { console.error('нужен BASE, оканчивающийся на /'); process.exit(1); }
-  // адреса файлов сборки → абсолютные (jsDelivr); ссылки от корня сайта (/rosi, /#projects) остаются как есть
-  const abs = (u) => /^(https?:|data:|mailto:|tel:|#|\/)/.test(u) || u === './' ? u : base + u;
-  const fix = (s) => s
-    .replace(/\b(src|href|data-src|data-cover|poster)="([^"]+)"/g, (m, a, u) => `${a}="${abs(u)}"`)
-    .replace(/\bsrcset="([^"]+)"/g, (m, v) => 'srcset="' + v.split(',').map((x) => { const [u, ...r] = x.trim().split(/\s+/); return [abs(u), ...r].join(' '); }).join(', ') + '"');
-  mkdirSync(join(root, 'tilda'), { recursive: true });
-  // каждая страница сборки → своя пара вставок: index.html → static-head/body, rosi.html → static-rosi-head/body
+  // страницы целиком (часть head и body через <!--sos:body-->) — их по адресу берёт загрузчик tilda/loader.js
+  mkdirSync(join(out, 'pages'), { recursive: true });
   for (const f of readdirSync(dist).filter((f) => f.endsWith('.html'))) {
     const html = readFileSync(join(dist, f), 'utf8');
-    const name = f === 'index.html' ? 'static' : 'static-' + f.replace(/\.html$/, '');
-    const head = html.slice(html.indexOf('<head>') + 6, html.indexOf('</head>'));
-    const keep = head
-      .replace(/<meta charset[^>]*>\s*/, '').replace(/<meta name="viewport"[^>]*>\s*/, '').replace(/<title>[^<]*<\/title>\s*/, '')
+    const head = html.slice(html.indexOf('<head>') + 6, html.indexOf('</head>'))
+      .replace(/<meta charset[^>]*>\s*/, '').replace(/<meta name="viewport"[^>]*>\s*/, '')
+      .replace(/<script>if\('scrollRestoration'[\s\S]*?<\/script>\s*/, '')          // это делает сам загрузчик
+      .replace(/<noscript>[\s\S]*?<\/noscript>\s*/, '')
       .replace(/(<link rel="stylesheet" href="styles\/motion\.css[^>]*>)/, '$1\n<link rel="stylesheet" href="styles/tilda.css">');
     const body = html.slice(html.indexOf('<body>') + 6, html.indexOf('</body>'));
-    const stamp = `<!-- Shape of Sense · ${f === 'index.html' ? 'главная' : 'страница ' + f.replace(/\.html$/, '')} · статичный сайт в Тильде. Собрано tools/tilda-embed.mjs ${new Date().toISOString().slice(0, 10)}, файлы: ${base} -->\n`;
-    writeFileSync(join(root, `tilda/${name}-head.html`), stamp + fix(keep).trim() + '\n');
-    writeFileSync(join(root, `tilda/${name}-body.html`), stamp + fix(body).trim() + '\n');
-    console.log(`tilda/${name}-head.html`, statSync(join(root, `tilda/${name}-head.html`)).size, 'байт;', `tilda/${name}-body.html`, statSync(join(root, `tilda/${name}-body.html`)).size, 'байт');
+    writeFileSync(join(out, 'pages', f), head.trim() + '\n<!--sos:body-->\n' + body.trim() + '\n');
   }
+  console.log('site/dist-tilda готова');
+} else if (mode === 'snippets') {
+  // Постоянные вставки: в них нет номера версии, после правок их менять не нужно.
+  mkdirSync(join(root, 'tilda'), { recursive: true });
+  const loader = readFileSync(join(root, 'tilda/loader.js'), 'utf8').replace(/^\/\*[\s\S]*?\*\/\s*/, '');
+  const tok = readFileSync(join(root, 'site/styles/tokens.css'), 'utf8');
+  const col = (n) => tok.match(new RegExp('--' + n + ':\\s*(#[0-9a-fA-F]{3,8})'))[1];
+  const bg = { dark: { bg: col('c-ink') }, light: { bg: col('c-paper') } };   // фон до загрузки — как у сайта
+  writeFileSync(join(root, 'tilda/sos-head.html'),
+    '<!-- Shape of Sense · загрузчик сайта. Вставить один раз: Настройки сайта → Ещё → HTML-код для вставки внутрь head.\n' +
+    '     Исходник: github.com/UlyanaNechipor/uma_studio, tilda/loader.js. Код сайта обновляется сам после каждой правки. -->\n' +
+    `<style>html.sos-wait,html.sos-wait body{background:${bg.dark.bg}!important}html.sos-wait.light-theme,html.sos-wait.light-theme body{background:${bg.light.bg}!important}html.sos-wait #allrecords{visibility:hidden}</style>\n` +
+    '<script>\n' + loader.trim() + '\n</script>\n');
+  for (const f of readdirSync(dist).filter((f) => f.endsWith('.html'))) {
+    const name = f.replace(/\.html$/, '');
+    writeFileSync(join(root, `tilda/sos-page-${name}.html`), `<div id="sos-page" data-page="${name}"></div>\n`);
+  }
+  console.log('tilda/sos-head.html и tilda/sos-page-*.html готовы');
 } else {
   console.error('режим: assets | snippets <BASE>');
   process.exit(1);

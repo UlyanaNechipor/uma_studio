@@ -1,24 +1,98 @@
 /* Страница кейса в статичной версии: поверх css/project-page.css (он общий с версией на Зеро-блоках).
-   Здесь — только привязка к токенам статичного сайта: шрифт, цвета и плотность светлой темы. */
+   Здесь кейс встаёт на сетку и шкалу статичного сайта: те же поля, что у шапки и главной (16 px на телефоне,
+   32 макета на десктопе), правая половина с 600 (как «Проекты» в шапке), кегли из tokens.css, размеры в --u. */
 .uma-project {
   --up-head: var(--f-sans);
   --up-body: var(--f-sans);
   --uma-w-body: var(--w-text);
   --uma-w-ui: 500;
+  --up-pad: 16px;
+  --up-gap: calc(8 * var(--u));
+  --up-sec: calc(80 * var(--u));     /* между разделами */
+  --up-inner: calc(24 * var(--u));   /* от текста до картинки */
+  --up-small: max(var(--min-small), calc(var(--t-small) * var(--u)));
+  --up-mid: max(var(--min-name), calc(18 * var(--u)));   /* вступление и заголовки разделов */
+  padding: calc(max(44px, calc(48 * var(--u))) + calc(40 * var(--u))) var(--up-pad) 0;
 }
 html.light-theme .uma-project {
   --up-text: var(--txt);
   --up-ph: #e6e4de;          /* подложка под картинку на тёплом светлом фоне */
   --uma-w-ui: 580;
 }
-html.light-theme .uma-project__title,
-html.light-theme .uma-project__lead,
-html.light-theme .uma-project__h2,
+
+/* ---------- кегли ---------- */
+.uma-project__title {
+  font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u)));
+  line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls);
+  font-weight: var(--w-head);
+}
+.uma-project__lead, .uma-project__h2 {
+  font-size: var(--up-mid); line-height: 1.3; letter-spacing: -.01em; font-weight: var(--w-head);
+}
+.uma-project__back, .uma-project__meta dt, .uma-project__meta dd,
+.uma-project__col p, .uma-project__aside p, .uma-project__pager {
+  font-size: var(--up-small); letter-spacing: var(--t-small-ls);
+}
+.uma-project__col p, .uma-project__aside p { line-height: var(--t-small-lh); color: var(--grey); }
+.uma-project p.uma-project__spacer { height: calc(var(--t-small-lh) * 1em); font-size: var(--up-small); }
+.uma-project__meta dt, .uma-project__meta dd { line-height: 1.3; }
+.uma-project__meta dd { color: var(--grey); font-weight: var(--w-text); }
+.uma-project__back { padding-bottom: calc(2 * var(--u)); }
 html.light-theme .uma-project__count { font-weight: var(--w-head); }
-.uma-project__title { font-weight: 500; }
-/* под шапкой сайта (она закреплена сверху) */
-.uma-project { padding-top: calc(max(44px, calc(48 * var(--u))) + clamp(48px, 4vw, 80px)); }
+
+/* ---------- телефон (макет 320): всё в одну колонку ---------- */
+.uma-project__top { row-gap: calc(24 * var(--u)); }
+.uma-project__left { gap: calc(16 * var(--u)); }
+.uma-project__meta { flex-direction: row; gap: var(--up-gap); }
+.uma-project__meta-group { flex: 1 1 0; gap: calc(6 * var(--u)); }
+.uma-project__cover { margin-top: calc(32 * var(--u)); }
+.uma-project__intro { margin-top: calc(32 * var(--u)); gap: calc(24 * var(--u)); }
+.uma-project__cols { gap: calc(var(--t-small-lh) * 1em); }
+.uma-project__head { gap: calc(16 * var(--u)); }
+.uma-project__section .uma-project__figure + .uma-project__figure { margin-top: var(--up-gap); }
+.uma-project__pager { margin-top: calc(48 * var(--u)); padding-bottom: calc(64 * var(--u)); }
+.uma-project__count { width: auto; height: auto; }
+
+/* ---------- планшет и десктоп (макет 1200): поля 32, правая половина с 600 ---------- */
+@media (min-width: 768px) {
+  .uma-project {
+    --up-pad: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2));
+    --up-gap: calc(16 * var(--u));
+    --up-sec: calc(120 * var(--u));
+    --up-inner: calc(40 * var(--u));
+    --up-mid: max(var(--min-name), calc(24 * var(--u)));
+    padding-top: calc(48 * var(--u) + 64 * var(--u));
+  }
+  /* левая часть 568 макета, правая — с 600 (как пункт «Проекты» в шапке) */
+  .uma-project__top,
+  .uma-project__intro,
+  .uma-project__head {
+    display: grid;
+    grid-template-columns: calc(568 * var(--u)) 1fr;
+    column-gap: 0;   /* правая часть ровно с 600 макета, как пункты шапки */
+    align-items: start;
+  }
+  .uma-project__left, .uma-project__lead, .uma-project__h2 { padding-right: calc(32 * var(--u)); }
+  .uma-project__left { gap: calc(24 * var(--u)); height: 100%; }
+  /* «Проект» под «Проектами», «Задачи» под «О нас» */
+  .uma-project__meta { display: grid; grid-template-columns: calc(190 * var(--u)) 1fr; gap: 0; }
+  .uma-project__meta-group { gap: calc(8 * var(--u)); }
+  .uma-project__cover { margin-top: calc(56 * var(--u)); }
+  .uma-project__intro { margin-top: calc(56 * var(--u)); gap: 0; }
+  .uma-project__lead { width: auto; max-width: calc(500 * var(--u)); }
+  .uma-project__cols { width: auto; gap: calc(32 * var(--u)); flex-direction: row; }
+  .uma-project__aside { width: auto; max-width: calc(376 * var(--u)); }
+  .uma-project__head { gap: 0; }
+  .uma-project__h2 { flex: none; }
+  .uma-project__section .uma-project__figure + .uma-project__figure { margin-top: var(--up-gap); }
+  .uma-project__pager { margin-top: calc(64 * var(--u)); padding-bottom: calc(120 * var(--u)); grid-template-columns: 1fr auto 1fr; }
+  .uma-project__count { grid-column: auto; grid-row: auto; }
+}
+
+/* вступление: абзацы отделены пустой строкой (в разделах отбивки заданы в тексте) */
+.uma-project__intro .uma-project__col p + p { margin-top: calc(var(--t-small-lh) * 1em); }
+
 /* плашка-заглушка, пока картинки раздела нет */
-.uma-project__figure.is-empty::after { font-size: max(12px, calc(14 * var(--u))); }
+.uma-project__figure.is-empty::after { font-size: var(--up-small); }
 /* в статичной версии картинки видны сразу (проявление делает общее появление при прокрутке) */
 .uma-project__figure img { opacity: 1; }
