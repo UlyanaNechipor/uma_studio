@@ -16,6 +16,7 @@
 }
 html.light-theme .uma-project {
   --up-text: var(--txt);
+  --up-muted: var(--grey);
   --up-ph: #e6e4de;          /* подложка под картинку на тёплом светлом фоне */
   --uma-w-ui: 580;
 }
@@ -33,10 +34,10 @@ html.light-theme .uma-project {
 .uma-project__col p, .uma-project__aside p, .uma-project__pager {
   font-size: var(--up-small); letter-spacing: var(--t-small-ls);
 }
-.uma-project__col p, .uma-project__aside p { line-height: var(--t-small-lh); color: var(--grey); }
+.uma-project__col p, .uma-project__aside p { line-height: var(--t-small-lh); color: var(--up-muted); }
 .uma-project p.uma-project__spacer { height: calc(var(--t-small-lh) * 1em); font-size: var(--up-small); }
 .uma-project__meta dt, .uma-project__meta dd { line-height: 1.3; }
-.uma-project__meta dd { color: var(--grey); font-weight: var(--w-text); }
+.uma-project__meta dd { color: var(--up-meta); font-weight: var(--w-text); }
 .uma-project__back { padding-bottom: calc(2 * var(--u)); }
 html.light-theme .uma-project__count { font-weight: var(--w-head); }
 
@@ -54,39 +55,49 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 .uma-project__count { width: auto; height: auto; }
 
 /* ---------- планшет и десктоп (макет 1200): поля 32, правая половина с 600 ---------- */
+/* ---------- планшет и десктоп: макет Figma «Landing Arine» → MAIN (894:1338), 1920 px ----------
+   Размеры макета делятся на 1.6 (1920 → сетка сайта 1200) и пишутся в --u.
+   Колонки привязаны к пунктам шапки сайта: A — «Проекты» (600), B — «О нас» (790), C — «Контакты» (976);
+   в макете это x 936, 1248 и 1593 от поля. */
 @media (min-width: 768px) {
   .uma-project {
     --up-pad: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2));
-    --up-gap: calc(16 * var(--u));
-    --up-sec: calc(120 * var(--u));
-    --up-inner: calc(40 * var(--u));
-    --up-mid: max(var(--min-name), calc(24 * var(--u)));
-    padding-top: calc(48 * var(--u) + 64 * var(--u));
+    --col-a: calc(568 * var(--u));     /* от поля до колонки A */
+    --col-b: calc(758 * var(--u));     /* до колонки B */
+    --col-c: calc(944 * var(--u));     /* до колонки C */
+    --up-gap: calc(10 * var(--u));     /* 16 */
+    --up-sec: calc(100 * var(--u));    /* 160 между разделами */
+    --up-inner: calc(50 * var(--u));   /* 80 от текста до картинки */
+    --up-small: max(var(--min-small), calc(9.375 * var(--u)));   /* 15 */
+    --up-mid: max(1rem, calc(17.5 * var(--u)));                  /* 28 — вступление */
+    padding-top: calc(48 * var(--u) + 37 * var(--u));            /* 123 от верха страницы */
   }
-  /* левая часть 568 макета, правая — с 600 (как пункт «Проекты» в шапке) */
-  .uma-project__top,
-  .uma-project__intro,
-  .uma-project__head {
-    display: grid;
-    grid-template-columns: calc(568 * var(--u)) 1fr;
-    column-gap: 0;   /* правая часть ровно с 600 макета, как пункты шапки */
-    align-items: start;
-  }
-  .uma-project__left, .uma-project__lead, .uma-project__h2 { padding-right: calc(32 * var(--u)); }
-  .uma-project__left { gap: calc(24 * var(--u)); height: 100%; }
-  /* «Проект» под «Проектами», «Задачи» под «О нас» */
-  .uma-project__meta { display: grid; grid-template-columns: calc(190 * var(--u)) 1fr; gap: 0; }
-  .uma-project__meta-group { gap: calc(8 * var(--u)); }
-  .uma-project__cover { margin-top: calc(56 * var(--u)); }
-  .uma-project__intro { margin-top: calc(56 * var(--u)); gap: 0; }
-  .uma-project__lead { width: auto; max-width: calc(500 * var(--u)); }
-  .uma-project__cols { width: auto; gap: calc(32 * var(--u)); flex-direction: row; }
-  .uma-project__aside { width: auto; max-width: calc(376 * var(--u)); }
-  .uma-project__head { gap: 0; }
-  .uma-project__h2 { flex: none; }
-  .uma-project__section .uma-project__figure + .uma-project__figure { margin-top: var(--up-gap); }
-  .uma-project__pager { margin-top: calc(64 * var(--u)); padding-bottom: calc(120 * var(--u)); grid-template-columns: 1fr auto 1fr; }
-  .uma-project__count { grid-column: auto; grid-row: auto; }
+  /* шапка кейса: название и «Назад» слева, «Проект» и «Задачи» друг под другом в колонке C */
+  .uma-project__top { display: grid; grid-template-columns: var(--col-c) 1fr; column-gap: 0; align-items: stretch; }
+  .uma-project__left { gap: calc(24 * var(--u)); height: auto; justify-content: space-between; }
+  .uma-project__title { font-size: max(var(--min-h2), calc(35 * var(--u))); line-height: .72; letter-spacing: .01em; }   /* 56 */
+  .uma-project__meta { display: flex; flex-direction: column; gap: calc(25 * var(--u)); }   /* 40 */
+  .uma-project__meta-group { gap: calc(10 * var(--u)); }                                     /* шаг строк 31 */
+  .uma-project__meta dt, .uma-project__meta dd { line-height: 1; }
+  .uma-project__back { line-height: 1.25; }
+
+  .uma-project__cover { margin-top: var(--up-inner); }
+  /* вступление: крупный текст 665 слева, две колонки 452 и 430 с колонки A */
+  .uma-project__intro { display: grid; grid-template-columns: var(--col-a) 1fr; margin-top: var(--up-inner); gap: 0; }
+  .uma-project__lead { width: auto; max-width: calc(416 * var(--u)); font-size: var(--up-mid); line-height: 1.35; padding-right: 0; }
+  .uma-project__intro .uma-project__cols { display: grid; grid-template-columns: calc(282 * var(--u)) calc(269 * var(--u)); gap: var(--up-gap); width: auto; }
+
+  /* разделы: заголовок слева; текст — две колонки с A (split), колонка 608 с B (aside) или строка 920 с A (wide) */
+  .uma-project__head { display: grid; grid-template-columns: var(--col-a) 1fr; gap: 0; align-items: start; }
+  .uma-project__h2 { flex: none; font-size: max(1rem, calc(12.5 * var(--u))); line-height: 1; padding-right: calc(16 * var(--u)); }   /* 20 */
+  .uma-project__head .uma-project__cols { display: grid; grid-template-columns: calc(282 * var(--u)) calc(269 * var(--u)); gap: var(--up-gap); width: auto; flex-direction: row; }
+  .uma-project__aside { width: auto; max-width: none; margin-left: calc(190 * var(--u)); max-width: calc(380 * var(--u)); }
+  .uma-project__aside.is-wide { margin-left: 0; max-width: calc(575 * var(--u)); }
+  .uma-project__aside p { text-wrap: pretty; }
+  .uma-project__section .uma-project__figure + .uma-project__figure { margin-top: var(--up-sec); }
+
+  .uma-project__pager { margin-top: var(--up-inner); padding-bottom: var(--up-sec); grid-template-columns: 1fr auto 1fr; }
+  .uma-project__count { grid-column: auto; grid-row: auto; width: calc(40 * var(--u)); height: calc(40 * var(--u)); }
 }
 
 /* вступление: абзацы отделены пустой строкой (в разделах отбивки заданы в тексте) */
