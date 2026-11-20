@@ -1,4 +1,4 @@
-html #allrecords .uma-project{
+html #sos-page .uma-project{
     
     --up-text:   #ededed;
     --up-muted:  #a9a9a9;                   
@@ -23,22 +23,22 @@ html #allrecords .uma-project{
     font-family: var(--up-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}html.light-theme #allrecords .uma-project,html body.t-body.light-theme #allrecords .uma-project{
+}html.light-theme #sos-page .uma-project,html body.t-body.light-theme #sos-page .uma-project{
     --up-text:   #1a1a1a;
     --up-muted:  #5c5c5c;                   
     --up-meta:   rgba(26, 26, 26, 0.62);
     --up-line:   #1a1a1a;
     --up-ph:     #e4e4e1;
-}html #allrecords .uma-project *,html #allrecords .uma-project *::before,html #allrecords .uma-project *::after{ box-sizing: border-box; }html #allrecords .uma-project p{ margin: 0; }html #allrecords .uma-project a{ color: inherit; text-decoration: none; }html #allrecords .uma-project__top{
+}html #sos-page .uma-project *,html #sos-page .uma-project *::before,html #sos-page .uma-project *::after{ box-sizing: border-box; }html #sos-page .uma-project p{ margin: 0; }html #sos-page .uma-project a{ color: inherit; text-decoration: none; }html #sos-page .uma-project__top{
     display: grid;
     grid-template-columns: 1fr minmax(240px, 15.9%);  
     column-gap: var(--up-gap);
-}html #allrecords .uma-project__left{
+}html #sos-page .uma-project__left{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: 40px;
-}html #allrecords .uma-project__title{
+}html #sos-page .uma-project__title{
     margin: 0;
     font-family: var(--up-head);
     font-weight: 500;
@@ -47,7 +47,7 @@ html #allrecords .uma-project{
     letter-spacing: 0.01em;
     text-transform: uppercase;
     color: var(--up-text);
-}html #allrecords .uma-project__back{
+}html #sos-page .uma-project__back{
     align-self: flex-start;
     padding-bottom: 4px;
     border-bottom: 1px solid var(--up-line);
@@ -57,25 +57,25 @@ html #allrecords .uma-project{
     font-weight: var(--uma-w-ui, 500);
     color: var(--up-text);
     transition: color var(--m-hover) var(--m-out), border-color var(--m-hover) var(--m-out);
-}html #allrecords .uma-project__back:hover,html #allrecords .uma-project__back:focus-visible{ color: var(--up-muted); border-color: var(--up-muted); outline: none; }html #allrecords .uma-project__meta{ display: flex; flex-direction: column; gap: 40px; }html #allrecords .uma-project__meta-group{ display: flex; flex-direction: column; gap: 16px; margin: 0; }html #allrecords .uma-project__meta dt,html #allrecords .uma-project__meta dd{
+}html #sos-page .uma-project__back:hover,html #sos-page .uma-project__back:focus-visible{ color: var(--up-muted); border-color: var(--up-muted); outline: none; }html #sos-page .uma-project__meta{ display: flex; flex-direction: column; gap: 40px; }html #sos-page .uma-project__meta-group{ display: flex; flex-direction: column; gap: 16px; margin: 0; }html #sos-page .uma-project__meta dt,html #sos-page .uma-project__meta dd{
     margin: 0;
     font-size: 15px;
     line-height: 1;
     letter-spacing: 0.01em;
     font-weight: var(--uma-w-ui, 500);
-}html #allrecords .uma-project__meta dt{ color: var(--up-text); }html #allrecords .uma-project__meta dd{ color: var(--up-meta); }html #allrecords .uma-project__figure{
+}html #sos-page .uma-project__meta dt{ color: var(--up-text); }html #sos-page .uma-project__meta dd{ color: var(--up-meta); }html #sos-page .uma-project__figure{
     position: relative;
     margin: 0;
     width: 100%;
     overflow: hidden;
     background: var(--up-ph);
-}html #allrecords .uma-project__figure img{
+}html #sos-page .uma-project__figure img{
     display: block;
     width: 100%;
     height: auto;
     opacity: 0;
     transition: opacity .6s ease;
-}html #allrecords .uma-project__figure img.is-loaded{ opacity: 1; }html #allrecords .uma-project__figure img.is-missing{ visibility: hidden; }html #allrecords .uma-project__figure.is-empty::after{
+}html #sos-page .uma-project__figure img.is-loaded{ opacity: 1; }html #sos-page .uma-project__figure img.is-missing{ visibility: hidden; }html #sos-page .uma-project__figure.is-empty::after{
     content: attr(data-label);
     position: absolute;
     inset: 0;
@@ -88,35 +88,35 @@ html #allrecords .uma-project{
     line-height: 1.4;
     color: var(--up-muted);
     border: 1px dashed color-mix(in srgb, var(--up-muted) 40%, transparent);
-}html #allrecords .uma-project__cover{ margin-top: var(--up-inner); }html #allrecords .uma-project__intro{
+}html #sos-page .uma-project__cover{ margin-top: var(--up-inner); }html #sos-page .uma-project__intro{
     display: flex;
     justify-content: space-between;
     gap: var(--up-gap);
     margin-top: var(--up-inner);
-}html #allrecords .uma-project__lead{
+}html #sos-page .uma-project__lead{
     width: 35.83%;                    
     font-family: var(--up-head);
     font-weight: 400;
     font-size: clamp(22px, 1.458vw, 28px);
     line-height: 1.35;
     color: var(--up-text);
-}html #allrecords .uma-project__cols{
+}html #sos-page .uma-project__cols{
     display: flex;
     gap: var(--up-gap);
     width: 49.57%;                    
     flex: none;
-}html #allrecords .uma-project__col{ flex: 1 1 0; min-width: 0; }html #allrecords .uma-project__col p,html #allrecords .uma-project__aside p{
+}html #sos-page .uma-project__col{ flex: 1 1 0; min-width: 0; }html #sos-page .uma-project__col p,html #sos-page .uma-project__aside p{
     font-size: 15px;
     line-height: 1.4;
     color: var(--up-muted);
     font-weight: var(--uma-w-body, 400);
     text-wrap: pretty;
-}html #allrecords .uma-project__col p + p,html #allrecords .uma-project__aside p + p{ margin-top: var(--up-pgap, 0); }html #allrecords .uma-project p.uma-project__spacer{ height: 1.4em; }html #allrecords .uma-project__section{ margin-top: var(--up-sec); }html #allrecords .uma-project__head{
+}html #sos-page .uma-project__col p + p,html #sos-page .uma-project__aside p + p{ margin-top: var(--up-pgap, 0); }html #sos-page .uma-project p.uma-project__spacer{ height: 1.4em; }html #sos-page .uma-project__section{ margin-top: var(--up-sec); }html #sos-page .uma-project__head{
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: var(--up-gap);
-}html #allrecords .uma-project__h2{
+}html #sos-page .uma-project__h2{
     margin: 0;
     flex: 1 1 0;
     font-family: var(--up-head);
@@ -124,7 +124,7 @@ html #allrecords .uma-project{
     font-size: clamp(22px, 1.458vw, 28px);
     line-height: 1.35;
     color: var(--up-text);
-}html #allrecords .uma-project__aside{ width: 32.76%; flex: none; }html #allrecords .uma-project__aside p{ text-wrap: balance; }html #allrecords .uma-project__section .uma-project__figure{ margin-top: var(--up-inner); }html #allrecords .uma-project__section .uma-project__figure + .uma-project__figure{ margin-top: var(--up-sec); }html #allrecords .uma-project__pager{
+}html #sos-page .uma-project__aside{ width: 32.76%; flex: none; }html #sos-page .uma-project__aside p{ text-wrap: balance; }html #sos-page .uma-project__section .uma-project__figure{ margin-top: var(--up-inner); }html #sos-page .uma-project__section .uma-project__figure + .uma-project__figure{ margin-top: var(--up-sec); }html #sos-page .uma-project__pager{
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
@@ -133,13 +133,13 @@ html #allrecords .uma-project{
     font-size: 14px;
     line-height: 1;
     font-weight: var(--uma-w-ui, 500);
-}html #allrecords .uma-project__pager a{
+}html #sos-page .uma-project__pager a{
     display: inline-flex;
     align-items: center;
     gap: 4px;
     color: var(--up-text);
     transition: color var(--m-hover) var(--m-out);
-}html #allrecords .uma-project__pager a:hover,html #allrecords .uma-project__pager a:focus-visible{ color: var(--up-muted); outline: none; }html #allrecords .uma-project__pager .is-next{ justify-self: end; }html #allrecords .uma-project__pager svg{ width: 16px; height: 16px; flex: none; fill: currentColor; }html #allrecords .uma-project__pager .is-next svg{ transform: rotate(180deg); }html #allrecords .uma-project__count{
+}html #sos-page .uma-project__pager a:hover,html #sos-page .uma-project__pager a:focus-visible{ color: var(--up-muted); outline: none; }html #sos-page .uma-project__pager .is-next{ justify-self: end; }html #sos-page .uma-project__pager svg{ width: 16px; height: 16px; flex: none; fill: currentColor; }html #sos-page .uma-project__pager .is-next svg{ transform: rotate(180deg); }html #sos-page .uma-project__count{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -148,10 +148,10 @@ html #allrecords .uma-project{
     font-family: var(--up-head);
     font-weight: 400;
     color: var(--up-text);
-}html #allrecords .uma-project__count span{ color: var(--up-muted); }@media screen and (max-width: 1199px){html #allrecords .uma-project__intro{ flex-direction: column; }html #allrecords .uma-project__lead{ width: 100%; max-width: 720px; }html #allrecords .uma-project__cols{ width: 100%; }html #allrecords .uma-project__aside{ width: 50%; }
-}@media screen and (max-width: 767px){html #allrecords .uma-project__top{ grid-template-columns: 1fr; row-gap: 32px; }html #allrecords .uma-project__left{ gap: 24px; }html #allrecords .uma-project__head{ flex-direction: column; gap: 20px; }html #allrecords .uma-project__cols{ flex-direction: column; gap: 1.4em; }html #allrecords .uma-project__aside{ width: 100%; }html #allrecords .uma-project__h2{ flex: none; }html #allrecords .uma-project__pager{ grid-template-columns: 1fr 1fr; row-gap: 16px; }html #allrecords .uma-project__count{ grid-column: 1 / -1; grid-row: 1; justify-self: center; height: 40px; }
-}@media (prefers-reduced-motion: reduce){html #allrecords .uma-project__figure img{ transition: none; opacity: 1; }
-}html #allrecords .uma-project{
+}html #sos-page .uma-project__count span{ color: var(--up-muted); }@media screen and (max-width: 1199px){html #sos-page .uma-project__intro{ flex-direction: column; }html #sos-page .uma-project__lead{ width: 100%; max-width: 720px; }html #sos-page .uma-project__cols{ width: 100%; }html #sos-page .uma-project__aside{ width: 50%; }
+}@media screen and (max-width: 767px){html #sos-page .uma-project__top{ grid-template-columns: 1fr; row-gap: 32px; }html #sos-page .uma-project__left{ gap: 24px; }html #sos-page .uma-project__head{ flex-direction: column; gap: 20px; }html #sos-page .uma-project__cols{ flex-direction: column; gap: 1.4em; }html #sos-page .uma-project__aside{ width: 100%; }html #sos-page .uma-project__h2{ flex: none; }html #sos-page .uma-project__pager{ grid-template-columns: 1fr 1fr; row-gap: 16px; }html #sos-page .uma-project__count{ grid-column: 1 / -1; grid-row: 1; justify-self: center; height: 40px; }
+}@media (prefers-reduced-motion: reduce){html #sos-page .uma-project__figure img{ transition: none; opacity: 1; }
+}html #sos-page .uma-project{
   --up-head: var(--f-sans);
   --up-body: var(--f-sans);
   --uma-w-body: var(--w-text);
@@ -163,20 +163,20 @@ html #allrecords .uma-project{
   --up-small: max(var(--min-small), calc(var(--t-small) * var(--u)));
   --up-mid: max(var(--min-name), calc(18 * var(--u)));   
   padding: calc(max(44px, calc(48 * var(--u))) + calc(40 * var(--u))) var(--up-pad) 0;
-}html.light-theme #allrecords .uma-project{
+}html.light-theme #sos-page .uma-project{
   --up-text: var(--txt);
   --up-muted: var(--grey);
   --up-ph: #e6e4de;          
   --uma-w-ui: 580;
-}html #allrecords .uma-project__title{
+}html #sos-page .uma-project__title{
   font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u)));
   line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls);
   font-weight: var(--w-head);
-}html #allrecords .uma-project__lead,html #allrecords .uma-project__h2{
+}html #sos-page .uma-project__lead,html #sos-page .uma-project__h2{
   font-size: var(--up-mid); line-height: 1.3; letter-spacing: -.01em; font-weight: var(--w-head);
-}html #allrecords .uma-project__back,html #allrecords .uma-project__meta dt,html #allrecords .uma-project__meta dd,html #allrecords .uma-project__col p,html #allrecords .uma-project__aside p,html #allrecords .uma-project__pager{
+}html #sos-page .uma-project__back,html #sos-page .uma-project__meta dt,html #sos-page .uma-project__meta dd,html #sos-page .uma-project__col p,html #sos-page .uma-project__aside p,html #sos-page .uma-project__pager{
   font-size: var(--up-small); letter-spacing: var(--t-small-ls);
-}html #allrecords .uma-project__col p,html #allrecords .uma-project__aside p{ line-height: 1.4; letter-spacing: 0; color: var(--up-muted); }html #allrecords .uma-project p.uma-project__spacer{ height: 1.4em; font-size: var(--up-small); }html #allrecords .uma-project__meta dt,html #allrecords .uma-project__meta dd{ line-height: 1.3; }html #allrecords .uma-project__meta dd{ color: var(--up-meta); font-weight: var(--w-text); }html #allrecords .uma-project__back{ padding-bottom: calc(2 * var(--u)); }html.light-theme #allrecords .uma-project__count{ font-weight: var(--w-head); }html #allrecords .uma-project__top{ row-gap: calc(24 * var(--u)); }html #allrecords .uma-project__left{ gap: calc(16 * var(--u)); }html #allrecords .uma-project__meta{ flex-direction: row; gap: var(--up-gap); }html #allrecords .uma-project__meta-group{ flex: 1 1 0; gap: calc(6 * var(--u)); }html #allrecords .uma-project__cover{ margin-top: calc(32 * var(--u)); }html #allrecords .uma-project__intro{ margin-top: calc(32 * var(--u)); gap: calc(24 * var(--u)); }html #allrecords .uma-project__cols{ gap: 1.4em; }html #allrecords .uma-project__head{ gap: calc(16 * var(--u)); }html #allrecords .uma-project__section .uma-project__figure + .uma-project__figure{ margin-top: var(--up-gap); }html #allrecords .uma-project__pager{ margin-top: calc(48 * var(--u)); padding-bottom: calc(64 * var(--u)); }html #allrecords .uma-project__count{ width: auto; height: auto; }@media (min-width: 768px){html #allrecords .uma-project{
+}html #sos-page .uma-project__col p,html #sos-page .uma-project__aside p{ line-height: 1.4; letter-spacing: 0; color: var(--up-muted); }html #sos-page .uma-project p.uma-project__spacer{ height: 1.4em; font-size: var(--up-small); }html #sos-page .uma-project__meta dt,html #sos-page .uma-project__meta dd{ line-height: 1.3; }html #sos-page .uma-project__meta dd{ color: var(--up-meta); font-weight: var(--w-text); }html #sos-page .uma-project__back{ padding-bottom: calc(2 * var(--u)); }html.light-theme #sos-page .uma-project__count{ font-weight: var(--w-head); }html #sos-page .uma-project__top{ row-gap: calc(24 * var(--u)); }html #sos-page .uma-project__left{ gap: calc(16 * var(--u)); }html #sos-page .uma-project__meta{ flex-direction: row; gap: var(--up-gap); }html #sos-page .uma-project__meta-group{ flex: 1 1 0; gap: calc(6 * var(--u)); }html #sos-page .uma-project__cover{ margin-top: calc(32 * var(--u)); }html #sos-page .uma-project__intro{ margin-top: calc(32 * var(--u)); gap: calc(24 * var(--u)); }html #sos-page .uma-project__cols{ gap: 1.4em; }html #sos-page .uma-project__head{ gap: calc(16 * var(--u)); }html #sos-page .uma-project__section .uma-project__figure + .uma-project__figure{ margin-top: var(--up-gap); }html #sos-page .uma-project__pager{ margin-top: calc(48 * var(--u)); padding-bottom: calc(64 * var(--u)); }html #sos-page .uma-project__count{ width: auto; height: auto; }@media (min-width: 768px){html #sos-page .uma-project{
     --up-pad: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2));
     --up-gap: calc(10 * var(--u));     
     --up-sec: calc(100 * var(--u));    
@@ -186,12 +186,12 @@ html #allrecords .uma-project{
     --up-lines: calc(568 * var(--u)) calc(190 * var(--u)) calc(186 * var(--u)) minmax(0, 1fr);   
     --up-gutter: calc(24 * var(--u));  
     padding-top: calc(48 * var(--u) + 37 * var(--u));            
-  }html #allrecords .uma-project__top,html #allrecords .uma-project__intro,html #allrecords .uma-project__head,html #allrecords .uma-project__pager{
+  }html #sos-page .uma-project__top,html #sos-page .uma-project__intro,html #sos-page .uma-project__head,html #sos-page .uma-project__pager{
     display: grid;
     grid-template-columns: var(--up-lines);
     column-gap: 0;
     align-items: start;
-  }html #allrecords .uma-project__top{ align-items: stretch; }html #allrecords .uma-project__left{ grid-column: 1 / 4; gap: calc(24 * var(--u)); height: auto; justify-content: space-between; }html #allrecords .uma-project__meta{ grid-column: 4 / 5; display: flex; flex-direction: column; gap: calc(25 * var(--u)); }html #allrecords .uma-project__meta-group{ gap: calc(10 * var(--u)); }html #allrecords .uma-project__meta dt,html #allrecords .uma-project__meta dd{ line-height: 1.1; }html #allrecords .uma-project__title{ font-size: max(var(--min-h2), calc(35 * var(--u))); line-height: .72; letter-spacing: .01em; }html #allrecords .uma-project__back{ line-height: 1.25; }html #allrecords .uma-project__cover{ margin-top: var(--up-inner); }html #allrecords .uma-project__intro{ margin-top: var(--up-inner); }html #allrecords .uma-project__lead{ grid-column: 1 / 2; width: auto; max-width: calc(416 * var(--u)); font-size: var(--up-mid); line-height: 1.35; padding-right: var(--up-gutter); }html #allrecords .uma-project__h2{ grid-column: 1 / 2; flex: none; font-size: max(1rem, calc(12.5 * var(--u))); line-height: 1; padding-right: var(--up-gutter); }html #allrecords .uma-project__intro .uma-project__cols,html #allrecords .uma-project__head .uma-project__cols{ display: contents; }html #allrecords .uma-project__intro .uma-project__col:nth-child(1),html #allrecords .uma-project__head .uma-project__col:nth-child(1){ grid-column: 2 / 4; padding-right: var(--up-gutter); max-width: calc(282 * var(--u) + var(--up-gutter)); }html #allrecords .uma-project__intro .uma-project__col:nth-child(2),html #allrecords .uma-project__head .uma-project__col:nth-child(2){ grid-column: 4 / 5; }html #allrecords .uma-project__aside{ grid-column: 3 / 5; width: auto; max-width: none; margin-left: 0; }html #allrecords .uma-project__aside.is-wide{ grid-column: 2 / 5; }html #allrecords .uma-project__aside p{ text-wrap: pretty; }html #allrecords .uma-project__section .uma-project__figure + .uma-project__figure{ margin-top: var(--up-sec); }html #allrecords .uma-project__pager{ margin-top: var(--up-inner); padding-bottom: var(--up-sec); align-items: center; }html #allrecords .uma-project__pager > :first-child{ grid-column: 1 / 2; justify-self: start; }html #allrecords .uma-project__count{ grid-column: 2 / 3; grid-row: auto; justify-self: start; justify-content: flex-start; width: auto; height: calc(40 * var(--u)); }html #allrecords .uma-project__pager > :last-child{ grid-column: 4 / 5; justify-self: end; }
-}html #allrecords .uma-project__figure.is-empty::after{ font-size: var(--up-small); }html #allrecords .uma-project__figure img{ opacity: 1; }html #allrecords .uma-project__sub{ display: block; color: var(--up-text); }html #allrecords .uma-project p.uma-project__item + p.uma-project__item{ margin-top: .7em; }html #allrecords .uma-project__pair{ display: grid; grid-template-columns: 1fr; margin-top: var(--up-sec); }html #allrecords .uma-project__pair .uma-project__figure{ margin: 0; }html #allrecords .uma-project__palette{ list-style: none; margin: var(--up-inner) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--up-gap); }html #allrecords .uma-project__palette li{ aspect-ratio: 1; display: flex; flex-direction: column; justify-content: space-between; padding: calc(14 * var(--uw, var(--u))); min-width: 0; }html #allrecords .uma-project__hex{ font-size: var(--up-small); letter-spacing: 0; }html #allrecords .uma-project__hex b{ font-weight: 600; }html #allrecords .uma-project__aa{ font-size: max(2rem, calc(54 * var(--u))); line-height: 1; font-weight: 500; letter-spacing: -.01em; }html #allrecords .uma-project__fonts{ margin-top: var(--up-inner); }html #allrecords .uma-project__font{ border-top: 1px solid var(--line); padding: calc(20 * var(--u)) 0; display: grid; gap: calc(12 * var(--u)); }html #allrecords .uma-project__specimen{ margin: 0; font-size: max(2.5rem, calc(96 * var(--u))); line-height: 1.05; color: var(--up-text); font-weight: 400; letter-spacing: 0; }html #allrecords .uma-project__font-info p{ margin: 0; font-size: var(--up-small); line-height: 1.4; color: var(--up-muted); }html #allrecords .uma-project__font-info p.uma-project__sub{ color: var(--up-text); margin-bottom: .6em; }@media (min-width: 768px){html #allrecords .uma-project__pair{ grid-template-columns: 1fr 1fr; }html #allrecords .uma-project__palette{ grid-template-columns: repeat(5, minmax(0, 1fr)); gap: calc(24 * var(--u)); }html #allrecords .uma-project__font{ grid-template-columns: var(--up-lines); gap: 0; align-items: start; }html #allrecords .uma-project__specimen{ grid-column: 1 / 4; }html #allrecords .uma-project__font-info{ grid-column: 4 / 5; }
-}@media (min-width: 768px){html #allrecords .uma-project__aside.is-side{ grid-column: 4 / 5; }html #allrecords .uma-project__font-info p.uma-project__sub{ margin-bottom: 1.4em; }
-}html #allrecords .uma-project__pair > :only-child{ grid-column: 1 / -1; }
+  }html #sos-page .uma-project__top{ align-items: stretch; }html #sos-page .uma-project__left{ grid-column: 1 / 4; gap: calc(24 * var(--u)); height: auto; justify-content: space-between; }html #sos-page .uma-project__meta{ grid-column: 4 / 5; display: flex; flex-direction: column; gap: calc(25 * var(--u)); }html #sos-page .uma-project__meta-group{ gap: calc(10 * var(--u)); }html #sos-page .uma-project__meta dt,html #sos-page .uma-project__meta dd{ line-height: 1.1; }html #sos-page .uma-project__title{ font-size: max(var(--min-h2), calc(35 * var(--u))); line-height: .72; letter-spacing: .01em; }html #sos-page .uma-project__back{ line-height: 1.25; }html #sos-page .uma-project__cover{ margin-top: var(--up-inner); }html #sos-page .uma-project__intro{ margin-top: var(--up-inner); }html #sos-page .uma-project__lead{ grid-column: 1 / 2; width: auto; max-width: calc(416 * var(--u)); font-size: var(--up-mid); line-height: 1.35; padding-right: var(--up-gutter); }html #sos-page .uma-project__h2{ grid-column: 1 / 2; flex: none; font-size: max(1rem, calc(12.5 * var(--u))); line-height: 1; padding-right: var(--up-gutter); }html #sos-page .uma-project__intro .uma-project__cols,html #sos-page .uma-project__head .uma-project__cols{ display: contents; }html #sos-page .uma-project__intro .uma-project__col:nth-child(1),html #sos-page .uma-project__head .uma-project__col:nth-child(1){ grid-column: 2 / 4; padding-right: var(--up-gutter); max-width: calc(282 * var(--u) + var(--up-gutter)); }html #sos-page .uma-project__intro .uma-project__col:nth-child(2),html #sos-page .uma-project__head .uma-project__col:nth-child(2){ grid-column: 4 / 5; }html #sos-page .uma-project__aside{ grid-column: 3 / 5; width: auto; max-width: none; margin-left: 0; }html #sos-page .uma-project__aside.is-wide{ grid-column: 2 / 5; }html #sos-page .uma-project__aside p{ text-wrap: pretty; }html #sos-page .uma-project__section .uma-project__figure + .uma-project__figure{ margin-top: var(--up-sec); }html #sos-page .uma-project__pager{ margin-top: var(--up-inner); padding-bottom: var(--up-sec); align-items: center; }html #sos-page .uma-project__pager > :first-child{ grid-column: 1 / 2; justify-self: start; }html #sos-page .uma-project__count{ grid-column: 2 / 3; grid-row: auto; justify-self: start; justify-content: flex-start; width: auto; height: calc(40 * var(--u)); }html #sos-page .uma-project__pager > :last-child{ grid-column: 4 / 5; justify-self: end; }
+}html #sos-page .uma-project__figure.is-empty::after{ font-size: var(--up-small); }html #sos-page .uma-project__figure img{ opacity: 1; }html #sos-page .uma-project__sub{ display: block; color: var(--up-text); }html #sos-page .uma-project p.uma-project__item + p.uma-project__item{ margin-top: .7em; }html #sos-page .uma-project__pair{ display: grid; grid-template-columns: 1fr; margin-top: var(--up-sec); }html #sos-page .uma-project__pair .uma-project__figure{ margin: 0; }html #sos-page .uma-project__palette{ list-style: none; margin: var(--up-inner) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--up-gap); }html #sos-page .uma-project__palette li{ aspect-ratio: 1; display: flex; flex-direction: column; justify-content: space-between; padding: calc(14 * var(--uw, var(--u))); min-width: 0; }html #sos-page .uma-project__hex{ font-size: var(--up-small); letter-spacing: 0; }html #sos-page .uma-project__hex b{ font-weight: 600; }html #sos-page .uma-project__aa{ font-size: max(2rem, calc(54 * var(--u))); line-height: 1; font-weight: 500; letter-spacing: -.01em; }html #sos-page .uma-project__fonts{ margin-top: var(--up-inner); }html #sos-page .uma-project__font{ border-top: 1px solid var(--line); padding: calc(20 * var(--u)) 0; display: grid; gap: calc(12 * var(--u)); }html #sos-page .uma-project__specimen{ margin: 0; font-size: max(2.5rem, calc(96 * var(--u))); line-height: 1.05; color: var(--up-text); font-weight: 400; letter-spacing: 0; }html #sos-page .uma-project__font-info p{ margin: 0; font-size: var(--up-small); line-height: 1.4; color: var(--up-muted); }html #sos-page .uma-project__font-info p.uma-project__sub{ color: var(--up-text); margin-bottom: .6em; }@media (min-width: 768px){html #sos-page .uma-project__pair{ grid-template-columns: 1fr 1fr; }html #sos-page .uma-project__palette{ grid-template-columns: repeat(5, minmax(0, 1fr)); gap: calc(24 * var(--u)); }html #sos-page .uma-project__font{ grid-template-columns: var(--up-lines); gap: 0; align-items: start; }html #sos-page .uma-project__specimen{ grid-column: 1 / 4; }html #sos-page .uma-project__font-info{ grid-column: 4 / 5; }
+}@media (min-width: 768px){html #sos-page .uma-project__aside.is-side{ grid-column: 4 / 5; }html #sos-page .uma-project__font-info p.uma-project__sub{ margin-bottom: 1.4em; }
+}html #sos-page .uma-project__pair > :only-child{ grid-column: 1 / -1; }
