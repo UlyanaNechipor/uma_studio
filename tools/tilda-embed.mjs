@@ -92,7 +92,8 @@ if (mode === 'assets') {
     // шрифт задан на body и наследуется; общие стили Тильды могут задать его заголовкам и кнопкам напрямую
     // классы оформления Тильды (.t-name, .t-title, .t-descr…) получают шрифт из её настроек — у нас свой везде
     'html #allrecords{font-family:var(--f-sans)}\n' +
-    'html #allrecords *{font-family:inherit}\n');
+    'html #allrecords *{font-family:inherit}\n' +
+    readFileSync(join(root, 'tools/tilda-zero.css'), 'utf8'));
   // страницы целиком (часть head и body через <!--sos:body-->) — их по адресу берёт загрузчик tilda/loader.js
   mkdirSync(join(out, 'pages'), { recursive: true });
   for (const f of readdirSync(dist).filter((f) => f.endsWith('.html'))) {

@@ -41,6 +41,7 @@
         "type": "Интернет-магазин",
         "year": "2023",
         "slug": "rosi",
+        "url": "/project_page_rosi",
         "cover": "img/covers/rosi.webp",
         "mobile": [
           "img/covers/rosi.webp",

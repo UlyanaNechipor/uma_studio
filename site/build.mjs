@@ -99,7 +99,7 @@ const projects = `
   <h2 class="projects__title ty-h2" data-fill>${typo(h.projects.title)}</h2>
   <ul class="projects__list">
     ${h.projects.items.map((p) => `<li class="prow">
-      <a class="prow__link" href="/${esc(p.slug)}" data-cover="${esc(p.cover)}">
+      <a class="prow__link" href="${esc(p.url || '/' + p.slug)}" data-cover="${esc(p.cover)}">
         <span class="prow__name ty-name">${esc(p.name)}</span>
         <span class="prow__type ty-small ty-grey">${typo(p.type)}</span>
         <span class="prow__year ty-small ty-grey">${esc(p.year)}</span>
