@@ -600,6 +600,34 @@
     addEventListener('scroll', function () { if (!tk) { tk = true; requestAnimationFrame(update); } }, { passive: true });
   }
 
+  /* ---------------- переход между страницами: «подлистывание» ----------------
+     Уход: по ссылке на другую страницу сайта снизу наезжает лист цвета фона, страница чуть уходит вверх,
+     затем переход. Приход: лист уезжает вверх, содержимое поднимается на место. Прелоадер в этом случае
+     не показывается — он только при первом открытии сайта. Признак перехода — sessionStorage 'sos-pt',
+     класс html.pt-in ставят заранее <head> страницы или загрузчик в Тильде. */
+  var PT_KEY = 'sos-pt', PT_OUT = 520, turning = html.classList.contains('pt-in');
+  try { sessionStorage.removeItem(PT_KEY); } catch (e) {}
+  function pageTurn() {
+    if (turning) {
+      requestAnimationFrame(function () { requestAnimationFrame(function () { html.classList.add('pt-go'); }); });
+      setTimeout(function () { html.classList.remove('pt-in', 'pt-go'); }, 1300);
+    }
+    if (reduce) return;
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if ((a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+      var u = new URL(a.getAttribute('href'), location.href);
+      if (u.origin !== location.origin || (u.pathname === location.pathname && u.search === location.search)) return;
+      e.preventDefault();
+      try { sessionStorage.setItem(PT_KEY, '1'); } catch (_) {}
+      html.classList.add('pt-out');
+      setTimeout(function () { location.href = u.href; }, PT_OUT);
+    });
+    // вернулись кнопкой «Назад» из кеша браузера — убираем лист
+    addEventListener('pageshow', function (e) { if (e.persisted) html.classList.remove('pt-out'); });
+  }
+
   /* ---------------- запуск ---------------- */
   function init() {
     window.__umaBoot = 1;   // для страховки в <head>: скрипт запустился
@@ -612,7 +640,25 @@
       html.classList.add('is-docked', 'hero-in', 'is-ready');
       var q = ready; ready = []; q.forEach(function (f) { safe(f, 'ready'); });
     }
+    // пришли переходом с другой страницы сайта — без прелоадера
+    if (turning) { var pl0 = $('#preloader'); if (pl0) pl0.parentNode.removeChild(pl0); }
+    safe(pageTurn, 'pageTurn');
     safe(function () {
+      // пришли по ссылке с якорем (/#projects) переходом — сразу к разделу, под листом
+      // (и ещё раз после загрузки: браузер сам прыгает к якорю и не учитывает шапку и сдвиг листа)
+      if (turning && location.hash) {
+        var t = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        if (t) {
+          var toHash = function () {
+            var hd = $('.hd'), m = $('main'), ty = 0;
+            try { ty = new DOMMatrix(getComputedStyle(m).transform).m42 || 0; } catch (e) {}
+            var y = t.getBoundingClientRect().top + scrollY - ty - (hd ? hd.offsetHeight : 0);
+            html.style.scrollBehavior = 'auto'; scrollTo(0, Math.max(0, y)); html.style.scrollBehavior = '';
+          };
+          toHash(); addEventListener('load', function () { requestAnimationFrame(toHash); });
+          return;
+        }
+      }
       // после любого обновления — с самого верха страницы (браузер не восстанавливает прокрутку)
       scrollTo(0, 0); addEventListener('load', function () { scrollTo(0, 0); });
       addEventListener('pageshow', function (e) { if (e.persisted) scrollTo(0, 0); });
