@@ -254,7 +254,10 @@
   function theme() {
     var KEY = 'uma-theme', btn = $('[data-theme-toggle]'), cv = $('#wipe'), ctx = cv.getContext('2d'), busy = false;
     function label() { btn.setAttribute('aria-label', html.classList.contains('light-theme') ? 'Тёмная тема' : 'Светлая тема'); }
+    var animT = 0;
     function set(light) {
+      html.classList.add('theme-anim'); clearTimeout(animT);
+      animT = setTimeout(function () { html.classList.remove('theme-anim'); }, 800);
       html.classList.toggle('light-theme', light);
       try { localStorage.setItem(KEY, light ? 'light' : 'dark'); } catch (e) {}
       C = colors(); fills.forEach(function (it) { render(it, it.shown, true); });
