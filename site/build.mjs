@@ -166,7 +166,7 @@ const footerHtml = (home = '') => `
 
 const diag = readFileSync(join(ROOT, 'site/scripts/diag.js'), 'utf8');
 // каркас страницы: общий для главной и кейсов
-const page = ({ title, css = [], main, home = '' }) => `<!doctype html>
+const page = ({ title, css = [], main, home = '', fonts = '' }) => `<!doctype html>
 <html lang="${site.lang}">
 <head>
 <meta charset="utf-8">
@@ -174,7 +174,7 @@ const page = ({ title, css = [], main, home = '' }) => `<!doctype html>
 <title>${esc(title)}</title>
 ${site.seo.description ? `<meta name="description" content="${esc(site.seo.description)}">\n` : ''}<meta name="theme-color" content="${site.themes.dark.bg}">
 <link rel="preload" href="site/assets/fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="styles/tokens.css">
+${fonts ? `<link rel="stylesheet" href="${esc(fonts)}">\n` : ''}<link rel="stylesheet" href="styles/tokens.css">
 <link rel="stylesheet" href="styles/base.css">
 ${css.map((f) => `<link rel="stylesheet" href="styles/${f}.css">`).join('\n')}
 <link rel="stylesheet" href="styles/motion.css">
@@ -202,7 +202,13 @@ const html = page({ title: site.seo.title || site.brand, css: ['home'], main: [h
    Та же вёрстка, что собирает js/project-page.js в версии на Зеро-блоках, только готовым HTML.
    Картинка раздела: src (готовый файл из img/) или name → img/projects/<slug>/<name>-1200|2400.webp.
    Пока файла нет — плашка с подписью, что здесь будет. */
-const para = (t) => (t === '' ? '<p class="uma-project__spacer" aria-hidden="true"></p>' : `<p>${String(t).split('\n').map(typo).join('<br>')}</p>`);
+// абзац: строка; "" — пустая строка; { "h": "подзаголовок", "t": "текст" } — пункт с подзаголовком
+const para = (t) => (t === '' ? '<p class="uma-project__spacer" aria-hidden="true"></p>'
+  : typeof t === 'object' ? `<p class="uma-project__item"><span class="uma-project__sub">${typo(t.h)}</span>${String(t.t).split('\n').map(typo).join('<br>')}</p>`
+  : `<p>${String(t).split('\n').map(typo).join('<br>')}</p>`);
+// цвет текста на плашке палитры: тёмный на светлом, светлый на тёмном
+const inkFor = (hex) => { const n = parseInt(hex.replace('#', ''), 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255;
+  return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#1a1514' : '#f2efea'; };
 const pad2 = (n) => String(n).padStart(2, '0');
 const arrowSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.73 4a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>';
 function projectFigure(slug, im, cls = '') {
@@ -228,12 +234,22 @@ function projectPage(d) {
   if (d.intro) m += `<section class="uma-project__intro"><div class="uma-project__lead">${d.intro.lead.map(para).join('')}</div><div class="uma-project__cols">` +
     d.intro.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('') + '</div></section>';
   for (const sec of d.sections || []) {
+    // две картинки рядом, без заголовка и текста
+    if (sec.layout === 'pair') { m += `<section class="uma-project__pair">${(sec.images || []).map((im) => projectFigure(s, im)).join('')}</section>`; continue; }
     const gap = sec.gap ? ` style="--up-pgap:${sec.gap}px"` : '';
     m += `<section class="uma-project__section"><div class="uma-project__head"><h2 class="uma-project__h2">${typo(sec.title)}</h2>` +
-      (sec.layout === 'split'
+      (!sec.columns ? '' : sec.layout === 'split'
         ? `<div class="uma-project__cols"${gap}>${sec.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')}</div>`
         : `<div class="uma-project__aside${sec.layout === 'wide' ? ' is-wide' : ''}"${gap}>${sec.columns[0].map(para).join('')}</div>`) +
-      '</div>' + projectFigure(s, sec.image) + projectFigure(s, sec.after) + '</section>';
+      '</div>';
+    // палитра: плашки с HEX и «Aa»
+    if (sec.palette) m += '<ul class="uma-project__palette">' + sec.palette.map((c) => { const hex = c.hex || c;
+      return `<li style="background:${esc(hex)};color:${esc(c.ink || inkFor(hex))}"><span class="uma-project__hex"><b>HEX</b> ${esc(hex.toUpperCase())}</span><span class="uma-project__aa" aria-hidden="true">Aa</span></li>`; }).join('') + '</ul>';
+    // шрифты: название крупно самим шрифтом, справа — роль и описание
+    if (sec.fonts) m += '<div class="uma-project__fonts">' + sec.fonts.map((f) =>
+      `<div class="uma-project__font"><p class="uma-project__specimen" style="font-family:'${esc(f.family || f.name)}',${f.serif ? 'Georgia,serif' : 'Arial,sans-serif'}">${esc(f.name)}</p>` +
+      `<div class="uma-project__font-info"><p class="uma-project__sub">${typo(f.label || '')}</p><p>${typo(f.text || '')}</p></div></div>`).join('') + '</div>';
+    m += projectFigure(s, sec.image) + projectFigure(s, sec.after) + '</section>';
   }
   const p = d.pagination;
   if (p) m += '<nav class="uma-project__pager" aria-label="Другие проекты">' +
@@ -245,7 +261,7 @@ function projectPage(d) {
 const pages = { 'index.html': html };
 for (const f of readdirSync(join(ROOT, 'projects')).filter((f) => f.endsWith('.json'))) {
   const d = j('projects/' + f);
-  pages[d.slug + '.html'] = page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['project'], main: projectPage(d), home: '/' });
+  pages[d.slug + '.html'] = page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['project'], main: projectPage(d), home: '/', fonts: d.fonts || '' });
 }
 
 if (existsSync(OUT)) rmSync(OUT, { recursive: true });

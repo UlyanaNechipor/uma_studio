@@ -128,3 +128,26 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 .uma-project__figure.is-empty::after { font-size: var(--up-small); }
 /* в статичной версии картинки видны сразу (проявление делает общее появление при прокрутке) */
 .uma-project__figure img { opacity: 1; }
+
+/* ---------- блоки кейса Sure: пункты с подзаголовком, две картинки рядом, палитра, шрифты ---------- */
+.uma-project__sub { display: block; color: var(--up-text); }
+.uma-project p.uma-project__item + p.uma-project__item { margin-top: .7em; }
+.uma-project__pair { display: grid; grid-template-columns: 1fr; margin-top: var(--up-sec); }
+.uma-project__pair .uma-project__figure { margin: 0; }
+.uma-project__palette { list-style: none; margin: var(--up-inner) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--up-gap); }
+.uma-project__palette li { aspect-ratio: 1; display: flex; flex-direction: column; justify-content: space-between; padding: calc(14 * var(--uw, var(--u))); min-width: 0; }
+.uma-project__hex { font-size: var(--up-small); letter-spacing: 0; }
+.uma-project__hex b { font-weight: 600; }
+.uma-project__aa { font-size: max(2rem, calc(54 * var(--u))); line-height: 1; font-weight: 500; letter-spacing: -.01em; }
+.uma-project__fonts { margin-top: var(--up-inner); }
+.uma-project__font { border-top: 1px solid var(--line); padding: calc(20 * var(--u)) 0; display: grid; gap: calc(12 * var(--u)); }
+.uma-project__specimen { margin: 0; font-size: max(2.5rem, calc(68 * var(--u))); line-height: 1.05; color: var(--up-text); font-weight: 400; letter-spacing: 0; }
+.uma-project__font-info p { margin: 0; font-size: var(--up-small); line-height: 1.4; color: var(--up-muted); }
+.uma-project__font-info p.uma-project__sub { color: var(--up-text); margin-bottom: .6em; }
+@media (min-width: 768px) {
+  .uma-project__pair { grid-template-columns: 1fr 1fr; }
+  .uma-project__palette { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: calc(24 * var(--u)); }
+  .uma-project__font { grid-template-columns: var(--up-lines); gap: 0; align-items: start; }
+  .uma-project__specimen { grid-column: 1 / 4; }
+  .uma-project__font-info { grid-column: 4 / 5; }
+}
