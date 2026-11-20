@@ -116,4 +116,4 @@ html.light-theme .ty-grey, html.light-theme .hd__link, html.light-theme .ft__col
 html.rm-off * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 html.rm, html.rm * { scroll-behavior: auto !important; }
 
-html.light-theme .btn { font-weight: 580; }
+html.light-theme .btn { font-weight: 520; }

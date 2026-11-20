@@ -94,7 +94,7 @@
 
 html.light-theme {
   --bg: var(--c-paper); --txt: var(--c-ink-2); --txt-soft: var(--c-ink-2); --grey: var(--c-grey-light); --line: var(--c-line-light);
-  --w-text: 540; --w-head: 540;   /* светлая тема заметно плотнее (референс liars.co: весь текст medium, чёрный) */
+  --w-text: 470; --w-head: 470;   /* светлая тема плотнее (тёмный текст на светлом выглядит тоньше), но без резкого скачка при смене темы */
   --btn-bg: var(--c-ink); --btn-fg: var(--c-white-soft); --btn-bg-h: #000000;
   --btn2-bg: rgba(17,18,17,.08); --btn2-fg: var(--c-ink); --btn2-bg-h: var(--c-ink); --btn2-fg-h: var(--c-white-soft);
 }

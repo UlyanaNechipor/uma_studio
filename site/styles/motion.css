@@ -38,6 +38,12 @@ body, .hd, .hd__link, .mail, .ft, .ft__h, .svc__title, .prow__name, .ty-h1, .ty-
   transition: color .5s var(--m-out), background-color .5s var(--m-out), border-color .5s var(--m-out), font-weight .5s ease;
 }
 
+/* в момент смены темы все тексты плавно меняют цвет и плотность одновременно (класс ставит site.js на 0.8 с) */
+html.theme-anim body, html.theme-anim body *:not(.hg__slide):not(.hg__slide *):not(canvas) {
+  transition-property: color, background-color, border-color, fill, stroke, font-weight, letter-spacing !important;
+  transition-duration: .6s !important; transition-timing-function: var(--m-out) !important; transition-delay: 0s !important;
+}
+
 /* ---------- прелоадер: логотип заливается и улетает в шапку ---------- */
 .pl {
   position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 100; display: none;
