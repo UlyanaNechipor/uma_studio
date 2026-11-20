@@ -55,16 +55,17 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 .uma-project__count { width: auto; height: auto; }
 
 /* ---------- планшет и десктоп (макет 1200): поля 32, правая половина с 600 ---------- */
-/* ---------- планшет и десктоп: макет Figma «Landing Arine» → MAIN (894:1338), 1920 px ----------
-   Размеры макета делятся на 1.6 (1920 → сетка сайта 1200) и пишутся в --u.
-   Колонки привязаны к пунктам шапки сайта: A — «Проекты» (600), B — «О нас» (790), C — «Контакты» (976);
-   в макете это x 936, 1248 и 1593 от поля. */
+/* ---------- планшет и десктоп: макет Figma «Landing Arine» → MAIN (894:1338) ----------
+   Сетка страницы кейса: 12 колонок, промежуток 16 (на макете 1920; здесь 10 в --u, растёт с экраном).
+   Текстовый блок — три колонки; блоки встают по краям колонок:
+     шапка кейса — название с 1-й, «Проект» и «Задачи» с 11-й;
+     вступление и тексты в две колонки — с 7-й и с 10-й (по три колонки);
+     одна колонка текста («Типографика», «Каталог»…) — с 9-й по 12-ю;
+     текст во всю правую часть («Адаптивы») — с 7-й по 12-ю.
+   Размеры макета делятся на 1.6 (1920 → сетка сайта 1200). */
 @media (min-width: 768px) {
   .uma-project {
     --up-pad: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2));
-    --col-a: calc(568 * var(--u));     /* от поля до колонки A */
-    --col-b: calc(758 * var(--u));     /* до колонки B */
-    --col-c: calc(944 * var(--u));     /* до колонки C */
     --up-gap: calc(10 * var(--u));     /* 16 */
     --up-sec: calc(100 * var(--u));    /* 160 между разделами */
     --up-inner: calc(50 * var(--u));   /* 80 от текста до картинки */
@@ -72,27 +73,41 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
     --up-mid: max(1rem, calc(17.5 * var(--u)));                  /* 28 — вступление */
     padding-top: calc(48 * var(--u) + 37 * var(--u));            /* 123 от верха страницы */
   }
-  /* шапка кейса: название и «Назад» слева, «Проект» и «Задачи» друг под другом в колонке C */
-  .uma-project__top { display: grid; grid-template-columns: var(--col-c) 1fr; column-gap: 0; align-items: stretch; }
-  .uma-project__left { gap: calc(24 * var(--u)); height: auto; justify-content: space-between; }
+  .uma-project__top,
+  .uma-project__intro,
+  .uma-project__head {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--up-gap);
+    row-gap: 0;
+    align-items: start;
+  }
+  /* шапка кейса */
+  .uma-project__top { align-items: stretch; }
+  .uma-project__left { grid-column: 1 / 11; gap: calc(24 * var(--u)); height: auto; justify-content: space-between; }
+  .uma-project__meta { grid-column: 11 / 13; display: flex; flex-direction: column; gap: calc(25 * var(--u)); }   /* 40 */
+  .uma-project__meta-group { gap: calc(10 * var(--u)); }                                                          /* шаг строк 31 */
+  .uma-project__meta dt, .uma-project__meta dd { line-height: 1; white-space: nowrap; }
   .uma-project__title { font-size: max(var(--min-h2), calc(35 * var(--u))); line-height: .72; letter-spacing: .01em; }   /* 56 */
-  .uma-project__meta { display: flex; flex-direction: column; gap: calc(25 * var(--u)); }   /* 40 */
-  .uma-project__meta-group { gap: calc(10 * var(--u)); }                                     /* шаг строк 31 */
-  .uma-project__meta dt, .uma-project__meta dd { line-height: 1; }
   .uma-project__back { line-height: 1.25; }
 
   .uma-project__cover { margin-top: var(--up-inner); }
-  /* вступление: крупный текст 665 слева, две колонки 452 и 430 с колонки A */
-  .uma-project__intro { display: grid; grid-template-columns: var(--col-a) 1fr; margin-top: var(--up-inner); gap: 0; }
-  .uma-project__lead { width: auto; max-width: calc(416 * var(--u)); font-size: var(--up-mid); line-height: 1.35; padding-right: 0; }
-  .uma-project__intro .uma-project__cols { display: grid; grid-template-columns: calc(282 * var(--u)) calc(269 * var(--u)); gap: var(--up-gap); width: auto; }
 
-  /* разделы: заголовок слева; текст — две колонки с A (split), колонка 608 с B (aside) или строка 920 с A (wide) */
-  .uma-project__head { display: grid; grid-template-columns: var(--col-a) 1fr; gap: 0; align-items: start; }
-  .uma-project__h2 { flex: none; font-size: max(1rem, calc(12.5 * var(--u))); line-height: 1; padding-right: calc(16 * var(--u)); }   /* 20 */
-  .uma-project__head .uma-project__cols { display: grid; grid-template-columns: calc(282 * var(--u)) calc(269 * var(--u)); gap: var(--up-gap); width: auto; flex-direction: row; }
-  .uma-project__aside { width: auto; max-width: none; margin-left: calc(190 * var(--u)); max-width: calc(380 * var(--u)); }
-  .uma-project__aside.is-wide { margin-left: 0; max-width: calc(575 * var(--u)); }
+  /* вступление */
+  .uma-project__intro { margin-top: var(--up-inner); gap: 0 var(--up-gap); }
+  .uma-project__lead { grid-column: 1 / 6; width: auto; max-width: calc(416 * var(--u)); font-size: var(--up-mid); line-height: 1.35; padding-right: 0; }
+
+  /* разделы */
+  .uma-project__h2 { grid-column: 1 / 7; flex: none; font-size: max(1rem, calc(12.5 * var(--u))); line-height: 1; padding-right: 0; }   /* 20 */
+  /* две колонки текста раскладываются прямо по сетке: с 7-й и с 10-й, по три колонки */
+  .uma-project__intro .uma-project__cols,
+  .uma-project__head .uma-project__cols { display: contents; }
+  .uma-project__intro .uma-project__col:nth-child(1),
+  .uma-project__head .uma-project__col:nth-child(1) { grid-column: 7 / 10; }
+  .uma-project__intro .uma-project__col:nth-child(2),
+  .uma-project__head .uma-project__col:nth-child(2) { grid-column: 10 / 13; }
+  .uma-project__aside { grid-column: 9 / 13; width: auto; max-width: none; margin-left: 0; }
+  .uma-project__aside.is-wide { grid-column: 7 / 13; }
   .uma-project__aside p { text-wrap: pretty; }
   .uma-project__section .uma-project__figure + .uma-project__figure { margin-top: var(--up-sec); }
 
