@@ -13,6 +13,8 @@
   // тема и признак «скрипты работают» — до отрисовки, чтобы не мигнуло
   try { if (localStorage.getItem('uma-theme') === 'light') html.classList.add('light-theme'); } catch (e) {}
   html.classList.add('js', 'sos-wait');
+  // переход с другой страницы сайта: лист уже закрывает экран, прелоадера не будет
+  try { if (sessionStorage.getItem('sos-pt')) html.classList.add('pt-in'); } catch (e) {}
   try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
   // страховка: если за 12 с сайт не поднялся — показываем как есть
   setTimeout(function () { if (!window.__umaBoot || !html.classList.contains('is-ready')) html.classList.remove('js', 'sos-wait'); }, 12000);
