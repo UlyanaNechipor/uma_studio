@@ -80,7 +80,7 @@ const h = home;
 const hero = `
 <section class="hero grid" aria-label="О студии">
   <p class="hero__lead ty-small" data-intro>${typo(h.hero.lead)}</p>
-  <h1 class="hero__title ty-h1" data-intro data-fill="load">${lines(h.hero.title)}</h1>
+  <h1 class="hero__title ty-h1" data-intro data-fill="load">${[].concat(h.hero.title).map(typo).join(' <br class="hero__br">')}</h1>
   <div class="hero__gallery hg" data-gallery aria-roledescription="галерея" aria-label="Проекты студии">
     <div class="hg__frame"><div class="hg__strip">
       ${h.hero.gallery.map((g, i) => `<figure class="hg__slide${i ? '' : ' is-active'}">${img(g.src, g.title, '', i === 0, '(min-width: 768px) 64vw, 100vw')}</figure>`).join('\n      ')}

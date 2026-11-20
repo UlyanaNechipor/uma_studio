@@ -167,3 +167,10 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
   .cta__act .btn--light, .cta__act .btn--grey { min-width: calc(127 * var(--u)); }
   .cta__act .mail { flex-basis: auto; margin: 0; }
 }
+
+/* заголовок первого блока: на десктопе одна строка во всю ширину сетки (строка ≈ 15.8 em → 72 из 1136),
+   на телефоне — две строки по переносу из контента */
+@media (min-width: 768px) {
+  .hero__title { white-space: nowrap; font-size: calc(72 * var(--u)); }
+  .hero__title .hero__br { display: none; }
+}
