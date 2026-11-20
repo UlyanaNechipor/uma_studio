@@ -13,13 +13,16 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
   grid-template-rows: minmax(calc(112 * var(--u)), auto) minmax(calc(88 * var(--u)), auto) calc(200 * var(--uw));   /* ряды с текстом растут, если текст крупнее макета */
 }
 .hero__lead { grid-column: 1 / -1; grid-row: 1; color: var(--txt-soft); padding-bottom: calc(24 * var(--u)); }
+.hero__lead .hero__lb { display: none; }   /* на телефоне строки внутри предложения переносятся сами */
+@media (min-width: 768px) { .hero__lead .hero__lb { display: inline; } }
 .hero__title, .about__title, .about__lead, .about__label { padding-bottom: calc(24 * var(--u)); }
 .hero__title { grid-column: 1 / -1; grid-row: 2; }
 .hero__gallery { grid-column: 1 / -1; grid-row: 3; position: relative; }
 .hero__aside { display: none; }
 @media (min-width: 768px) {
-  .hero { padding-top: calc(120 * var(--u)); grid-template-rows: minmax(calc(147 * var(--u)), auto) minmax(calc(200 * var(--u)), auto) calc(480 * var(--u)); }
-  .hero__lead { grid-column: 3 / 5; max-width: max(calc(300 * var(--u)), 15rem); }   /* одинаковые переносы в обеих темах */
+  .hero { padding-top: calc(120 * var(--u)); grid-template-rows: auto minmax(calc(200 * var(--u)), auto) calc(480 * var(--u)); }
+  /* текст первого экрана: каждое предложение с новой строки, переносы заданы в контенте; до заголовка — 60 */
+  .hero__lead { grid-column: 3 / 5; max-width: none; white-space: nowrap; padding-bottom: calc(58 * var(--u)); }   /* + верхний зазор строки заголовка = 60 */
   /* правая картинка начинается на линии пункта «О нас» в шапке (790) и идёт до правого поля (1168);
      галерея — от левого поля до 782, шаг между ними 8 */
   .hero__gallery { grid-column: 1 / -1; width: calc(750 * var(--u)); }
