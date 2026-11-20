@@ -141,7 +141,7 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 .uma-project__aa { font-size: max(2rem, calc(54 * var(--u))); line-height: 1; font-weight: 500; letter-spacing: -.01em; }
 .uma-project__fonts { margin-top: var(--up-inner); }
 .uma-project__font { border-top: 1px solid var(--line); padding: calc(20 * var(--u)) 0; display: grid; gap: calc(12 * var(--u)); }
-.uma-project__specimen { margin: 0; font-size: max(2.5rem, calc(68 * var(--u))); line-height: 1.05; color: var(--up-text); font-weight: 400; letter-spacing: 0; }
+.uma-project__specimen { margin: 0; font-size: max(2.5rem, calc(96 * var(--u))); line-height: 1.05; color: var(--up-text); font-weight: 400; letter-spacing: 0; }
 .uma-project__font-info p { margin: 0; font-size: var(--up-small); line-height: 1.4; color: var(--up-muted); }
 .uma-project__font-info p.uma-project__sub { color: var(--up-text); margin-bottom: .6em; }
 @media (min-width: 768px) {
@@ -151,3 +151,9 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
   .uma-project__specimen { grid-column: 1 / 4; }
   .uma-project__font-info { grid-column: 4 / 5; }
 }
+/* текст в одну колонку с линии C («Контакты») до края — как в макете Sure */
+@media (min-width: 768px) {
+  .uma-project__aside.is-side { grid-column: 4 / 5; }
+  .uma-project__font-info p.uma-project__sub { margin-bottom: 1.4em; }
+}
+.uma-project__pair > :only-child { grid-column: 1 / -1; }

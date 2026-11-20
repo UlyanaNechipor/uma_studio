@@ -204,7 +204,7 @@ const html = page({ title: site.seo.title || site.brand, css: ['home'], main: [h
    Пока файла нет — плашка с подписью, что здесь будет. */
 // абзац: строка; "" — пустая строка; { "h": "подзаголовок", "t": "текст" } — пункт с подзаголовком
 const para = (t) => (t === '' ? '<p class="uma-project__spacer" aria-hidden="true"></p>'
-  : typeof t === 'object' ? `<p class="uma-project__item"><span class="uma-project__sub">${typo(t.h)}</span>${String(t.t).split('\n').map(typo).join('<br>')}</p>`
+  : typeof t === 'object' ? `<p class="uma-project__item"><span class="uma-project__sub">${typo(t.h)}</span>${String(t.t || '').split('\n').map(typo).join('<br>')}</p>`
   : `<p>${String(t).split('\n').map(typo).join('<br>')}</p>`);
 // цвет текста на плашке палитры: тёмный на светлом, светлый на тёмном
 const inkFor = (hex) => { const n = parseInt(hex.replace('#', ''), 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255;
@@ -240,7 +240,7 @@ function projectPage(d) {
     m += `<section class="uma-project__section"><div class="uma-project__head"><h2 class="uma-project__h2">${typo(sec.title)}</h2>` +
       (!sec.columns ? '' : sec.layout === 'split'
         ? `<div class="uma-project__cols"${gap}>${sec.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')}</div>`
-        : `<div class="uma-project__aside${sec.layout === 'wide' ? ' is-wide' : ''}"${gap}>${sec.columns[0].map(para).join('')}</div>`) +
+        : `<div class="uma-project__aside${sec.layout === 'wide' ? ' is-wide' : sec.layout === 'side' ? ' is-side' : ''}"${gap}>${sec.columns[0].map(para).join('')}</div>`) +
       '</div>';
     // палитра: плашки с HEX и «Aa»
     if (sec.palette) m += '<ul class="uma-project__palette">' + sec.palette.map((c) => { const hex = c.hex || c;
