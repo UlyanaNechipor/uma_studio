@@ -36,4 +36,4 @@ html #sos-page main{ display: flex; flex-direction: column; gap: var(--block-gap
     grid-template-rows: 1fr auto;   
   }html #sos-page .cta__img{ grid-column: 1; grid-row: 1 / 3; height: calc(160 * var(--u)); }html #sos-page .cta__title{ grid-column: 2; grid-row: 1; margin: 0; }html #sos-page .cta__act{ grid-column: 2; grid-row: 2; align-self: end; margin: 0; gap: calc(16 * var(--u)); flex-wrap: nowrap; }html #sos-page .cta__act{ align-items: center; }html #sos-page .cta__act .btn--light,html #sos-page .cta__act .btn--grey{ min-width: calc(127 * var(--u)); }html #sos-page .cta__act .mail{ flex-basis: auto; margin: 0; }
 }@media (min-width: 1024px){html #sos-page .hero__title{ white-space: nowrap; }html #sos-page .hero__title .hero__br{ display: none; }
-}
+}html.light-theme #sos-page .hero__lead{ letter-spacing: .021em; }
