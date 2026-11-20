@@ -174,3 +174,6 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
   .hero__title { white-space: nowrap; }
   .hero__title .hero__br { display: none; }
 }
+/* в светлой теме начертание плотнее (540) и строки шире — чуть ужимаем разрядку, чтобы блок
+   имел ту же ширину и те же переносы, что в тёмной */
+html.light-theme .hero__lead { letter-spacing: .021em; }
