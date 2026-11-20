@@ -182,9 +182,9 @@ ${css.map((f) => `<link rel="stylesheet" href="styles/${f}.css">`).join('\n')}
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js');try{if(matchMedia('(prefers-reduced-motion: reduce)').matches&&'${MOTION_REDUCED}'!=='full')document.documentElement.classList.add('${MOTION_REDUCED}'==='off'?'rm-off':'rm')}catch(e){}setTimeout(function(){var h=document.documentElement;if(!window.__umaBoot||!h.classList.contains('is-ready'))h.classList.remove('js')},12000)</script>\n<noscript><style>.pl{display:none!important}</style></noscript>
 </head>
 <body>
-<div class="pl" id="preloader" aria-hidden="true">
+${home ? '' : `<div class="pl" id="preloader" aria-hidden="true">
   <div class="pl__logo"><span class="pl__base">${logo}</span><span class="pl__ink">${logo}</span></div>
-</div>
+</div>`}
 <canvas id="trail" aria-hidden="true"></canvas>
 <canvas id="wipe" aria-hidden="true"></canvas>
 ${headerHtml(home)}

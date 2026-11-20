@@ -247,7 +247,7 @@
     var ft = $('.ft');
     if (ft) { if (reduce) ft.classList.add('is-lines'); else new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { o.disconnect(); ft.classList.add('is-lines'); } }, { rootMargin: '0px 0px -8% 0px' }).observe(ft); }
     // до ухода прелоадера ничего не появляется
-    ready.push(function () { setTimeout(function () { items.forEach(function (el) { io.observe(el); }); }, reduce ? 0 : HERO_DELAY + 300); });
+    ready.push(function () { setTimeout(function () { items.forEach(function (el) { io.observe(el); }); }, (reduce || !$('#preloader')) ? 0 : HERO_DELAY + 300); });
   }
 
   /* ---------------- тема ---------------- */
@@ -535,7 +535,7 @@
     var done = false;
     function check() { if (done || !html.classList.contains('is-ready')) return; if (el.getBoundingClientRect().top < innerHeight * 0.82) { done = true; removeEventListener('scroll', check); fn(); } }
     addEventListener('scroll', check, { passive: true });
-    ready.push(function () { setTimeout(check, HERO_DELAY + 300); });
+    ready.push(function () { setTimeout(check, $('#preloader') ? HERO_DELAY + 300 : 0); });
   }
 
   /* превью обложки у курсора (десктоп): окошко следует за мышью с инерцией и наклоном,
