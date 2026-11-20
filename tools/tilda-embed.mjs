@@ -110,15 +110,26 @@ if (mode === 'assets') {
 } else if (mode === 'snippets') {
   // Постоянные вставки: в них нет номера версии, после правок их менять не нужно.
   mkdirSync(join(root, 'tilda'), { recursive: true });
-  const loader = readFileSync(join(root, 'tilda/loader.js'), 'utf8').replace(/^\/\*[\s\S]*?\*\/\s*/, '');
   const tok = readFileSync(join(root, 'site/styles/tokens.css'), 'utf8');
   const col = (n) => tok.match(new RegExp('--' + n + ':\\s*(#[0-9a-fA-F]{3,8})'))[1];
   const bg = { dark: { bg: col('c-ink') }, light: { bg: col('c-paper') } };   // фон до загрузки — как у сайта
+  // Сам загрузчик (tilda/loader.js) берётся из GitHub при каждом открытии — вставку не придётся менять никогда.
+  // Не ответил GitHub — последняя сохранённая в браузере копия, нет и её — копия с jsDelivr.
+  const boot = `(function(){var d=document,h=d.documentElement,K='sos_loader',R='UlyanaNechipor/uma_studio';
+try{if(localStorage.getItem('uma-theme')==='light')h.classList.add('light-theme')}catch(e){}
+h.classList.add('js','sos-wait');setTimeout(function(){if(!window.__umaBoot)h.classList.remove('js','sos-wait')},12000);
+function run(t){try{(new Function(t))()}catch(e){try{console.error('Shape of Sense: загрузчик',e)}catch(_){}}}
+function cdn(){var s=d.createElement('script');s.src='https://cdn.jsdelivr.net/gh/'+R+'@main/tilda/loader.js';d.head.appendChild(s)}
+var done=0,t0=setTimeout(fail,4000);
+function fail(){if(done)return;done=1;var t=null;try{t=localStorage.getItem(K)}catch(e){}t?run(t):cdn()}
+fetch('https://raw.githubusercontent.com/'+R+'/main/tilda/loader.js',{cache:'no-store'})
+.then(function(r){if(!r.ok)throw r.status;return r.text()})
+.then(function(t){if(done)return;done=1;clearTimeout(t0);try{localStorage.setItem(K,t)}catch(e){}run(t)},function(){clearTimeout(t0);fail()})})();`;
   writeFileSync(join(root, 'tilda/sos-head.html'),
     '<!-- Shape of Sense · загрузчик сайта. Вставить один раз: Настройки сайта → Ещё → HTML-код для вставки внутрь head.\n' +
-    '     Исходник: github.com/UlyanaNechipor/uma_studio, tilda/loader.js. Код сайта обновляется сам после каждой правки. -->\n' +
+    '     Код сайта и самого загрузчика берётся из github.com/UlyanaNechipor/uma_studio — эту вставку менять не нужно. -->\n' +
     `<style>html.sos-wait,html.sos-wait body{background:${bg.dark.bg}!important}html.sos-wait.light-theme,html.sos-wait.light-theme body{background:${bg.light.bg}!important}html.sos-wait #allrecords{visibility:hidden}</style>\n` +
-    '<script>\n' + loader.trim() + '\n</script>\n');
+    '<script>' + boot + '</script>\n');
   for (const f of readdirSync(dist).filter((f) => f.endsWith('.html'))) {
     const name = f.replace(/\.html$/, '');
     writeFileSync(join(root, `tilda/sos-page-${name}.html`), `<div id="sos-page" data-page="${name}"></div>\n`);

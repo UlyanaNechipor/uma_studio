@@ -35,10 +35,23 @@
     var mount = d.getElementById('sos-page');
     if (!mount) { html.classList.remove('js', 'sos-wait'); return; }
     var page = (mount.getAttribute('data-page') || 'index').replace(/[^\w-]/g, '');
-    latest().then(function (sha) {
+    // страница по номеру версии; не ответила — ещё раз, потом последняя версия, что уже открывалась, потом ветка целиком
+    function load(sha) {
       var base = 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + sha + '/';
-      return fetch(base + 'pages/' + page + '.html').then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
-        .then(function (t) { mountPage(mount, t, base); });
+      return timeout(fetch(base + 'pages/' + page + '.html'), 8000)
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+        .then(function (t) { return { t: t, base: base, sha: sha }; });
+    }
+    function wait(ms) { return new Promise(function (ok) { setTimeout(ok, ms); }); }
+    var good = null; try { good = localStorage.getItem(KEY + '_ok'); } catch (e) {}
+    latest().then(function (sha) {
+      return load(sha)
+        .catch(function () { return wait(1500).then(function () { return load(sha); }); })
+        .catch(function (e) { if (good && good !== sha) return load(good); throw e; })
+        .catch(function (e) { if (sha !== BRANCH) return load(BRANCH); throw e; });
+    }).then(function (res) {
+      mountPage(mount, res.t, res.base);
+      try { if (/^[0-9a-f]{40}$/.test(res.sha)) localStorage.setItem(KEY + '_ok', res.sha); } catch (e) {}
     }).catch(function (e) {
       try { console.error('Shape of Sense: страница не загрузилась', e); } catch (_) {}
       html.classList.remove('js', 'sos-wait');
