@@ -96,22 +96,26 @@ if (mode === 'assets') {
   console.log('site/dist-tilda готова');
 } else if (mode === 'snippets') {
   if (!base || !/\/$/.test(base)) { console.error('нужен BASE, оканчивающийся на /'); process.exit(1); }
-  const html = readFileSync(join(dist, 'index.html'), 'utf8');
-  const abs = (u) => /^(https?:|data:|mailto:|tel:|#|\/\/)/.test(u) || u === './' ? u : base + u;
+  // адреса файлов сборки → абсолютные (jsDelivr); ссылки от корня сайта (/rosi, /#projects) остаются как есть
+  const abs = (u) => /^(https?:|data:|mailto:|tel:|#|\/)/.test(u) || u === './' ? u : base + u;
   const fix = (s) => s
     .replace(/\b(src|href|data-src|data-cover|poster)="([^"]+)"/g, (m, a, u) => `${a}="${abs(u)}"`)
     .replace(/\bsrcset="([^"]+)"/g, (m, v) => 'srcset="' + v.split(',').map((x) => { const [u, ...r] = x.trim().split(/\s+/); return [abs(u), ...r].join(' '); }).join(', ') + '"');
-  const head = html.slice(html.indexOf('<head>') + 6, html.indexOf('</head>'));
-  const keep = head
-    .replace(/<meta charset[^>]*>\s*/, '').replace(/<meta name="viewport"[^>]*>\s*/, '').replace(/<title>[^<]*<\/title>\s*/, '')
-    .replace(/(<link rel="stylesheet" href="styles\/motion\.css[^>]*>)/, '$1\n<link rel="stylesheet" href="styles/tilda.css">');
-  const body = html.slice(html.indexOf('<body>') + 6, html.indexOf('</body>'));
-  const stamp = `<!-- Shape of Sense · статичный сайт в Тильде. Собрано tools/tilda-embed.mjs ${new Date().toISOString().slice(0, 10)}, файлы: ${base} -->\n`;
   mkdirSync(join(root, 'tilda'), { recursive: true });
-  writeFileSync(join(root, 'tilda/static-head.html'), stamp + fix(keep).trim() + '\n');
-  writeFileSync(join(root, 'tilda/static-body.html'), stamp + fix(body).trim() + '\n');
-  console.log('tilda/static-head.html', statSync(join(root, 'tilda/static-head.html')).size, 'байт');
-  console.log('tilda/static-body.html', statSync(join(root, 'tilda/static-body.html')).size, 'байт');
+  // каждая страница сборки → своя пара вставок: index.html → static-head/body, rosi.html → static-rosi-head/body
+  for (const f of readdirSync(dist).filter((f) => f.endsWith('.html'))) {
+    const html = readFileSync(join(dist, f), 'utf8');
+    const name = f === 'index.html' ? 'static' : 'static-' + f.replace(/\.html$/, '');
+    const head = html.slice(html.indexOf('<head>') + 6, html.indexOf('</head>'));
+    const keep = head
+      .replace(/<meta charset[^>]*>\s*/, '').replace(/<meta name="viewport"[^>]*>\s*/, '').replace(/<title>[^<]*<\/title>\s*/, '')
+      .replace(/(<link rel="stylesheet" href="styles\/motion\.css[^>]*>)/, '$1\n<link rel="stylesheet" href="styles/tilda.css">');
+    const body = html.slice(html.indexOf('<body>') + 6, html.indexOf('</body>'));
+    const stamp = `<!-- Shape of Sense · ${f === 'index.html' ? 'главная' : 'страница ' + f.replace(/\.html$/, '')} · статичный сайт в Тильде. Собрано tools/tilda-embed.mjs ${new Date().toISOString().slice(0, 10)}, файлы: ${base} -->\n`;
+    writeFileSync(join(root, `tilda/${name}-head.html`), stamp + fix(keep).trim() + '\n');
+    writeFileSync(join(root, `tilda/${name}-body.html`), stamp + fix(body).trim() + '\n');
+    console.log(`tilda/${name}-head.html`, statSync(join(root, `tilda/${name}-head.html`)).size, 'байт;', `tilda/${name}-body.html`, statSync(join(root, `tilda/${name}-body.html`)).size, 'байт');
+  }
 } else {
   console.error('режим: assets | snippets <BASE>');
   process.exit(1);

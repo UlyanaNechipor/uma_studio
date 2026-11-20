@@ -43,9 +43,9 @@ const href = (h) => esc(String(h).replace('{email}', site.contacts.email));
 const OPT = readdirSync(join(ROOT, 'img/opt'));
 const variants = (src) => {
   let dir, stem;
-  const g = src.match(/^img\/gallery\/(.+)-(\d+)\.webp$/);
+  const g = src.match(/^(img\/gallery|img\/projects\/[\w-]+)\/(.+)-(\d+)\.webp$/);
   const t = src.match(/^site\/assets\/tilda\/(.+)\.(?:jpe?g|png)$/i);
-  if (g) { dir = 'img/gallery'; stem = g[1]; } else if (t) { dir = 'img/opt'; stem = t[1]; } else return null;
+  if (g) { dir = g[1]; stem = g[2]; } else if (t) { dir = 'img/opt'; stem = t[1]; } else return null;
   const list = (dir === 'img/opt' ? OPT : readdirSync(join(ROOT, dir)))
     .map((f) => f.match(new RegExp('^' + stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '-(\\d+)\\.webp$')))
     .filter(Boolean).map((m) => ({ w: +m[1], path: `${dir}/${m[0]}` })).sort((a, b) => a.w - b.w);
@@ -60,12 +60,13 @@ const img = (src, alt = '', cls = '', eager = false, sizes = '100vw') => {
 const btn = (b, kind = 'light') =>
   `<a class="btn btn--${kind}" href="${href(b.href)}">${kind === 'light' ? '<span class="btn__dot" aria-hidden="true"></span>' : ''}${esc(b.label)}</a>`;
 
-const header = `
+// home — адрес главной: '' на самой главной (ссылки #раздел), '/' на страницах кейсов (ссылки /#раздел)
+const headerHtml = (home = '') => `
 <header class="hd">
   <canvas class="hd__trail" aria-hidden="true"></canvas>
-  <a class="hd__logo" href="./" aria-label="${esc(site.brand)} — на главную">${logo}</a>
+  <a class="hd__logo" href="${home || './'}" aria-label="${esc(site.brand)} — на главную">${logo}</a>
   <nav class="hd__nav" aria-label="Разделы">
-    ${site.nav.map((n) => `<a class="hd__link" href="#${n.id}">${esc(n.label)}</a>`).join('\n    ')}
+    ${site.nav.map((n) => `<a class="hd__link" href="${home}#${n.id}">${esc(n.label)}</a>`).join('\n    ')}
   </nav>
   <button class="hd__theme" type="button" aria-label="Светлая тема" data-theme-toggle>
     <span class="hd__ic" aria-hidden="true">
@@ -98,7 +99,7 @@ const projects = `
   <h2 class="projects__title ty-h2" data-fill>${typo(h.projects.title)}</h2>
   <ul class="projects__list">
     ${h.projects.items.map((p) => `<li class="prow">
-      <a class="prow__link" href="/projects/${esc(p.slug)}/" data-cover="${esc(p.cover)}">
+      <a class="prow__link" href="/${esc(p.slug)}" data-cover="${esc(p.cover)}">
         <span class="prow__name ty-name">${esc(p.name)}</span>
         <span class="prow__type ty-small ty-grey">${typo(p.type)}</span>
         <span class="prow__year ty-small ty-grey">${esc(p.year)}</span>
@@ -147,12 +148,12 @@ const cta = `
 </section>`;
 
 const c = site.contacts;
-const footer = `
+const footerHtml = (home = '') => `
 <footer class="ft grid">
   <p class="ft__logo">${logo}</p>
   <p class="ft__made ty-small ty-grey">Made by ${esc(site.brand.toUpperCase())} ©${esc(site.footer.year)}</p>
   <nav class="ft__col" aria-label="Компания"><h2 class="ft__h">Компания</h2>
-    ${site.nav.map((n) => `<a href="#${n.id}">${esc(n.label)}</a>`).join('')}
+    ${site.nav.map((n) => `<a href="${home}#${n.id}">${esc(n.label)}</a>`).join('')}
     ${c.privacy ? `<a href="${esc(c.privacy)}">Политика конфиденциальности</a>` : '<span>Политика конфиденциальности</span>'}
   </nav>
   <div class="ft__col"><h2 class="ft__h">Контакты</h2>
@@ -164,17 +165,18 @@ const footer = `
 </footer>`;
 
 const diag = readFileSync(join(ROOT, 'site/scripts/diag.js'), 'utf8');
-const html = `<!doctype html>
+// каркас страницы: общий для главной и кейсов
+const page = ({ title, css = [], main, home = '' }) => `<!doctype html>
 <html lang="${site.lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(site.seo.title || site.brand)}</title>
+<title>${esc(title)}</title>
 ${site.seo.description ? `<meta name="description" content="${esc(site.seo.description)}">\n` : ''}<meta name="theme-color" content="${site.themes.dark.bg}">
 <link rel="preload" href="site/assets/fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="styles/tokens.css">
 <link rel="stylesheet" href="styles/base.css">
-<link rel="stylesheet" href="styles/home.css">
+${css.map((f) => `<link rel="stylesheet" href="styles/${f}.css">`).join('\n')}
 <link rel="stylesheet" href="styles/motion.css">
 <script>${diag}</script>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js');try{if(matchMedia('(prefers-reduced-motion: reduce)').matches&&'${MOTION_REDUCED}'!=='full')document.documentElement.classList.add('${MOTION_REDUCED}'==='off'?'rm-off':'rm')}catch(e){}setTimeout(function(){var h=document.documentElement;if(!window.__umaBoot||!h.classList.contains('is-ready'))h.classList.remove('js')},12000)</script>\n<noscript><style>.pl{display:none!important}</style></noscript>
@@ -185,28 +187,78 @@ ${site.seo.description ? `<meta name="description" content="${esc(site.seo.descr
 </div>
 <canvas id="trail" aria-hidden="true"></canvas>
 <canvas id="wipe" aria-hidden="true"></canvas>
-${header}
+${headerHtml(home)}
 <main>
-${hero}
-${projects}
-${lab}
-${about}
-${services}
-${cta}
+${main}
 </main>
-${footer}
+${footerHtml(home)}
 <script src="scripts/site.js" defer></script>
 </body>
 </html>`;
 
+const html = page({ title: site.seo.title || site.brand, css: ['home'], main: [hero, projects, lab, about, services, cta].join('\n') });
+
+/* ---------------- страницы кейсов: projects/<slug>.json → <slug>.html ----------------
+   Та же вёрстка, что собирает js/project-page.js в версии на Зеро-блоках, только готовым HTML.
+   Картинка раздела: src (готовый файл из img/) или name → img/projects/<slug>/<name>-1200|2400.webp.
+   Пока файла нет — плашка с подписью, что здесь будет. */
+const para = (t) => (t === '' ? '<p class="uma-project__spacer" aria-hidden="true"></p>' : `<p>${String(t).split('\n').map(typo).join('<br>')}</p>`);
+const pad2 = (n) => String(n).padStart(2, '0');
+const arrowSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.73 4a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>';
+function projectFigure(slug, im, cls = '') {
+  if (!im) return '';
+  const c = 'uma-project__figure' + (cls ? ' ' + cls : '');
+  let src = im.src, w = im.w, hh = im.h;
+  if (!src) {
+    const base = `img/projects/${slug}/${im.name}`;
+    if (existsSync(join(ROOT, base + '-1200.webp'))) src = base + '-1200.webp';
+  }
+  const ratio = w && hh ? ` style="aspect-ratio:${w} / ${hh}"` : '';
+  if (!src) return `<figure class="${c} is-empty"${ratio} data-label="${esc(im.alt)}"></figure>`;
+  return `<figure class="${c}"${ratio}>${img(src, im.alt, '', false, '(max-width: 1920px) 97vw, 1856px')}</figure>`;
+}
+function projectPage(d) {
+  const s = d.slug;
+  let m = '<article class="uma-project" aria-labelledby="uma-project-title">';
+  m += `<header class="uma-project__top"><div class="uma-project__left"><h1 class="uma-project__title" id="uma-project-title">${esc(d.title)}</h1>` +
+    (d.back ? `<a class="uma-project__back" href="${esc(d.back.url)}">${esc(d.back.label)}</a>` : '') + '</div><div class="uma-project__meta">' +
+    (d.meta || []).map((g) => `<dl class="uma-project__meta-group"><dt>${esc(g.title)}</dt>${g.items.map((i) => `<dd>${typo(i)}</dd>`).join('')}</dl>`).join('') +
+    '</div></header>';
+  if (d.cover) m += projectFigure(s, { src: d.cover.src, name: d.cover.image, w: d.cover.w, h: d.cover.h, alt: d.cover.alt }, 'uma-project__cover');
+  if (d.intro) m += `<section class="uma-project__intro"><div class="uma-project__lead">${d.intro.lead.map(para).join('')}</div><div class="uma-project__cols">` +
+    d.intro.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('') + '</div></section>';
+  for (const sec of d.sections || []) {
+    const gap = sec.gap ? ` style="--up-pgap:${sec.gap}px"` : '';
+    m += `<section class="uma-project__section"><div class="uma-project__head"><h2 class="uma-project__h2">${typo(sec.title)}</h2>` +
+      (sec.layout === 'split'
+        ? `<div class="uma-project__cols"${gap}>${sec.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')}</div>`
+        : `<div class="uma-project__aside"${gap}>${sec.columns[0].map(para).join('')}</div>`) +
+      '</div>' + projectFigure(s, sec.image) + projectFigure(s, sec.after) + '</section>';
+  }
+  const p = d.pagination;
+  if (p) m += '<nav class="uma-project__pager" aria-label="Другие проекты">' +
+    (p.prev ? `<a class="is-prev" href="${esc(p.prev.url)}" rel="prev">${arrowSvg}${esc(p.prev.title)}</a>` : '<span></span>') +
+    `<div class="uma-project__count" aria-label="Проект ${p.index} из ${p.total}">${pad2(p.index)}/<span>${pad2(p.total)}</span></div>` +
+    (p.next ? `<a class="is-next" href="${esc(p.next.url)}" rel="next">${esc(p.next.title)}${arrowSvg}</a>` : '<span></span>') + '</nav>';
+  return m + '</article>';
+}
+const pages = { 'index.html': html };
+for (const f of readdirSync(join(ROOT, 'projects')).filter((f) => f.endsWith('.json'))) {
+  const d = j('projects/' + f);
+  pages[d.slug + '.html'] = page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['project'], main: projectPage(d), home: '/' });
+}
+
 if (existsSync(OUT)) rmSync(OUT, { recursive: true });
 mkdirSync(OUT, { recursive: true });
 cpSync(join(ROOT, 'site/styles'), join(OUT, 'styles'), { recursive: true });
+// стили кейса — общий файл с версией на Зеро-блоках (css/project-page.css) + поправки статичной версии
+writeFileSync(join(OUT, 'styles/project.css'), readFileSync(join(ROOT, 'css/project-page.css'), 'utf8') + '\n' + readFileSync(join(ROOT, 'site/styles/project-static.css'), 'utf8'));
+rmSync(join(OUT, 'styles/project-static.css'));
 cpSync(join(ROOT, 'site/scripts'), join(OUT, 'scripts'), { recursive: true });
 cpSync(join(ROOT, 'img'), join(OUT, 'img'), { recursive: true });
 cpSync(join(ROOT, 'site/assets/fonts'), join(OUT, 'site/assets/fonts'), { recursive: true });
 // исходные картинки Тильды — только те, у которых нет лёгких версий
-for (const m of new Set(html.match(/site\/assets\/tilda\/[^"?\s,]+/g) || [])) { mkdirSync(dirname(join(OUT, m)), { recursive: true }); cpSync(join(ROOT, m), join(OUT, m)); }
+for (const m of new Set(Object.values(pages).join('').match(/site\/assets\/tilda\/[^"?\s,]+/g) || [])) { mkdirSync(dirname(join(OUT, m)), { recursive: true }); cpSync(join(ROOT, m), join(OUT, m)); }
 
 // Версия по содержимому: к каждому адресу файла в html дописывается ?v=<хеш>. Файл изменился — адрес новый,
 // и браузер (в том числе Safari на iPhone) не может подставить старую копию из кеша к новой странице.
@@ -216,10 +268,11 @@ const vOf = (p) => {
   if (!hashes.has(p)) hashes.set(p, existsSync(join(OUT, p)) ? createHash('sha1').update(readFileSync(join(OUT, p))).digest('hex').slice(0, 8) : '');
   return hashes.get(p);
 };
-const versioned = html
+const version = (html) => html
   .replace(/\b(src|href|data-cover|data-src)="((?:styles|scripts|img|site\/assets\/tilda)\/[^"?#]+)"/g, (m, a, p) => (vOf(p) ? `${a}="${p}?v=${vOf(p)}"` : m))
   .replace(/srcset="([^"]+)"/g, (m, list) => 'srcset="' + list.split(', ').map((e) => { const [p, w] = e.split(' '); return vOf(p) ? `${p}?v=${vOf(p)} ${w}` : e; }).join(', ') + '"');
-writeFileSync(join(OUT, 'index.html'), versioned);
+for (const [f, h] of Object.entries(pages)) writeFileSync(join(OUT, f), version(h));
+const versioned = version(html);
 
 // Заголовки кеша для хостинга (Netlify / Cloudflare Pages читают этот файл сами; для других — см. README):
 // страница не кешируется, файлы с ?v= — на год.
@@ -238,4 +291,4 @@ writeFileSync(join(OUT, '_headers'), `/
 /site/assets/fonts/*
   Cache-Control: public, max-age=604800
 `);
-console.log('site/dist готов:', versioned.length, 'байт html, версий файлов:', [...hashes.values()].filter(Boolean).length);
+console.log('site/dist готов:', Object.keys(pages).join(', '), '·', versioned.length, 'байт главной, версий файлов:', [...hashes.values()].filter(Boolean).length);

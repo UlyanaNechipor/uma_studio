@@ -1,0 +1,24 @@
+/* Страница кейса в статичной версии: поверх css/project-page.css (он общий с версией на Зеро-блоках).
+   Здесь — только привязка к токенам статичного сайта: шрифт, цвета и плотность светлой темы. */
+.uma-project {
+  --up-head: var(--f-sans);
+  --up-body: var(--f-sans);
+  --uma-w-body: var(--w-text);
+  --uma-w-ui: 500;
+}
+html.light-theme .uma-project {
+  --up-text: var(--txt);
+  --up-ph: #e6e4de;          /* подложка под картинку на тёплом светлом фоне */
+  --uma-w-ui: 580;
+}
+html.light-theme .uma-project__title,
+html.light-theme .uma-project__lead,
+html.light-theme .uma-project__h2,
+html.light-theme .uma-project__count { font-weight: var(--w-head); }
+.uma-project__title { font-weight: 500; }
+/* под шапкой сайта (она закреплена сверху) */
+.uma-project { padding-top: calc(max(44px, calc(48 * var(--u))) + clamp(48px, 4vw, 80px)); }
+/* плашка-заглушка, пока картинки раздела нет */
+.uma-project__figure.is-empty::after { font-size: max(12px, calc(14 * var(--u))); }
+/* в статичной версии картинки видны сразу (проявление делает общее появление при прокрутке) */
+.uma-project__figure img { opacity: 1; }

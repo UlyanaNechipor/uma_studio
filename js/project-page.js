@@ -30,6 +30,13 @@
   }
   function figure(slug, img, extraClass) {
     if (!img) return '';
+    if (img.src) {   // готовый файл из репозитория (например, мокап из галереи главной)
+      var ref = (window.UMA && window.UMA.ref) || 'main';
+      var u = 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + ref + '/' + img.src;
+      return '<figure class="uma-project__figure' + (extraClass ? ' ' + extraClass : '') + '"' +
+        (img.w && img.h ? ' style="aspect-ratio:' + img.w + ' / ' + img.h + '"' : '') + ' data-label="' + esc(img.alt) + '">' +
+        '<img loading="lazy" decoding="async" alt="' + esc(img.alt) + '" src="' + u + '"></figure>';
+    }
     var s = imgSources(slug, img.name || img.image);
     var ratio = img.w && img.h ? ' style="aspect-ratio:' + img.w + ' / ' + img.h + '"' : '';
     return '<figure class="uma-project__figure' + (extraClass ? ' ' + extraClass : '') + '"' + ratio +
@@ -66,7 +73,7 @@
     });
     h += '</div></header>';
 
-    h += figure(slug, d.cover && { name: d.cover.image, w: d.cover.w, h: d.cover.h, alt: d.cover.alt }, 'uma-project__cover');
+    h += figure(slug, d.cover && { src: d.cover.src, name: d.cover.image, w: d.cover.w, h: d.cover.h, alt: d.cover.alt }, 'uma-project__cover');
 
     // вступление
     if (d.intro) {
