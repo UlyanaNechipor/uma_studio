@@ -7,6 +7,8 @@ html #allrecords .t396 .t396__filter { background-color: transparent !important;
 /* z-index Зеро-блоков не трогаем: и у артборда (в т.ч. «поверх следующих блоков»), и у элементов
    остаётся тот, что задан в настройках Тильды. Свечение за курсором видно сквозь прозрачный фон блока. */
 html #allrecords .t396 { transition: color .5s var(--m-out); }
+/* пустой Зеро-блок (артборд без элементов) не занимает места — иначе под подвалом остаётся тёмная полоса */
+html #allrecords .t396:not(:has(.tn-elem)) { display: none !important; }
 
 /* текст */
 html #allrecords .t396 .tn-elem[data-elem-type="text"] .tn-atom,
