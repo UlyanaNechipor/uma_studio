@@ -219,7 +219,7 @@
   /* ---------------- появление при прокрутке ---------------- */
   function reveal() {
     // что появляется: прямые части каждого блока (кроме первого экрана), колонки подвала
-    var items = $$('main > section:not(.hero) > *, .about__photos > img, .lab__it, .svc, .cta__act > *, .about__act > *, .ft > *')
+    var items = $$('main > section:not(.hero) > *, .uma-project > :not(.uma-project__section), .uma-project__section > *, .about__photos > img, .lab__it, .svc, .cta__act > *, .about__act > *, .ft > *')
       .filter(function (el) { return !el.matches('.projects__list, .lab__grid, .about__photos, .about__act, .cta__act'); });
     items.forEach(function (el) { el.classList.add('rv'); });
     // мобилка, услуги: выезжают слева, по очереди
