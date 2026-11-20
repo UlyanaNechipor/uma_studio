@@ -546,7 +546,7 @@
     root.innerHTML = '<div class="pv__frame"><div class="pv__strip">' + rows.map(function (r) {
       return '<div class="pv__slide"><img alt="" decoding="async" data-src="' + $('.prow__link', r).getAttribute('data-cover') + '"></div>';
     }).join('') + '</div></div>';
-    (document.getElementById('allrecords') || document.body).appendChild(root);   // в Тильде стили сайта действуют внутри #allrecords
+    (document.getElementById('sos-page') || document.body).appendChild(root);   // в Тильде стили сайта действуют внутри блока #sos-page
     var strip = $('.pv__strip', root), slides = $$('.pv__slide', root), loaded = false;
     var x = 0, y = 0, tx = 0, ty = 0, vx = 0, open = false, cur = -1, hideT = 0, raf = 0;
     function setIndex(i) { if (i === cur) return; cur = i; strip.style.transform = 'translate3d(0,' + (-100 * i) + '%,0)'; slides.forEach(function (s, k) { s.classList.toggle('is-active', k === i); }); }
