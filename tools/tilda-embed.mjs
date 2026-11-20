@@ -19,7 +19,7 @@ const out = join(root, 'site/dist-tilda');
 const [mode, base] = process.argv.slice(2);
 
 /* ---------- приставка к селекторам ---------- */
-const PRE = '#allrecords';
+const PRE = '#sos-page';   // стили сайта действуют только внутри его блока — Зеро-блоки Тильды рядом они не задевают
 function splitTop(s, ch) {           // разбить по символу вне скобок
   const res = []; let depth = 0, cur = '';
   for (const c of s) {
