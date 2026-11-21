@@ -162,26 +162,14 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 .uma-project__num { display: block; margin-bottom: calc(16 * var(--u)); font-size: var(--up-small); line-height: 1; letter-spacing: 0;
   color: var(--grey); font-variant-numeric: tabular-nums; font-weight: var(--w-text); }
 
-/* ---------- наложение блоков при прокрутке (как у Locomotive) ----------
-   Каждая картинка кейса прилипает к верху экрана (под шапкой), а следующий блок — текст раздела вместе со своей
-   картинкой — наезжает на неё сверху. Предыдущий блок не уменьшается. Чтобы наезжающий блок был сплошным,
-   расстояния внутри статьи заданы не внешними отступами, а внутренними — с фоном страницы.
-   Прилипание: картинка ниже экрана прилипает низом к низу экрана, чтобы её было видно целиком (top ставит site.js). */
-.uma-project { --fig-gap: var(--up-gap); }
-@media (min-width: 768px) { .uma-project { --fig-gap: var(--up-sec); } }
-.uma-project__section { display: contents; }
-.uma-project > *, .uma-project__section > * { position: relative; background: var(--bg); }
-.uma-project .uma-project__figure { position: sticky; top: var(--stick, 0px); background: var(--up-ph, var(--bg)); }
-.uma-project__pair { position: sticky; top: var(--stick, 0px); }
-.uma-project__pair .uma-project__figure { position: relative; top: auto; }
+/* ---------- начало кейса: обложка наезжает на шапку кейса (как у Locomotive) ----------
+   Название, «Проект» и «Задачи» прилипают под шапкой сайта и остаются на месте, обложка при прокрутке
+   наезжает поверх текста. Всё, что ниже обложки, — сплошное, с фоном страницы, поэтому расстояния после
+   обложки заданы внутренними отступами, а не внешними. */
+.uma-project__top { position: sticky; top: var(--hd-h, 0px); z-index: 0; }
+.uma-project > :not(.uma-project__top) { position: relative; z-index: 1; }
+.uma-project > :not(.uma-project__top):not(.uma-project__cover) { background: var(--bg); }
 .uma-project .uma-project__intro { margin-top: 0; padding-top: var(--up-inner); }
 .uma-project .uma-project__pair { margin-top: 0; padding-top: var(--up-sec); }
-.uma-project .uma-project__head { padding-top: var(--up-sec); padding-bottom: var(--up-inner); }
-.uma-project .uma-project__section .uma-project__figure,
-.uma-project .uma-project__section .uma-project__figure + .uma-project__figure { margin-top: 0; }
-.uma-project .uma-project__figure + .uma-project__figure { box-sizing: content-box; border-top: var(--fig-gap) solid var(--bg); }
-.uma-project .uma-project__palette, .uma-project .uma-project__fonts { margin-top: 0; }
-.uma-project .uma-project__palette + .uma-project__fonts,
-.uma-project .uma-project__fonts + .uma-project__figure,
-.uma-project .uma-project__palette + .uma-project__figure { box-sizing: content-box; border-top: var(--up-inner) solid var(--bg); }
+.uma-project .uma-project__section { margin-top: 0; padding-top: var(--up-sec); }
 .uma-project .uma-project__pager { margin-top: 0; padding-top: var(--up-inner); }
