@@ -258,10 +258,78 @@ function projectPage(d) {
     (p.next ? `<a class="is-next" href="${esc(p.next.url)}" rel="next">${esc(p.next.title)}${arrowSvg}</a>` : '<span></span>') + '</nav>';
   return m + '</article>';
 }
+/* ---------------- кейс, версия 2: «Индекс» + наезжающий лист (как у Locomotive) ----------------
+   Первый экран кейса закреплён; лист с обложкой и содержимым наезжает на него при прокрутке.
+   Всё стоит на сетке главной: поле | 568 | 190 | 186 | остаток — линии A «Проекты», B «О нас», C «Контакты». */
+const allProjects = () => readdirSync(join(ROOT, 'projects')).filter((f) => f.endsWith('.json')).map((f) => j('projects/' + f));
+function csFig(slug, im, cls = '') {
+  if (!im) return '';
+  let src = im.src;
+  if (!src) { const b = `img/projects/${slug}/${im.name || im.image}`; if (existsSync(join(ROOT, b + '-1200.webp'))) src = b + '-1200.webp'; }
+  const ratio = im.w && im.h ? ` style="aspect-ratio:${im.w} / ${im.h}"` : '';
+  if (!src) return `<figure class="cs-fig is-empty ${cls}"${ratio} data-label="${esc(im.alt)}"></figure>`;
+  return `<figure class="cs-fig ${cls}"${ratio}>${img(src, im.alt, '', cls.includes('cs-cover'), '(max-width: 1920px) 97vw, 1856px')}</figure>`;
+}
+function caseV2(d) {
+  const s = d.slug, p = d.pagination || {};
+  const kv = (str) => { const m = String(str).match(/^([^:]{2,20}):\s*(.+)$/); return m ? [m[1], m[2]] : [null, str]; };
+  const proj = (d.meta || []).find((g) => /проект/i.test(g.title)) || { items: [] };
+  const tasks = (d.meta || []).find((g) => /задач/i.test(g.title)) || { items: [] };
+  const facts = proj.items.map(kv);
+  const client = facts.find((f) => /клиент/i.test(f[0] || '')), year = facts.find((f) => /год/i.test(f[0] || ''));
+  const field = facts.find((f) => !f[0]);
+  const cell = (label, val) => `<div class="cs-cell"><p class="cs-k">${esc(label)}</p><p class="cs-v">${val}</p></div>`;
+  let m = `<article class="cs" aria-labelledby="cs-title">`;
+  // первый экран кейса
+  m += `<header class="cs-intro"><div class="cs-intro__in">` +
+    `<div class="cs-intro__meta">` +
+      `<div class="cs-cell cs-cell--back"><a class="cs-back" href="${esc((d.back && d.back.url) || '/#projects')}">Все проекты</a>` +
+        (p.index ? `<p class="cs-k cs-count">${pad2(p.index)} / ${pad2(p.total)}</p>` : '') + `</div>` +
+      cell('Клиент', esc(client ? client[1] : d.title)) +
+      cell('Год', esc(year ? year[1] : '')) +
+      cell('Сфера', esc(field ? field[1] : '')) +
+      `<div class="cs-cell cs-cell--tasks"><p class="cs-k">Задачи</p><ul class="cs-tasks">${tasks.items.map((t) => `<li>${typo(t)}</li>`).join('')}</ul></div>` +
+    `</div>` +
+    `<h1 class="cs-title" id="cs-title">${esc(d.title)}</h1>` +
+  `</div></header>`;
+  // лист
+  m += `<div class="cs-sheet">`;
+  if (d.cover) m += csFig(s, { src: d.cover.src, name: d.cover.image, w: d.cover.w, h: d.cover.h, alt: d.cover.alt }, 'cs-cover');
+  if (d.intro) m += `<section class="cs-about"><p class="cs-statement">${d.intro.lead.map(typo).join(' ')}</p>` +
+    d.intro.columns.map((col, i) => `<div class="cs-text cs-text--${i ? 'c' : 'a'}">${col.map(para).join('')}</div>`).join('') + `</section>`;
+  let n = 0;
+  const titled = (d.sections || []).filter((x) => x.title).length;
+  for (const sec of d.sections || []) {
+    if (sec.layout === 'pair') { m += `<section class="cs-pair">${(sec.images || []).map((im) => csFig(s, im)).join('')}</section>`; continue; }
+    n++;
+    const cols = sec.columns || [];
+    const text = !cols.length ? '' : sec.layout === 'split'
+      ? cols.map((col, i) => `<div class="cs-text cs-text--${i ? 'c' : 'a'}">${col.map(para).join('')}</div>`).join('')
+      : `<div class="cs-text cs-text--b">${cols[0].map(para).join('')}</div>`;
+    m += `<section class="cs-sec"><div class="cs-sec__head"><p class="cs-num">${pad2(n)} / ${pad2(titled)}</p><h2 class="cs-h2">${typo(sec.title)}</h2>${text}</div>`;
+    if (sec.palette) m += '<ul class="cs-palette">' + sec.palette.map((c) => { const hex = c.hex || c;
+      return `<li style="background:${esc(hex)};color:${esc(c.ink || inkFor(hex))}"><span><b>HEX</b> ${esc(hex.toUpperCase())}</span><span class="cs-aa" aria-hidden="true">Aa</span></li>`; }).join('') + '</ul>';
+    if (sec.fonts) m += '<div class="cs-fonts">' + sec.fonts.map((f) =>
+      `<div class="cs-font"><p class="cs-specimen" style="font-family:'${esc(f.family || f.name)}',${f.serif ? 'Georgia,serif' : 'Arial,sans-serif'}">${esc(f.name)}</p>` +
+      `<div class="cs-text cs-text--c"><p class="uma-project__item"><span class="uma-project__sub">${typo(f.label || '')}</span>${typo(f.text || '')}</p></div></div>`).join('') + '</div>';
+    m += csFig(s, sec.image) + csFig(s, sec.after) + `</section>`;
+  }
+  // следующий проект
+  if (p.next) {
+    const nd = allProjects().find((x) => p.next.url && p.next.url.endsWith(x.slug));
+    const thumb = nd && nd.cover ? csFig(nd.slug, { src: nd.cover.src, name: nd.cover.image, w: nd.cover.w, h: nd.cover.h, alt: nd.cover.alt }, 'cs-next__img') : '';
+    m += `<a class="cs-next" href="${esc(p.next.url)}"><p class="cs-k">Следующий проект${p.index ? ` · ${pad2(p.index % p.total + 1)} / ${pad2(p.total)}` : ''}</p>` +
+      `<p class="cs-next__name">${esc(p.next.title)}<span class="cs-next__arr" aria-hidden="true">→</span></p>${thumb}</a>`;
+  }
+  return m + `</div></article>`;
+}
+
 const pages = { 'index.html': html };
 for (const f of readdirSync(join(ROOT, 'projects')).filter((f) => f.endsWith('.json'))) {
   const d = j('projects/' + f);
   pages[d.slug + '.html'] = page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['project'], main: projectPage(d), home: '/', fonts: d.fonts || '' });
+  // предпросмотр новой раскладки кейса: <slug>-v2.html
+  pages[d.slug + '-v2.html'] = page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['case'], main: caseV2(d), home: '/', fonts: d.fonts || '' });
 }
 
 if (existsSync(OUT)) rmSync(OUT, { recursive: true });
