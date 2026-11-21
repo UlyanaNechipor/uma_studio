@@ -93,13 +93,14 @@ const hero = `
   <div class="hero__aside" aria-hidden="true"><canvas class="hero__cv"></canvas></div>
 </section>`;
 
+const soon = j('content/soon.json');
 const projects = `
 <section class="projects grid" id="${h.projects.anchor}">
   <p class="projects__label ty-small ty-grey">${typo(h.projects.label)}</p>
   <h2 class="projects__title ty-h2" data-fill>${typo(h.projects.title)}</h2>
   <ul class="projects__list">
     ${h.projects.items.map((p) => `<li class="prow">
-      <a class="prow__link" href="${esc(p.url || '/' + p.slug)}" data-cover="${esc(p.cover)}">
+      <a class="prow__link" href="${esc(p.url || soon.url)}" data-cover="${esc(p.cover)}">
         <span class="prow__name ty-name">${esc(p.name)}</span>
         <span class="prow__type ty-small ty-grey">${typo(p.type)}</span>
         <span class="prow__year ty-small ty-grey">${esc(p.year)}</span>
@@ -223,7 +224,7 @@ function projectFigure(slug, im, cls = '') {
   if (!src) return `<figure class="${c} is-empty"${ratio} data-label="${esc(im.alt)}"></figure>`;
   return `<figure class="${c}"${ratio}>${img(src, im.alt, '', /uma-project__cover/.test(c), '(max-width: 1920px) 97vw, 1856px')}</figure>`;
 }
-const turnAttr = (x, label) => (x.url && x.url !== '#' ? `data-turn-title="${esc(x.title)}" data-turn-label="${esc(label)}"` : '');
+const turnAttr = (x, label) => (x.url && x.url !== '#' && x.url !== soon.url ? `data-turn-title="${esc(x.title)}" data-turn-label="${esc(label)}"` : '');
 function projectPage(d) {
   const s = d.slug;
   let m = '<article class="uma-project" aria-labelledby="uma-project-title">';
@@ -255,6 +256,7 @@ function projectPage(d) {
     m += projectFigure(s, sec.image) + projectFigure(s, sec.after) + '</section>';
   }
   const p = d.pagination;
+  for (const x of p ? [p.prev, p.next] : []) if (x && (!x.url || x.url === '#')) x.url = soon.url;   // кейса ещё нет — «Скоро здесь»
   if (p) m += '<nav class="uma-project__pager" aria-label="Другие проекты">' +
     (p.prev ? `<a class="is-prev" href="${esc(p.prev.url)}" rel="prev" ${turnAttr(p.prev, 'Предыдущий проект')}>${arrowSvg}${esc(p.prev.title)}</a>` : '<span></span>') +
     `<div class="uma-project__count" aria-label="Проект ${p.index} из ${p.total}">${pad2(p.index)}/<span>${pad2(p.total)}</span></div>` +
@@ -334,6 +336,18 @@ for (const f of readdirSync(join(ROOT, 'projects')).filter((f) => f.endsWith('.j
   // предпросмотр новой раскладки кейса: <slug>-v2.html
   pages[d.slug + '-v2.html'] = page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['case'], main: caseV2(d), home: '/', fonts: d.fonts || '' });
 }
+
+/* ---------------- «Скоро здесь»: для проектов, у которых ещё нет страницы ---------------- */
+pages['soon.html'] = page({ title: soon.title + ' — ' + site.brand, css: ['soon'], home: '/',
+  fonts: 'https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@1,700&display=swap',
+  main: `<section class="soon">
+  <div class="soon__head">
+    <h1 class="soon__title">${typo(soon.title)}</h1>
+    <p class="soon__text">${soon.text.map(typo).join('<br class="soon__lb"> ')}</p>
+    <a class="soon__back" href="/#projects" data-back>${esc(soon.back)}</a>
+  </div>
+  <p class="soon__mark" aria-hidden="true"><span class="soon__shape">SHAPE</span> <span class="soon__of">(of&nbsp;Sense)</span></p>
+</section>` });
 
 if (existsSync(OUT)) rmSync(OUT, { recursive: true });
 mkdirSync(OUT, { recursive: true });

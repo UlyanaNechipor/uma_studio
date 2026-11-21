@@ -1,0 +1,40 @@
+/* Shape of Sense · «Скоро здесь» — страница для проектов, у которых ещё нет кейса.
+   Сверху по центру заголовок, текст и «Назад»; ниже во всю ширину — размытый знак SHAPE (of Sense),
+   который медленно «наводится на резкость» и снова расплывается: проект ещё обретает форму. */
+.soon {
+  min-height: 100svh;
+  display: grid; grid-template-rows: auto 1fr; grid-template-columns: minmax(0, 1fr);
+  padding: calc(max(44px, calc(48 * var(--u))) + calc(56 * var(--u))) 16px calc(48 * var(--u));
+  text-align: center; overflow: hidden;
+}
+.soon__head { display: grid; justify-items: center; }
+.soon__title { margin: 0; color: var(--txt); font-weight: var(--w-head);
+  font-size: max(2.75rem, calc(60 * var(--u))); line-height: 1; letter-spacing: -.02em; }
+.soon__text { margin: calc(24 * var(--u)) 0 0; color: var(--txt); max-width: 34em;
+  font-size: max(var(--min-small), calc(11.5 * var(--u))); line-height: 1.35; letter-spacing: 0; font-weight: var(--w-text); }
+.soon__back { margin-top: calc(24 * var(--u)); color: var(--txt); text-decoration: none;
+  font-size: max(var(--min-small), calc(11.5 * var(--u))); line-height: 1.35; border-bottom: 1px solid transparent;
+  transition: border-color var(--m-hover) var(--m-out); }
+@media (hover: hover) { .soon__back:hover { border-bottom-color: currentColor; } }
+
+/* знак: SHAPE — жирный гротеск, (of Sense) — курсив с засечками, серее */
+.soon__mark {
+  align-self: center; margin: 0; white-space: nowrap; line-height: 1; color: var(--txt);
+  font-size: 12vw; letter-spacing: 0;
+  filter: blur(calc(.075em)); animation: soon-focus 7s ease-in-out infinite;
+  user-select: none;
+}
+.soon__shape { font-family: var(--f-sans); font-weight: 800; letter-spacing: .01em; }
+.soon__of { font-family: 'PT Serif', Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 700;
+  font-size: 1.08em; color: var(--grey); letter-spacing: -.01em; }
+@keyframes soon-focus { 0%, 100% { filter: blur(.075em); opacity: .9; } 50% { filter: blur(.03em); opacity: 1; } }
+html.rm .soon__mark, html.rm-off .soon__mark { animation: none; }
+
+/* телефон: знак в две строки, крупнее */
+@media (max-width: 767px) {
+  .soon__lb { display: none; }
+  .soon__title { font-size: 12vw; }
+  .soon__text, .soon__back { font-size: 15px; margin-top: 20px; }
+  .soon__mark { font-size: 21vw; white-space: normal; line-height: .95; }
+  .soon__of { display: block; }
+}
