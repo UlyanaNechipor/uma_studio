@@ -14,7 +14,8 @@ html.light-theme #trail, html.light-theme .hd__trail { mix-blend-mode: multiply;
 .hd > :not(.hd__trail) { position: relative; z-index: 1; }
 .hd { isolation: isolate; overflow: hidden; }
 #wipe { z-index: -1; }
-main, .ft { position: relative; z-index: 1; }
+main { position: relative; z-index: 1; }
+.ft { position: relative; z-index: 10; }   /* подвал — слой 10: шапка (20) и листы переходов (15) выше него, свечение курсора видно сквозь */
 body { background: transparent; }
 html { background: var(--bg); transition: background-color .5s var(--m-out); }
 html.is-wiping { transition: none; }
@@ -212,7 +213,7 @@ html.pt-out main { transform: translate3d(0, -4vh, 0); transition: transform .52
 
 /* ---------- переход между кейсами: лист со следующим проектом протягивается снизу вверх ---------- */
 .case-turn {
-  position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 9; pointer-events: none;   /* под шапкой — она остаётся на месте */
+  position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 15; pointer-events: none;   /* над подвалом (10), под шапкой (20) — она остаётся на месте */
   background: var(--bg); color: var(--txt);
   transform: translate3d(0, 102%, 0);
   box-shadow: 0 -40px 90px -10px rgba(0, 0, 0, .5);
@@ -236,6 +237,6 @@ html.pt-case-out main { transform: translate3d(0, -10vh, 0) scale(.97); opacity:
   transition: transform .95s var(--m-inout), opacity .95s var(--m-inout); }
 /* пришли с листа: экран сначала закрыт цветом фона, затем лист растворяется — под ним уже начало кейса */
 html.pt-case body::after {
-  content: ''; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 9; background: var(--bg); pointer-events: none;
+  content: ''; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 15; background: var(--bg); pointer-events: none;
 }
 html.pt-case.pt-go body::after { opacity: 0; transition: opacity .6s var(--m-out); }
