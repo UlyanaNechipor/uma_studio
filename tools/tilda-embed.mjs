@@ -9,8 +9,9 @@
 // Использование:
 //   node tools/tilda-embed.mjs assets            → site/dist-tilda/
 //   node tools/tilda-embed.mjs snippets <BASE>   → tilda/static-*.html (BASE оканчивается на /)
-import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
+import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -94,6 +95,30 @@ if (mode === 'assets') {
     'html #allrecords{font-family:var(--f-sans)}\n' +
     'html #allrecords *{font-family:inherit}\n' +
     readFileSync(join(root, 'tools/tilda-zero.css'), 'utf8'));
+  // картинки и шрифт — по постоянным адресам: коммит main, в котором файл менялся последний раз.
+  // Такой адрес не меняется от выкладки к выкладке, поэтому браузер и jsDelivr не скачивают картинки заново.
+  const shaCache = new Map();
+  const fileSha = (path) => {
+    if (!shaCache.has(path)) {
+      let sha = '';
+      try { sha = execSync(`git log -1 --format=%H -- "${path}"`, { cwd: root }).toString().trim(); } catch (e) {}
+      shaCache.set(path, sha);
+    }
+    return shaCache.get(path);
+  };
+  const stable = (u) => {
+    const path = u.split('?')[0].replace(/^(\.\.\/)+/, '');
+    if (!/^(img|site\/assets)\//.test(path) || !existsSync(join(root, path))) return u;
+    const sha = fileSha(path);
+    return sha ? `https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@${sha}/${path}` : u;
+  };
+  const stableHtml = (h) => h
+    .replace(/\b(src|href|data-src|data-cover|poster)="([^"]+)"/g, (m, a, u) => `${a}="${stable(u)}"`)
+    .replace(/\bsrcset="([^"]+)"/g, (m, v) => 'srcset="' + v.split(',').map((x) => { const [u, ...r] = x.trim().split(/\s+/); return [stable(u), ...r].join(' '); }).join(', ') + '"');
+  for (const f of readdirSync(join(out, 'styles'))) {
+    const p = join(out, 'styles', f);
+    writeFileSync(p, readFileSync(p, 'utf8').replace(/url\((['"]?)([^'")]+)\1\)/g, (m, q, u) => `url(${q}${stable(u)}${q})`));
+  }
   // страницы целиком (часть head и body через <!--sos:body-->) — их по адресу берёт загрузчик tilda/loader.js
   mkdirSync(join(out, 'pages'), { recursive: true });
   for (const f of readdirSync(dist).filter((f) => f.endsWith('.html'))) {
@@ -104,7 +129,7 @@ if (mode === 'assets') {
       .replace(/<noscript>[\s\S]*?<\/noscript>\s*/, '')
       .replace(/(<link rel="stylesheet" href="styles\/motion\.css[^>]*>)/, '$1\n<link rel="stylesheet" href="styles/tilda.css">');
     const body = html.slice(html.indexOf('<body>') + 6, html.indexOf('</body>'));
-    writeFileSync(join(out, 'pages', f), head.trim() + '\n<!--sos:body-->\n' + body.trim() + '\n');
+    writeFileSync(join(out, 'pages', f), stableHtml(head.trim() + '\n<!--sos:body-->\n' + body.trim()) + '\n');
   }
   console.log('site/dist-tilda готова');
 } else if (mode === 'snippets') {

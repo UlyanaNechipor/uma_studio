@@ -254,10 +254,7 @@
   function theme() {
     var KEY = 'uma-theme', btn = $('[data-theme-toggle]'), cv = $('#wipe'), ctx = cv.getContext('2d'), busy = false;
     function label() { btn.setAttribute('aria-label', html.classList.contains('light-theme') ? 'Тёмная тема' : 'Светлая тема'); }
-    var animT = 0;
     function set(light) {
-      html.classList.add('theme-anim'); clearTimeout(animT);
-      animT = setTimeout(function () { html.classList.remove('theme-anim'); }, 800);
       html.classList.toggle('light-theme', light);
       try { localStorage.setItem(KEY, light ? 'light' : 'dark'); } catch (e) {}
       C = colors(); fills.forEach(function (it) { render(it, it.shown, true); });
@@ -669,14 +666,6 @@
     addEventListener('resize', upd); upd();
   }
 
-  /* ---------------- кейс: шапка кейса прилипает под шапкой сайта, обложка наезжает на неё ---------------- */
-  function caseStack() {
-    var top = $('.uma-project__top'), hd = $('.hd');
-    if (!top) return;
-    function upd() { top.style.setProperty('--hd-h', (hd ? hd.offsetHeight : 0) + 'px'); }
-    addEventListener('resize', upd); upd();
-  }
-
   /* ---------------- запуск ---------------- */
   function init() {
     window.__umaBoot = 1;   // для страховки в <head>: скрипт запустился
@@ -693,7 +682,6 @@
     if (turning) { var pl0 = $('#preloader'); if (pl0) pl0.parentNode.removeChild(pl0); }
     safe(pageTurn, 'pageTurn');
     safe(caseSheet, 'caseSheet');
-    safe(caseStack, 'caseStack');
     safe(function () {
       // пришли по ссылке с якорем (/#projects) переходом — сразу к разделу, под листом
       // (и ещё раз после загрузки: браузер сам прыгает к якорю и не учитывает шапку и сдвиг листа)

@@ -161,15 +161,3 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 /* ---------- номер раздела «01 / 05» над заголовком ---------- */
 .uma-project__num { display: block; margin-bottom: calc(16 * var(--u)); font-size: var(--up-small); line-height: 1; letter-spacing: 0;
   color: var(--grey); font-variant-numeric: tabular-nums; font-weight: var(--w-text); }
-
-/* ---------- начало кейса: обложка наезжает на шапку кейса (как у Locomotive) ----------
-   Название, «Проект» и «Задачи» прилипают под шапкой сайта и остаются на месте, обложка при прокрутке
-   наезжает поверх текста. Всё, что ниже обложки, — сплошное, с фоном страницы, поэтому расстояния после
-   обложки заданы внутренними отступами, а не внешними. */
-.uma-project__top { position: sticky; top: var(--hd-h, 0px); z-index: 0; }
-.uma-project > :not(.uma-project__top) { position: relative; z-index: 1; }
-.uma-project > :not(.uma-project__top):not(.uma-project__cover) { background: var(--bg); }
-.uma-project .uma-project__intro { margin-top: 0; padding-top: var(--up-inner); }
-.uma-project .uma-project__pair { margin-top: 0; padding-top: var(--up-sec); }
-.uma-project .uma-project__section { margin-top: 0; padding-top: var(--up-sec); }
-.uma-project .uma-project__pager { margin-top: 0; padding-top: var(--up-inner); }
