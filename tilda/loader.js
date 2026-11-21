@@ -68,7 +68,11 @@
 
   // относительные адреса фрагмента → адреса на jsDelivr; ссылки от корня сайта (/rosi, /#projects) — как есть
   function abs(base, u) { return /^(https?:|data:|mailto:|tel:|#|\/)/.test(u) ? u : base + u; }
+  // адреса правим только в разметке: стили и скрипт страницы встроены в неё, их текст не трогаем
   function fix(s, base) {
+    return s.split(/(<script\b[\s\S]*?<\/script>|<style\b[\s\S]*?<\/style>)/).map(function (part, i) { return i % 2 ? part : fixHtml(part, base); }).join('');
+  }
+  function fixHtml(s, base) {
     return s.replace(/\b(src|href|data-src|data-cover|poster)="([^"]+)"/g, function (m, a, u) { return a + '="' + abs(base, u) + '"'; })
       .replace(/\bsrcset="([^"]+)"/g, function (m, v) {
         return 'srcset="' + v.split(',').map(function (x) { var p = x.trim().split(/\s+/); p[0] = abs(base, p[0]); return p.join(' '); }).join(', ') + '"';
