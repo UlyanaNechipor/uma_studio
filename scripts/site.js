@@ -636,6 +636,18 @@
       requestAnimationFrame(function () { requestAnimationFrame(function () { html.classList.add('pt-go'); }); });
       setTimeout(function () { html.classList.remove('pt-in', 'pt-go'); }, 1300);
     }
+    // «Назад» на странице «Скоро здесь»: пришли с сайта — возвращаемся туда же (и на то же место), иначе — к проектам
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[data-back]');
+      if (!a || e.button || e.metaKey || e.ctrlKey) return;
+      var ref = null; try { ref = document.referrer && new URL(document.referrer); } catch (_) {}
+      if (!ref || ref.origin !== location.origin || history.length < 2) return;
+      e.preventDefault();
+      if (reduce) return history.back();
+      try { sessionStorage.setItem(PT_KEY, '1'); } catch (_) {}
+      html.classList.add('pt-out');
+      setTimeout(function () { history.back(); }, PT_OUT);
+    });
     if (reduce) return;
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('a[href]');

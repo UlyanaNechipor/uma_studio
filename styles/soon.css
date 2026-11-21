@@ -1,0 +1,17 @@
+html #sos-page .soon{
+  min-height: 100svh;
+  display: grid; grid-template-rows: auto 1fr; grid-template-columns: minmax(0, 1fr);
+  padding: calc(max(44px, calc(48 * var(--u))) + calc(56 * var(--u))) 16px calc(48 * var(--u));
+  text-align: center; overflow: hidden;
+}html #sos-page .soon__head{ display: grid; justify-items: center; }html #sos-page .soon__title{ margin: 0; color: var(--txt); font-weight: var(--w-head);
+  font-size: max(2.75rem, calc(60 * var(--u))); line-height: 1; letter-spacing: -.02em; }html #sos-page .soon__text{ margin: calc(24 * var(--u)) 0 0; color: var(--txt); max-width: 34em;
+  font-size: max(var(--min-small), calc(11.5 * var(--u))); line-height: 1.35; letter-spacing: 0; font-weight: var(--w-text); }html #sos-page .soon__back{ margin-top: calc(24 * var(--u)); color: var(--txt); text-decoration: none;
+  font-size: max(var(--min-small), calc(11.5 * var(--u))); line-height: 1.35; border-bottom: 1px solid transparent;
+  transition: border-color var(--m-hover) var(--m-out); }@media (hover: hover){html #sos-page .soon__back:hover{ border-bottom-color: currentColor; } }html #sos-page .soon__mark{
+  align-self: center; margin: 0; white-space: nowrap; line-height: 1; color: var(--txt);
+  font-size: 12vw; letter-spacing: 0;
+  filter: blur(calc(.075em)); animation: soon-focus 7s ease-in-out infinite;
+  user-select: none;
+}html #sos-page .soon__shape{ font-family: var(--f-sans); font-weight: 800; letter-spacing: .01em; }html #sos-page .soon__of{ font-family: 'PT Serif', Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 700;
+  font-size: 1.08em; color: var(--grey); letter-spacing: -.01em; }@keyframes soon-focus{ 0%, 100% { filter: blur(.075em); opacity: .9; } 50% { filter: blur(.03em); opacity: 1; } }html.rm #sos-page .soon__mark,html.rm-off #sos-page .soon__mark{ animation: none; }@media (max-width: 767px){html #sos-page .soon__lb{ display: none; }html #sos-page .soon__title{ font-size: 12vw; }html #sos-page .soon__text,html #sos-page .soon__back{ font-size: 15px; margin-top: 20px; }html #sos-page .soon__mark{ font-size: 21vw; white-space: normal; line-height: .95; }html #sos-page .soon__of{ display: block; }
+}

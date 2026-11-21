@@ -384,7 +384,7 @@ html #allrecords .t396 .t-input-error { color: #e5484d !important; }
       </a>
     </li>
     <li class="prow">
-      <a class="prow__link" href="/kara-fox" data-cover="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@2571a18b3697c6acfdac30f1541028de7a248cd5/img/covers/kara-fox-mockup.webp">
+      <a class="prow__link" href="/project_soon" data-cover="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@2571a18b3697c6acfdac30f1541028de7a248cd5/img/covers/kara-fox-mockup.webp">
         <span class="prow__name ty-name">Kara Fox</span>
         <span class="prow__type ty-small ty-grey">Портфолио</span>
         <span class="prow__year ty-small ty-grey">2025</span>
@@ -392,7 +392,7 @@ html #allrecords .t396 .t-input-error { color: #e5484d !important; }
       </a>
     </li>
     <li class="prow">
-      <a class="prow__link" href="/black-sable" data-cover="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@16ff69ae288a58d4cb00d710713d29d285e26ab9/img/covers/black-sable-mockup.webp">
+      <a class="prow__link" href="/project_soon" data-cover="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@16ff69ae288a58d4cb00d710713d29d285e26ab9/img/covers/black-sable-mockup.webp">
         <span class="prow__name ty-name">Black Sable</span>
         <span class="prow__type ty-small ty-grey"><span class="nw">Интернет-магазин</span></span>
         <span class="prow__year ty-small ty-grey">2025</span>
@@ -400,7 +400,7 @@ html #allrecords .t396 .t-input-error { color: #e5484d !important; }
       </a>
     </li>
     <li class="prow">
-      <a class="prow__link" href="/arine-atelier" data-cover="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@93633b77b2c8ba67520dbbacde281947ab3cc4dc/img/covers/arine-atelier-mockup.webp">
+      <a class="prow__link" href="/project_soon" data-cover="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@93633b77b2c8ba67520dbbacde281947ab3cc4dc/img/covers/arine-atelier-mockup.webp">
         <span class="prow__name ty-name">Arine Atelier</span>
         <span class="prow__type ty-small ty-grey"><span class="nw">Дизайн-агентство</span></span>
         <span class="prow__year ty-small ty-grey">2025</span>
@@ -1139,6 +1139,18 @@ html #allrecords .t396 .t-input-error { color: #e5484d !important; }
       requestAnimationFrame(function () { requestAnimationFrame(function () { html.classList.add('pt-go'); }); });
       setTimeout(function () { html.classList.remove('pt-in', 'pt-go'); }, 1300);
     }
+    // «Назад» на странице «Скоро здесь»: пришли с сайта — возвращаемся туда же (и на то же место), иначе — к проектам
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[data-back]');
+      if (!a || e.button || e.metaKey || e.ctrlKey) return;
+      var ref = null; try { ref = document.referrer && new URL(document.referrer); } catch (_) {}
+      if (!ref || ref.origin !== location.origin || history.length < 2) return;
+      e.preventDefault();
+      if (reduce) return history.back();
+      try { sessionStorage.setItem(PT_KEY, '1'); } catch (_) {}
+      html.classList.add('pt-out');
+      setTimeout(function () { history.back(); }, PT_OUT);
+    });
     if (reduce) return;
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('a[href]');
