@@ -58,7 +58,7 @@ const img = (src, alt = '', cls = '', eager = false, sizes = '100vw') => {
   return `<img class="${cls}" src="${esc(main)}"${set} alt="${esc(alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
 };
 const btn = (b, kind = 'light') =>
-  `<a class="btn btn--${kind}" href="${href(b.href)}">${kind === 'light' ? '<span class="btn__dot" aria-hidden="true"></span>' : ''}${esc(b.label)}</a>`;
+  `<a class="btn btn--${kind}" href="${href(b.href)}">${esc(b.label)}</a>`;
 
 // home — адрес главной: '' на самой главной (ссылки #раздел), '/' на страницах кейсов (ссылки /#раздел)
 const headerHtml = (home = '') => `

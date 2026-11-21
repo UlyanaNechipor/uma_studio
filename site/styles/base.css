@@ -62,7 +62,6 @@ html.light-theme .ty-grey, html.light-theme .hd__link, html.light-theme .ft__col
 }
 .btn--light { background: var(--btn-bg); color: var(--btn-fg); }
 .btn--grey  { background: var(--btn2-bg); color: var(--btn2-fg); }
-.btn__dot { flex: none; width: calc(5 * var(--u)); height: calc(5 * var(--u)); border-radius: 50%; background: #2fd35a; }
 @media (hover: hover) { .btn--light:hover { background: var(--btn-bg-h); } .btn--grey:hover { background: var(--btn2-bg-h); color: var(--btn2-fg-h); } }
 .mail { color: var(--txt); }
 
