@@ -158,6 +158,8 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 }
 .uma-project__pair > :only-child { grid-column: 1 / -1; }
 
-/* ---------- номер раздела «01 / 05» над заголовком ---------- */
-.uma-project__num { display: block; margin-bottom: calc(16 * var(--u)); font-size: var(--up-small); line-height: 1; letter-spacing: 0;
+/* ---------- номер раздела «01 / 05» в одну строку с заголовком ---------- */
+.uma-project__h2:has(> .uma-project__num) { display: flex; align-items: baseline; gap: 12px; }
+@media (min-width: 768px) { .uma-project__h2:has(> .uma-project__num) { gap: calc(24 * var(--u)); } .uma-project__num { min-width: 4.2em; } }
+.uma-project__num { flex: none; font-size: var(--up-small); line-height: 1; letter-spacing: 0;
   color: var(--grey); font-variant-numeric: tabular-nums; font-weight: var(--w-text); }
