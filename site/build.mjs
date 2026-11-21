@@ -247,11 +247,13 @@ function projectPage(d) {
         : `<div class="uma-project__aside${sec.layout === 'wide' ? ' is-wide' : sec.layout === 'side' ? ' is-side' : ''}"${gap}>${sec.columns[0].map(para).join('')}</div>`) +
       '</div>';
     // палитра: плашки с HEX и «Aa»
-    if (sec.palette) m += '<ul class="uma-project__palette">' + sec.palette.map((c) => { const hex = c.hex || c;
+    if (sec.palette) m += `<ul class="uma-project__palette" style="--n:${sec.palette.length}">` + sec.palette.map((c) => { const hex = c.hex || c;
       return `<li style="background:${esc(hex)};color:${esc(c.ink || inkFor(hex))}"><span class="uma-project__hex"><b>HEX</b> ${esc(hex.toUpperCase())}</span><span class="uma-project__aa" aria-hidden="true">Aa</span></li>`; }).join('') + '</ul>';
     // шрифты: название крупно самим шрифтом, справа — роль и описание
-    if (sec.fonts) m += '<div class="uma-project__fonts">' + sec.fonts.map((f) =>
-      `<div class="uma-project__font"><p class="uma-project__specimen" style="font-family:'${esc(f.family || f.name)}',${f.serif ? 'Georgia,serif' : 'Arial,sans-serif'}">${esc(f.name)}</p>` +
+    // образец «Aa Bb Cc» во всю ширину своим шрифтом и цветом, над ним — название
+    if (sec.fonts) m += '<div class="uma-project__fonts">' + sec.fonts.map((f) => f.sample
+      ? `<div class="uma-project__font is-sample"><p class="uma-project__font-name">${esc(f.name)}</p><p class="uma-project__sample" aria-hidden="true" style="font-family:'${esc(f.family || f.name)}',${f.serif ? 'Georgia,serif' : 'Arial,sans-serif'};font-weight:${+f.weight || 400}${f.color ? ';color:' + esc(f.color) : ''}">${f.sample.split(' ').map((x) => `<span>${esc(x)}</span>`).join('')}</p></div>`
+      : `<div class="uma-project__font"><p class="uma-project__specimen" style="font-family:'${esc(f.family || f.name)}',${f.serif ? 'Georgia,serif' : 'Arial,sans-serif'}">${esc(f.name)}</p>` +
       `<div class="uma-project__font-info"><p class="uma-project__sub">${typo(f.label || '')}</p><p>${typo(f.text || '')}</p></div></div>`).join('') + '</div>';
     m += projectFigure(s, sec.image) + projectFigure(s, sec.after) + '</section>';
   }
