@@ -669,6 +669,19 @@
     addEventListener('resize', upd); upd();
   }
 
+  /* ---------------- кейс: картинки прилипают, следующий блок наезжает (css: project-static.css) ----------------
+     Картинка прилипает под шапкой; если она выше экрана — прилипает низом к низу экрана, чтобы её было видно целиком. */
+  function caseStack() {
+    var els = $$('.uma-project .uma-project__figure, .uma-project__pair').filter(function (el) { return !el.closest('.uma-project__pair') || el.classList.contains('uma-project__pair'); });
+    if (!els.length) return;
+    var hd = $('.hd');
+    function upd() {
+      var top = hd ? hd.offsetHeight : 0;
+      els.forEach(function (el) { el.style.setProperty('--stick', Math.min(top, innerHeight - el.offsetHeight) + 'px'); });
+    }
+    addEventListener('resize', upd); addEventListener('load', upd); upd();
+  }
+
   /* ---------------- запуск ---------------- */
   function init() {
     window.__umaBoot = 1;   // для страховки в <head>: скрипт запустился
@@ -685,6 +698,7 @@
     if (turning) { var pl0 = $('#preloader'); if (pl0) pl0.parentNode.removeChild(pl0); }
     safe(pageTurn, 'pageTurn');
     safe(caseSheet, 'caseSheet');
+    safe(caseStack, 'caseStack');
     safe(function () {
       // пришли по ссылке с якорем (/#projects) переходом — сразу к разделу, под листом
       // (и ещё раз после загрузки: браузер сам прыгает к якорю и не учитывает шапку и сдвиг листа)

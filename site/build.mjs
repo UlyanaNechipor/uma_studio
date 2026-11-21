@@ -234,11 +234,13 @@ function projectPage(d) {
   if (d.cover) m += projectFigure(s, { src: d.cover.src, name: d.cover.image, w: d.cover.w, h: d.cover.h, alt: d.cover.alt }, 'uma-project__cover');
   if (d.intro) m += `<section class="uma-project__intro"><div class="uma-project__lead">${d.intro.lead.map(para).join('')}</div><div class="uma-project__cols">` +
     d.intro.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('') + '</div></section>';
+  const total = (d.sections || []).filter((x) => x.title).length; let num = 0;
   for (const sec of d.sections || []) {
     // две картинки рядом, без заголовка и текста
     if (sec.layout === 'pair') { m += `<section class="uma-project__pair">${(sec.images || []).map((im) => projectFigure(s, im)).join('')}</section>`; continue; }
     const gap = sec.gap ? ` style="--up-pgap:${sec.gap}px"` : '';
-    m += `<section class="uma-project__section"><div class="uma-project__head"><h2 class="uma-project__h2">${typo(sec.title)}</h2>` +
+    num++;
+    m += `<section class="uma-project__section"><div class="uma-project__head"><h2 class="uma-project__h2"><span class="uma-project__num">${pad2(num)} / ${pad2(total)}</span>${typo(sec.title)}</h2>` +
       (!sec.columns ? '' : sec.layout === 'split'
         ? `<div class="uma-project__cols"${gap}>${sec.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')}</div>`
         : `<div class="uma-project__aside${sec.layout === 'wide' ? ' is-wide' : sec.layout === 'side' ? ' is-side' : ''}"${gap}>${sec.columns[0].map(para).join('')}</div>`) +
