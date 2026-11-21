@@ -219,7 +219,7 @@
   /* ---------------- появление при прокрутке ---------------- */
   function reveal() {
     // что появляется: прямые части каждого блока (кроме первого экрана), колонки подвала
-    var items = $$('main > section:not(.hero) > *, .uma-project > :not(.uma-project__section), .uma-project__section > *, .about__photos > img, .lab__it, .svc, .cta__act > *, .about__act > *, .ft > *')
+    var items = $$('main > section:not(.hero) > *, .cs-sheet > :not(.cs-sec):not(.cs-cover), .cs-sec > *, .uma-project > :not(.uma-project__section), .uma-project__section > *, .about__photos > img, .lab__it, .svc, .cta__act > *, .about__act > *, .ft > *')
       .filter(function (el) { return !el.matches('.projects__list, .lab__grid, .about__photos, .about__act, .cta__act'); });
     items.forEach(function (el) { el.classList.add('rv'); });
     // мобилка, услуги: выезжают слева, по очереди
@@ -631,6 +631,22 @@
     addEventListener('pageshow', function (e) { if (e.persisted) html.classList.remove('pt-out'); });
   }
 
+  /* ---------------- кейс: лист наезжает на первый экран ----------------
+     Первый экран закреплён (position: sticky); пока лист его закрывает, он чуть уменьшается и темнеет. */
+  function caseSheet() {
+    var intro = $('.cs-intro'), inner = intro && $('.cs-intro__in', intro);
+    if (!inner || reduce) return;
+    var tick = false;
+    function upd() {
+      tick = false;
+      var h = intro.offsetHeight || 1, p = Math.min(1, Math.max(0, scrollY / h));
+      inner.style.transform = 'translate3d(0,' + (p * -6) + '%,0) scale(' + (1 - p * .06) + ')';
+      inner.style.opacity = String(1 - p * .75);
+    }
+    addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
+    addEventListener('resize', upd); upd();
+  }
+
   /* ---------------- запуск ---------------- */
   function init() {
     window.__umaBoot = 1;   // для страховки в <head>: скрипт запустился
@@ -646,6 +662,7 @@
     // пришли переходом с другой страницы сайта — без прелоадера
     if (turning) { var pl0 = $('#preloader'); if (pl0) pl0.parentNode.removeChild(pl0); }
     safe(pageTurn, 'pageTurn');
+    safe(caseSheet, 'caseSheet');
     safe(function () {
       // пришли по ссылке с якорем (/#projects) переходом — сразу к разделу, под листом
       // (и ещё раз после загрузки: браузер сам прыгает к якорю и не учитывает шапку и сдвиг листа)
