@@ -26,7 +26,7 @@
   font-size: max(var(--min-small), calc(12 * var(--u))); font-weight: 500; letter-spacing: .45px; white-space: nowrap;   
   transition: background-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out);
 }html #sos-page .btn--light{ background: var(--btn-bg); color: var(--btn-fg); }html #sos-page .btn--grey{ background: var(--btn2-bg); color: var(--btn2-fg); }@media (hover: hover){html #sos-page .btn--light:hover{ background: var(--btn-bg-h); }html #sos-page .btn--grey:hover{ background: var(--btn2-bg-h); color: var(--btn2-fg-h); } }html #sos-page .mail{ color: var(--txt); }html #sos-page .hd{
-  position: fixed; top: 0; right: 0; left: 0; z-index: 10;
+  position: fixed; top: 0; right: 0; left: 0; z-index: 20;   
   display: flex; align-items: center; gap: calc(12 * var(--u));
   height: max(44px, calc(48 * var(--u))); padding-inline: 16px;
   background: var(--bg); border-bottom: 1px solid var(--line);
