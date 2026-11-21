@@ -1,5 +1,5 @@
 @font-face{
-  font-family: 'Manrope'; src: url('../site/assets/fonts/manrope-var.woff') format('woff');
+  font-family: 'Manrope'; src: url('https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@227e6930f4133f8cffe571275982b58bb31cd2f4/site/assets/fonts/manrope-var.woff') format('woff');
   font-weight: 200 800; font-style: normal; font-display: swap;
 }html #sos-page *,html #sos-page *::before,html #sos-page *::after{ box-sizing: border-box; }html{ -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }html body.t-body{
   margin: 0; background: var(--bg); color: var(--txt);
