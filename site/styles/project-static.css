@@ -61,7 +61,7 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
      название, вступление и заголовки разделов — в левой половине;
      левая колонка текста — от центральной линии (колонки 7–9);
      правая колонка текста, «Проект/Задачи», описания шрифтов — от середины правой половины до края (10–12);
-     одна колонка текста во всю правую половину — 7–12;
+     одна колонка текста (без второй) — тоже 7–9, строка не тянется на всю правую половину;
      счётчик «03/05» внизу — на центральной линии.
    Размеры по вертикали и кегли — из макета Figma MAIN (894:1338), делённые на 1.6 (1920 → 1200). */
 @media (min-width: 768px) {
@@ -110,8 +110,8 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
   .uma-project__head .uma-project__col:nth-child(1) { grid-column: 7 / 10; padding-right: var(--up-gutter); }   /* левая колонка текста — от центральной линии, три колонки сетки */
   .uma-project__intro .uma-project__col:nth-child(2),
   .uma-project__head .uma-project__col:nth-child(2) { grid-column: 10 / 13; }   /* правая — от середины правой половины до края */
-  .uma-project__aside { grid-column: 7 / 13; width: auto; max-width: none; margin-left: 0; }
-  .uma-project__aside.is-wide { grid-column: 7 / 13; }
+  .uma-project__aside { grid-column: 7 / 10; padding-right: var(--up-gutter); width: auto; max-width: none; margin-left: 0; }
+  .uma-project__aside.is-wide { grid-column: 7 / 10; }   /* одна колонка текста — как левая: от центра на три колонки, строка вдвое короче */
   .uma-project__aside p { text-wrap: pretty; }
   .uma-project__section .uma-project__figure + .uma-project__figure { margin-top: var(--up-sec); }
 
