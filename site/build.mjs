@@ -240,7 +240,7 @@ function projectPage(d) {
     if (sec.layout === 'pair') { m += `<section class="uma-project__pair">${(sec.images || []).map((im) => projectFigure(s, im)).join('')}</section>`; continue; }
     const gap = sec.gap ? ` style="--up-pgap:${sec.gap}px"` : '';
     num++;
-    m += `<section class="uma-project__section"><div class="uma-project__head"><h2 class="uma-project__h2"><span class="uma-project__num">${pad2(num)} / ${pad2(total)}</span>${typo(sec.title)}</h2>` +
+    m += `<section class="uma-project__section"><div class="uma-project__head"><h2 class="uma-project__h2">${typo(sec.title)}</h2>` +
       (!sec.columns ? '' : sec.layout === 'split'
         ? `<div class="uma-project__cols"${gap}>${sec.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')}</div>`
         : `<div class="uma-project__aside${sec.layout === 'wide' ? ' is-wide' : sec.layout === 'side' ? ' is-side' : ''}"${gap}>${sec.columns[0].map(para).join('')}</div>`) +
