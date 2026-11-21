@@ -73,7 +73,7 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
     --up-small: max(var(--min-small), calc(9.375 * var(--u)));   /* 15 */
     --up-mid: max(1rem, calc(17.5 * var(--u)));                  /* 28 — вступление */
     --up-lines: repeat(12, minmax(0, 1fr));   /* 12 колонок */
-    --up-col-gap: calc(10 * var(--u));         /* 16 на 1920 */
+    --up-col-gap: 0px;   /* колонки встык: линии сетки — ровно центр и середина правой половины, воздух — отступом справа у текста */
     --up-gutter: calc(24 * var(--u));  /* воздух справа от текста перед следующей линией */
     padding-top: calc(48 * var(--u) + 37 * var(--u));            /* 123 от верха страницы */
   }
@@ -107,7 +107,7 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
   .uma-project__intro .uma-project__cols,
   .uma-project__head .uma-project__cols { display: contents; }
   .uma-project__intro .uma-project__col:nth-child(1),
-  .uma-project__head .uma-project__col:nth-child(1) { grid-column: 7 / 10; }   /* левая колонка текста — от центральной линии, три колонки сетки */
+  .uma-project__head .uma-project__col:nth-child(1) { grid-column: 7 / 10; padding-right: var(--up-gutter); }   /* левая колонка текста — от центральной линии, три колонки сетки */
   .uma-project__intro .uma-project__col:nth-child(2),
   .uma-project__head .uma-project__col:nth-child(2) { grid-column: 10 / 13; }   /* правая — от середины правой половины до края */
   .uma-project__aside { grid-column: 7 / 13; width: auto; max-width: none; margin-left: 0; }
@@ -156,6 +156,8 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
   .uma-project__font-info p.uma-project__sub { margin-bottom: 1.4em; }
 }
 .uma-project__pair > :only-child { grid-column: 1 / -1; }
+/* две картинки рядом: стык ровно по центральной линии, кадр одинаковый у обеих */
+.uma-project__pair .uma-project__figure img { height: 100%; object-fit: cover; }
 
 /* ---------- номер раздела «01 / 05» в одну строку с заголовком ---------- */
 .uma-project__h2:has(> .uma-project__num) { display: flex; align-items: baseline; gap: 12px; }
