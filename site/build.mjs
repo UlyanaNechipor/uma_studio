@@ -214,7 +214,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 const arrowSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.73 4a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>';
 function projectFigure(slug, im, cls = '') {
   if (!im) return '';
-  const c = 'uma-project__figure' + (cls ? ' ' + cls : '');
+  const c = 'uma-project__figure' + (cls ? ' ' + cls : '') + (im.clear ? ' is-clear' : '');   // clear — картинка с прозрачным фоном, без подложки
   let src = im.src, w = im.w, hh = im.h;
   if (!src) {
     const base = `img/projects/${slug}/${im.name}`;

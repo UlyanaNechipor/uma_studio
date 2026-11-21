@@ -177,3 +177,5 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 .uma-project__sample { margin: calc(8 * var(--u)) 0 0; display: flex; justify-content: space-between; align-items: baseline;
   font-size: 21vw; line-height: 1; letter-spacing: -.02em; white-space: nowrap; color: var(--up-text); }
 @media (min-width: 768px) { .uma-project__sample { font-size: min(calc(250 * var(--u)), 19vw); } }
+/* картинка с прозрачным фоном (палитра Kara Fox) — без серой подложки, лежит прямо на фоне страницы */
+.uma-project__figure.is-clear { background: none; }

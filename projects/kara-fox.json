@@ -72,8 +72,9 @@
       "image": {
         "name": "palette",
         "w": 5520,
-        "h": 1860,
-        "alt": "Палитра Kara Fox: #FAF6F1, #F7E6DB, #D9381E"
+        "h": 904,
+        "alt": "Палитра Kara Fox: #FAF6F1, #F7E6DB, #D9381E",
+        "clear": true
       }
     },
     {
