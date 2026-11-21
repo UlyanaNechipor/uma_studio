@@ -179,7 +179,7 @@ ${fonts ? `<link rel="stylesheet" href="${esc(fonts)}">\n` : ''}<link rel="style
 ${css.map((f) => `<link rel="stylesheet" href="styles/${f}.css">`).join('\n')}
 <link rel="stylesheet" href="styles/motion.css">
 <script>${diag}</script>
-<script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js');try{if(sessionStorage.getItem('sos-pt'))document.documentElement.classList.add('pt-in')}catch(e){}try{if(matchMedia('(prefers-reduced-motion: reduce)').matches&&'${MOTION_REDUCED}'!=='full')document.documentElement.classList.add('${MOTION_REDUCED}'==='off'?'rm-off':'rm')}catch(e){}setTimeout(function(){var h=document.documentElement;if(!window.__umaBoot||!h.classList.contains('is-ready'))h.classList.remove('js')},12000)</script>\n<noscript><style>.pl{display:none!important}</style></noscript>
+<script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js');try{var pt=sessionStorage.getItem('sos-pt');if(pt)document.documentElement.classList.add(pt==='case'?'pt-case':'pt-in')}catch(e){}try{if(matchMedia('(prefers-reduced-motion: reduce)').matches&&'${MOTION_REDUCED}'!=='full')document.documentElement.classList.add('${MOTION_REDUCED}'==='off'?'rm-off':'rm')}catch(e){}setTimeout(function(){var h=document.documentElement;if(!window.__umaBoot||!h.classList.contains('is-ready'))h.classList.remove('js')},12000)</script>\n<noscript><style>.pl{display:none!important}</style></noscript>
 </head>
 <body>
 ${home ? '' : `<div class="pl" id="preloader" aria-hidden="true">
@@ -223,6 +223,7 @@ function projectFigure(slug, im, cls = '') {
   if (!src) return `<figure class="${c} is-empty"${ratio} data-label="${esc(im.alt)}"></figure>`;
   return `<figure class="${c}"${ratio}>${img(src, im.alt, '', false, '(max-width: 1920px) 97vw, 1856px')}</figure>`;
 }
+const turnAttr = (x, label) => (x.url && x.url !== '#' ? `data-turn-title="${esc(x.title)}" data-turn-label="${esc(label)}"` : '');
 function projectPage(d) {
   const s = d.slug;
   let m = '<article class="uma-project" aria-labelledby="uma-project-title">';
@@ -253,9 +254,9 @@ function projectPage(d) {
   }
   const p = d.pagination;
   if (p) m += '<nav class="uma-project__pager" aria-label="Другие проекты">' +
-    (p.prev ? `<a class="is-prev" href="${esc(p.prev.url)}" rel="prev">${arrowSvg}${esc(p.prev.title)}</a>` : '<span></span>') +
+    (p.prev ? `<a class="is-prev" href="${esc(p.prev.url)}" rel="prev" ${turnAttr(p.prev, 'Предыдущий проект')}>${arrowSvg}${esc(p.prev.title)}</a>` : '<span></span>') +
     `<div class="uma-project__count" aria-label="Проект ${p.index} из ${p.total}">${pad2(p.index)}/<span>${pad2(p.total)}</span></div>` +
-    (p.next ? `<a class="is-next" href="${esc(p.next.url)}" rel="next">${esc(p.next.title)}${arrowSvg}</a>` : '<span></span>') + '</nav>';
+    (p.next ? `<a class="is-next" href="${esc(p.next.url)}" rel="next" ${turnAttr(p.next, 'Следующий проект')}>${esc(p.next.title)}${arrowSvg}</a>` : '<span></span>') + '</nav>';
   return m + '</article>';
 }
 /* ---------------- кейс, версия 2: «Индекс» + наезжающий лист (как у Locomotive) ----------------
@@ -318,7 +319,7 @@ function caseV2(d) {
   if (p.next) {
     const nd = allProjects().find((x) => p.next.url && p.next.url.endsWith(x.slug));
     const thumb = nd && nd.cover ? csFig(nd.slug, { src: nd.cover.src, name: nd.cover.image, w: nd.cover.w, h: nd.cover.h, alt: nd.cover.alt }, 'cs-next__img') : '';
-    m += `<a class="cs-next" href="${esc(p.next.url)}"><p class="cs-k">Следующий проект${p.index ? ` · ${pad2(p.index % p.total + 1)} / ${pad2(p.total)}` : ''}</p>` +
+    m += `<a class="cs-next" href="${esc(p.next.url)}" ${turnAttr(p.next, 'Следующий проект')}><p class="cs-k">Следующий проект${p.index ? ` · ${pad2(p.index % p.total + 1)} / ${pad2(p.total)}` : ''}</p>` +
       `<p class="cs-next__name">${esc(p.next.title)}<span class="cs-next__arr" aria-hidden="true">→</span></p>${thumb}</a>`;
   }
   return m + `</div></article>`;

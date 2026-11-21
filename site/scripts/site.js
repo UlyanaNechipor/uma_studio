@@ -608,10 +608,31 @@
      затем переход. Приход: лист уезжает вверх, содержимое поднимается на место. Прелоадер в этом случае
      не показывается — он только при первом открытии сайта. Признак перехода — sessionStorage 'sos-pt',
      класс html.pt-in ставят заранее <head> страницы или загрузчик в Тильде. */
-  var PT_KEY = 'sos-pt', PT_OUT = 520, turning = html.classList.contains('pt-in');
+  var PT_KEY = 'sos-pt', PT_OUT = 520, CASE_OUT = 950, turning = html.classList.contains('pt-in'), caseIn = html.classList.contains('pt-case');
   try { sessionStorage.removeItem(PT_KEY); } catch (e) {}
+  if (caseIn) turning = true;
+  /* Переход между кейсами («следующий / предыдущий проект»): снизу подкладывается лист с названием
+     следующего кейса и протягивается вверх, к его началу. Название на листе стоит там же, где на первом экране
+     следующего кейса, — после перехода страница продолжает картинку, лист просто растворяется. */
+  function caseTurn(a, href) {
+    var t = document.createElement('div');
+    t.className = 'case-turn'; t.setAttribute('aria-hidden', 'true');
+    t.innerHTML = '<div class="case-turn__in"><p class="case-turn__k">' + (a.getAttribute('data-turn-label') || '') + '</p>' +
+      '<p class="case-turn__title"></p></div>';
+    t.querySelector('.case-turn__title').textContent = a.getAttribute('data-turn-title') || '';
+    (document.getElementById('sos-page') || document.body).appendChild(t);
+    html.classList.add('pt-case-out');
+    requestAnimationFrame(function () { requestAnimationFrame(function () { t.classList.add('is-on'); }); });
+    try { sessionStorage.setItem(PT_KEY, 'case'); } catch (_) {}
+    setTimeout(function () { location.href = href; }, CASE_OUT);
+  }
   function pageTurn() {
-    if (turning) {
+    if (caseIn) {
+      // пришли с листом: он уже закрывает экран; убираем его плавно
+      scrollTo(0, 0);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { html.classList.add('pt-go'); }); });
+      setTimeout(function () { html.classList.remove('pt-case', 'pt-go'); }, 700);
+    } else if (turning) {
       requestAnimationFrame(function () { requestAnimationFrame(function () { html.classList.add('pt-go'); }); });
       setTimeout(function () { html.classList.remove('pt-in', 'pt-go'); }, 1300);
     }
@@ -623,12 +644,13 @@
       var u = new URL(a.getAttribute('href'), location.href);
       if (u.origin !== location.origin || (u.pathname === location.pathname && u.search === location.search)) return;
       e.preventDefault();
+      if (a.hasAttribute('data-turn-title')) return caseTurn(a, u.href);
       try { sessionStorage.setItem(PT_KEY, '1'); } catch (_) {}
       html.classList.add('pt-out');
       setTimeout(function () { location.href = u.href; }, PT_OUT);
     });
     // вернулись кнопкой «Назад» из кеша браузера — убираем лист
-    addEventListener('pageshow', function (e) { if (e.persisted) html.classList.remove('pt-out'); });
+    addEventListener('pageshow', function (e) { if (e.persisted) { html.classList.remove('pt-out', 'pt-case-out'); $$('.case-turn').forEach(function (x) { x.remove(); }); } });
   }
 
   /* ---------------- кейс: лист наезжает на первый экран ----------------
