@@ -41,10 +41,13 @@
     if (!mount) { html.classList.remove('js', 'sos-wait'); return; }
     var page = (mount.getAttribute('data-page') || 'index').replace(/[^\w-]/g, '');
     // страница по номеру версии; не ответила — ещё раз, потом последняя версия, что уже открывалась, потом ветка целиком
+    // страница целиком (со стилями и скриптом внутри) — с raw.githubusercontent.com: свежая версия там доступна сразу;
+    // jsDelivr — запасной путь
     function load(sha) {
       var base = 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + sha + '/';
-      return timeout(fetch(base + 'pages/' + page + '.html'), 8000)
-        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+      var get = function (u, ms) { return timeout(fetch(u), ms).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }); };
+      return get('https://raw.githubusercontent.com/' + REPO + '/' + sha + '/pages/' + page + '.html', 6000)
+        .catch(function () { return get(base + 'pages/' + page + '.html', 8000); })
         .then(function (t) { return { t: t, base: base, sha: sha }; });
     }
     function wait(ms) { return new Promise(function (ok) { setTimeout(ok, ms); }); }
@@ -84,6 +87,7 @@
         d.head.appendChild(n); return;
       }
       if (n.nodeName === 'SCRIPT') { var s = d.createElement('script'); s.textContent = n.textContent; d.head.appendChild(s); }
+      if (n.nodeName === 'STYLE') { d.head.appendChild(n); }
     });
     // стили загрузились (не дольше 4 с) — вставляем страницу и запускаем её скрипты
     timeout(Promise.all(waits), 4000).catch(function () {}).then(function () {

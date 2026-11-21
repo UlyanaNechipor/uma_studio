@@ -129,7 +129,12 @@ if (mode === 'assets') {
       .replace(/<noscript>[\s\S]*?<\/noscript>\s*/, '')
       .replace(/(<link rel="stylesheet" href="styles\/motion\.css[^>]*>)/, '$1\n<link rel="stylesheet" href="styles/tilda.css">');
     const body = html.slice(html.indexOf('<body>') + 6, html.indexOf('</body>'));
-    writeFileSync(join(out, 'pages', f), stableHtml(head.trim() + '\n<!--sos:body-->\n' + body.trim()) + '\n');
+    // стили и скрипт — прямо в странице: вся страница приходит одним файлом с raw.githubusercontent.com
+    // (свежая версия там открывается сразу; jsDelivr на только что выложенной версии отвечает по 10–20 с)
+    const inline = (h) => h
+      .replace(/<link rel="stylesheet" href="(styles\/[^"?]+)[^"]*">/g, (m, f) => `<style>${readFileSync(join(out, f), 'utf8')}</style>`)
+      .replace(/<script src="(scripts\/[^"?]+)[^"]*"( defer)?><\/script>/g, (m, f) => `<script>${readFileSync(join(out, f), 'utf8').replace(/<\/script/gi, '<\\/script')}</script>`);
+    writeFileSync(join(out, 'pages', f), stableHtml(inline(head.trim() + '\n<!--sos:body-->\n' + body.trim())) + '\n');
   }
   console.log('site/dist-tilda готова');
 } else if (mode === 'snippets') {
