@@ -9,7 +9,8 @@
 }
 .soon__head { display: grid; justify-items: center; }
 .soon__title { margin: 0; color: var(--txt); font-weight: var(--w-head);
-  font-size: max(2.75rem, calc(60 * var(--u))); line-height: 1; letter-spacing: -.02em; }
+  /* кегль — как у заголовков на главной (.ty-h2) */
+  font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u))); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); }
 .soon__text { margin: calc(24 * var(--u)) 0 0; color: var(--txt); max-width: 34em;
   font-size: max(var(--min-small), calc(11.5 * var(--u))); line-height: 1.35; letter-spacing: 0; font-weight: var(--w-text); }
 .soon__back { margin-top: calc(24 * var(--u)); color: var(--txt); text-decoration: none;
@@ -33,7 +34,6 @@ html.rm .soon__mark, html.rm-off .soon__mark { animation: none; }
 /* телефон: знак в две строки, крупнее */
 @media (max-width: 767px) {
   .soon__lb { display: none; }
-  .soon__title { font-size: 12vw; }
   .soon__text, .soon__back { font-size: 15px; margin-top: 20px; }
   .soon__mark { font-size: 21vw; white-space: normal; line-height: .95; }
   .soon__of { display: block; }
