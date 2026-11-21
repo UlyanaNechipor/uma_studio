@@ -2,11 +2,443 @@
 <meta name="theme-color" content="#111211">
 <link rel="preload" href="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@227e6930f4133f8cffe571275982b58bb31cd2f4/site/assets/fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400&amp;family=Nunito+Sans:wght@400&amp;display=swap">
-<link rel="stylesheet" href="styles/tokens.css?v=8f69ddd4">
-<link rel="stylesheet" href="styles/base.css?v=e10f246c">
-<link rel="stylesheet" href="styles/project.css?v=2664f2e7">
-<link rel="stylesheet" href="styles/motion.css?v=8137f4f5">
-<link rel="stylesheet" href="styles/tilda.css">
+<style>:root{
+  
+  --base: 320;                              
+  --u-min: 1px; --u-max: 1.35px;            
+  --u: clamp(var(--u-min), calc(100vw / var(--base)), var(--u-max));   
+  
+  --uw: calc((100vw - 32px) / 288);
+  
+  --content: calc(1136 * var(--u));
+
+  
+  --c-ink:        #111211;   
+  --c-ink-2:      #1a1a1a;   
+  --c-paper:      #f2f1ed;   
+  --c-white:      #ffffff;
+  --c-white-soft: #fbfbfb;   
+  --c-grey:       #767575;   
+  --c-grey-light: #686764;   
+  --c-line-dark:  rgba(255,255,255,.25);
+  --c-line-light: rgba(26,26,26,.15);
+
+  --bg: var(--c-ink);
+  --txt: var(--c-white);
+  --txt-soft: var(--c-white-soft);
+  --grey: var(--c-grey);
+  
+  --w-text: 400; --w-head: 400;   
+  --line: var(--c-line-dark);
+  
+  --btn-bg: var(--c-white-soft);   --btn-fg: var(--c-ink);   --btn-bg-h: #ffffff;
+  --btn2-bg: #3b3b3b;              --btn2-fg: var(--c-white-soft); --btn2-bg-h: #4a4a4a; --btn2-fg-h: var(--c-white-soft);
+
+  
+  --f-sans:  'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-serif: 'Playfair Display', Georgia, serif;
+
+  
+  
+  --t-h1: 36;   --t-h1-lh: 1;    --t-h1-ls: -.02em;
+  --t-h2: 24;   --t-h2-lh: 1;    --t-h2-ls: 0;
+  --t-name: 14; --t-name-lh: 1;  --t-name-ls: 0;
+  --t-body: 14; --t-body-lh: 1.55; --t-body-ls: .45px;
+  --t-small: 12; --t-small-lh: 1.55; --t-small-ls: .45px;
+  --t-label: 12; --t-label-w: 300;
+  --t-btn: 12;   --t-btn-w: 500;
+
+  
+  --cols: 4;
+  --margin: 16;      
+  --gutter: 8;
+
+  
+
+  
+  --m-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --m-inout: cubic-bezier(0.76, 0, 0.24, 1);
+  --m-hover: .35s;
+  --m-reveal: 1.1s;
+  --m-step: .14s;
+  --m-shift: 40px;
+}@media (min-width: 768px){:root{
+    --base: 1200;
+    --uw: var(--u);
+    --u-min: 0.64px; --u-max: 1.6px;      
+    --t-h1: 66;   --t-h1-lh: .96;  --t-h1-ls: -.04em;   
+    --t-h2: 40;   --t-h2-lh: 1.02; --t-h2-ls: -.03em;
+    --t-name: 20; --t-name-lh: 1;  --t-name-ls: 1px;
+    --col-split: 600;  
+    --row-step: 53;    
+    --cols: 12;
+    --margin: 32;
+    --gutter: 20;
+  }
+}html.light-theme{
+  --bg: var(--c-paper); --txt: var(--c-ink-2); --txt-soft: var(--c-ink-2); --grey: var(--c-grey-light); --line: var(--c-line-light);
+  --w-text: 470; --w-head: 470;   
+  --btn-bg: var(--c-ink); --btn-fg: var(--c-white-soft); --btn-bg-h: #000000;
+  --btn2-bg: rgba(17,18,17,.08); --btn2-fg: var(--c-ink); --btn2-bg-h: var(--c-ink); --btn2-fg-h: var(--c-white-soft);
+}:root{ --fill-base: #2a2b2a; --fill-ink: #ffffff; --accent: #d94f30; }html.light-theme{ --fill-base: #dcdcd9; --fill-ink: #1a1a1a; }:root{
+  --min-h1: 2.25rem;  --min-h2: 1.5rem;  --min-name: 0.875rem;
+  --min-body: 0.875rem; --min-small: 0.75rem; --min-nav: 0.625rem;
+}@media (min-width: 768px){:root{ --min-h1: 3rem; --min-h2: 2rem; --min-name: 1rem; --min-nav: 0.75rem; }
+}
+</style>
+<style>@font-face{
+  font-family: 'Manrope'; src: url('https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@227e6930f4133f8cffe571275982b58bb31cd2f4/site/assets/fonts/manrope-var.woff') format('woff');
+  font-weight: 200 800; font-style: normal; font-display: swap;
+}html #sos-page *,html #sos-page *::before,html #sos-page *::after{ box-sizing: border-box; }html{ -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }html body.t-body{
+  margin: 0; background: var(--bg); color: var(--txt);
+  font-family: var(--f-sans); font-weight: var(--w-text);
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  transition: background-color .5s var(--m-out), color .5s var(--m-out);
+}html #sos-page h1,html #sos-page h2,html #sos-page h3,html #sos-page p,html #sos-page ul,html #sos-page figure{ margin: 0; padding: 0; }html #sos-page ul{ list-style: none; }html #sos-page a{ color: inherit; text-decoration: none; }html #sos-page img{ display: block; width: 100%; height: 100%; object-fit: cover; }html #sos-page button{ font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }html #sos-page :focus-visible{ outline: 1px solid currentColor; outline-offset: 3px; }html #sos-page .ty-h1{ font-size: max(var(--min-h1), calc(var(--t-h1) * var(--u))); line-height: var(--t-h1-lh); letter-spacing: var(--t-h1-ls); font-weight: var(--w-head); }html #sos-page .ty-h2{ font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u))); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); font-weight: var(--w-head); }html #sos-page .ty-name{ font-size: max(var(--min-name), calc(var(--t-name) * var(--u))); line-height: var(--t-name-lh); letter-spacing: var(--t-name-ls); }html #sos-page .ty-body{ font-size: max(var(--min-body), calc(var(--t-body) * var(--u))); line-height: var(--t-body-lh); letter-spacing: var(--t-body-ls); }html #sos-page .ty-small{ font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); line-height: var(--t-small-lh); letter-spacing: var(--t-small-ls); }html #sos-page .ty-grey{ color: var(--grey); font-weight: 400; }html.light-theme #sos-page .ty-grey,html.light-theme #sos-page .hd__link,html.light-theme #sos-page .ft__col{ font-weight: var(--w-text); }html #sos-page .nw{ white-space: nowrap; }html #sos-page .grid{
+  display: grid;
+  --g-cols: repeat(2, minmax(0, 1fr)); --g-gap: 8px;   
+  grid-template-columns: var(--g-cols);
+  column-gap: var(--g-gap);
+  padding-inline: 16px;   
+}@media (min-width: 768px){html #sos-page .grid{
+    --g-cols: calc(272 * var(--u)) calc(264 * var(--u)) calc(276 * var(--u)) calc(276 * var(--u)); --g-gap: calc(16 * var(--u));
+    grid-template-columns: var(--g-cols);
+    column-gap: var(--g-gap);
+    
+    padding-inline: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2));
+  }
+}html #sos-page .btn{
+  display: inline-flex; align-items: center; justify-content: center; gap: calc(8 * var(--u));
+  
+  height: max(36px, calc(36 * var(--u))); min-width: calc(127 * var(--u)); padding-inline: max(14px, calc(16 * var(--u))); border-radius: 2px;
+  font-size: max(var(--min-small), calc(12 * var(--u))); font-weight: 500; letter-spacing: .45px; white-space: nowrap;   
+  transition: background-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out);
+}html #sos-page .btn--light{ background: var(--btn-bg); color: var(--btn-fg); }html #sos-page .btn--grey{ background: var(--btn2-bg); color: var(--btn2-fg); }@media (hover: hover){html #sos-page .btn--light:hover{ background: var(--btn-bg-h); }html #sos-page .btn--grey:hover{ background: var(--btn2-bg-h); color: var(--btn2-fg-h); } }html #sos-page .mail{ color: var(--txt); }html #sos-page .hd{
+  position: fixed; top: 0; right: 0; left: 0; z-index: 10;
+  display: flex; align-items: center; gap: calc(12 * var(--u));
+  height: max(44px, calc(48 * var(--u))); padding-inline: 16px;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+  font-size: max(var(--min-nav), calc(10 * var(--u))); transition: background-color .5s var(--m-out);
+}html #sos-page .hd__logo{ margin-right: auto; letter-spacing: -.02em; }html #sos-page .hd__logo b{ font-weight: 700; }html #sos-page .hd__nav{ display: flex; gap: calc(10 * var(--u)); }html #sos-page .hd__link{ color: var(--grey); font-weight: 400; transition: color var(--m-hover) var(--m-out); }html #sos-page .hd__link:hover{ color: var(--txt); }html #sos-page .hd__theme{
+  display: grid; place-items: center; width: calc(20 * var(--u)); height: calc(20 * var(--u));
+  border: 1px solid var(--line); border-radius: calc(4 * var(--u)); color: var(--grey);
+}@media (min-width: 768px){html #sos-page .hd{ display: grid; grid-template-columns: calc(568 * var(--u)) calc(190 * var(--u)) calc(186 * var(--u)) 1fr auto;
+        gap: 0; padding-inline: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2)); font-size: max(var(--min-nav), calc(12 * var(--u))); }html #sos-page .hd__nav{ display: contents; }html #sos-page .hd__theme{ width: max(24px, calc(24 * var(--u))); height: max(24px, calc(24 * var(--u))); }
+}html #sos-page .ft{
+  border-top: 1px solid var(--line);
+  padding-block: calc(32 * var(--u)) calc(24 * var(--u));
+  row-gap: calc(24 * var(--u));
+  font-size: max(var(--min-small), calc(12 * var(--u))); line-height: 1.6; letter-spacing: .45px;
+}html #sos-page .ft__logo{ grid-column: 1 / -1; font-size: calc(32 * var(--u)); line-height: 1; letter-spacing: -.04em; font-weight: 300; }html #sos-page .ft__logo b{ font-weight: 700; }html #sos-page .ft__col{ display: flex; flex-direction: column; color: var(--grey); font-weight: 400; }html #sos-page .ft__h{ font-weight: var(--w-text); }html #sos-page .ft__col a:hover{ color: var(--txt); }html #sos-page .ft__h{ font: inherit; color: var(--txt); }html #sos-page .ft__made{ grid-column: 1 / -1; grid-row: 3; }@media (min-width: 768px){html #sos-page .ft{ grid-template-rows: auto auto; padding-block: calc(36 * var(--u)) calc(32 * var(--u)); }html #sos-page .ft__logo{ grid-column: 1 / 3; grid-row: 1; font-size: calc(37.5 * var(--u)); }html #sos-page .ft__made{ grid-column: 1 / 3; grid-row: 2; align-self: end; }html #sos-page .ft__col:nth-of-type(1){ grid-column: 3; grid-row: 1 / 3; }html #sos-page .ft__col:last-child{ grid-column: 4; grid-row: 1 / 3; padding-left: calc(84 * var(--u)); }   
+}html.rm-off #sos-page *{ transition: none !important; animation: none !important; scroll-behavior: auto !important; }html.rm,html.rm #sos-page *{ scroll-behavior: auto !important; }html.light-theme #sos-page .btn{ font-weight: 520; }
+</style>
+<style>html #sos-page .uma-project{
+    
+    --up-text:   #ededed;
+    --up-muted:  #a9a9a9;                   
+    --up-meta:   rgba(237, 237, 237, 0.55);  
+    --up-line:   #ededed;
+    --up-ph:     #1b1c1b;                   
+
+    
+    --up-pad:     clamp(16px, 1.667vw, 32px);   
+    --up-gap:     16px;                         
+    --up-sec:     clamp(80px, 8.333vw, 160px);  
+    --up-inner:   clamp(40px, 4.167vw, 80px);   
+
+    
+    --up-head: var(--uma-font-head, 'Manrope', Arial, sans-serif);
+    --up-body: var(--uma-font-body, 'Manrope', Arial, sans-serif);   
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: clamp(96px, 6.406vw, 123px) var(--up-pad) 0;
+    color: var(--up-text);
+    font-family: var(--up-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}html.light-theme #sos-page .uma-project,html body.t-body.light-theme #sos-page .uma-project{
+    --up-text:   #1a1a1a;
+    --up-muted:  #5c5c5c;                   
+    --up-meta:   rgba(26, 26, 26, 0.62);
+    --up-line:   #1a1a1a;
+    --up-ph:     #e4e4e1;
+}html #sos-page .uma-project *,html #sos-page .uma-project *::before,html #sos-page .uma-project *::after{ box-sizing: border-box; }html #sos-page .uma-project p{ margin: 0; }html #sos-page .uma-project a{ color: inherit; text-decoration: none; }html #sos-page .uma-project__top{
+    display: grid;
+    grid-template-columns: 1fr minmax(240px, 15.9%);  
+    column-gap: var(--up-gap);
+}html #sos-page .uma-project__left{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+}html #sos-page .uma-project__title{
+    margin: 0;
+    font-family: var(--up-head);
+    font-weight: 500;
+    font-size: clamp(36px, 2.917vw, 56px);
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--up-text);
+}html #sos-page .uma-project__back{
+    align-self: flex-start;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--up-line);
+    font-size: 15px;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    font-weight: var(--uma-w-ui, 500);
+    color: var(--up-text);
+    transition: color var(--m-hover) var(--m-out), border-color var(--m-hover) var(--m-out);
+}html #sos-page .uma-project__back:hover,html #sos-page .uma-project__back:focus-visible{ color: var(--up-muted); border-color: var(--up-muted); outline: none; }html #sos-page .uma-project__meta{ display: flex; flex-direction: column; gap: 40px; }html #sos-page .uma-project__meta-group{ display: flex; flex-direction: column; gap: 16px; margin: 0; }html #sos-page .uma-project__meta dt,html #sos-page .uma-project__meta dd{
+    margin: 0;
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    font-weight: var(--uma-w-ui, 500);
+}html #sos-page .uma-project__meta dt{ color: var(--up-text); }html #sos-page .uma-project__meta dd{ color: var(--up-meta); }html #sos-page .uma-project__figure{
+    position: relative;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    background: var(--up-ph);
+}html #sos-page .uma-project__figure img{
+    display: block;
+    width: 100%;
+    height: auto;
+    opacity: 0;
+    transition: opacity .6s ease;
+}html #sos-page .uma-project__figure img.is-loaded{ opacity: 1; }html #sos-page .uma-project__figure img.is-missing{ visibility: hidden; }html #sos-page .uma-project__figure.is-empty::after{
+    content: attr(data-label);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--up-muted);
+    border: 1px dashed color-mix(in srgb, var(--up-muted) 40%, transparent);
+}html #sos-page .uma-project__cover{ margin-top: var(--up-inner); }html #sos-page .uma-project__intro{
+    display: flex;
+    justify-content: space-between;
+    gap: var(--up-gap);
+    margin-top: var(--up-inner);
+}html #sos-page .uma-project__lead{
+    width: 35.83%;                    
+    font-family: var(--up-head);
+    font-weight: 400;
+    font-size: clamp(22px, 1.458vw, 28px);
+    line-height: 1.35;
+    color: var(--up-text);
+}html #sos-page .uma-project__cols{
+    display: flex;
+    gap: var(--up-gap);
+    width: 49.57%;                    
+    flex: none;
+}html #sos-page .uma-project__col{ flex: 1 1 0; min-width: 0; }html #sos-page .uma-project__col p,html #sos-page .uma-project__aside p{
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--up-muted);
+    font-weight: var(--uma-w-body, 400);
+    text-wrap: pretty;
+}html #sos-page .uma-project__col p + p,html #sos-page .uma-project__aside p + p{ margin-top: var(--up-pgap, 0); }html #sos-page .uma-project p.uma-project__spacer{ height: 1.4em; }html #sos-page .uma-project__section{ margin-top: var(--up-sec); }html #sos-page .uma-project__head{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--up-gap);
+}html #sos-page .uma-project__h2{
+    margin: 0;
+    flex: 1 1 0;
+    font-family: var(--up-head);
+    font-weight: 400;
+    font-size: clamp(22px, 1.458vw, 28px);
+    line-height: 1.35;
+    color: var(--up-text);
+}html #sos-page .uma-project__aside{ width: 32.76%; flex: none; }html #sos-page .uma-project__aside p{ text-wrap: balance; }html #sos-page .uma-project__section .uma-project__figure{ margin-top: var(--up-inner); }html #sos-page .uma-project__section .uma-project__figure + .uma-project__figure{ margin-top: var(--up-sec); }html #sos-page .uma-project__pager{
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    margin-top: var(--up-inner);
+    padding-bottom: var(--up-sec);
+    font-size: 14px;
+    line-height: 1;
+    font-weight: var(--uma-w-ui, 500);
+}html #sos-page .uma-project__pager a{
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--up-text);
+    transition: color var(--m-hover) var(--m-out);
+}html #sos-page .uma-project__pager a:hover,html #sos-page .uma-project__pager a:focus-visible{ color: var(--up-muted); outline: none; }html #sos-page .uma-project__pager .is-next{ justify-self: end; }html #sos-page .uma-project__pager svg{ width: 16px; height: 16px; flex: none; fill: currentColor; }html #sos-page .uma-project__pager .is-next svg{ transform: rotate(180deg); }html #sos-page .uma-project__count{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    font-family: var(--up-head);
+    font-weight: 400;
+    color: var(--up-text);
+}html #sos-page .uma-project__count span{ color: var(--up-muted); }@media screen and (max-width: 1199px){html #sos-page .uma-project__intro{ flex-direction: column; }html #sos-page .uma-project__lead{ width: 100%; max-width: 720px; }html #sos-page .uma-project__cols{ width: 100%; }html #sos-page .uma-project__aside{ width: 50%; }
+}@media screen and (max-width: 767px){html #sos-page .uma-project__top{ grid-template-columns: 1fr; row-gap: 32px; }html #sos-page .uma-project__left{ gap: 24px; }html #sos-page .uma-project__head{ flex-direction: column; gap: 20px; }html #sos-page .uma-project__cols{ flex-direction: column; gap: 1.4em; }html #sos-page .uma-project__aside{ width: 100%; }html #sos-page .uma-project__h2{ flex: none; }html #sos-page .uma-project__pager{ grid-template-columns: 1fr 1fr; row-gap: 16px; }html #sos-page .uma-project__count{ grid-column: 1 / -1; grid-row: 1; justify-self: center; height: 40px; }
+}@media (prefers-reduced-motion: reduce){html #sos-page .uma-project__figure img{ transition: none; opacity: 1; }
+}html #sos-page .uma-project{
+  --up-head: var(--f-sans);
+  --up-body: var(--f-sans);
+  --uma-w-body: var(--w-text);
+  --uma-w-ui: 500;
+  --up-pad: 16px;
+  --up-gap: calc(8 * var(--u));
+  --up-sec: calc(80 * var(--u));     
+  --up-inner: calc(24 * var(--u));   
+  --up-small: max(var(--min-small), calc(var(--t-small) * var(--u)));
+  --up-mid: max(var(--min-name), calc(18 * var(--u)));   
+  padding: calc(max(44px, calc(48 * var(--u))) + calc(40 * var(--u))) var(--up-pad) 0;
+}html.light-theme #sos-page .uma-project{
+  --up-text: var(--txt);
+  --up-muted: var(--grey);
+  --up-ph: #e6e4de;          
+  --uma-w-ui: 580;
+}html #sos-page .uma-project__title{
+  font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u)));
+  line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls);
+  font-weight: var(--w-head);
+}html #sos-page .uma-project__lead,html #sos-page .uma-project__h2{
+  font-size: var(--up-mid); line-height: 1.3; letter-spacing: -.01em; font-weight: var(--w-head);
+}html #sos-page .uma-project__back,html #sos-page .uma-project__meta dt,html #sos-page .uma-project__meta dd,html #sos-page .uma-project__col p,html #sos-page .uma-project__aside p,html #sos-page .uma-project__pager{
+  font-size: var(--up-small); letter-spacing: var(--t-small-ls);
+}html #sos-page .uma-project__col p,html #sos-page .uma-project__aside p{ line-height: 1.4; letter-spacing: 0; color: var(--up-muted); }html #sos-page .uma-project p.uma-project__spacer{ height: 1.4em; font-size: var(--up-small); }html #sos-page .uma-project__meta dt,html #sos-page .uma-project__meta dd{ line-height: 1.3; }html #sos-page .uma-project__meta dd{ color: var(--up-meta); font-weight: var(--w-text); }html #sos-page .uma-project__back{ padding-bottom: calc(2 * var(--u)); }html.light-theme #sos-page .uma-project__count{ font-weight: var(--w-head); }html #sos-page .uma-project__top{ row-gap: calc(24 * var(--u)); }html #sos-page .uma-project__left{ gap: calc(16 * var(--u)); }html #sos-page .uma-project__meta{ flex-direction: row; gap: var(--up-gap); }html #sos-page .uma-project__meta-group{ flex: 1 1 0; gap: calc(6 * var(--u)); }html #sos-page .uma-project__cover{ margin-top: calc(32 * var(--u)); }html #sos-page .uma-project__intro{ margin-top: calc(32 * var(--u)); gap: calc(24 * var(--u)); }html #sos-page .uma-project__cols{ gap: 1.4em; }html #sos-page .uma-project__head{ gap: calc(16 * var(--u)); }html #sos-page .uma-project__section .uma-project__figure + .uma-project__figure{ margin-top: var(--up-gap); }html #sos-page .uma-project__pager{ margin-top: calc(48 * var(--u)); padding-bottom: calc(64 * var(--u)); }html #sos-page .uma-project__count{ width: auto; height: auto; }@media (min-width: 768px){html #sos-page .uma-project{
+    --up-pad: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2));
+    --up-gap: calc(10 * var(--u));     
+    --up-sec: calc(100 * var(--u));    
+    --up-inner: calc(50 * var(--u));   
+    --up-small: max(var(--min-small), calc(9.375 * var(--u)));   
+    --up-mid: max(1rem, calc(17.5 * var(--u)));                  
+    --up-lines: calc(568 * var(--u)) calc(190 * var(--u)) calc(186 * var(--u)) minmax(0, 1fr);   
+    --up-gutter: calc(24 * var(--u));  
+    padding-top: calc(48 * var(--u) + 37 * var(--u));            
+  }html #sos-page .uma-project__top,html #sos-page .uma-project__intro,html #sos-page .uma-project__head,html #sos-page .uma-project__pager{
+    display: grid;
+    grid-template-columns: var(--up-lines);
+    column-gap: 0;
+    align-items: start;
+  }html #sos-page .uma-project__top{ align-items: stretch; }html #sos-page .uma-project__left{ grid-column: 1 / 4; gap: calc(24 * var(--u)); height: auto; justify-content: space-between; }html #sos-page .uma-project__meta{ grid-column: 4 / 5; display: flex; flex-direction: column; gap: calc(25 * var(--u)); }html #sos-page .uma-project__meta-group{ gap: calc(10 * var(--u)); }html #sos-page .uma-project__meta dt,html #sos-page .uma-project__meta dd{ line-height: 1.1; }html #sos-page .uma-project__title{ font-size: max(var(--min-h2), calc(35 * var(--u))); line-height: .72; letter-spacing: .01em; }html #sos-page .uma-project__back{ line-height: 1.25; }html #sos-page .uma-project__cover{ margin-top: var(--up-inner); }html #sos-page .uma-project__intro{ margin-top: var(--up-inner); }html #sos-page .uma-project__lead{ grid-column: 1 / 2; width: auto; max-width: calc(416 * var(--u)); font-size: var(--up-mid); line-height: 1.35; padding-right: var(--up-gutter); }html #sos-page .uma-project__h2{ grid-column: 1 / 2; flex: none; font-size: max(1rem, calc(12.5 * var(--u))); line-height: 1; padding-right: var(--up-gutter); }html #sos-page .uma-project__intro .uma-project__cols,html #sos-page .uma-project__head .uma-project__cols{ display: contents; }html #sos-page .uma-project__intro .uma-project__col:nth-child(1),html #sos-page .uma-project__head .uma-project__col:nth-child(1){ grid-column: 2 / 4; padding-right: var(--up-gutter); max-width: calc(282 * var(--u) + var(--up-gutter)); }html #sos-page .uma-project__intro .uma-project__col:nth-child(2),html #sos-page .uma-project__head .uma-project__col:nth-child(2){ grid-column: 4 / 5; }html #sos-page .uma-project__aside{ grid-column: 3 / 5; width: auto; max-width: none; margin-left: 0; }html #sos-page .uma-project__aside.is-wide{ grid-column: 2 / 5; }html #sos-page .uma-project__aside p{ text-wrap: pretty; }html #sos-page .uma-project__section .uma-project__figure + .uma-project__figure{ margin-top: var(--up-sec); }html #sos-page .uma-project__pager{ margin-top: var(--up-inner); padding-bottom: var(--up-sec); align-items: center; }html #sos-page .uma-project__pager > :first-child{ grid-column: 1 / 2; justify-self: start; }html #sos-page .uma-project__count{ grid-column: 2 / 3; grid-row: auto; justify-self: start; justify-content: flex-start; width: auto; height: calc(40 * var(--u)); }html #sos-page .uma-project__pager > :last-child{ grid-column: 4 / 5; justify-self: end; }
+}html #sos-page .uma-project__figure.is-empty::after{ font-size: var(--up-small); }html #sos-page .uma-project__figure img{ opacity: 1; }html #sos-page .uma-project__sub{ display: block; color: var(--up-text); }html #sos-page .uma-project p.uma-project__item + p.uma-project__item{ margin-top: .7em; }html #sos-page .uma-project__pair{ display: grid; grid-template-columns: 1fr; margin-top: var(--up-sec); }html #sos-page .uma-project__pair .uma-project__figure{ margin: 0; }html #sos-page .uma-project__palette{ list-style: none; margin: var(--up-inner) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--up-gap); }html #sos-page .uma-project__palette li{ aspect-ratio: 1; display: flex; flex-direction: column; justify-content: space-between; padding: calc(14 * var(--uw, var(--u))); min-width: 0; }html #sos-page .uma-project__hex{ font-size: var(--up-small); letter-spacing: 0; }html #sos-page .uma-project__hex b{ font-weight: 600; }html #sos-page .uma-project__aa{ font-size: max(2rem, calc(54 * var(--u))); line-height: 1; font-weight: 500; letter-spacing: -.01em; }html #sos-page .uma-project__fonts{ margin-top: var(--up-inner); }html #sos-page .uma-project__font{ border-top: 1px solid var(--line); padding: calc(20 * var(--u)) 0; display: grid; gap: calc(12 * var(--u)); }html #sos-page .uma-project__specimen{ margin: 0; font-size: max(2.5rem, calc(96 * var(--u))); line-height: 1.05; color: var(--up-text); font-weight: 400; letter-spacing: 0; }html #sos-page .uma-project__font-info p{ margin: 0; font-size: var(--up-small); line-height: 1.4; color: var(--up-muted); }html #sos-page .uma-project__font-info p.uma-project__sub{ color: var(--up-text); margin-bottom: .6em; }@media (min-width: 768px){html #sos-page .uma-project__pair{ grid-template-columns: 1fr 1fr; }html #sos-page .uma-project__palette{ grid-template-columns: repeat(5, minmax(0, 1fr)); gap: calc(24 * var(--u)); }html #sos-page .uma-project__font{ grid-template-columns: var(--up-lines); gap: 0; align-items: start; }html #sos-page .uma-project__specimen{ grid-column: 1 / 4; }html #sos-page .uma-project__font-info{ grid-column: 4 / 5; }
+}@media (min-width: 768px){html #sos-page .uma-project__aside.is-side{ grid-column: 4 / 5; }html #sos-page .uma-project__font-info p.uma-project__sub{ margin-bottom: 1.4em; }
+}html #sos-page .uma-project__pair > :only-child{ grid-column: 1 / -1; }html #sos-page .uma-project__num{ display: block; margin-bottom: calc(16 * var(--u)); font-size: var(--up-small); line-height: 1; letter-spacing: 0;
+  color: var(--grey); font-variant-numeric: tabular-nums; font-weight: var(--w-text); }
+</style>
+<style>@media (min-width: 1025px) and (hover: hover){html,html body.t-body,html #sos-page a,html #sos-page button{ cursor: pointer; } }html #sos-page #trail,html #sos-page #wipe{ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }html #sos-page #trail{ z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }html.light-theme #sos-page #trail,html.light-theme #sos-page .hd__trail{ mix-blend-mode: multiply; opacity: .85; filter: blur(24px); }html #sos-page .hd__trail{ position: absolute; left: 0; top: 0; width: 100%; height: calc(100% + 120px);   
+  pointer-events: none; z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }html #sos-page .hd > :not(.hd__trail){ position: relative; z-index: 1; }html #sos-page .hd{ isolation: isolate; overflow: hidden; }html #sos-page #wipe{ z-index: -1; }html #sos-page main,html #sos-page .ft{ position: relative; z-index: 1; }html body.t-body{ background: transparent; }html{ background: var(--bg); transition: background-color .5s var(--m-out); }html.is-wiping{ transition: none; }html #sos-page .hd__ic{ position: relative; display: block; width: 100%; height: 100%; transition: transform .6s var(--m-out); }html #sos-page .hd__ic svg{
+  position: absolute; top: 29%; left: 29%; width: 42%; height: 42%;   
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  transition: opacity .4s var(--m-out), transform .6s var(--m-out);
+}html #sos-page .hd__moon{ fill: currentColor !important; stroke: none !important; }html #sos-page .hd__sun{ opacity: 0; transform: scale(.6) rotate(-45deg); }html.light-theme #sos-page .hd__ic{ transform: rotate(45deg); }html.light-theme #sos-page .hd__moon{ opacity: 0; transform: scale(.6) rotate(45deg); }html.light-theme #sos-page .hd__sun{ opacity: 1; transform: none; }html #sos-page .hd__theme{ transition: background-color var(--m-hover) var(--m-out), border-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out); }@media (hover: hover) and (pointer: fine){html #sos-page .hd__theme:hover{ background: var(--txt); border-color: var(--txt); color: var(--bg); } }html body.t-body,html #sos-page .hd,html #sos-page .hd__link,html #sos-page .mail,html #sos-page .ft,html #sos-page .ft__h,html #sos-page .svc__title,html #sos-page .prow__name,html #sos-page .ty-h1,html #sos-page .ty-h2,html #sos-page .hero__lead{
+  transition: color .5s var(--m-out), background-color .5s var(--m-out), border-color .5s var(--m-out);
+}html #sos-page .pl{
+  position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 100; display: none;
+  background: var(--bg); transition: background-color 1.2s cubic-bezier(.19,1,.22,1);
+}html.js #sos-page .pl{ display: block; }html #sos-page .pl.is-done{ background-color: transparent; pointer-events: none; }html.js #sos-page .pl.is-gone{ display: none; }html #sos-page .pl__logo{
+  position: absolute; left: 50%; top: 50%; transform-origin: 0 0;
+  font-size: clamp(40px, 11.2vw, 160px); line-height: 1; letter-spacing: -.03em; font-weight: 300; white-space: nowrap;
+  opacity: 0; transition: opacity .6s ease .2s;
+}html #sos-page .pl__logo b{ font-weight: 700; }html #sos-page .pl.is-ready .pl__logo{ opacity: 1; }html #sos-page .pl.is-fly .pl__logo{ transition: transform 1.4s cubic-bezier(.19,1,.22,1); }html #sos-page .pl__base{ color: var(--fill-base); }html #sos-page .pl__ink{ position: absolute; top: 0; right: 0; bottom: 0; left: 0; color: var(--txt); -webkit-mask-image: linear-gradient(90deg, #000 var(--a, 0%), transparent var(--b, 0%)); mask-image: linear-gradient(90deg, #000 var(--a, 0%), transparent var(--b, 0%)); }html.js:not(.is-docked) #sos-page .hd__logo{ opacity: 0; }html.js #sos-page .hd__link,html.js #sos-page .hd__theme{ opacity: 0; translate: 0 5px; transition: opacity .7s var(--m-out) var(--hd-d, 0s), translate .9s var(--m-out) var(--hd-d, 0s), color .35s, background-color .35s, border-color .35s; }html.js.is-docked #sos-page .hd__link,html.js.is-docked #sos-page .hd__theme{ opacity: 1; translate: 0 0; }html.js #sos-page .hd__link:nth-child(2){ --hd-d: .09s; }html.js #sos-page .hd__link:nth-child(3){ --hd-d: .18s; }html.js #sos-page .hd__theme{ --hd-d: .27s; }html.js:not(.is-ready){ overflow: hidden; }html.js #sos-page [data-intro]{ opacity: 0; transform: translate3d(0, var(--m-shift), 0); transition: opacity .9s var(--m-out), transform 1.2s var(--m-out); }html.js #sos-page .hero__title[data-intro]{ transition-delay: .15s; }html.js.hero-in #sos-page [data-intro]{ opacity: 1; transform: none; }html #sos-page .hg{ overflow: hidden; background: var(--bg); touch-action: pan-y; }html #sos-page .hg__frame{ position: absolute; top: 0; right: 0; bottom: 0; left: 0; overflow: hidden; }html.js #sos-page .hg__frame{ clip-path: inset(100% 0 0 0); transition: clip-path 1.25s var(--m-out); }html.js #sos-page .hg.is-in .hg__frame{ clip-path: inset(0); }html.js #sos-page .hg:not(.is-in) .hg__frame{ visibility: hidden; }html #sos-page .hg__strip{ position: relative; height: 100%; }html #sos-page .hg__slide{ position: absolute; top: 0; right: 0; bottom: 0; left: 0; overflow: hidden; transition: transform .7s var(--m-inout); will-change: transform; }html #sos-page .hg__slide img{ transform: scale(1.22); transition: transform 1.05s var(--m-out); }html #sos-page .hg__slide.is-active img{ transform: none; }html #sos-page .hg:not(.is-in) .hg__slide.is-active img{ transform: scale(1.28); }html #sos-page .hg.is-in .hg__slide.is-active img{ transition-duration: 1.1s; }html #sos-page .hg__pause{
+  position: absolute; right: 6px; bottom: 6px; z-index: 2; width: 32px; height: 32px;
+  display: grid; place-items: center; color: #fff; opacity: 0; transition: opacity .6s ease .9s, transform .12s ease;
+}html #sos-page .hg.is-in .hg__pause{ opacity: .85; }html #sos-page .hg__pause:hover{ opacity: 1; }html #sos-page .hg__pause:active{ transform: scale(.9); }html #sos-page .hg__ic{ grid-area: 1 / 1; width: 16px; height: 16px; fill: currentColor; filter: drop-shadow(0 1px 4px rgba(0,0,0,.45)); transition: opacity .2s ease, transform .3s var(--m-out); }html #sos-page .hg__ic--play{ opacity: 0; transform: scale(.6); }html #sos-page .hg.is-paused .hg__ic--pause{ opacity: 0; transform: scale(.6); }html #sos-page .hg.is-paused .hg__ic--play{ opacity: 1; transform: none; }@media (min-width: 768px){html #sos-page .hg__pause{ right: 14px; bottom: 14px; } }html #sos-page .hero__aside{
+  position: relative; overflow: hidden;
+  background: radial-gradient(120% 90% at 100% 115%, rgba(255,180,137,0) 52%, rgba(255,180,137,.55) 57%, rgba(217,79,48,.75) 61%, rgba(58,18,8,.6) 70%, rgba(12,12,13,0) 82%), #0c0c0d;
+}html.js #sos-page .hero__aside{ clip-path: inset(100% 0 0 0); transition: clip-path 1.25s var(--m-out) .08s; }html.js #sos-page .hero__aside.is-in{ clip-path: inset(0); }html #sos-page .hero__cv{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .8s ease; }html #sos-page .hero__aside.is-ready .hero__cv{ opacity: 1; }html #sos-page .fl-line{ display: block; width: fit-content; padding-block: .18em; margin-block: -.18em; color: transparent; -webkit-text-fill-color: transparent; -webkit-background-clip: text; background-clip: text; background-color: var(--fill-base); }html #sos-page .lab__title .fl-line{ margin-inline: auto; }html.js #sos-page .rv{ opacity: 0; transform: translate3d(var(--rv-x, 0px), var(--rv-y, var(--m-shift)), 0); }html.js #sos-page .rv.is-in{
+  opacity: 1; transform: none;
+  transition: opacity calc(var(--m-reveal) * .75) ease var(--rv-d, 0s), transform var(--m-reveal) var(--m-out) var(--rv-d, 0s);
+}html.rm-off.js #sos-page .rv,html.rm-off.js #sos-page [data-intro]{ opacity: 1 !important; transform: none !important; }html.rm-off #sos-page .hg__frame,html.rm-off #sos-page .hero__aside{ clip-path: none !important; }html.rm-off #sos-page .hg__slide img{ transform: none !important; }html #sos-page .yr{ display: inline-flex; font-variant-numeric: tabular-nums; vertical-align: top; }html #sos-page .yr__d{ display: inline-block; height: 1lh; overflow: hidden; }html #sos-page .yr__s{ display: flex; flex-direction: column; will-change: transform; transition: transform .8s var(--m-out); }html #sos-page .yr__s.is-instant{ transition: none !important; }html #sos-page .yr__s > span{ display: block; height: 1lh; text-align: center; }@supports not (height: 1lh){html #sos-page .yr__d,html #sos-page .yr__s > span{ height: 1.2em; line-height: 1.2em; } }html #sos-page .prow__year{ line-height: 1.2; }@media (min-width: 768px){html.js #sos-page .prow--rv{ opacity: 0; transform: translate3d(-56px, 0, 0); }html.js #sos-page .is-in > .prow--rv{ opacity: 1; transform: none; transition: opacity .55s ease var(--row-d, 0s), transform .95s var(--m-out) var(--row-d, 0s); }
+}@media (max-width: 767.98px){html #sos-page .prow--card{ position: relative; }html.js #sos-page .prow--card{ border-top-color: transparent; }html #sos-page .prow--card::before{ content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--line); transform: scaleX(0); transform-origin: 0 50%; }html #sos-page .prow--card.is-in::before{ transform: scaleX(1); transition: transform 1.1s var(--m-out); }html.js #sos-page .prow__it{ opacity: 0; transform: translate3d(0, var(--m-shift), 0); }html.js #sos-page .prow--card.is-in .prow__it{ opacity: 1; transform: none; transition: opacity calc(var(--m-reveal) * .75) ease var(--it-d, 0s), transform var(--m-reveal) var(--m-out) var(--it-d, 0s); }
+}html #sos-page .pv{ position: fixed; left: 0; top: 0; width: 0; height: 0; z-index: 50; pointer-events: none; will-change: transform; --pv-w: 380px; --pv-h: 240px; }html #sos-page .pv__frame{
+  position: absolute; left: calc(var(--pv-w) / -2); top: calc(var(--pv-h) / -2); width: var(--pv-w); height: var(--pv-h);
+  overflow: hidden; border-radius: 4px; background: #1b1c1b; box-shadow: 0 30px 60px -20px rgba(0,0,0,.55);
+  opacity: 0; transform: scale(.6); clip-path: inset(50% 50% 50% 50% round 4px);
+  transition: opacity .35s ease, transform .6s var(--m-out), clip-path .6s var(--m-out);
+}html #sos-page .pv.is-open .pv__frame{ opacity: 1; transform: none; clip-path: inset(0 round 4px); }html #sos-page .pv__strip{ height: 100%; transition: transform .75s var(--m-inout); will-change: transform; }html #sos-page .pv__slide{ height: 100%; overflow: hidden; }html #sos-page .pv__slide img{ transform: scale(1.12); transition: transform 1s var(--m-inout); }html #sos-page .pv__slide.is-active img{ transform: none; }html.light-theme #sos-page .pv__frame{ box-shadow: 0 30px 60px -24px rgba(0,0,0,.3); }html #sos-page .lab__it img{ transition: transform 1s var(--m-out); }@media (hover: hover) and (pointer: fine){html #sos-page .lab__it:hover img{ transform: scale(1.06); } }html #sos-page .lab__it.is-near img{ transform: scale(1.06); transition-duration: 1.4s; transition-delay: var(--pj-delay, 0s); }html #sos-page .ft{ position: relative; }html.js #sos-page .ft{ border-top-color: transparent; }html #sos-page .ft::before{ content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--line); transform-origin: 0 50%; }html.js #sos-page .ft::before{ transform: scaleX(0); }html.js #sos-page .ft.is-lines::before{ transform: scaleX(1); transition: transform 1.3s cubic-bezier(.65, 0, .35, 1); }html.rm-off.js #sos-page .prow--rv,html.rm-off.js #sos-page .prow__it{ opacity: 1 !important; transform: none !important; }html.rm-off #sos-page .prow--card::before,html.rm-off #sos-page .ft::before{ transform: none !important; }html.rm.js #sos-page .rv,html.rm.js #sos-page [data-intro],html.rm.js #sos-page .prow--rv,html.rm.js #sos-page .prow__it{ transform: none !important; }html.rm.js #sos-page .hd__link,html.rm.js #sos-page .hd__theme{ translate: none !important; }html.rm.js #sos-page .hg__frame{ clip-path: none; opacity: 0; transition: opacity 1s ease; }html.rm.js #sos-page .hg.is-in .hg__frame{ opacity: 1; }html.rm.js #sos-page .hero__aside{ clip-path: none; opacity: 0; transition: opacity 1s ease .1s; }html.rm.js #sos-page .hero__aside.is-in{ opacity: 1; }html.rm #sos-page .hg__strip{ display: grid; transform: none !important; transition: none; }html.rm #sos-page .hg__slide{ grid-area: 1 / 1; opacity: 0; transform: none !important; visibility: visible !important; transition: opacity .9s ease; }html.rm #sos-page .hg__slide.is-active{ opacity: 1; }html.rm #sos-page .hg__slide img,html.rm #sos-page .pv__slide img,html.rm #sos-page .lab__it img{ transform: none !important; }html.rm #sos-page .pv__frame{ transform: none; clip-path: none; }html.rm #sos-page .pl.is-fade .pl__logo{ opacity: 0; transition: opacity .6s ease; }html.rm #sos-page .pl.is-fade{ transition-duration: .7s; }html.pt-in body.t-body::after,html.pt-out body.t-body::after{
+  content: ''; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 1000;
+  background: var(--bg); pointer-events: none;
+}html.pt-in.pt-go body.t-body::after{ transform: translate3d(0, -100%, 0); transition: transform .8s var(--m-inout); }html.pt-in:not(.pt-go) #sos-page main,html.pt-in:not(.pt-go) #sos-page .hd{ transform: translate3d(0, 8vh, 0); }html.pt-in.pt-go #sos-page main,html.pt-in.pt-go #sos-page .hd{ transition: transform 1.1s var(--m-out) .12s; }html.pt-out body.t-body::after{ animation: pt-up .52s var(--m-inout) both; box-shadow: 0 -24px 64px rgba(0, 0, 0, .28); }html.pt-out #sos-page main{ transform: translate3d(0, -4vh, 0); transition: transform .52s var(--m-inout); }@keyframes pt-up{ from { transform: translate3d(0, 100%, 0); } to { transform: translate3d(0, 0, 0); } }html #sos-page .case-turn{
+  position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 9; pointer-events: none;   
+  background: var(--bg); color: var(--txt);
+  transform: translate3d(0, 102%, 0);
+  box-shadow: 0 -40px 90px -10px rgba(0, 0, 0, .5);
+  transition: transform .95s var(--m-inout);
+}html.light-theme #sos-page .case-turn{ box-shadow: 0 -40px 90px -20px rgba(40, 30, 20, .3); }html #sos-page .case-turn.is-on{ transform: translate3d(0, 0, 0); }html #sos-page .case-turn__in{
+  height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+  padding: calc(max(44px, calc(48 * var(--u))) + 32px) 16px 24px;
+}html #sos-page .case-turn__k{ margin: 0; font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); color: var(--grey); }html #sos-page .case-turn__title{ margin: 0; font-size: clamp(56px, 19vw, 120px); line-height: .9; letter-spacing: -.045em; font-weight: var(--w-head); }@media (min-width: 768px){html #sos-page .case-turn__in{ padding: calc(48 * var(--u) + 60 * var(--u)) max(calc(32 * var(--u)), calc((100% - var(--content)) / 2)) calc(40 * var(--u) + 120 * var(--u)); }html #sos-page .case-turn__title{ font-size: min(calc(220 * var(--u)), 15vw); line-height: .86; white-space: nowrap; margin-left: -.04em; }
+}html.pt-case-out #sos-page main{ transform: translate3d(0, -10vh, 0) scale(.97); opacity: .4; transform-origin: 50% 0;
+  transition: transform .95s var(--m-inout), opacity .95s var(--m-inout); }html.pt-case body.t-body::after{
+  content: ''; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 9; background: var(--bg); pointer-events: none;
+}html.pt-case.pt-go body.t-body::after{ opacity: 0; transition: opacity .6s var(--m-out); }
+</style>
+<style>#allrecords{overflow:visible!important;background:none!important}
+#allrecords .t123,#allrecords .t-container_100,#allrecords .t-width_100{max-width:none!important;padding:0!important;margin:0!important}
+html #allrecords{font-family:var(--f-sans)}
+html #allrecords *{font-family:inherit}
+/* Зеро-блоки Тильды на страницах статичного сайта (например, форма обратной связи):
+   фон прозрачный — под ним фон сайта, смена темы (расходящийся круг) и свечение за курсором;
+   текст, поля и кнопка формы берут цвета текущей темы. Добавляется в styles/tilda.css при сборке. */
+html #allrecords .t396 .t396__artboard,
+html #allrecords .t396 .t396__carrier,
+html #allrecords .t396 .t396__filter { background-color: transparent !important; background-image: none !important; }
+/* z-index Зеро-блоков не трогаем: и у артборда (в т.ч. «поверх следующих блоков»), и у элементов
+   остаётся тот, что задан в настройках Тильды. Свечение за курсором видно сквозь прозрачный фон блока. */
+html #allrecords .t396 { transition: color .5s var(--m-out); }
+/* пустой Зеро-блок (артборд без элементов) не занимает места — иначе под подвалом остаётся тёмная полоса */
+html #allrecords .t396:not(:has(.tn-elem)) { display: none !important; }
+
+/* текст */
+html #allrecords .t396 .tn-elem[data-elem-type="text"] .tn-atom,
+html #allrecords .t396 .tn-elem[data-elem-type="text"] .tn-atom * { color: var(--txt) !important; }
+html #allrecords .t396 .tn-elem[data-elem-type="text"] .tn-atom a { color: inherit !important; }
+
+/* форма */
+html #allrecords .t396 .t-form .t-input,
+html #allrecords .t396 .t-form textarea.t-input,
+html #allrecords .t396 .t-form .t-select,
+html #allrecords .t396 .t-form .t-input-phonemask__wrap {
+  background-color: transparent !important;
+  color: var(--txt) !important;
+  border-color: var(--line) !important;
+  font-family: var(--f-sans) !important;
+  transition: border-color var(--m-hover) var(--m-out), color .5s var(--m-out);
+}
+html #allrecords .t396 .t-form .t-input:focus,
+html #allrecords .t396 .t-form .t-select:focus { border-color: var(--txt) !important; outline: none; }
+html #allrecords .t396 .t-form .t-input::placeholder { color: var(--grey) !important; opacity: 1; }
+html #allrecords .t396 .t-form .t-input-title,
+html #allrecords .t396 .t-form .t-checkbox__labeltext,
+html #allrecords .t396 .t-form .t-radio__labeltext,
+html #allrecords .t396 .t-form .t-form__bottom-text,
+html #allrecords .t396 .t-form .t-text { color: var(--txt) !important; }
+html #allrecords .t396 .t-form .t-input-subtitle,
+html #allrecords .t396 .t-form .t-input-phonemask__select-code { color: var(--grey) !important; }
+html #allrecords .t396 .t-form .t-checkbox__indicator,
+html #allrecords .t396 .t-form .t-radio__indicator { border-color: var(--txt) !important; }
+html #allrecords .t396 .t-form .t-checkbox__indicator::after { border-color: var(--bg) !important; }
+html #allrecords .t396 .t-form .t-checkbox:checked ~ .t-checkbox__indicator { background-color: var(--txt) !important; }
+/* кнопка «Отправить» — как кнопки сайта */
+html #allrecords .t396 .t-form .t-submit {
+  background-color: var(--btn-bg) !important;
+  color: var(--btn-fg) !important;
+  border-color: var(--btn-bg) !important;
+  font-family: var(--f-sans) !important;
+  transition: background-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out);
+}
+@media (hover: hover) { html #allrecords .t396 .t-form .t-submit:hover { background-color: var(--btn-bg-h) !important; } }
+/* сообщения формы */
+html #allrecords .t396 .t-form__successbox { background-color: var(--btn2-bg) !important; color: var(--txt) !important; }
+html #allrecords .t396 .t-form__errorbox-wrapper { color: var(--txt); }
+html #allrecords .t396 .t-input-error { color: #e5484d !important; }
+</style>
 <script>/* Диагностика на странице (вставляется в <head> встроенным скриптом — работает, даже если site.js не загрузился).
    Показать: пять быстрых нажатий на строку «Made by …» в подвале, либо ?debug / #debug в адресе.
    Выводит то, что нужно, чтобы понять, почему на устройстве нет анимаций: настройки, возможности браузера, ошибки. */
@@ -85,4 +517,726 @@
     <a href="tel:+79119736693">+7 (911) 973-66-93</a>
   </div>
 </footer>
-<script src="scripts/site.js?v=aaeea47d" defer></script>
+<script>/* Shape of Sense · поведение страницы. Без библиотек.
+   Порядок при загрузке:
+     прелоадер (логотип заливается и улетает в шапку) → меню в шапке →
+     тексты первого экрана → галерея и фигура справа раскрываются шторкой → заливка заголовка.
+   Дальше при прокрутке: блоки появляются по очереди, заголовки разделов заливаются за прокруткой.
+   Плюс: смена темы (круг от кнопки), фон за курсором, галерея, фигура справа (WebGL). */
+(function () {
+  'use strict';
+  var html = document.documentElement;
+  /* «Уменьшение движения» в системе (на айфоне: Универсальный доступ → Движение) — режим задаёт
+     MOTION_REDUCED в build.mjs, класс ставит скрипт в <head>:
+       html.rm     — спокойный режим: прелоадер, проявления, галерея и табло есть, но без смещений и полётов;
+       html.rm-off — всё движение выключено (как было раньше). */
+  var reduce = html.classList.contains('rm-off');
+  var calm = html.classList.contains('rm');
+  var mouse = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
+  var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+  var ready = [];   // что запустить, когда прелоадер ушёл
+
+  /* ================= НАСТРОЙКИ ================= */
+  var PL = { fillDelay: 1000, fill: 1800, flight: 1400 };      // мс: прелоадер
+  var HERO_DELAY = 850;      // мс после вылета логотипа: тексты первого экрана
+  var GALLERY_DELAY = 1250;  // мс после вылета: раскрытие галереи
+  var TITLE_DELAY = 1450;    // мс после вылета: заливка главного заголовка
+  var TITLE_FILL = 1800;     // мс: заливка главного заголовка
+  var FEATHER = 0.9;         // мягкий край заливки, в долях кегля
+  var LEAD_FILL = 0.12;      // доля заливки заголовка раздела в момент его появления
+  var STEP = 140;            // мс: шаг между элементами, появившимися вместе
+  var GALLERY_INTERVAL = 1700;   // мс между сменами кадров (было 2800 — галерея стала активнее)
+  /* ============================================= */
+
+  /* ---------------- прелоадер ---------------- */
+  function preloader() {
+    var pl = $('#preloader'), logo = $('.pl__logo'), ink = $('.pl__ink'), target = $('.hd__logo');
+    function release() {
+      html.classList.add('is-ready');
+      ready.forEach(function (f) { f(); });
+      ready = [];
+    }
+    if (!pl || reduce) { if (pl) pl.classList.add('is-gone'); html.classList.add('is-docked', 'hero-in'); release(); return; }
+    // логотип по центру экрана, шириной экран минус поля
+    function place() {
+      var vw = innerWidth, m = vw >= 768 ? 64 : 32, w = logo.offsetWidth;
+      var k = (vw - m) / w;
+      logo.style.transform = 'translate(' + (-w * k / 2) + 'px,' + (-logo.offsetHeight * k / 2) + 'px) scale(' + k + ')';
+    }
+    function start() {
+      place();
+      pl.classList.add('is-ready');
+      var t0 = performance.now() + PL.fillDelay;
+      (function fill(now) {
+        var p = clamp((now - t0) / PL.fill, 0, 1);
+        var e = 1 - Math.pow(1 - p, 3);                       // мягкое торможение
+        var a = e * 110 - 10;                                   // окно с мягким краем 10%
+        ink.style.setProperty('--a', a + '%'); ink.style.setProperty('--b', (a + 10) + '%');
+        if (p < 0.72) return requestAnimationFrame(fill);       // выглядит залитым — вылетаем
+        ink.style.setProperty('--a', '100%'); ink.style.setProperty('--b', '110%');
+        fly();
+      })(performance.now());
+    }
+    function fly() {
+      if (calm) {                                               // без полёта: логотип и фон тают
+        pl.classList.add('is-fade', 'is-done');
+        setTimeout(function () { html.classList.add('is-docked'); pl.classList.add('is-gone'); }, 700);
+        setTimeout(function () { html.classList.add('hero-in'); }, 500);
+        return release();
+      }
+      // долетаем ровно в логотип шапки
+      place();                                                  // окно могло смениться за время заливки
+      var t = target.getBoundingClientRect(), w = logo.offsetWidth, h = logo.offsetHeight;
+      var k = t.width / w;
+      pl.classList.add('is-fly', 'is-done');
+      logo.style.transform = 'translate(' + (t.left - innerWidth / 2) + 'px,' + (t.top + t.height / 2 - h * k / 2 - innerHeight / 2) + 'px) scale(' + k + ')';
+      setTimeout(function () { html.classList.add('is-docked'); pl.classList.add('is-gone'); }, PL.flight);
+      setTimeout(function () { html.classList.add('hero-in'); }, HERO_DELAY);
+      release();
+    }
+    var go = function () { start(); go = function () {}; };
+    if (document.fonts && document.fonts.load) {
+      Promise.all([document.fonts.load('700 100px Manrope'), document.fonts.load('300 100px Manrope')]).then(function () { go(); }, function () { go(); });
+    }
+    setTimeout(function () { go(); }, 1500);
+    setTimeout(function () { if (!html.classList.contains('is-ready')) { pl.classList.add('is-gone'); html.classList.add('is-docked', 'hero-in'); release(); } }, 8000);
+  }
+
+  /* ---------------- заливка заголовков ---------------- */
+  var fills = [];
+  function colors() {
+    var cs = getComputedStyle(html);
+    function rgb(v) {
+      var d = document.createElement('i'); d.style.color = v; document.body.appendChild(d);
+      var c = getComputedStyle(d).color.match(/\d+/g).slice(0, 3).map(Number); d.remove(); return c;
+    }
+    var base = rgb(cs.getPropertyValue('--fill-base').trim()), ink = rgb(cs.getPropertyValue('--fill-ink').trim());
+    // ступени мягкого края: 100% → 84% → 50% → 16% → 0%
+    return [1, 0.84, 0.5, 0.16, 0].map(function (k) {
+      return 'rgb(' + [0, 1, 2].map(function (i) { return Math.round(base[i] + (ink[i] - base[i]) * k); }).join(',') + ')';
+    });
+  }
+  var C = null;
+  function paint(line) {
+    var p = line._p, f = line._f, c = C;
+    line.style.backgroundImage = 'linear-gradient(90deg,' + c[0] + ' 0px,' + c[0] + ' ' + (p - f) + 'px,' + c[1] + ' ' + (p - f * .75) + 'px,' +
+      c[2] + ' ' + (p - f * .5) + 'px,' + c[3] + ' ' + (p - f * .25) + 'px,' + c[4] + ' ' + p + 'px,' + c[4] + ' 100%)';
+  }
+  // разбивка текста на строки по фактическим переносам
+  function split(el) {
+    if (!el._src) el._src = el.innerHTML;
+    el.innerHTML = el._src;
+    var words = [];
+    (function walk(n) {
+      [].slice.call(n.childNodes).forEach(function (c) {
+        if (c.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          // делим только по обычным пробелам: неразрывные (после предлогов) держат слова вместе
+          c.nodeValue.split(/([ \t\n\r]+)/).forEach(function (w) {
+            if (!w) return;
+            if (/^[ \t\n\r]+$/.test(w)) frag.appendChild(document.createTextNode(w));
+            else { var s = document.createElement('span'); s.textContent = w; words.push(s); frag.appendChild(s); }
+          });
+          c.replaceWith(frag);
+        } else if (c.nodeName !== 'BR') walk(c);
+      });
+    })(el);
+    var rows = [], last = null;
+    words.forEach(function (w) {
+      var top = Math.round(w.offsetTop);
+      if (top !== last) { rows.push([]); last = top; }
+      rows[rows.length - 1].push(w.textContent);
+    });
+    el.innerHTML = rows.map(function (r) { return '<span class="fl-line">' + r.join(' ') + '</span>'; }).join('');
+    return $$('.fl-line', el);
+  }
+  // телефон: если строка заголовка подходит к краю экрана ближе 16 px — трекинг плотнее ровно настолько,
+  // чтобы буквы встали на поле (не плотнее −0.04em)
+  function fitEdges(it, fs) {
+    it.el.style.letterSpacing = '';
+    if (innerWidth >= 480) return;
+    var vw = document.documentElement.clientWidth, ls = parseFloat(getComputedStyle(it.el).letterSpacing) || 0;
+    for (var t = 0; t < 3; t++) {
+      var over = 0, per = 0;
+      it.lines.forEach(function (l) {
+        var b = l.getBoundingClientRect(), o = b.right - (vw - 16), n = l.textContent.length;
+        if (o > over && n > 1) { over = o; per = o / (n - 1); }
+      });
+      if (over <= 0.5) return;
+      ls = Math.max(ls - per - 0.01, -0.04 * fs);
+      it.el.style.letterSpacing = ls + 'px';
+      it.lines = split(it.el);
+      if (ls <= -0.04 * fs) return;
+    }
+  }
+  function build(it) {
+    var fs = parseFloat(getComputedStyle(it.el).fontSize) || 16;
+    it.lines = split(it.el);
+    fitEdges(it, fs);
+    it.f = fs * FEATHER;
+    it.w = it.lines.map(function (l) { return l.getBoundingClientRect().width; });
+    it.total = it.w.reduce(function (a, b) { return a + b; }, 0) || 1;
+    render(it, it.shown || 0, true);
+  }
+  // прогресс 0..1 → строки по очереди, каждая пропорционально своей ширине
+  function render(it, e, force) {
+    if (!force && Math.abs(e - (it.shown || 0)) < 0.0005) return;
+    it.shown = e;
+    var acc = 0;
+    it.lines.forEach(function (line, k) {
+      var a = acc / it.total, b = (acc + it.w[k]) / it.total; acc += it.w[k];
+      var t = e <= a ? 0 : e >= b ? 1 : (e - a) / (b - a);
+      line._p = Math.round(t * (it.w[k] + it.f) * 2) / 2; line._f = it.f; paint(line);
+    });
+  }
+  function fillInit() {
+    C = colors();
+    $$('[data-fill]').forEach(function (el) {
+      var it = { el: el, mode: el.getAttribute('data-fill') || 'scroll', target: 0, floor: 0, shown: 0 };
+      fills.push(it); build(it);
+    });
+    if (reduce) { fills.forEach(function (it) { render(it, 1, true); }); return; }
+    // главный заголовок — по времени после прелоадера
+    ready.push(function () {
+      fills.filter(function (it) { return it.mode === 'load'; }).forEach(function (it) {
+        setTimeout(function () {
+          var t0 = performance.now();
+          (function step(now) { var p = clamp((now - t0) / TITLE_FILL, 0, 1); it.target = p; render(it, p); if (p < 1) requestAnimationFrame(step); })(t0);
+        }, TITLE_DELAY);
+      });
+    });
+    // заголовки разделов — за прокруткой: от «верх на 85% экрана» до «низ на 65%», с плавным догонянием
+    var last = performance.now();
+    (function tick(now) {
+      var dt = Math.min(0.1, (now - last) / 1000); last = now;
+      var vh = innerHeight;
+      fills.forEach(function (it) {
+        if (it.mode !== 'scroll') return;
+        var r = it.el.getBoundingClientRect();
+        var s0 = vh * 0.85 - r.top, s1 = vh * 0.65 - r.bottom;     // >0 — точка пройдена
+        var p = clamp(s0 / (s0 - s1 || 1), 0, 1);
+        it.target = Math.max(p, it.floor);
+        var cur = it.shown + (it.target - it.shown) * (1 - Math.exp(-dt / 0.17));
+        render(it, Math.abs(it.target - cur) < 0.001 ? it.target : cur);
+      });
+      requestAnimationFrame(tick);
+    })(last);
+  }
+  // заголовок появился (класс is-in) — заливка сама проходит первые 12%
+  function leadFill(el) {
+    var it = fills.filter(function (x) { return x.el === el || el.contains(x.el); })[0];
+    if (!it || it.mode !== 'scroll' || it.lead) return;
+    it.lead = true;
+    setTimeout(function () {
+      var t0 = performance.now();
+      (function step(now) { var p = clamp((now - t0) / 1100, 0, 1); it.floor = LEAD_FILL * (1 - Math.pow(1 - p, 2)); if (p < 1) requestAnimationFrame(step); })(t0);
+    }, 250);
+  }
+
+  /* ---------------- появление при прокрутке ---------------- */
+  function reveal() {
+    // что появляется: прямые части каждого блока (кроме первого экрана), колонки подвала
+    var items = $$('main > section:not(.hero) > *, .cs-sheet > :not(.cs-sec):not(.cs-cover), .cs-sec > *, .uma-project > :not(.uma-project__section), .uma-project__section > *, .about__photos > img, .lab__it, .svc, .cta__act > *, .about__act > *, .ft > *')
+      .filter(function (el) { return !el.matches('.projects__list, .lab__grid, .about__photos, .about__act, .cta__act'); });
+    items.forEach(function (el) { el.classList.add('rv'); });
+    // мобилка, услуги: выезжают слева, по очереди
+    if (innerWidth < 768) $$('.svc').forEach(function (el) { el.style.setProperty('--rv-x', '-56px'); el.style.setProperty('--rv-y', '0px'); });
+    if (reduce || !window.IntersectionObserver) { items.forEach(function (el) { el.classList.add('is-in'); }); return; }
+    var queue = [], timer = 0;
+    function flush() {
+      timer = 0;
+      queue.sort(function (a, b) { var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect(); return (ra.top - rb.top) || (ra.left - rb.left); });
+      queue.forEach(function (el, i) {
+        el.style.setProperty('--rv-d', (i * STEP / 1000) + 's');
+        el.classList.add('is-in');
+        if (el.hasAttribute('data-fill')) leadFill(el);
+      });
+      queue = [];
+    }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target); queue.push(e.target);
+      });
+      if (queue.length && !timer) timer = setTimeout(flush, 30);
+    }, { rootMargin: '0px 0px -12% 0px' });
+    // подвал: линия сверху прочерчивается, когда он дошёл до экрана
+    var ft = $('.ft');
+    if (ft) { if (reduce) ft.classList.add('is-lines'); else new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { o.disconnect(); ft.classList.add('is-lines'); } }, { rootMargin: '0px 0px -8% 0px' }).observe(ft); }
+    // до ухода прелоадера ничего не появляется
+    ready.push(function () { setTimeout(function () { items.forEach(function (el) { io.observe(el); }); }, (reduce || !$('#preloader')) ? 0 : HERO_DELAY + 300); });
+  }
+
+  /* ---------------- тема ---------------- */
+  function theme() {
+    var KEY = 'uma-theme', btn = $('[data-theme-toggle]'), cv = $('#wipe'), ctx = cv.getContext('2d'), busy = false;
+    function label() { btn.setAttribute('aria-label', html.classList.contains('light-theme') ? 'Тёмная тема' : 'Светлая тема'); }
+    function set(light) {
+      html.classList.toggle('light-theme', light);
+      try { localStorage.setItem(KEY, light ? 'light' : 'dark'); } catch (e) {}
+      C = colors(); fills.forEach(function (it) { render(it, it.shown, true); });
+      label();
+    }
+    label();
+    btn.addEventListener('click', function () {
+      if (busy) return;
+      var light = !html.classList.contains('light-theme');
+      if (reduce || calm) return set(light);           // без расходящегося круга: цвета меняются плавно
+      // круг цвета новой темы расходится от кнопки
+      busy = true; html.classList.add('is-wiping');
+      cv.width = innerWidth; cv.height = innerHeight;
+      var b = btn.getBoundingClientRect(), x = b.left + b.width / 2, y = b.top + b.height / 2;
+      var max = Math.hypot(innerWidth, innerHeight) * 1.1, r = 0, switched = false;
+      var col = light ? '#f2f1ed' : '#111211';   // = --c-paper / --c-ink
+      (function step() {
+        r += (max - r) * 0.12 + 15;
+        ctx.clearRect(0, 0, cv.width, cv.height);
+        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fillStyle = col; ctx.fill();
+        if (!switched && r >= max * 0.45) { switched = true; set(light); }
+        if (r >= max) { ctx.clearRect(0, 0, cv.width, cv.height); busy = false; html.classList.remove('is-wiping'); return; }
+        requestAnimationFrame(step);
+      })();
+    });
+  }
+
+  /* ---------------- фон за курсором ---------------- */
+  function trail() {
+    if (reduce) return;
+    var cv = $('#trail'), ctx = cv.getContext('2d'), RES = 0.5;
+    // шапка непрозрачная и лежит поверх общего холста — в неё копируется верхняя полоса следа
+    var hc = $('.hd__trail'), hctx = hc && hc.getContext('2d'), hd = $('.hd');
+    function size() {
+      cv.width = Math.ceil(innerWidth * RES); cv.height = Math.ceil(innerHeight * RES); ctx.setTransform(RES, 0, 0, RES, 0, 0);
+      if (hc) { hc.width = cv.width; hc.height = Math.ceil((hd.offsetHeight + 120) * RES); }
+    }
+    function copyHeader() {
+      if (!hc) return;
+      hctx.clearRect(0, 0, hc.width, hc.height);
+      hctx.drawImage(cv, 0, 0, cv.width, hc.height, 0, 0, hc.width, hc.height);
+    }
+    size(); addEventListener('resize', size);
+    var mx = -1000, my = -1000, sx = -1000, sy = -1000, pts = [], MAX = 55, running = false;
+    function input(x, y) { mx = x; my = y; if (sx === -1000) { sx = x; sy = y; } wake(); }
+    addEventListener('mousemove', function (e) { input(e.clientX, e.clientY); });
+    addEventListener('touchstart', function (e) { if (e.touches[0]) input(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    addEventListener('touchmove', function (e) { if (e.touches[0]) input(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    function off() { mx = my = -1000; }
+    addEventListener('touchend', off); addEventListener('touchcancel', off); document.addEventListener('mouseleave', off);
+    function wake() { if (running) return; running = true; cv.style.visibility = 'visible'; if (hc) hc.style.visibility = 'visible'; requestAnimationFrame(frame); }
+    function frame() {
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      if (mx !== -1000) {
+        sx += (mx - sx) * 0.08; sy += (my - sy) * 0.08;
+        var p0 = pts[0] || { x: 0, y: 0 };
+        if (Math.hypot(sx - p0.x, sy - p0.y) > 1) { pts.unshift({ x: sx, y: sy, a: 1 }); if (pts.length > MAX) pts.pop(); }
+      } else { sx = sy = -1000; }
+      pts.forEach(function (p) { p.a -= 0.022; });
+      pts = pts.filter(function (p) { return p.a > 0; });
+      for (var i = 0; i < pts.length - 1; i++) {
+        var p1 = pts[i], p2 = pts[i + 1], pr = (MAX - i) / MAX;
+        ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.quadraticCurveTo(p1.x, p1.y, (p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+        ctx.lineWidth = 85 * Math.pow(pr, 1.4); ctx.lineCap = ctx.lineJoin = 'round';
+        var al = Math.max(0, p1.a * pr), g = ctx.createRadialGradient(p1.x, p1.y, 0, p1.x, p1.y, ctx.lineWidth);
+        g.addColorStop(0, 'rgba(255,240,215,' + 0.85 * al + ')');
+        g.addColorStop(0.25, 'rgba(217,79,48,' + 0.55 * al + ')');
+        g.addColorStop(0.65, 'rgba(170,55,30,' + 0.12 * al + ')');
+        g.addColorStop(1, 'rgba(17,18,17,0)');
+        ctx.strokeStyle = g; ctx.stroke();
+      }
+      copyHeader();
+      if (!pts.length && (mx === -1000 || (Math.abs(mx - sx) < 1 && Math.abs(my - sy) < 1))) { running = false; cv.style.visibility = 'hidden'; if (hc) hc.style.visibility = 'hidden'; return; }
+      requestAnimationFrame(frame);
+    }
+  }
+
+  /* ---------------- галерея первого экрана ---------------- */
+  function gallery() {
+    var box = $('[data-gallery]'); if (!box) return;
+    var strip = $('.hg__strip', box), btn = $('.hg__pause', box);
+    var slides = $$('.hg__slide', box), n = slides.length;
+    // сначала только первый кадр: остальные не отнимают у него канал на медленной сети и догружаются следом
+    var first = $('img', slides[0]);
+    function whenLoaded(im, cb, max) {
+      var done = false;
+      function fin() { if (done) return; done = true; cb(); }
+      if (!im || (im.complete && im.naturalWidth)) return fin();
+      im.addEventListener('load', fin); im.addEventListener('error', fin); setTimeout(fin, max);
+    }
+    whenLoaded(first, function () {
+      slides.forEach(function (s, k) { var im = $('img', s); if (im && k) setTimeout(function () { im.loading = 'eager'; }, k * 200); });
+    }, 3000);
+    /* Кадры лежат друг на друге. Новый въезжает с одной стороны и выталкивает старый в другую;
+       направление меняется по кругу: сверху вниз, снизу вверх, слева направо, справа налево.
+       [x, y] — откуда въезжает новый кадр (в долях кадра); старый уходит в противоположную сторону. */
+    var DIRS = [[0, -1], [0, 1], [-1, 0], [1, 0]], d = 0;
+    var i = 0, timer = 0, paused = false, visible = true, shown = false;
+    function place(sl, x, y, anim) {
+      sl.style.transition = anim ? '' : 'none';
+      sl.style.transform = 'translate3d(' + (x * 100) + '%,' + (y * 100) + '%,0)';
+    }
+    slides.forEach(function (sl, k) { place(sl, 0, k ? 1 : 0, false); sl.style.visibility = k ? 'hidden' : ''; });
+    function go(k, dir) {
+      if (k === i) return;
+      var inc = slides[k], out = slides[i];
+      // новый — за краем, без анимации
+      place(inc, dir[0], dir[1], false); inc.style.visibility = ''; inc.style.zIndex = 2; out.style.zIndex = 1;
+      inc.offsetHeight;
+      place(inc, 0, 0, true); place(out, -dir[0], -dir[1], true);
+      out.classList.remove('is-active'); inc.classList.add('is-active');
+      var o = out; setTimeout(function () { if (!o.classList.contains('is-active')) o.style.visibility = 'hidden'; }, 1000);
+      i = k;
+    }
+    function next(dir) { go((i + 1) % n, dir || DIRS[d++ % DIRS.length]); }
+    function prev(dir) { go((i - 1 + n) % n, dir); }
+    function schedule() {
+      clearTimeout(timer);
+      if (!shown || paused || !visible || document.hidden || reduce) return;
+      timer = setTimeout(function () { next(); schedule(); }, GALLERY_INTERVAL);
+    }
+    btn.addEventListener('click', function () {
+      paused = !paused;
+      box.classList.toggle('is-paused', paused);
+      btn.setAttribute('aria-pressed', paused); btn.setAttribute('aria-label', paused ? 'Продолжить' : 'Пауза');
+      if (!paused) next();
+      schedule();
+    });
+    // свайп на телефоне
+    var x0 = null;
+    box.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', function (e) {
+      if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) { dx < 0 ? next([1, 0]) : prev([-1, 0]); schedule(); }
+    });
+    if (mouse) { box.tabIndex = 0; box.addEventListener('keydown', function (e) { var K = { ArrowRight: [1, 0], ArrowLeft: [-1, 0], ArrowDown: [0, 1], ArrowUp: [0, -1] }[e.key]; if (K) { e.preventDefault(); (e.key === 'ArrowRight' || e.key === 'ArrowDown' ? next : prev)(K); schedule(); } }); }
+    if (window.IntersectionObserver) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; schedule(); }).observe(box);
+    document.addEventListener('visibilitychange', schedule);
+    ready.push(function () {
+      setTimeout(function () {
+        // шторка открывается, когда первый кадр уже загружен (но не ждём его дольше 3 секунд)
+        whenLoaded(first, function () {
+          box.classList.add('is-in');
+          var aside = $('.hero__aside'); if (aside) aside.classList.add('is-in');
+          shown = true; setTimeout(schedule, 600);
+        }, 3000);
+      }, reduce ? 0 : GALLERY_DELAY);
+    });
+  }
+
+  /* ---------------- фигура справа (WebGL) ---------------- */
+  function aside() {
+    var el = $('.hero__aside'), cv = $('.hero__cv');
+    if (!el || !cv) return;
+    // фигуры нет на мобильной раскладке; если окно потом расширили до десктопа — запускаем тогда
+    if (getComputedStyle(el).display === 'none') {
+      var mq = matchMedia('(min-width: 768px)');
+      var on = function () { if (mq.matches) { mq.removeEventListener ? mq.removeEventListener('change', on) : mq.removeListener(on); aside(); } };
+      mq.addEventListener ? mq.addEventListener('change', on) : mq.addListener(on);
+      return;
+    }
+    var gl = cv.getContext('webgl2', { antialias: false, alpha: false });
+    if (!gl) return;
+    var VS = '#version 300 es\nin vec2 p;out vec2 vUv;void main(){vUv=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
+    var FS = ['#version 300 es', 'precision highp float;', 'in vec2 vUv;out vec4 frag;',
+      'uniform vec2 uRes;uniform float uTime;uniform vec2 uMouse;uniform float uWake;uniform float uFrame;',
+      'const vec3 cInk=vec3(.047,.047,.051),cDeep=vec3(.227,.071,.031),cEmber=vec3(.851,.31,.188),cGlow=vec3(1.,.706,.537),cCore=vec3(1.,.957,.918);',
+      'float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}',
+      'float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);}',
+      'float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<4;i++){v+=a*noise(p);p=m*p;a*=.5;}return v;}',
+      'void main(){float asp=uRes.x/uRes.y;vec2 uv=vUv;vec2 p=vec2((uv.x-.5)*asp,uv.y-.5);',
+      'vec2 m=vec2((uMouse.x-.5)*asp,uMouse.y-.5);vec2 dm=p-m;float fall=exp(-dot(dm,dm)*14.);p+=dm*fall*.9*uWake;float t=uTime;',
+      'vec2 q=vec2(fbm(p*1.1+vec2(0.,t*.03)),fbm(p*1.1+vec2(5.2,-t*.025)));vec2 w=p+(q-.5)*.32;',
+      'vec2 c=vec2(.55*asp,-.95);float R=1.12+.04*sin(t*.1);float d=length(w-c)-R;float n=fbm(w*1.8-t*.04);',
+      'float band=exp(-pow(d/(.13+.08*n),2.));float rim=exp(-pow((d+.015*(n-.5))/.022,2.));float haze=exp(-abs(d)*5.5)*.38;float cool=exp(-pow((d-.16)/.12,2.))*.35;',
+      'vec3 col=cInk;col=mix(col,cDeep,clamp(haze,0.,1.));col=mix(col,vec3(.16,.2,.32),clamp(cool*(.6+.8*n),0.,1.));',
+      'col=mix(col,cEmber,clamp(band*.95,0.,1.));col=mix(col,cGlow,clamp(band*band*.55+rim*.6,0.,1.));col=mix(col,cCore,clamp(rim*rim*.85,0.,1.));',
+      'col*=mix(1.,.55,smoothstep(0.,-.45,d));float lum=dot(col,vec3(.299,.587,.114));col=mix(vec3(lum),col,1.+.6*fall*uWake);col+=cGlow*fall*uWake*.06;',
+      'col*=1.-.35*pow(length(uv-.5)*1.2,2.);float g=hash(uv*uRes+fract(uFrame*.618)*71.)-.5;col+=g*.045;frag=vec4(clamp(col,0.,1.),1.);}'].join('\n');
+    function sh(t, s) { var o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); return o; }
+    var pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return;
+    gl.useProgram(pr);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    var loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    var U = {}; ['uRes', 'uTime', 'uMouse', 'uWake', 'uFrame'].forEach(function (k) { U[k] = gl.getUniformLocation(pr, k); });
+    var W = 0, H = 0, RES = 0.6, FPS = 30;
+    function size() {
+      var b = cv.getBoundingClientRect(), w = Math.max(1, Math.round(b.width * RES)), h = Math.max(1, Math.round(b.height * RES));
+      if (w === W && h === H) return; W = cv.width = w; H = cv.height = h; gl.viewport(0, 0, w, h); gl.uniform2f(U.uRes, w, h);
+    }
+    var mx = .3, my = .6, tx = mx, ty = my, wake = 0, wakeT = 0;
+    if (mouse && !reduce) {
+      el.addEventListener('pointermove', function (e) { var b = cv.getBoundingClientRect(); tx = (e.clientX - b.left) / b.width; ty = 1 - (e.clientY - b.top) / b.height; wakeT = 1; });
+      el.addEventListener('pointerleave', function () { wakeT = 0; });
+    }
+    var visible = true, raf = 0, t0 = performance.now(), last = t0, lastDraw = 0, frame = 0;
+    function draw(now) {
+      raf = 0;
+      if (!reduce && now - lastDraw < 1000 / FPS - 2 && el.classList.contains('is-ready')) return loop();
+      lastDraw = now; size();
+      var dt = Math.min(.05, (now - last) / 1000); last = now;
+      var k = 1 - Math.pow(.0015, dt); mx += (tx - mx) * k; my += (ty - my) * k;
+      wake += (wakeT - wake) * (1 - Math.pow(.02, dt));
+      gl.uniform1f(U.uTime, reduce ? 12 : (now - t0) / 1000 * (calm ? 0.3 : 1) + 12);   // спокойный режим — втрое медленнее gl.uniform2f(U.uMouse, mx, my);
+      gl.uniform1f(U.uWake, wake); gl.uniform1f(U.uFrame, reduce ? 0 : frame++);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      el.classList.add('is-ready');
+      if (!reduce) loop();
+    }
+    function loop() { if (!raf && visible && !document.hidden) raf = requestAnimationFrame(draw); }
+    if (window.IntersectionObserver) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; loop(); }).observe(el);
+    document.addEventListener('visibilitychange', function () { last = performance.now(); loop(); });
+    addEventListener('resize', function () { W = 0; loop(); });
+    raf = requestAnimationFrame(draw);
+  }
+
+  /* ---------------- год-табло ----------------
+     Цифры года прокручиваются, как на табло: каждая встаёт на место с трёх цифр раньше,
+     слева направо с задержкой 45 мс. Десктоп — при наведении на строку,
+     телефон — когда карточка появилась и когда проходит через середину экрана. */
+  function ticker(el) {
+    if (el._yr) return el._yr;
+    var y = el.textContent.trim(), strip = '';
+    for (var r = 0; r < 2; r++) for (var n = 0; n < 10; n++) strip += '<span>' + n + '</span>';
+    el.setAttribute('aria-label', y);
+    el.innerHTML = '<span class="yr" aria-hidden="true">' + y.split('').map(function (d, k) {
+      return '<span class="yr__d"><span class="yr__s" data-d="' + d + '" style="transition-delay:' + k * 45 + 'ms">' + strip + '</span></span>';
+    }).join('') + '</span>';
+    el._yr = $$('.yr__s', el); place(el._yr, 0, false);
+    return el._yr;
+  }
+  function place(strips, back, anim) {
+    strips.forEach(function (s) { s.classList.toggle('is-instant', !anim); s.style.transform = 'translateY(' + (-(+s.getAttribute('data-d') + 10 - back) * 5) + '%)'; });
+  }
+  function roll(el) { if (reduce) return; var s = ticker(el); place(s, 3, false); el.offsetHeight; place(s, 0, true); }
+
+  /* ---------------- «Избранные проекты» ---------------- */
+  function projects() {
+    var list = $('.projects__list'); if (!list) return;
+    // обе раскладки готовятся сразу, какая из них работает — решает ширина окна (CSS),
+    // поэтому после поворота телефона или смены ширины окна всё продолжает работать
+    var rows = $$('.prow', list), desk = function () { return innerWidth >= 768; };
+    rows.forEach(function (r) { ticker($('.prow__year', r)); });
+    {
+      // десктоп: строки целиком (линия + текст) въезжают слева, по очереди сверху вниз
+      rows.forEach(function (r, i) { r.classList.add('prow--rv'); r.style.setProperty('--row-d', (0.14 + i * 0.22).toFixed(2) + 's'); });
+      if (mouse) rows.forEach(function (r) { r.addEventListener('mouseenter', function () { if (desk()) roll($('.prow__year', r)); }); });
+      watchTop(list, function () { list.classList.add('is-in'); });
+      if (mouse) preview(rows);
+    }
+    {
+      // телефон: карточки — линия прочерчивается, следом по очереди название, год, тип, обложки
+      rows.forEach(function (r) {
+        r.classList.add('prow--card');
+        var parts = [$('.prow__name', r), $('.prow__year', r), $('.prow__type', r)].concat($$('.prow__pics img', r));
+        parts.forEach(function (el, k) { el.classList.add('prow__it'); el.style.setProperty('--it-d', (0.14 + k * 0.14).toFixed(2) + 's'); });
+        var yr = $('.prow__year', r);
+        if (!reduce) place(ticker(yr), 3, false);
+        watchTop(r, function () { r.classList.add('is-in'); setTimeout(function () { roll(yr); }, 140 + 120); });
+      });
+      // карточка в середине экрана — год прокручивается ещё раз
+      var cur = null, tk = false;
+      function focus() {
+        tk = false;
+        var c0 = innerHeight * 0.45, c1 = innerHeight * 0.55, hit = null;
+        if (desk()) return;
+        rows.some(function (r) { var b = r.getBoundingClientRect(); if (b.top < c1 && b.bottom > c0) { hit = r; return true; } });
+        if (hit !== cur) { cur = hit; if (hit && hit.classList.contains('is-in')) roll($('.prow__year', hit)); }
+      }
+      addEventListener('scroll', function () { if (!tk) { tk = true; requestAnimationFrame(focus); } }, { passive: true });
+    }
+  }
+  // запуск, когда верх элемента дошёл до 82% высоты экрана (после ухода прелоадера)
+  function watchTop(el, fn) {
+    if (reduce) return fn();
+    var done = false;
+    function check() { if (done || !html.classList.contains('is-ready')) return; if (el.getBoundingClientRect().top < innerHeight * 0.82) { done = true; removeEventListener('scroll', check); fn(); } }
+    addEventListener('scroll', check, { passive: true });
+    ready.push(function () { setTimeout(check, $('#preloader') ? HERO_DELAY + 300 : 0); });
+  }
+
+  /* превью обложки у курсора (десктоп): окошко следует за мышью с инерцией и наклоном,
+     внутри лента обложек — при переходе на соседнюю строку она прокручивается */
+  function preview(rows) {
+    var root = document.createElement('div');
+    root.className = 'pv'; root.setAttribute('aria-hidden', 'true');
+    root.innerHTML = '<div class="pv__frame"><div class="pv__strip">' + rows.map(function (r) {
+      return '<div class="pv__slide"><img alt="" decoding="async" data-src="' + $('.prow__link', r).getAttribute('data-cover') + '"></div>';
+    }).join('') + '</div></div>';
+    (document.getElementById('sos-page') || document.body).appendChild(root);   // в Тильде стили сайта действуют внутри блока #sos-page
+    var strip = $('.pv__strip', root), slides = $$('.pv__slide', root), loaded = false;
+    var x = 0, y = 0, tx = 0, ty = 0, vx = 0, open = false, cur = -1, hideT = 0, raf = 0;
+    function setIndex(i) { if (i === cur) return; cur = i; strip.style.transform = 'translate3d(0,' + (-100 * i) + '%,0)'; slides.forEach(function (s, k) { s.classList.toggle('is-active', k === i); }); }
+    function show(i) {
+      clearTimeout(hideT); hideT = 0;
+      if (!loaded) { loaded = true; $$('img', root).forEach(function (im) { im.src = im.getAttribute('data-src'); }); }
+      if (!open) { x = tx; y = ty; strip.style.transition = 'none'; setIndex(i); strip.offsetHeight; strip.style.transition = ''; open = true; root.classList.add('is-open'); loop(); }
+      else setIndex(i);
+    }
+    function hide() { if (hideT) return; hideT = setTimeout(function () { hideT = 0; open = false; root.classList.remove('is-open'); }, 140); }
+    function loop() {
+      cancelAnimationFrame(raf);
+      (function step() {
+        var dx = (tx - x) * (reduce ? 1 : 0.12); x += dx; y += (ty - y) * (reduce ? 1 : 0.12);
+        vx += (dx - vx) * 0.2; var tilt = reduce ? 0 : clamp(vx * 0.35, -5, 5);
+        root.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) rotate(' + tilt.toFixed(2) + 'deg)';
+        if (open || Math.abs(tx - x) > .5 || Math.abs(ty - y) > .5) raf = requestAnimationFrame(step);
+      })();
+    }
+    // строка под курсором: полоса во всю ширину списка
+    var pend = false;
+    function check() {
+      pend = false;
+      var hit = -1;
+      if (innerWidth < 768) { if (open) hide(); return; }
+      rows.forEach(function (r, i) { var b = r.getBoundingClientRect(); if (ty >= b.top && ty < b.bottom && tx >= b.left - 16 && tx <= b.right + 16) hit = i; });
+      if (hit >= 0) show(hit); else if (open) hide();
+    }
+    function sched() { if (!pend) { pend = true; requestAnimationFrame(check); } }
+    addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; sched(); }, { passive: true });
+    addEventListener('scroll', sched, { passive: true });
+    document.addEventListener('mouseleave', function () { if (open) hide(); });
+  }
+
+  /* ---------------- фото в «Экспериментах» ----------------
+     С мышью — фото приближается при наведении (CSS). На телефоне — пока карточка
+     в средней полосе экрана; в ряду из двух правое — позже левого. */
+  function labZoom() {
+    if (mouse || reduce || calm) return;
+    var items = $$('.lab__it'), tk = false;
+    function update() {
+      tk = false;
+      var c0 = innerHeight * 0.32, c1 = innerHeight * 0.68;
+      items.forEach(function (it) {
+        var b = it.getBoundingClientRect(), mid = b.top + b.height / 2;
+        var left = items.some(function (o) { if (o === it) return false; var q = o.getBoundingClientRect(); return Math.abs(q.top - b.top) < 12 && q.left < b.left; });
+        it.style.setProperty('--pj-delay', left ? '.22s' : '0s');
+        it.classList.toggle('is-near', it.classList.contains('is-in') && mid > c0 && mid < c1);
+      });
+    }
+    addEventListener('scroll', function () { if (!tk) { tk = true; requestAnimationFrame(update); } }, { passive: true });
+  }
+
+  /* ---------------- переход между страницами: «подлистывание» ----------------
+     Уход: по ссылке на другую страницу сайта снизу наезжает лист цвета фона, страница чуть уходит вверх,
+     затем переход. Приход: лист уезжает вверх, содержимое поднимается на место. Прелоадер в этом случае
+     не показывается — он только при первом открытии сайта. Признак перехода — sessionStorage 'sos-pt',
+     класс html.pt-in ставят заранее <head> страницы или загрузчик в Тильде. */
+  var PT_KEY = 'sos-pt', PT_OUT = 520, CASE_OUT = 950, turning = html.classList.contains('pt-in'), caseIn = html.classList.contains('pt-case');
+  try { sessionStorage.removeItem(PT_KEY); } catch (e) {}
+  if (caseIn) turning = true;
+  /* Переход между кейсами («следующий / предыдущий проект»): снизу подкладывается лист с названием
+     следующего кейса и протягивается вверх, к его началу. Название на листе стоит там же, где на первом экране
+     следующего кейса, — после перехода страница продолжает картинку, лист просто растворяется. */
+  function caseTurn(a, href) {
+    var t = document.createElement('div');
+    t.className = 'case-turn'; t.setAttribute('aria-hidden', 'true');
+    t.innerHTML = '<div class="case-turn__in"><p class="case-turn__k">' + (a.getAttribute('data-turn-label') || '') + '</p>' +
+      '<p class="case-turn__title"></p></div>';
+    t.querySelector('.case-turn__title').textContent = a.getAttribute('data-turn-title') || '';
+    (document.getElementById('sos-page') || document.body).appendChild(t);
+    html.classList.add('pt-case-out');
+    requestAnimationFrame(function () { requestAnimationFrame(function () { t.classList.add('is-on'); }); });
+    try { sessionStorage.setItem(PT_KEY, 'case'); } catch (_) {}
+    setTimeout(function () { location.href = href; }, CASE_OUT);
+  }
+  function pageTurn() {
+    if (caseIn) {
+      // пришли с листом: он уже закрывает экран; убираем его плавно
+      scrollTo(0, 0);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { html.classList.add('pt-go'); }); });
+      setTimeout(function () { html.classList.remove('pt-case', 'pt-go'); }, 700);
+    } else if (turning) {
+      requestAnimationFrame(function () { requestAnimationFrame(function () { html.classList.add('pt-go'); }); });
+      setTimeout(function () { html.classList.remove('pt-in', 'pt-go'); }, 1300);
+    }
+    if (reduce) return;
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if ((a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+      var u = new URL(a.getAttribute('href'), location.href);
+      if (u.origin !== location.origin || (u.pathname === location.pathname && u.search === location.search)) return;
+      e.preventDefault();
+      if (a.hasAttribute('data-turn-title')) return caseTurn(a, u.href);
+      try { sessionStorage.setItem(PT_KEY, '1'); } catch (_) {}
+      html.classList.add('pt-out');
+      setTimeout(function () { location.href = u.href; }, PT_OUT);
+    });
+    // вернулись кнопкой «Назад» из кеша браузера — убираем лист
+    addEventListener('pageshow', function (e) { if (e.persisted) { html.classList.remove('pt-out', 'pt-case-out'); $$('.case-turn').forEach(function (x) { x.remove(); }); } });
+  }
+
+  /* ---------------- кейс: лист наезжает на первый экран ----------------
+     Первый экран закреплён (position: sticky); пока лист его закрывает, он чуть уменьшается и темнеет. */
+  function caseSheet() {
+    var intro = $('.cs-intro'), inner = intro && $('.cs-intro__in', intro);
+    if (!inner || reduce) return;
+    var tick = false;
+    function upd() {
+      tick = false;
+      var h = intro.offsetHeight || 1, p = Math.min(1, Math.max(0, scrollY / h));
+      inner.style.transform = 'translate3d(0,' + (p * -6) + '%,0) scale(' + (1 - p * .06) + ')';
+      inner.style.opacity = String(1 - p * .75);
+    }
+    addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
+    addEventListener('resize', upd); upd();
+  }
+
+  /* ---------------- запуск ---------------- */
+  function init() {
+    window.__umaBoot = 1;   // для страховки в <head>: скрипт запустился
+    // каждая часть — в своём try: сбой одного эффекта (старый браузер, нет API) не должен останавливать остальные,
+    // а главное — не должен оставить прелоадер на экране и скрытые блоки
+    function safe(fn, name) { try { fn(); } catch (e) { try { console.error('Shape of Sense:', name, e); } catch (_) {} } }
+    // если прелоадер не отработал — показываем страницу как есть
+    function rescue() {
+      var pl = $('#preloader'); if (pl) pl.classList.add('is-gone');
+      html.classList.add('is-docked', 'hero-in', 'is-ready');
+      var q = ready; ready = []; q.forEach(function (f) { safe(f, 'ready'); });
+    }
+    // пришли переходом с другой страницы сайта — без прелоадера
+    if (turning) { var pl0 = $('#preloader'); if (pl0) pl0.parentNode.removeChild(pl0); }
+    safe(pageTurn, 'pageTurn');
+    safe(caseSheet, 'caseSheet');
+    safe(function () {
+      // пришли по ссылке с якорем (/#projects) переходом — сразу к разделу, под листом
+      // (и ещё раз после загрузки: браузер сам прыгает к якорю и не учитывает шапку и сдвиг листа)
+      if (turning && location.hash) {
+        var t = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        if (t) {
+          var toHash = function () {
+            var hd = $('.hd'), m = $('main'), ty = 0;
+            try { ty = new DOMMatrix(getComputedStyle(m).transform).m42 || 0; } catch (e) {}
+            var y = t.getBoundingClientRect().top + scrollY - ty - (hd ? hd.offsetHeight : 0);
+            html.style.scrollBehavior = 'auto'; scrollTo(0, Math.max(0, y)); html.style.scrollBehavior = '';
+          };
+          toHash(); addEventListener('load', function () { requestAnimationFrame(toHash); });
+          return;
+        }
+      }
+      // после любого обновления — с самого верха страницы (браузер не восстанавливает прокрутку)
+      scrollTo(0, 0); addEventListener('load', function () { scrollTo(0, 0); });
+      addEventListener('pageshow', function (e) { if (e.persisted) scrollTo(0, 0); });
+    }, 'scroll');
+    safe(theme, 'theme'); safe(trail, 'trail'); safe(gallery, 'gallery'); safe(aside, 'aside');
+    safe(projects, 'projects'); safe(labZoom, 'labZoom'); safe(reveal, 'reveal');
+    var go = function () {
+      safe(fillInit, 'fillInit');
+      try { preloader(); } catch (e) { try { console.error('Shape of Sense: preloader', e); } catch (_) {} rescue(); }
+    };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(go, go); else go();
+    // совсем без шрифтов и без ответа — не держим экран дольше 10 секунд
+    setTimeout(function () { if (!html.classList.contains('is-ready')) rescue(); }, 10000);
+    // пересборка строк заголовков при смене ширины
+    var lw = innerWidth, rt = 0;
+    addEventListener('resize', function () {
+      if (innerWidth === lw) return; lw = innerWidth;
+      clearTimeout(rt); rt = setTimeout(function () { fills.forEach(build); }, 200);
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script>
