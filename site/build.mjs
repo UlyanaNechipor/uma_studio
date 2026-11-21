@@ -221,7 +221,7 @@ function projectFigure(slug, im, cls = '') {
   }
   const ratio = w && hh ? ` style="aspect-ratio:${w} / ${hh}"` : '';
   if (!src) return `<figure class="${c} is-empty"${ratio} data-label="${esc(im.alt)}"></figure>`;
-  return `<figure class="${c}"${ratio}>${img(src, im.alt, '', false, '(max-width: 1920px) 97vw, 1856px')}</figure>`;
+  return `<figure class="${c}"${ratio}>${img(src, im.alt, '', /uma-project__cover/.test(c), '(max-width: 1920px) 97vw, 1856px')}</figure>`;
 }
 const turnAttr = (x, label) => (x.url && x.url !== '#' ? `data-turn-title="${esc(x.title)}" data-turn-label="${esc(label)}"` : '');
 function projectPage(d) {
