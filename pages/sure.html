@@ -1069,9 +1069,12 @@ html #allrecords .t396 .t-input-error { color: #e5484d !important; }
     var strip = $('.pv__strip', root), slides = $$('.pv__slide', root), loaded = false;
     var x = 0, y = 0, tx = 0, ty = 0, vx = 0, open = false, cur = -1, hideT = 0, raf = 0;
     function setIndex(i) { if (i === cur) return; cur = i; strip.style.transform = 'translate3d(0,' + (-100 * i) + '%,0)'; slides.forEach(function (s, k) { s.classList.toggle('is-active', k === i); }); }
+    function loadAll() { if (loaded) return; loaded = true; $$('img', root).forEach(function (im) { im.src = im.getAttribute('data-src'); }); }
+    // обложки грузим заранее, когда список подходит к экрану, — при наведении окошко сразу с картинкой
+    if ('IntersectionObserver' in window) { var io = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); loadAll(); } }, { rootMargin: '600px 0px' }); io.observe(rows[0]); }
     function show(i) {
       clearTimeout(hideT); hideT = 0;
-      if (!loaded) { loaded = true; $$('img', root).forEach(function (im) { im.src = im.getAttribute('data-src'); }); }
+      loadAll();
       if (!open) { x = tx; y = ty; strip.style.transition = 'none'; setIndex(i); strip.offsetHeight; strip.style.transition = ''; open = true; root.classList.add('is-open'); loop(); }
       else setIndex(i);
     }

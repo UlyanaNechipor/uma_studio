@@ -426,7 +426,7 @@ html #allrecords .t396 .t-input-error { color: #e5484d !important; }
     </div>
     <div class="lab__col">
       <figure class="lab__it lab__it--b lab__it--m-half" style="--h:850">
-        <div class="lab__ph"><img class="" src="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@5c315048f8aaa57988de3db6a621ca82f7d00b69/img/opt/lab-jam-cover-2026-11-960.webp" srcset="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@5c315048f8aaa57988de3db6a621ca82f7d00b69/img/opt/lab-jam-cover-2026-11-480.webp 480w, https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@5c315048f8aaa57988de3db6a621ca82f7d00b69/img/opt/lab-jam-cover-2026-11-960.webp 960w, https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@5c315048f8aaa57988de3db6a621ca82f7d00b69/img/opt/lab-jam-cover-2026-11-1116.webp 1116w" sizes="(min-width: 768px) 25vw, 50vw" alt="" loading="lazy" decoding="async"></div>
+        <div class="lab__ph"><img class="" src="https://cdn.jsdelivr.net/gh/UlyanaNechipor/uma_studio@6a431428a1d76057c6e434d5494bed63d79243e8/site/assets/tilda/lab-jam-cover-2026-11b.jpg" alt="" loading="lazy" decoding="async"></div>
         <figcaption class="lab__cap ty-small ty-grey">Джем. Веб Дизайн</figcaption>
       </figure>
     </div>
@@ -1053,9 +1053,12 @@ html #allrecords .t396 .t-input-error { color: #e5484d !important; }
     var strip = $('.pv__strip', root), slides = $$('.pv__slide', root), loaded = false;
     var x = 0, y = 0, tx = 0, ty = 0, vx = 0, open = false, cur = -1, hideT = 0, raf = 0;
     function setIndex(i) { if (i === cur) return; cur = i; strip.style.transform = 'translate3d(0,' + (-100 * i) + '%,0)'; slides.forEach(function (s, k) { s.classList.toggle('is-active', k === i); }); }
+    function loadAll() { if (loaded) return; loaded = true; $$('img', root).forEach(function (im) { im.src = im.getAttribute('data-src'); }); }
+    // обложки грузим заранее, когда список подходит к экрану, — при наведении окошко сразу с картинкой
+    if ('IntersectionObserver' in window) { var io = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); loadAll(); } }, { rootMargin: '600px 0px' }); io.observe(rows[0]); }
     function show(i) {
       clearTimeout(hideT); hideT = 0;
-      if (!loaded) { loaded = true; $$('img', root).forEach(function (im) { im.src = im.getAttribute('data-src'); }); }
+      loadAll();
       if (!open) { x = tx; y = ty; strip.style.transition = 'none'; setIndex(i); strip.offsetHeight; strip.style.transition = ''; open = true; root.classList.add('is-open'); loop(); }
       else setIndex(i);
     }
