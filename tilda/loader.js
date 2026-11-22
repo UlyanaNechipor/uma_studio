@@ -47,7 +47,7 @@
 
   // номер свежего коммита ветки static: GitHub API → файл-указатель в main → последний известный → сама ветка
   // номер свежей версии: tilda/static.json в main (без лимитов GitHub API). Если версия уже открывалась раньше,
-  // ждём ответа не дольше 0,6 с, иначе открываем ту, что в браузере, — страница не висит на сети.
+  // ждём ответа до 2 с (обычно приходит за 0,2–0,5 с), иначе открываем ту, что в браузере, — страница не висит на сети.
   function latest() {
     var m = location.search.match(/[?&]sosref=([\w.\-]+)/);
     if (m) return Promise.resolve(m[1]);
@@ -56,7 +56,7 @@
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (j) { try { if (/^[0-9a-f]{40}$/.test(j.sha)) localStorage.setItem(KEY, j.sha); } catch (e) {} return j.sha; });
     if (!cached) return fresh.catch(function () { return BRANCH; });
-    return Promise.race([fresh, new Promise(function (ok) { setTimeout(function () { ok(cached); }, 600); })]).catch(function () { return cached; });
+    return Promise.race([fresh, new Promise(function (ok) { setTimeout(function () { ok(cached); }, 2000); })]).catch(function () { return cached; });
   }
 
   function start() {
