@@ -173,8 +173,14 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
   .uma-project__palette.is-3 li:nth-child(2) { grid-column: 6 / 8; }
   .uma-project__palette.is-3 li:nth-child(3) { grid-column: 10 / 12; }
 }
-/* две картинки рядом — по шесть колонок, между ними промежуток сетки: стык на линиях 6-й и 7-й колонок */
-@media (min-width: 768px) { .uma-project__pair { column-gap: var(--gap-12); } }
+/* две картинки рядом — встык, стык на линии «Проекты» (начало 7-й колонки): левая 585, правая 575 */
+@media (min-width: 768px) { .uma-project__pair { grid-template-columns: 585fr 575fr; column-gap: 0; } }
+/* палитра из любого числа цветов: плашки поровну на всю ширину, между ними — промежуток сетки (gutter) */
+.uma-project__palette li { border-radius: calc(8 * var(--u)); }
+@media (min-width: 768px) {
+  .uma-project__palette:not(.is-3) { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: var(--gap-12); }
+  .uma-project__palette:not(.is-3) li { padding: calc(22 * var(--u)); }
+}
 
 /* ---------- образец шрифта «Aa Bb Cc» во всю ширину ---------- */
 .uma-project__font.is-sample { display: block; padding: calc(16 * var(--u)) 0 calc(24 * var(--u)); }
