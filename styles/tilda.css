@@ -3,20 +3,20 @@
 html #allrecords{font-family:var(--f-sans)}
 html #allrecords *{font-family:inherit}
 /* Зеро-блоки Тильды на страницах статичного сайта (например, форма обратной связи):
-   фон прозрачный — под ним фон сайта, смена темы (расходящийся круг) и свечение за курсором;
    текст, поля и кнопка формы берут цвета текущей темы. Добавляется в styles/tilda.css при сборке. */
+/* Зеро-блоки (договорённость):
+   • всегда видны, даже пустые;
+   • фон — фон текущей темы сайта (меняется вместе с темой);
+   • всегда накладываются на то, что стоит под ними («поверх следующих блоков»), содержимое не обрезается;
+   • слои на всех страницах: Зеро-блоки 10 → подвал 20 (поверх Зеро-блоков) → листы переходов 25 → шапка 30.
+   Плашка «Made on Tilda» всегда остаётся видимой поверх Зеро-блоков. */
 html #allrecords .t396 .t396__artboard,
 html #allrecords .t396 .t396__carrier,
-html #allrecords .t396 .t396__filter { background-color: transparent !important; background-image: none !important; }
-/* Наложение Зеро-блока на подвал (подвал сайта — слой 10): запись с Зеро-блоком — свой слой 11,
-   поэтому элементы, заходящие вверх на подвал («поверх следующих блоков», отрицательный top), всегда сверху —
-   на всех страницах, во всех темах и на всех ширинах. Шапка (20) и листы переходов (15) остаются выше.
-   z-index самих элементов внутри блока — как задан в Тильде. */
-html #allrecords .t-rec:has(> .t396), html #allrecords .t-rec:has(.t396__artboard) { position: relative; z-index: 11; }
-html #allrecords .t396, html #allrecords .t396__artboard { overflow: visible; }
-html #allrecords .t396 { transition: color .5s var(--m-out); }
-/* пустой Зеро-блок (артборд без элементов) не занимает места — иначе под подвалом остаётся тёмная полоса */
-html #allrecords .t396:not(:has(.tn-elem)) { display: none !important; }
+html #allrecords .t396 .t396__filter { background-color: var(--bg) !important; background-image: none !important; transition: background-color .5s var(--m-out); }
+html #allrecords .t-rec:has(.t396__artboard) { position: relative; z-index: 10 !important; }
+html #allrecords .t396__artboard { z-index: 10 !important; overflow: visible !important; }
+html #allrecords .t396 { display: block !important; overflow: visible; transition: color .5s var(--m-out); }
+html #tildacopy, html .t-tildalabel { position: relative; z-index: 15; }
 
 /* текст */
 html #allrecords .t396 .tn-elem[data-elem-type="text"] .tn-atom,
