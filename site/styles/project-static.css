@@ -192,3 +192,6 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 .uma-project__cols { gap: calc(var(--t-small-lh) * 1em); }
 .uma-project__font-info p.uma-project__sub { margin-bottom: 0; }
 .uma-project__back, .uma-project__meta dt, .uma-project__pager a { font-weight: var(--w-text); }
+/* «Назад к проектам»: подчёркивание — как разделители сайта (1 px, цвет линий), при наведении светлее */
+.uma-project__back { border-bottom: 1px solid var(--line); }
+.uma-project__back:hover, .uma-project__back:focus-visible { border-color: var(--grey); }
