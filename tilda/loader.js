@@ -67,7 +67,7 @@
   }
 
   // относительные адреса фрагмента → адреса на jsDelivr; ссылки от корня сайта (/rosi, /#projects) — как есть
-  function abs(base, u) { return /^(https?:|data:|mailto:|tel:|#|\/)/.test(u) ? u : base + u; }
+  function abs(base, u) { if (u === './' || u === '.' || u === 'index.html') return '/'; return /^(https?:|data:|mailto:|tel:|#|\/)/.test(u) ? u : base + u; }   // ссылка на главную — всегда главная сайта
   // адреса правим только в разметке: стили и скрипт страницы встроены в неё, их текст не трогаем
   function fix(s, base) {
     return s.split(/(<script\b[\s\S]*?<\/script>|<style\b[\s\S]*?<\/style>)/).map(function (part, i) { return i % 2 ? part : fixHtml(part, base); }).join('');
