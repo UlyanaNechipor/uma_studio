@@ -8,8 +8,12 @@ html #allrecords *{font-family:inherit}
 html #allrecords .t396 .t396__artboard,
 html #allrecords .t396 .t396__carrier,
 html #allrecords .t396 .t396__filter { background-color: transparent !important; background-image: none !important; }
-/* z-index Зеро-блоков не трогаем: и у артборда (в т.ч. «поверх следующих блоков»), и у элементов
-   остаётся тот, что задан в настройках Тильды. Свечение за курсором видно сквозь прозрачный фон блока. */
+/* Наложение Зеро-блока на подвал (подвал сайта — слой 10): запись с Зеро-блоком — свой слой 11,
+   поэтому элементы, заходящие вверх на подвал («поверх следующих блоков», отрицательный top), всегда сверху —
+   на всех страницах, во всех темах и на всех ширинах. Шапка (20) и листы переходов (15) остаются выше.
+   z-index самих элементов внутри блока — как задан в Тильде. */
+html #allrecords .t-rec:has(> .t396), html #allrecords .t-rec:has(.t396__artboard) { position: relative; z-index: 11; }
+html #allrecords .t396, html #allrecords .t396__artboard { overflow: visible; }
 html #allrecords .t396 { transition: color .5s var(--m-out); }
 /* пустой Зеро-блок (артборд без элементов) не занимает места — иначе под подвалом остаётся тёмная полоса */
 html #allrecords .t396:not(:has(.tn-elem)) { display: none !important; }
