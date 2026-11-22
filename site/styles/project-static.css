@@ -381,3 +381,6 @@ html.light-theme :is(.uma-project__col p, .uma-project__aside p, .uma-project__m
   .uma-project__head:not(.is-open) > .uma-project__aside { max-height: calc(1.45 * 10em); }
 }
 .uma-project__h2 { letter-spacing: 0; }
+/* палитра в рамках: поле внутри рамки — серое (цвет плашек под картинками), светлые квадраты на нём читаются */
+.uma-project__palette.is-framed li { background: var(--up-panel); }
+html.light-theme .uma-project__sw { box-shadow: none; }
