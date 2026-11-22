@@ -224,7 +224,7 @@ function projectFigure(slug, im, cls = '') {
   if (!src) return `<figure class="${c} is-empty"${ratio} data-label="${esc(im.alt)}"></figure>`;
   return `<figure class="${c}"${ratio}>${img(src, im.alt, '', /uma-project__cover/.test(c), '(max-width: 1920px) 97vw, 1856px')}</figure>`;
 }
-const turnAttr = (x, label) => (x.url && x.url !== '#' && x.url !== soon.url ? `data-turn-title="${esc(x.title)}" data-turn-label="${esc(label)}"` : '');
+const turnAttr = (x, label) => (x.url && x.url !== '#' && x.url !== soon.url ? `data-turn-title="${esc(x.title)}" data-turn-label="${esc(label)}" data-turn-page="${esc(x.title.toLowerCase().replace(/\s+/g, '-'))}"` : '');
 function projectPage(d) {
   const s = d.slug;
   let m = '<article class="uma-project" aria-labelledby="uma-project-title">';

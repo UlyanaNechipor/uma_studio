@@ -14,7 +14,30 @@
   try { if (localStorage.getItem('uma-theme') === 'light') html.classList.add('light-theme'); } catch (e) {}
   html.classList.add('js', 'sos-wait');
   // переход с другой страницы сайта: лист уже закрывает экран, прелоадера не будет
-  try { var pt = sessionStorage.getItem('sos-pt'); if (pt) html.classList.add(pt === 'case' ? 'pt-case' : 'pt-in'); } catch (e) {}
+  try { var pt = sessionStorage.getItem('sos-pt'); if (pt) html.classList.add(pt === 'case' ? 'pt-case' : 'pt-in');
+    // переход между кейсами: лист с названием следующего проекта стоит на экране с первой отрисовки (body::after в motion.css)
+    if (pt === 'case') {
+      var tt = sessionStorage.getItem('sos-pt-title'), tk = sessionStorage.getItem('sos-pt-label');
+      if (tt) html.style.setProperty('--turn-title', JSON.stringify(tt));
+      if (tk) html.style.setProperty('--turn-k', JSON.stringify(tk));
+    }
+    if (pt === 'case') {
+      // стили листа — здесь, а не в стилях сайта: они должны действовать до того, как страница скачана
+      var st = d.createElement('style'); st.id = 'sos-turn';
+      st.textContent =
+        'html.pt-case{--tu:1px;--tp:16px;--tb:#111211;--tc:#fff;--tg:#767575}' +
+        'html.pt-case.light-theme{--tb:#f2f1ed;--tc:#1a1a1a;--tg:#686764}' +
+        'html.pt-case body::after,html.pt-case body::before{position:fixed;left:0;right:0;pointer-events:none;box-sizing:border-box;transition:transform .9s cubic-bezier(.76,0,.24,1);font-family:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif}' +
+        'html.pt-case body::after{content:var(--turn-title,"");top:0;bottom:0;z-index:25;background:var(--tb);color:var(--tc);display:flex;align-items:flex-end;padding:0 var(--tp) 24px;white-space:nowrap;overflow:hidden;font-size:clamp(56px,19vw,120px);line-height:.9;letter-spacing:-.045em;font-weight:400}' +
+        'html.pt-case body::before{content:var(--turn-k,"");top:0;z-index:26;color:var(--tg);padding:calc(max(44px,48px) + 32px) var(--tp) 0;font-size:12px;line-height:1.55;letter-spacing:.45px}' +
+        '@media (min-width:768px){html.pt-case{--tu:clamp(.64px,calc(100vw / 1200),1.6px);--tp:max(calc(20 * var(--tu)),calc((100% - 1160 * var(--tu)) / 2))}' +
+        'html.pt-case body::after{padding:0 var(--tp) calc(160 * var(--tu));font-size:min(calc(220 * var(--tu)),15vw);line-height:.86;text-indent:-.04em}' +
+        'html.pt-case body::before{padding:calc(108 * var(--tu)) var(--tp) 0;font-size:max(12px,calc(12 * var(--tu)))}}' +
+        'html.light-theme.pt-case body::after{font-weight:470}' +
+        'html.pt-case.pt-go body::after{transform:translate3d(0,-100%,0)}html.pt-case.pt-go body::before{transform:translate3d(0,-100vh,0)}';
+      d.head.appendChild(st);
+    }
+  } catch (e) {}
   try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
   // страховка: если за 12 с сайт не поднялся — показываем как есть
   setTimeout(function () { if (!window.__umaBoot || !html.classList.contains('is-ready')) html.classList.remove('js', 'sos-wait'); }, 12000);
@@ -52,12 +75,15 @@
     }
     function wait(ms) { return new Promise(function (ok) { setTimeout(ok, ms); }); }
     var good = null; try { good = localStorage.getItem(KEY + '_ok'); } catch (e) {}
-    latest().then(function (sha) {
+    // страница, заранее скачанная предыдущей (переход между кейсами), — сразу, без сети
+    var pre = null; try { pre = JSON.parse(sessionStorage.getItem('sos-pre:' + page) || 'null'); sessionStorage.removeItem('sos-pre:' + page); } catch (e) {}
+    (pre && pre.t && pre.sha ? Promise.resolve({ t: pre.t, sha: pre.sha, base: 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + pre.sha + '/' }) : latest().then(function (sha) {
       return load(sha)
         .catch(function () { return wait(1500).then(function () { return load(sha); }); })
         .catch(function (e) { if (good && good !== sha) return load(good); throw e; })
         .catch(function (e) { if (sha !== BRANCH) return load(BRANCH); throw e; });
-    }).then(function (res) {
+    })).then(function (res) {
+      window.__sosSha = res.sha; window.__sosRepo = REPO;
       mountPage(mount, res.t, res.base);
       try { if (/^[0-9a-f]{40}$/.test(res.sha)) localStorage.setItem(KEY + '_ok', res.sha); } catch (e) {}
     }).catch(function (e) {

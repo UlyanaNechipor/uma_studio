@@ -609,8 +609,31 @@
      не показывается — он только при первом открытии сайта. Признак перехода — sessionStorage 'sos-pt',
      класс html.pt-in ставят заранее <head> страницы или загрузчик в Тильде. */
   var PT_KEY = 'sos-pt', PT_OUT = 520, CASE_OUT = 950, turning = html.classList.contains('pt-in'), caseIn = html.classList.contains('pt-case');
-  try { sessionStorage.removeItem(PT_KEY); } catch (e) {}
+  try { sessionStorage.removeItem(PT_KEY); sessionStorage.removeItem('sos-pt-title'); sessionStorage.removeItem('sos-pt-label'); } catch (e) {}
   if (caseIn) turning = true;
+  /* следующий кейс скачиваем заранее — когда кнопка внизу показалась на экране или на неё навели:
+     к концу движения листа страница уже на месте, и переход идёт одним движением */
+  var pre = {};
+  function prefetchCase(a) {
+    var page = a.getAttribute('data-turn-page'), sha = window.__sosSha, repo = window.__sosRepo;
+    if (!page || pre[page]) return pre[page];
+    try { var l = document.createElement('link'); l.rel = 'prefetch'; l.href = a.href; document.head.appendChild(l); } catch (e) {}
+    if (!sha || !repo || !window.fetch) return (pre[page] = Promise.resolve());
+    return (pre[page] = fetch('https://raw.githubusercontent.com/' + repo + '/' + sha + '/pages/' + page + '.html')
+      .then(function (r) { if (!r.ok) throw r.status; return r.text(); })
+      .then(function (t) { try { sessionStorage.setItem('sos-pre:' + page, JSON.stringify({ sha: sha, t: t })); } catch (e) {} })
+      .catch(function () { pre[page] = null; }));
+  }
+  function watchCaseLinks() {
+    var links = $$('a[data-turn-page]');
+    links.forEach(function (a) {
+      ['pointerenter', 'focus', 'touchstart'].forEach(function (ev) { a.addEventListener(ev, function () { prefetchCase(a); }, { passive: true }); });
+    });
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); prefetchCase(e.target); } }); }, { rootMargin: '0px 0px 800px 0px' });
+      links.forEach(function (a) { io.observe(a); });
+    }
+  }
   /* Переход между кейсами («следующий / предыдущий проект»): снизу подкладывается лист с названием
      следующего кейса и протягивается вверх, к его началу. Название на листе стоит там же, где на первом экране
      следующего кейса, — после перехода страница продолжает картинку, лист просто растворяется. */
@@ -623,19 +646,23 @@
     (document.getElementById('sos-page') || document.body).appendChild(t);
     html.classList.add('pt-case-out');
     requestAnimationFrame(function () { requestAnimationFrame(function () { t.classList.add('is-on'); }); });
-    try { sessionStorage.setItem(PT_KEY, 'case'); } catch (_) {}
-    setTimeout(function () { location.href = href; }, CASE_OUT);
+    try { sessionStorage.setItem(PT_KEY, 'case'); sessionStorage.setItem('sos-pt-title', a.getAttribute('data-turn-title') || ''); sessionStorage.setItem('sos-pt-label', a.getAttribute('data-turn-label') || ''); } catch (_) {}
+    // уходим, когда лист закрыл экран и следующая страница скачана (ждём её не дольше 1,5 с сверх движения)
+    var p = prefetchCase(a) || Promise.resolve(), t0 = Date.now(), gone = false;
+    function go() { if (!gone) { gone = true; location.href = href; } }
+    setTimeout(function () { p.then(go, go); setTimeout(go, 1500); }, CASE_OUT);
   }
   function pageTurn() {
     if (caseIn) {
-      // пришли с листом: он уже закрывает экран; убираем его плавно
+      // пришли с листом: он уже закрывает экран с названием проекта и продолжает движение вверх — одним жестом
       scrollTo(0, 0);
       requestAnimationFrame(function () { requestAnimationFrame(function () { html.classList.add('pt-go'); }); });
-      setTimeout(function () { html.classList.remove('pt-case', 'pt-go'); }, 700);
+      setTimeout(function () { html.classList.remove('pt-case', 'pt-go'); html.style.removeProperty('--turn-title'); html.style.removeProperty('--turn-k'); }, 1200);
     } else if (turning) {
       requestAnimationFrame(function () { requestAnimationFrame(function () { html.classList.add('pt-go'); }); });
       setTimeout(function () { html.classList.remove('pt-in', 'pt-go'); }, 1300);
     }
+    watchCaseLinks();
     // «Назад» на странице «Скоро здесь»: пришли с сайта — возвращаемся туда же (и на то же место), иначе — к проектам
     document.addEventListener('click', function (e) {
       var a = e.target.closest && e.target.closest('a[data-back]');
