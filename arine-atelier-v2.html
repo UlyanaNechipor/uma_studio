@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARINE ATELIER — Shape of Sense</title>
+<meta name="theme-color" content="#111211">
+<link rel="preload" href="site/assets/fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="styles/tokens.css?v=cc3561ef">
+<link rel="stylesheet" href="styles/base.css?v=4c014474">
+<link rel="stylesheet" href="styles/case.css?v=d8117d48">
+<link rel="stylesheet" href="styles/motion.css?v=abf7970b">
+<script>/* Диагностика на странице (вставляется в <head> встроенным скриптом — работает, даже если site.js не загрузился).
+   Показать: пять быстрых нажатий на строку «Made by …» в подвале, либо ?debug / #debug в адресе.
+   Выводит то, что нужно, чтобы понять, почему на устройстве нет анимаций: настройки, возможности браузера, ошибки. */
+(function () {
+  var errs = window.__umaErr = [];
+  function add(m) { if (errs.length < 8) errs.push(String(m).slice(0, 160)); }
+  addEventListener('error', function (e) { add((e.message || 'error') + (e.filename ? ' @' + String(e.filename).split('/').pop().split('?')[0] + ':' + e.lineno : '')); }, true);
+  addEventListener('unhandledrejection', function (e) { add('promise: ' + (e.reason && e.reason.message || e.reason)); });
+  var warn = console.error; console.error = function () { add([].slice.call(arguments).join(' ')); try { warn.apply(console, arguments); } catch (_) {} };
+  function mm(q) { try { return matchMedia(q).matches ? 'ДА' : 'нет'; } catch (e) { return 'ошибка'; } }
+  function sup(a, b) { try { return CSS.supports(a, b) ? 'да' : 'НЕТ'; } catch (e) { return '?'; } }
+  function ls() { try { localStorage.setItem('_t', 1); localStorage.removeItem('_t'); return 'да'; } catch (e) { return 'НЕТ (' + e.name + ')'; } }
+  function gl() { try { var c = document.createElement('canvas'); return c.getContext('webgl2') ? 'WebGL2' : c.getContext('webgl') ? 'только WebGL1' : 'НЕТ'; } catch (e) { return 'ошибка'; } }
+  function show() {
+    var h = document.documentElement, d = document.getElementById('uma-diag') || document.createElement('pre');
+    d.id = 'uma-diag';
+    d.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:2147483647;margin:0;background:rgba(0,0,0,.92);color:#fff;font:12px/1.5 ui-monospace,Menlo,monospace;padding:12px 14px;border-radius:10px;white-space:pre-wrap;max-height:70vh;overflow:auto;-webkit-user-select:text;user-select:text';
+    var L = [
+      'УМЕНЬШЕНИЕ ДВИЖЕНИЯ: ' + mm('(prefers-reduced-motion: reduce)') + '   ← «ДА»: анимации в спокойном режиме (без смещений), см. MOTION_REDUCED в build.mjs',
+      'скрипт сайта запустился: ' + (window.__umaBoot ? 'да' : 'НЕТ'),
+      'классы html: ' + h.className,
+      'экран: ' + innerWidth + '×' + innerHeight + ', DPR ' + devicePixelRatio + ', hover ' + mm('(hover: hover)') + ', pointer fine ' + mm('(pointer: fine)'),
+      'WebGL: ' + gl() + ' · IntersectionObserver: ' + ('IntersectionObserver' in window ? 'да' : 'НЕТ') + ' · localStorage: ' + ls(),
+      'CSS: subgrid ' + sup('grid-template-columns', 'subgrid') + ', inset ' + sup('inset', '0') + ', lh ' + sup('height', '1lh') + ', clip-path ' + sup('clip-path', 'inset(0)') + ', translate ' + sup('translate', '0 1px'),
+      'в iframe: ' + (top !== window ? 'да' : 'нет') + ' · картинок загружено: ' + [].filter.call(document.images, function (i) { return i.complete && i.naturalWidth; }).length + ' из ' + document.images.length,
+      'ошибки: ' + (errs.length ? '\n  ' + errs.join('\n  ') : 'нет'),
+      navigator.userAgent, '', '(нажмите на это окно, чтобы закрыть)'
+    ];
+    d.textContent = L.join('\n');
+    d.onclick = function () { d.remove(); };
+    (document.body || h).appendChild(d);
+  }
+  var n = 0, t = 0;
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest || !e.target.closest('.ft__made')) return;
+    n = (Date.now() - t < 700) ? n + 1 : 1; t = Date.now();
+    if (n >= 5) { n = 0; show(); }
+  });
+  if (/[?&#]debug/.test(location.search + location.hash)) addEventListener('load', function () { setTimeout(show, 500); });
+})();
+</script>
+<script>if('scrollRestoration' in history)history.scrollRestoration='manual';try{if(localStorage.getItem('uma-theme')==='light')document.documentElement.classList.add('light-theme')}catch(e){}document.documentElement.classList.add('js');try{var pt=sessionStorage.getItem('sos-pt');if(pt)document.documentElement.classList.add(pt==='case'?'pt-case':'pt-in')}catch(e){}try{if(matchMedia('(prefers-reduced-motion: reduce)').matches&&'full'!=='full')document.documentElement.classList.add('full'==='off'?'rm-off':'rm')}catch(e){}setTimeout(function(){var h=document.documentElement;if(!window.__umaBoot||!h.classList.contains('is-ready'))h.classList.remove('js')},12000)</script>
+<noscript><style>.pl{display:none!important}</style></noscript>
+</head>
+<body>
+
+<canvas id="trail" aria-hidden="true"></canvas>
+<canvas id="wipe" aria-hidden="true"></canvas>
+
+<header class="hd">
+  <canvas class="hd__trail" aria-hidden="true"></canvas>
+  <a class="hd__logo" href="/" aria-label="Shape of Sense — на главную"><b>SHAPE OF SENSE</b></a>
+  <nav class="hd__nav" aria-label="Разделы">
+    <a class="hd__link" href="/#projects">Проекты</a>
+    <a class="hd__link" href="/#about">О нас</a>
+    <a class="hd__link" href="/#contacts">Контакты</a>
+  </nav>
+  <button class="hd__theme" type="button" aria-label="Светлая тема" data-theme-toggle>
+    <span class="hd__ic" aria-hidden="true">
+      <svg class="hd__moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="hd__sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </span>
+  </button>
+</header>
+<main>
+<article class="cs" aria-labelledby="cs-title"><header class="cs-intro"><div class="cs-intro__in"><div class="cs-intro__meta"><div class="cs-cell cs-cell--back"><a class="cs-back" href="/#projects">Все проекты</a><p class="cs-k cs-count">05 / 05</p></div><div class="cs-cell"><p class="cs-k">Клиент</p><p class="cs-v">Arine Atelier</p></div><div class="cs-cell"><p class="cs-k">Год</p><p class="cs-v">2024</p></div><div class="cs-cell"><p class="cs-k">Сфера</p><p class="cs-v">Бизнес-сайт</p></div><div class="cs-cell cs-cell--tasks"><p class="cs-k">Задачи</p><ul class="cs-tasks"><li><span class="nw">Дизайн-проект</span></li><li>Разработка на&nbsp;Webflow</li><li>Интеграции способов доставки</li><li>Подключение <span class="nw">СМС-оповещений</span></li><li>Интеграции способов оплаты</li></ul></div></div><h1 class="cs-title" id="cs-title">Arine Atelier</h1></div></header><div class="cs-sheet"><figure class="cs-fig cs-cover" style="aspect-ratio:2382 / 1034"><img class="" src="img/projects/arine-atelier/cover-1200.webp?v=44b6a55c" srcset="img/projects/arine-atelier/cover-1200.webp?v=44b6a55c 1200w, img/projects/arine-atelier/cover-2382.webp?v=62af8fa1 2382w" sizes="(max-width: 1920px) 97vw, 1856px" alt="Arine Atelier: портрет основателя и первый экран сайта" fetchpriority="high" decoding="async"></figure><section class="cs-about"><p class="cs-statement">Arine Atelier — творческая студия дизайна, основанная промышленным дизайнером Евгением Арининым, выпускником Британской высшей школы дизайна.</p><div class="cs-text cs-text--a"><p>Студия работает во&nbsp;многих направлениях дизайна: от&nbsp;промышленного до&nbsp;графического дизайна и&nbsp;рекламы.</p></div><div class="cs-text cs-text--c"><p>Мы&nbsp;разработали визуальное направление, в&nbsp;котором чистота и&nbsp;минимализм сочетаются с&nbsp;тёплыми образами, деталь — с&nbsp;эмоцией, идеальное — с&nbsp;живым. Мы&nbsp;стремились показать, как&nbsp;качественный выбор и&nbsp;простота оформления влияют на&nbsp;жизнь клиентов.</p><p class="uma-project__spacer" aria-hidden="true"></p><p>Платформа построена на&nbsp;адаптивной сетке: изображения задают настроение, но&nbsp;при&nbsp;этом ведут пользователя к&nbsp;нужному действию. Модули легко настраиваются — можно менять их&nbsp;расположение, содержание и&nbsp;призывы к&nbsp;действию (CTA). Это&nbsp;даёт бренду возможность использовать <span class="nw">data-driven</span> подход и&nbsp;повышать эффективность сайта.</p></div></section><section class="cs-sec"><div class="cs-sec__head"><p class="cs-num">01 / 03</p><h2 class="cs-h2">Страница о&nbsp;компании</h2><div class="cs-text cs-text--b"><p>Страница о&nbsp;студии устроена как&nbsp;манифест: крупные заголовки, портрет основателя, направления, процесс работы, услуги и&nbsp;партнёры, а&nbsp;в&nbsp;конце — форма для&nbsp;связи.</p></div></div><figure class="cs-fig " style="aspect-ratio:2382 / 4858"><img class="" src="img/projects/arine-atelier/about-1200.webp?v=5744da9f" srcset="img/projects/arine-atelier/about-1200.webp?v=5744da9f 1200w, img/projects/arine-atelier/about-2382.webp?v=49d30753 2382w" sizes="(max-width: 1920px) 97vw, 1856px" alt="Страница о компании Arine Atelier на телефоне и на десктопе" loading="lazy" decoding="async"></figure></section><section class="cs-sec"><div class="cs-sec__head"><p class="cs-num">02 / 03</p><h2 class="cs-h2">Страница направлений</h2><div class="cs-text cs-text--b"><p>Направления — интерьер, промышленный дизайн, архитектурная фотография — открываются полноэкранными кадрами. Список проектов набран крупно, и&nbsp;названия сами работают как&nbsp;навигация.</p></div></div><figure class="cs-fig " style="aspect-ratio:2382 / 2682"><img class="" src="img/projects/arine-atelier/directions-1200.webp?v=86f6ddbe" srcset="img/projects/arine-atelier/directions-1200.webp?v=86f6ddbe 1200w, img/projects/arine-atelier/directions-2382.webp?v=42714c67 2382w" sizes="(max-width: 1920px) 97vw, 1856px" alt="Страница направлений Arine Atelier: первый экран, список проектов, архитектурная фотография" loading="lazy" decoding="async"></figure></section><section class="cs-pair"><figure class="cs-fig " style="aspect-ratio:1164 / 922"><img class="" src="img/projects/arine-atelier/tablet-1164.webp?v=90ec0ed4" srcset="img/projects/arine-atelier/tablet-1164.webp?v=90ec0ed4 1164w, img/projects/arine-atelier/tablet-1200.webp?v=3c278a12 1200w" sizes="(max-width: 1920px) 97vw, 1856px" alt="Страница направлений на планшете" loading="lazy" decoding="async"></figure><figure class="cs-fig " style="aspect-ratio:1166 / 922"><img class="" src="img/projects/arine-atelier/phones-1166.webp?v=34e79ae4" srcset="img/projects/arine-atelier/phones-1166.webp?v=34e79ae4 1166w, img/projects/arine-atelier/phones-1200.webp?v=d7bb70f6 1200w" sizes="(max-width: 1920px) 97vw, 1856px" alt="Страница направлений и список проектов на телефоне" loading="lazy" decoding="async"></figure></section><section class="cs-sec"><div class="cs-sec__head"><p class="cs-num">03 / 03</p><h2 class="cs-h2">Страницы проекта и&nbsp;новостей</h2><div class="cs-text cs-text--b"><p>Страница проекта рассказывает историю одной работы: описание, заказчик и&nbsp;крупные изображения объекта. Новости разделены по&nbsp;типам — награды, публикации, интервью, — чтобы нужное находилось сразу.</p></div></div><figure class="cs-fig " style="aspect-ratio:2382 / 2536"><img class="" src="img/projects/arine-atelier/project-1200.webp?v=6d2628d8" srcset="img/projects/arine-atelier/project-1200.webp?v=6d2628d8 1200w, img/projects/arine-atelier/project-2382.webp?v=4c776a08 2382w" sizes="(max-width: 1920px) 97vw, 1856px" alt="Страница проекта «Россети» и страница новостей Arine Atelier" loading="lazy" decoding="async"></figure></section><section class="cs-pair"><figure class="cs-fig " style="aspect-ratio:1164 / 962"><img class="" src="img/projects/arine-atelier/phones-news-1164.webp?v=671bf68a" srcset="img/projects/arine-atelier/phones-news-1164.webp?v=671bf68a 1164w, img/projects/arine-atelier/phones-news-1200.webp?v=ed5fc3a8 1200w" sizes="(max-width: 1920px) 97vw, 1856px" alt="Страница проекта и новости на телефоне" loading="lazy" decoding="async"></figure><figure class="cs-fig " style="aspect-ratio:1166 / 962"><img class="" src="img/projects/arine-atelier/tablet-news-1166.webp?v=54f43c08" srcset="img/projects/arine-atelier/tablet-news-1166.webp?v=54f43c08 1166w, img/projects/arine-atelier/tablet-news-1200.webp?v=0c193299 1200w" sizes="(max-width: 1920px) 97vw, 1856px" alt="Новость о награде на планшете" loading="lazy" decoding="async"></figure></section><a class="cs-next" href="/project_page_rosi" data-turn-title="Rosi" data-turn-label="Следующий проект" data-turn-page="rosi"><p class="cs-k">Следующий проект · 01 / 05</p><p class="cs-next__name">Rosi<span class="cs-next__arr" aria-hidden="true">→</span></p><figure class="cs-fig cs-next__img" style="aspect-ratio:5568 / 3429"><img class="" src="img/projects/rosi/cover-1200.webp?v=7ab65c10" srcset="img/projects/rosi/cover-1200.webp?v=7ab65c10 1200w, img/projects/rosi/cover-2400.webp?v=7a8cca07 2400w, img/projects/rosi/cover-3600.webp?v=1920dd3c 3600w" sizes="(max-width: 1920px) 97vw, 1856px" alt="Главная страница ROSI на мониторе" loading="lazy" decoding="async"></figure></a></div></article>
+</main>
+
+<footer class="ft grid">
+  <p class="ft__logo"><b>SHAPE OF SENSE</b></p>
+  <p class="ft__made ty-small ty-grey">Made by SHAPE OF SENSE ©2026</p>
+  <nav class="ft__col" aria-label="Компания"><h2 class="ft__h">Компания</h2>
+    <a href="/#projects">Проекты</a><a href="/#about">О нас</a><a href="/#contacts">Контакты</a>
+    <span>Политика конфиденциальности</span>
+  </nav>
+  <div class="ft__col"><h2 class="ft__h">Контакты</h2>
+    <span><span class="nw">Санкт-Петербург</span></span>
+    <a href="mailto:workingtitle@gmail.com">Почта</a>
+    <span>Телеграм</span>
+    <a href="tel:+79119736693">+7 (911) 973-66-93</a>
+  </div>
+</footer>
+<script src="scripts/site.js?v=63cfa34a" defer></script>
+</body>
+</html>
