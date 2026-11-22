@@ -528,6 +528,32 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
   }
 
   /* ---------------- появление при прокрутке ---------------- */
+  // кейс на телефоне: длинный текст свёрнут до нескольких строк, «Подробнее» раскрывает его.
+  // Кнопка видна, только если текст правда не помещается (или под ней спрятано «Проект / Задачи»).
+  function caseMore() {
+    var boxes = $$('.uma-project__intro, .uma-project__head');
+    if (!boxes.length) return;
+    var mq = matchMedia('(max-width: 767px)');
+    var check = function () {
+      boxes.forEach(function (b) {
+        if (b.classList.contains('is-open')) return;
+        var t = b.querySelector('.uma-project__cols, .uma-project__aside');
+        var hidden = !!b.querySelector('.uma-project__meta.is-m dl');
+        b.classList.toggle('is-clamped', mq.matches && (hidden || (t && t.scrollHeight > t.clientHeight + 2)));
+      });
+    };
+    boxes.forEach(function (b) {
+      var btn = b.querySelector('.uma-project__more');
+      if (btn) btn.addEventListener('click', function () {
+        var open = !b.classList.contains('is-open');
+        b.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (!open) check();
+      });
+    });
+    check();
+    addEventListener('resize', check);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(check);
+  }
   function reveal() {
     // что появляется: прямые части каждого блока (кроме первого экрана), колонки подвала
     var items = $$('main > section:not(.hero) > *, .cs-sheet > :not(.cs-sec):not(.cs-cover), .cs-sec > *, .uma-project > :not(.uma-project__section), .uma-project__section > *, .about__photos > img, .lab__it, .svc, .cta__act > *, .about__act > *, .ft > *')
@@ -1056,7 +1082,7 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       addEventListener('pageshow', function (e) { if (e.persisted) scrollTo(0, 0); });
     }, 'scroll');
     safe(theme, 'theme'); safe(trail, 'trail'); safe(gallery, 'gallery'); safe(aside, 'aside');
-    safe(projects, 'projects'); safe(labZoom, 'labZoom'); safe(reveal, 'reveal');
+    safe(projects, 'projects'); safe(labZoom, 'labZoom'); safe(caseMore, 'caseMore'); safe(reveal, 'reveal');
     var go = function () {
       safe(fillInit, 'fillInit');
       try { preloader(); } catch (e) { try { console.error('Shape of Sense: preloader', e); } catch (_) {} rescue(); }
