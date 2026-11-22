@@ -352,3 +352,9 @@ html.light-theme .uma-project__sw { box-shadow: inset 0 0 0 1px rgba(26, 26, 26,
 .uma-project__pair.is-gap + .uma-project__pair, .uma-project__section + .uma-project__pair.is-gap { margin-top: var(--up-gap); }
 /* одиночный текст вступления с 9-й колонки («О нас» в шапке) — Kara Fox по макету */
 @media (min-width: 768px) { .uma-project__intro .uma-project__col.is-single.at-9 { grid-column: 9 / 13; } }
+/* две картинки рядом — всегда одной высоты: высоту ряда задаёт первая, вторая тянется по ней и кадрируется */
+@media (min-width: 768px) {
+  .uma-project__pair { align-items: stretch; }
+  .uma-project__pair > .uma-project__figure + .uma-project__figure { aspect-ratio: auto; position: relative; height: auto; }
+  .uma-project__pair > .uma-project__figure + .uma-project__figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+}
