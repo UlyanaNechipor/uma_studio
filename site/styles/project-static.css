@@ -387,3 +387,7 @@ html.light-theme .uma-project__sw { box-shadow: none; }
 /* палитра: поле внутри рамок снова прозрачное; в квадрате номер и HEX — обычным весом, название — жирным */
 .uma-project__palette.is-framed li { background: none; }
 .uma-project__sw > span { font-weight: 400; }
+/* стрелки «назад / вперёд»: маленький ровный треугольник по высоте строчных букв, на одной оси с текстом */
+.uma-project__pager a { gap: .5em; align-items: center; }
+.uma-project__pager svg { width: .62em; height: .5em; flex: none; fill: currentColor; position: relative; top: -.04em; }
+.uma-project__pager .is-next svg { transform: rotate(180deg); }

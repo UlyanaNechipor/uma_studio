@@ -212,7 +212,7 @@ const para = (t) => (t === '' ? '<p class="uma-project__spacer" aria-hidden="tru
 const inkFor = (hex) => { const n = parseInt(hex.replace('#', ''), 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255;
   return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#1a1514' : '#f2efea'; };
 const pad2 = (n) => String(n).padStart(2, '0');
-const arrowSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.73 4a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>';
+const arrowSvg = '<svg viewBox="0 0 10 8" aria-hidden="true"><path d="M5 0 10 8H0Z"/></svg>';   // ровный треугольник с острыми углами
 function projectFigure(slug, im, cls = '') {
   if (!im) return '';
   // clear — картинка с прозрачным фоном: на телефоне лежит на плашке; mscroll — на телефоне картинка шире экрана в N раз и листается вбок
