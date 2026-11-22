@@ -209,58 +209,12 @@
 #allrecords .t123,#allrecords .t-container_100,#allrecords .t-width_100{max-width:none!important;padding:0!important;margin:0!important}
 html #allrecords{font-family:var(--f-sans)}
 html #allrecords *{font-family:inherit}
-/* Зеро-блоки Тильды на страницах статичного сайта (например, форма обратной связи):
-   текст, поля и кнопка формы берут цвета текущей темы. Добавляется в styles/tilda.css при сборке. */
-/* Зеро-блоки: из своих правил оставляем только два — фон и курсор.
-   Фон прозрачный: под блоком виден фон сайта, он меняется вместе с темой, и сквозь блок видно свечение за курсором.
-   Слои (z-index), видимость, обрезка и положение блоков — только из настроек Тильды. */
+/* Зеро-блоки Тильды: единственное наше правило — прозрачный фон (так попросила владелица сайта):
+   под блоком виден фон сайта текущей темы и свечение за курсором.
+   Всё остальное — слои, видимость, обрезка, цвета, форма — только из настроек Тильды. Плашку Тильды не трогаем. */
 html #allrecords .t396 .t396__artboard,
 html #allrecords .t396 .t396__carrier,
 html #allrecords .t396 .t396__filter { background-color: transparent !important; background-image: none !important; }
-
-/* текст */
-html #allrecords .t396 .tn-elem[data-elem-type="text"] .tn-atom,
-html #allrecords .t396 .tn-elem[data-elem-type="text"] .tn-atom * { color: var(--txt) !important; }
-html #allrecords .t396 .tn-elem[data-elem-type="text"] .tn-atom a { color: inherit !important; }
-
-/* форма */
-html #allrecords .t396 .t-form .t-input,
-html #allrecords .t396 .t-form textarea.t-input,
-html #allrecords .t396 .t-form .t-select,
-html #allrecords .t396 .t-form .t-input-phonemask__wrap {
-  background-color: transparent !important;
-  color: var(--txt) !important;
-  border-color: var(--line) !important;
-  font-family: var(--f-sans) !important;
-  transition: border-color var(--m-hover) var(--m-out), color .5s var(--m-out);
-}
-html #allrecords .t396 .t-form .t-input:focus,
-html #allrecords .t396 .t-form .t-select:focus { border-color: var(--txt) !important; outline: none; }
-html #allrecords .t396 .t-form .t-input::placeholder { color: var(--grey) !important; opacity: 1; }
-html #allrecords .t396 .t-form .t-input-title,
-html #allrecords .t396 .t-form .t-checkbox__labeltext,
-html #allrecords .t396 .t-form .t-radio__labeltext,
-html #allrecords .t396 .t-form .t-form__bottom-text,
-html #allrecords .t396 .t-form .t-text { color: var(--txt) !important; }
-html #allrecords .t396 .t-form .t-input-subtitle,
-html #allrecords .t396 .t-form .t-input-phonemask__select-code { color: var(--grey) !important; }
-html #allrecords .t396 .t-form .t-checkbox__indicator,
-html #allrecords .t396 .t-form .t-radio__indicator { border-color: var(--txt) !important; }
-html #allrecords .t396 .t-form .t-checkbox__indicator::after { border-color: var(--bg) !important; }
-html #allrecords .t396 .t-form .t-checkbox:checked ~ .t-checkbox__indicator { background-color: var(--txt) !important; }
-/* кнопка «Отправить» — как кнопки сайта */
-html #allrecords .t396 .t-form .t-submit {
-  background-color: var(--btn-bg) !important;
-  color: var(--btn-fg) !important;
-  border-color: var(--btn-bg) !important;
-  font-family: var(--f-sans) !important;
-  transition: background-color var(--m-hover) var(--m-out), color var(--m-hover) var(--m-out);
-}
-@media (hover: hover) { html #allrecords .t396 .t-form .t-submit:hover { background-color: var(--btn-bg-h) !important; } }
-/* сообщения формы */
-html #allrecords .t396 .t-form__successbox { background-color: var(--btn2-bg) !important; color: var(--txt) !important; }
-html #allrecords .t396 .t-form__errorbox-wrapper { color: var(--txt); }
-html #allrecords .t396 .t-input-error { color: #e5484d !important; }
 </style>
 <script>/* Диагностика на странице (вставляется в <head> встроенным скриптом — работает, даже если site.js не загрузился).
    Показать: пять быстрых нажатий на строку «Made by …» в подвале, либо ?debug / #debug в адресе.
