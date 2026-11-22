@@ -132,6 +132,7 @@ if (mode === 'assets') {
     // стили и скрипт — прямо в странице: вся страница приходит одним файлом с raw.githubusercontent.com
     // (свежая версия там открывается сразу; jsDelivr на только что выложенной версии отвечает по 10–20 с)
     const inline = (h) => h
+      .replace(/href="\.\/"/g, 'href="/"')   // логотип на главной: «./» вёл бы на папку версии на jsDelivr, а не на главную сайта
       .replace(/<link rel="stylesheet" href="(styles\/[^"?]+)[^"]*">/g, (m, f) => `<style>${readFileSync(join(out, f), 'utf8')}</style>`)
       .replace(/<script src="(scripts\/[^"?]+)[^"]*"( defer)?><\/script>/g, (m, f) => `<script>${readFileSync(join(out, f), 'utf8').replace(/<\/script/gi, '<\\/script')}</script>`);
     writeFileSync(join(out, 'pages', f), stableHtml(inline(head.trim() + '\n<!--sos:body-->\n' + body.trim())) + '\n');
