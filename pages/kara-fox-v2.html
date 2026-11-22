@@ -14,12 +14,12 @@
 
   
   --c-ink:        #111211;   
-  --c-ink-2:      #1a1a1a;   
-  --c-paper:      #f2f1ed;   
+  --c-ink-2:      #111111;   
+  --c-paper:      #fbfbfb;   
   --c-white:      #ffffff;
   --c-white-soft: #fbfbfb;   
   --c-grey:       #767575;   
-  --c-grey-light: #686764;   
+  --c-grey-light: #555555;   
   --c-line-dark:  rgba(255,255,255,.25);
   --c-line-light: rgba(26,26,26,.15);
 
@@ -85,7 +85,7 @@
   --w-text: 470; --w-head: 470;   
   --btn-bg: var(--c-ink); --btn-fg: var(--c-white-soft); --btn-bg-h: #000000;
   --btn2-bg: rgba(17,18,17,.08); --btn2-fg: var(--c-ink); --btn2-bg-h: var(--c-ink); --btn2-fg-h: var(--c-white-soft);
-}:root{ --fill-base: #2a2b2a; --fill-ink: #ffffff; --accent: #d94f30; }html.light-theme{ --fill-base: #dcdcd9; --fill-ink: #1a1a1a; }:root{
+}:root{ --fill-base: #2a2b2a; --fill-ink: #ffffff; --accent: #d94f30; }html.light-theme{ --fill-base: #dedede; --fill-ink: #111111; }:root{
   --min-h1: 2.25rem;  --min-h2: 1.5rem;  --min-name: 0.875rem;
   --min-body: 0.875rem; --min-small: 0.75rem; --min-nav: 0.625rem;
 }@media (min-width: 768px){:root{ --min-h1: 3rem; --min-h2: 2rem; --min-name: 1rem; --min-nav: 0.75rem; }
@@ -607,7 +607,7 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       cv.width = innerWidth; cv.height = innerHeight;
       var b = btn.getBoundingClientRect(), x = b.left + b.width / 2, y = b.top + b.height / 2;
       var max = Math.hypot(innerWidth, innerHeight) * 1.1, r = 0, switched = false;
-      var col = light ? '#f2f1ed' : '#111211';   // = --c-paper / --c-ink
+      var col = light ? '#fbfbfb' : '#111211';   // = --c-paper / --c-ink
       (function step() {
         r += (max - r) * 0.12 + 15;
         ctx.clearRect(0, 0, cv.width, cv.height);

@@ -296,7 +296,7 @@
       cv.width = innerWidth; cv.height = innerHeight;
       var b = btn.getBoundingClientRect(), x = b.left + b.width / 2, y = b.top + b.height / 2;
       var max = Math.hypot(innerWidth, innerHeight) * 1.1, r = 0, switched = false;
-      var col = light ? '#f2f1ed' : '#111211';   // = --c-paper / --c-ink
+      var col = light ? '#fbfbfb' : '#111211';   // = --c-paper / --c-ink
       (function step() {
         r += (max - r) * 0.12 + 15;
         ctx.clearRect(0, 0, cv.width, cv.height);

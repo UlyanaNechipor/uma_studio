@@ -24,11 +24,11 @@ html #sos-page .uma-project{
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }html.light-theme #sos-page .uma-project,html body.t-body.light-theme #sos-page .uma-project{
-    --up-text:   #1a1a1a;
-    --up-muted:  #5c5c5c;                   
-    --up-meta:   rgba(26, 26, 26, 0.62);
+    --up-text:   #111111;
+    --up-muted:  #555555;                   
+    --up-meta:   #555555;
     --up-line:   #1a1a1a;
-    --up-ph:     #e4e4e1;
+    --up-ph:     #efefef;
 }html #sos-page .uma-project *,html #sos-page .uma-project *::before,html #sos-page .uma-project *::after{ box-sizing: border-box; }html #sos-page .uma-project p{ margin: 0; }html #sos-page .uma-project a{ color: inherit; text-decoration: none; }html #sos-page .uma-project__top{
     display: grid;
     grid-template-columns: 1fr minmax(240px, 15.9%);  
@@ -166,7 +166,8 @@ html #sos-page .uma-project{
 }html.light-theme #sos-page .uma-project{
   --up-text: var(--txt);
   --up-muted: var(--grey);
-  --up-ph: #e6e4de;          
+  --up-ph: #efefef;          
+  --up-meta: var(--grey);
   --uma-w-ui: 580;
 }html #sos-page .uma-project__title{
   font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u)));
@@ -203,7 +204,7 @@ html #sos-page .uma-project{
     --up-inner: calc(24 * var(--u));
     --up-panel: #1b1c1b;
     --up-body: max(var(--min-body), calc(var(--t-body) * var(--u)));
-  }html.light-theme #sos-page .uma-project{ --up-panel: #e8e7e2; }html #sos-page .uma-project__title{ font-size: max(var(--min-h1), calc(var(--t-h1) * var(--u))); line-height: var(--t-h1-lh); letter-spacing: var(--t-h1-ls); }html #sos-page .uma-project__h2{ font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u))); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); }html #sos-page .uma-project__lead{ font-size: var(--up-body); line-height: var(--t-body-lh); letter-spacing: 0; }html #sos-page .uma-project__cols,html #sos-page .uma-project__aside,html #sos-page .uma-project__col p,html #sos-page .uma-project__aside p,html #sos-page .uma-project__font-info p,html #sos-page .uma-project__back,html #sos-page .uma-project__more,html #sos-page .uma-project__pager,html #sos-page .uma-project__pager *,html #sos-page .uma-project__count{
+  }html.light-theme #sos-page .uma-project{ --up-panel: #f0f0f0; }html #sos-page .uma-project__title{ font-size: max(var(--min-h1), calc(var(--t-h1) * var(--u))); line-height: var(--t-h1-lh); letter-spacing: var(--t-h1-ls); }html #sos-page .uma-project__h2{ font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u))); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); }html #sos-page .uma-project__lead{ font-size: var(--up-body); line-height: var(--t-body-lh); letter-spacing: 0; }html #sos-page .uma-project__cols,html #sos-page .uma-project__aside,html #sos-page .uma-project__col p,html #sos-page .uma-project__aside p,html #sos-page .uma-project__font-info p,html #sos-page .uma-project__back,html #sos-page .uma-project__more,html #sos-page .uma-project__pager,html #sos-page .uma-project__pager *,html #sos-page .uma-project__count{
     font-size: var(--up-body); line-height: var(--t-body-lh); letter-spacing: 0;
   }html #sos-page .uma-project p.uma-project__spacer{ font-size: var(--up-body); height: calc(var(--t-body-lh) * 1em); }html #sos-page .uma-project__left{ gap: calc(32 * var(--u)); }html #sos-page .uma-project__top > .uma-project__meta{ display: none; }html #sos-page .uma-project__cover{ margin-top: calc(32 * var(--u)); }html #sos-page .uma-project__intro{ margin-top: calc(24 * var(--u)); gap: calc(24 * var(--u)); }html #sos-page .uma-project__intro:not(.is-open) .uma-project__cols{ max-height: calc(var(--t-body-lh) * 7em); overflow: hidden; }html #sos-page .uma-project__head:not(.is-open) > .uma-project__cols,html #sos-page .uma-project__head:not(.is-open) > .uma-project__aside{ max-height: calc(var(--t-body-lh) * 10em); overflow: hidden; }html #sos-page .is-clamped:not(.is-open) > .uma-project__cols,html #sos-page .is-clamped:not(.is-open) > .uma-project__aside{
     -webkit-mask-image: linear-gradient(#000 calc(100% - 3em), transparent); mask-image: linear-gradient(#000 calc(100% - 3em), transparent);
@@ -218,9 +219,9 @@ html #sos-page .uma-project{
     display: flex; gap: var(--up-gap); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
     margin-right: calc(-1 * var(--up-pad)); padding-right: var(--up-pad); scroll-padding: 0;
   }html #sos-page .uma-project__palette::-webkit-scrollbar{ display: none; }html #sos-page .uma-project__palette li,html #sos-page .uma-project__palette.is-3 li{ flex: 0 0 80%; aspect-ratio: 1 / 1.05; scroll-snap-align: start; padding: calc(24 * var(--u)); }html #sos-page .uma-project__aa,html #sos-page .uma-project__palette.is-3 .uma-project__aa{ font-size: calc(80 * var(--u)); }html #sos-page .uma-project__specimen{ font-size: 12vw; white-space: nowrap; }html #sos-page .uma-project__pager{ grid-template-columns: 1fr auto 1fr; margin-top: var(--up-sec); }html #sos-page .uma-project__count{ grid-column: auto; grid-row: auto; justify-self: center; height: auto; }
-}html #sos-page .uma-project{ --up-panel: #1b1c1b; }html.light-theme #sos-page .uma-project{ --up-panel: #e8e7e2; }@media (min-width: 768px){html #sos-page .uma-project__figure.is-panel{ aspect-ratio: auto; background: var(--up-panel); padding: calc(100 * var(--u)) 0; }html #sos-page .uma-project__figure.is-panel-top{ padding-bottom: 0; }html #sos-page .uma-project__figure.is-panel img{ aspect-ratio: var(--ar); }
+}html #sos-page .uma-project{ --up-panel: #1b1c1b; }html.light-theme #sos-page .uma-project{ --up-panel: #f0f0f0; }@media (min-width: 768px){html #sos-page .uma-project__figure.is-panel{ aspect-ratio: auto; background: var(--up-panel); padding: calc(100 * var(--u)) 0; }html #sos-page .uma-project__figure.is-panel-top{ padding-bottom: 0; }html #sos-page .uma-project__figure.is-panel img{ aspect-ratio: var(--ar); }
 }html #sos-page .uma-project__palette.is-framed{ display: flex; justify-content: space-between; gap: var(--up-gap); }html #sos-page .uma-project__palette.is-framed li{ flex: 0 0 auto; aspect-ratio: auto; border-radius: 0; background: none;
   border: 1px solid var(--line); padding: calc(10 * var(--u)); }@media (min-width: 768px){html #sos-page .uma-project__palette.is-framed li{ width: calc((100% - 11 * var(--gap-12)) / 6 + var(--gap-12)); padding: calc(10 * var(--u)); }
 }html #sos-page .uma-project__sw{ aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .2em; text-align: center;
   font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); line-height: 1.35; letter-spacing: 0; }html #sos-page .uma-project__sw b{ font-weight: 700; text-transform: uppercase; }html #sos-page .uma-project__specimen[style*="--fs"]{ font-size: calc(var(--fs) * var(--u)); line-height: 1.05; }html #sos-page .uma-project__fonts:has([style*="--fs"]){ border-bottom: 1px solid var(--line); }@media (max-width: 767px){html #sos-page .uma-project__specimen[style*="--fs"]{ font-size: calc(var(--fs) * .12vw); white-space: normal; }html #sos-page .uma-project__palette.is-framed li{ flex: 0 0 72%; aspect-ratio: auto; padding: calc(10 * var(--u)); }html #sos-page .uma-project__palette.is-framed .uma-project__sw{ font-size: var(--up-body); }
-}@media (min-width: 768px){html #sos-page .uma-project__specimen[style*="--fs"]{ white-space: nowrap; } }html.light-theme #sos-page .uma-project__sw{ box-shadow: inset 0 0 0 1px rgba(26, 26, 26, .08); }@media (min-width: 768px){html #sos-page .uma-project__pair.is-gap{ grid-template-columns: 1fr 1fr; column-gap: var(--gap-12); } }html #sos-page .uma-project__pair.is-gap{ gap: var(--up-gap); }html #sos-page .uma-project__pair.is-gap + .uma-project__pair,html #sos-page .uma-project__section + .uma-project__pair.is-gap{ margin-top: var(--up-gap); }
+}@media (min-width: 768px){html #sos-page .uma-project__specimen[style*="--fs"]{ white-space: nowrap; overflow: hidden; } }html.light-theme #sos-page .uma-project__sw{ box-shadow: inset 0 0 0 1px rgba(26, 26, 26, .08); }@media (min-width: 768px){html #sos-page .uma-project__pair.is-gap{ grid-template-columns: 1fr 1fr; column-gap: var(--gap-12); } }html #sos-page .uma-project__pair.is-gap{ gap: var(--up-gap); }html #sos-page .uma-project__pair.is-gap + .uma-project__pair,html #sos-page .uma-project__section + .uma-project__pair.is-gap{ margin-top: var(--up-gap); }
