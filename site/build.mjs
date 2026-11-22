@@ -234,7 +234,10 @@ function projectPage(d) {
     '</div></header>';
   if (d.cover) m += projectFigure(s, { src: d.cover.src, name: d.cover.image, w: d.cover.w, h: d.cover.h, alt: d.cover.alt }, 'uma-project__cover');
   if (d.intro) m += `<section class="uma-project__intro"><div class="uma-project__lead">${d.intro.lead.map(para).join('')}</div><div class="uma-project__cols">` +
-    d.intro.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('') + '</div></section>';
+    // одна колонка текста во вступлении (вторая пустая) — встаёт по правилу одиночного текста: с 10-й или 11-й колонки
+    (d.intro.columns.filter((c) => c.length).length === 1
+      ? d.intro.columns.filter((c) => c.length).map((col) => `<div class="uma-project__col is-single at-${d.intro.at || 10}">${col.map(para).join('')}</div>`).join('')
+      : d.intro.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')) + '</div></section>';
   const total = (d.sections || []).filter((x) => x.title).length; let num = 0;
   for (const sec of d.sections || []) {
     // две картинки рядом, без заголовка и текста
@@ -244,7 +247,7 @@ function projectPage(d) {
     m += `<section class="uma-project__section"><div class="uma-project__head"><h2 class="uma-project__h2">${typo(sec.title)}</h2>` +
       (!sec.columns ? '' : sec.layout === 'split'
         ? `<div class="uma-project__cols"${gap}>${sec.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')}</div>`
-        : `<div class="uma-project__aside${sec.layout === 'wide' ? ' is-wide' : sec.layout === 'side' ? ' is-side' : ''}"${gap}>${sec.columns[0].map(para).join('')}</div>`) +
+        : `<div class="uma-project__aside at-${sec.at || 10}"${gap}>${sec.columns[0].map(para).join('')}</div>`) +   // at: 10 — средний текст, 11 — мало текста
       '</div>';
     // палитра: плашки с HEX и «Aa»
     if (sec.palette) m += `<ul class="uma-project__palette" style="--n:${sec.palette.length}">` + sec.palette.map((c) => { const hex = c.hex || c;

@@ -44,11 +44,12 @@ html.light-theme .ty-grey, html.light-theme .hd__link, html.light-theme .ft__col
 }
 @media (min-width: 768px) {
   .grid {
-    --g-cols: calc(272 * var(--u)) calc(264 * var(--u)) calc(276 * var(--u)) calc(276 * var(--u)); --g-gap: calc(16 * var(--u));
+    /* четыре колонки главной = по три колонки сетки 12 (поля 20, промежуток 10): третья начинается с 605 — линии «Проекты» */
+    --g-cols: repeat(4, minmax(0, 1fr)); --g-gap: calc(10 * var(--u));
     grid-template-columns: var(--g-cols);
     column-gap: var(--g-gap);
-    /* поля 32 макета; шире 1920 px — контент по центру, поля растут */
-    padding-inline: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2));
+    /* поля сетки (32 на 1920); шире 1920 px — контент по центру, поля растут */
+    padding-inline: var(--pad-x);
   }
 }
 
@@ -83,9 +84,15 @@ html.light-theme .ty-grey, html.light-theme .hd__link, html.light-theme .ft__col
   border: 1px solid var(--line); border-radius: calc(4 * var(--u)); color: var(--grey);
 }
 @media (min-width: 768px) {
-  .hd { display: grid; grid-template-columns: calc(568 * var(--u)) calc(190 * var(--u)) calc(186 * var(--u)) 1fr auto;
-        gap: 0; padding-inline: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2)); font-size: max(var(--min-nav), calc(12 * var(--u))); }
+  /* шапка на сетке 12: логотип у поля, «Проекты» — 7-я колонка, «О нас» — 9-я, «Контакты» — 11-я, тема — у правого поля */
+  .hd { display: grid; grid-template-columns: var(--grid-12); column-gap: var(--gap-12);
+        padding-inline: var(--pad-x); font-size: max(var(--min-nav), calc(12 * var(--u))); }
+  .hd__logo { grid-column: 1 / 7; }
   .hd__nav { display: contents; }
+  .hd__link:nth-child(1) { grid-column: 7 / 9; }
+  .hd__link:nth-child(2) { grid-column: 9 / 11; }
+  .hd__link:nth-child(3) { grid-column: 11 / 12; }
+  .hd__theme { grid-column: 12; justify-self: end; }
   .hd__theme { width: max(24px, calc(24 * var(--u))); height: max(24px, calc(24 * var(--u))); }
 }
 
@@ -108,7 +115,7 @@ html.light-theme .ty-grey, html.light-theme .hd__link, html.light-theme .ft__col
   .ft__logo { grid-column: 1 / 3; grid-row: 1; font-size: calc(37.5 * var(--u)); }
   .ft__made { grid-column: 1 / 3; grid-row: 2; align-self: end; }
   .ft__col:nth-of-type(1) { grid-column: 3; grid-row: 1 / 3; }
-  .ft__col:last-child { grid-column: 4; grid-row: 1 / 3; padding-left: calc(84 * var(--u)); }   /* 860 + 84 = 944 — линия «Контакты» в шапке */
+  .ft__col:last-child { grid-column: 4; grid-row: 1 / 3; padding-left: calc(97.5 * var(--u)); }   /* 897,5 + 97,5 = 995 — 11-я колонка, линия «Контакты» в шапке */
 }
 
 /* «уменьшение движения» в системе: режим задаёт MOTION_REDUCED в build.mjs (см. motion.css) */
