@@ -12,8 +12,8 @@
     --border: rgba(255, 255, 255, 0.25); 
 }
 body.light-theme { 
-    --bg: #f2f1ed;   /* тёплая бумага, как в статичной версии (было #f0f0f0 — холодный, белёсый) */
-    --txt: #1a1a1a; 
+    --bg: #fbfbfb;   /* светлая тема: почти белый фон */
+    --txt: #111111; 
     --border: rgba(26, 26, 26, 0.15); 
 }
 body.light-theme #trail-canvas { mix-blend-mode: multiply !important; opacity: 0.85 !important; filter: blur(24px) !important; }

@@ -32,11 +32,11 @@
 }
 html.light-theme .uma-project,
 body.light-theme .uma-project {
-    --up-text:   #1a1a1a;
-    --up-muted:  #5c5c5c;                   /* #a9a9a9 на светлом фоне не читается (2:1), этот ~6:1 */
-    --up-meta:   rgba(26, 26, 26, 0.62);
+    --up-text:   #111111;
+    --up-muted:  #555555;                   /* #a9a9a9 на светлом фоне не читается (2:1), этот ~6:1 */
+    --up-meta:   #555555;
     --up-line:   #1a1a1a;
-    --up-ph:     #e4e4e1;
+    --up-ph:     #efefef;
 }
 .uma-project *, .uma-project *::before, .uma-project *::after { box-sizing: border-box; }
 .uma-project p { margin: 0; }

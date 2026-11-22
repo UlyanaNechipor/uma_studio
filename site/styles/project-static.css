@@ -17,7 +17,8 @@
 html.light-theme .uma-project {
   --up-text: var(--txt);
   --up-muted: var(--grey);
-  --up-ph: #e6e4de;          /* подложка под картинку на тёплом светлом фоне */
+  --up-ph: #efefef;          /* подложка под картинку на светлом фоне */
+  --up-meta: var(--grey);
   --uma-w-ui: 580;
 }
 
@@ -227,7 +228,7 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
     --up-panel: #1b1c1b;
     --up-body: max(var(--min-body), calc(var(--t-body) * var(--u)));
   }
-  html.light-theme .uma-project { --up-panel: #e8e7e2; }
+  html.light-theme .uma-project { --up-panel: #f0f0f0; }
 
   /* кегли */
   .uma-project__title { font-size: max(var(--min-h1), calc(var(--t-h1) * var(--u))); line-height: var(--t-h1-lh); letter-spacing: var(--t-h1-ls); }
@@ -314,7 +315,7 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 
 /* ---------- плашка под картинкой на десктопе (Kara Fox): во всю ширину сетки, поля 100 сверху и снизу ---------- */
 .uma-project { --up-panel: #1b1c1b; }
-html.light-theme .uma-project { --up-panel: #e8e7e2; }
+html.light-theme .uma-project { --up-panel: #f0f0f0; }
 @media (min-width: 768px) {
   .uma-project__figure.is-panel { aspect-ratio: auto; background: var(--up-panel); padding: calc(100 * var(--u)) 0; }
   .uma-project__figure.is-panel-top { padding-bottom: 0; }
@@ -341,7 +342,7 @@ html.light-theme .uma-project { --up-panel: #e8e7e2; }
   .uma-project__palette.is-framed li { flex: 0 0 72%; aspect-ratio: auto; padding: calc(10 * var(--u)); }
   .uma-project__palette.is-framed .uma-project__sw { font-size: var(--up-body); }
 }
-@media (min-width: 768px) { .uma-project__specimen[style*="--fs"] { white-space: nowrap; } }
+@media (min-width: 768px) { .uma-project__specimen[style*="--fs"] { white-space: nowrap; overflow: hidden; } }
 /* светлая тема: у светлых квадратов — едва заметный край, чтобы цвет не сливался с бумагой фона */
 html.light-theme .uma-project__sw { box-shadow: inset 0 0 0 1px rgba(26, 26, 26, .08); }
 

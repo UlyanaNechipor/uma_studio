@@ -26,7 +26,7 @@
       var st = d.createElement('style'); st.id = 'sos-turn';
       st.textContent =
         'html.pt-case{--tu:1px;--tp:16px;--tb:#111211;--tc:#fff;--tg:#767575}' +
-        'html.pt-case.light-theme{--tb:#f2f1ed;--tc:#1a1a1a;--tg:#686764}' +
+        'html.pt-case.light-theme{--tb:#fbfbfb;--tc:#111111;--tg:#555555}' +
         'html.pt-case body::after,html.pt-case body::before{position:fixed;left:0;right:0;pointer-events:none;box-sizing:border-box;transition:transform .9s cubic-bezier(.76,0,.24,1);font-family:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif}' +
         'html.pt-case body::after{content:var(--turn-title,"");top:0;bottom:0;z-index:25;background:var(--tb);color:var(--tc);display:flex;align-items:flex-end;padding:0 var(--tp) 24px;white-space:nowrap;overflow:hidden;font-size:clamp(56px,19vw,120px);line-height:.9;letter-spacing:-.045em;font-weight:400}' +
         'html.pt-case body::before{content:var(--turn-k,"");top:0;z-index:26;color:var(--tg);padding:calc(max(44px,48px) + 32px) var(--tp) 0;font-size:12px;line-height:1.55;letter-spacing:.45px}' +

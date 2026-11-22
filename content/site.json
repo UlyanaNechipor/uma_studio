@@ -41,8 +41,8 @@
       "text": "#ffffff"
     },
     "light": {
-      "bg": "#f0f0f0",
-      "text": "#1a1a1a"
+      "bg": "#fbfbfb",
+      "text": "#111111"
     },
     "default": "dark"
   }
