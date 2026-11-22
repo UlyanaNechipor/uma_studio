@@ -15,7 +15,7 @@ html.light-theme #trail, html.light-theme .hd__trail { mix-blend-mode: multiply;
 .hd { isolation: isolate; overflow: hidden; }
 #wipe { z-index: -1; }
 main { position: relative; z-index: 1; }
-/* у подвала своего слоя нет — наложение с Зеро-блоками задаётся только в Тильде */
+.ft { z-index: 10; }   /* подвал — z-index 10 (по просьбе владелицы сайта) */
 body { background: transparent; }
 html { background: var(--bg); transition: background-color .5s var(--m-out); }
 html.is-wiping { transition: none; }
