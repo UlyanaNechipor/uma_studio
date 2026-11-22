@@ -13,7 +13,7 @@ section[id] { scroll-margin-top: calc(max(44px, calc(48 * var(--u))) + 40 * var(
 @media (min-width: 768px) { section[id] { scroll-margin-top: calc(max(44px, calc(48 * var(--u))) + 90 * var(--u)); } }
 body {
   margin: 0; background: var(--bg); color: var(--txt);
-  font-family: var(--f-sans); font-weight: var(--w-text);
+  font-family: var(--f-sans); font-weight: var(--w-ink);
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   transition: background-color .5s var(--m-out), color .5s var(--m-out);
 }
@@ -110,7 +110,7 @@ html.light-theme .ty-grey, html.light-theme .hd__link, html.light-theme .ft__col
 .ft__logo { grid-column: 1 / -1; font-size: calc(32 * var(--u)); line-height: 1; letter-spacing: -.04em; font-weight: 300; }
 .ft__logo b { font-weight: 700; }
 .ft__col { display: flex; flex-direction: column; color: var(--grey); font-weight: 400; }
-.ft__h { font-weight: var(--w-text); }
+.ft__h { font-weight: var(--w-ink); }
 .ft__col a:hover { color: var(--txt); }
 .ft__h { font: inherit; color: var(--txt); }
 .ft__made { grid-column: 1 / -1; grid-row: 3; }
@@ -127,3 +127,6 @@ html.rm-off * { transition: none !important; animation: none !important; scroll-
 html.rm, html.rm * { scroll-behavior: auto !important; }
 
 html.light-theme .btn { font-weight: 520; }
+
+/* светлая тема: серые подписи остаются лёгкими (w-text), чёрный текст — плотнее (w-ink) */
+html.light-theme :is(.case-turn__k, .cs-k, .cs-num, .cs-text p) { font-weight: var(--w-text); }

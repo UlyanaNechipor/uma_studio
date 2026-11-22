@@ -208,7 +208,7 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 .uma-project p.uma-project__spacer { height: calc(var(--t-small-lh) * 1em); font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); }
 .uma-project__cols { gap: calc(var(--t-small-lh) * 1em); }
 .uma-project__font-info p.uma-project__sub { margin-bottom: 0; }
-.uma-project__back, .uma-project__meta dt, .uma-project__pager a { font-weight: var(--w-text); }
+.uma-project__back, .uma-project__meta dt, .uma-project__pager a { font-weight: var(--w-ink); }
 /* «Назад к проектам»: подчёркивание — как разделители сайта (1 px, цвет линий), при наведении светлее */
 .uma-project__back { border-bottom: 1px solid var(--line); }
 .uma-project__back:hover, .uma-project__back:focus-visible { border-color: var(--grey); }
@@ -358,3 +358,8 @@ html.light-theme .uma-project__sw { box-shadow: inset 0 0 0 1px rgba(26, 26, 26,
   .uma-project__pair > .uma-project__figure + .uma-project__figure { aspect-ratio: auto; position: relative; height: auto; }
   .uma-project__pair > .uma-project__figure + .uma-project__figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 }
+
+/* светлая тема: чёрный текст плотнее (w-ink 560), серый — легче (w-text 470), чтобы они явно различались */
+.uma-project__sub, .uma-project__more { font-weight: var(--w-ink); }
+html.light-theme :is(.uma-project__col p, .uma-project__aside p, .uma-project__meta dd, .uma-project__font-info p:not(.uma-project__sub),
+  .uma-project__font-name, .uma-project__num, .uma-project__count span) { font-weight: var(--w-text); }

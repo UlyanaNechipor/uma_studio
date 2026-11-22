@@ -143,7 +143,7 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 /* ===== 5. Услуги: 568 / 300 ===== */
 .services { row-gap: calc(36 * var(--u)); }
 .svc { grid-column: 1 / -1; }
-.svc__title { font-weight: var(--w-text); color: var(--txt-soft); }
+.svc__title { font-weight: var(--w-ink); color: var(--txt-soft); }
 .svc__text { margin-top: calc(4 * var(--u)); }
 @media (min-width: 768px) {
   .services {
