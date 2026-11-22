@@ -33,6 +33,7 @@ const typo = (s) => {
   let t = esc(s), prev;
   do { prev = t; t = t.replace(GLUE_RE, '$1$2&nbsp;'); } while (t !== prev);       // цепочки вроде «и в»
   t = t.replace(/([\p{L}\d]+(?:-[\p{L}\d]+)+)/gu, '<span class="nw">$1</span>');   // интернет-магазин, Санкт-Петербург
+  t = t.replace(/ (—|–)/g, '&nbsp;$1');   // тире не начинает строку — остаётся в конце предыдущей
   return t;
 };
 const lines = (a) => (Array.isArray(a) ? a : [a]).map(typo).join('<br>');

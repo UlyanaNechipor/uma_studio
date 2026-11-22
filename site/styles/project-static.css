@@ -363,3 +363,21 @@ html.light-theme .uma-project__sw { box-shadow: inset 0 0 0 1px rgba(26, 26, 26,
 .uma-project__sub, .uma-project__more { font-weight: var(--w-ink); }
 html.light-theme :is(.uma-project__col p, .uma-project__aside p, .uma-project__meta dd, .uma-project__font-info p:not(.uma-project__sub),
   .uma-project__font-name, .uma-project__num, .uma-project__count span) { font-weight: var(--w-text); }
+
+/* ---------- межстрочный и разрядка в кейсах ----------
+   Многострочные тексты кейса плотнее, чем подписи главной: межстрочный 1,45 вместо 1,55, без разрядки
+   (разрядка 0,45 px нужна одиночным подписям, в абзацах она распускает текст). Вступление — 1,3 и без разрядки. */
+.uma-project__lead { line-height: 1.3; letter-spacing: 0; }
+.uma-project__col p, .uma-project__aside p, .uma-project__font-info p, .uma-project__meta dt, .uma-project__meta dd {
+  line-height: 1.45; letter-spacing: 0;
+}
+.uma-project p.uma-project__spacer { height: 1.45em; }
+.uma-project__cols { gap: 1.45em; }
+@media (max-width: 767px) {
+  .uma-project__lead, .uma-project__cols, .uma-project__aside, .uma-project__col p, .uma-project__aside p, .uma-project__font-info p { line-height: 1.45; letter-spacing: 0; }
+  .uma-project p.uma-project__spacer { height: 1.45em; }
+  .uma-project__intro:not(.is-open) .uma-project__cols { max-height: calc(1.45 * 7em); }
+  .uma-project__head:not(.is-open) > .uma-project__cols,
+  .uma-project__head:not(.is-open) > .uma-project__aside { max-height: calc(1.45 * 10em); }
+}
+.uma-project__h2 { letter-spacing: 0; }
