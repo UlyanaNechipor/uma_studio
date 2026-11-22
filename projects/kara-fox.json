@@ -1,7 +1,7 @@
 {
   "slug": "kara-fox",
   "title": "Kara Fox",
-  "fonts": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Plus+Jakarta+Sans:wght@400&display=swap",
+  "fonts": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Plus+Jakarta+Sans:wght@400;700&display=swap",
   "back": {
     "label": "Назад к проектам",
     "url": "/#projects"
@@ -71,14 +71,22 @@
           "Насыщенный красный акцент усиливает узнаваемость бренда и поддерживается красными элементами в визуальном контенте, связывая интерфейс и изображения в единую систему."
         ]
       ],
-      "image": {
-        "name": "palette",
-        "w": 5520,
-        "h": 904,
-        "alt": "Палитра Kara Fox: #FAF6F1, #F7E6DB, #D9381E",
-        "clear": true
-      },
-      "at": 10
+      "at": 10,
+      "palette": [
+        {
+          "hex": "#FAF6F1",
+          "ink": "#D9381E"
+        },
+        {
+          "hex": "#F7E6DB",
+          "ink": "#D9381E"
+        },
+        {
+          "hex": "#D9381E",
+          "ink": "#FAF6F1"
+        }
+      ],
+      "paletteFont": "Plus Jakarta Sans"
     },
     {
       "title": "Типографика",
@@ -141,11 +149,11 @@
       "image": {
         "name": "mobile",
         "w": 5520,
-        "h": 1771,
+        "h": 1735,
         "alt": "Мобильная версия Kara Fox: портфолио, контакты, об авторе",
         "clear": true
       },
-      "at": 11
+      "at": 10
     },
     {
       "title": "Контакты",

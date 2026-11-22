@@ -250,7 +250,7 @@ function projectPage(d) {
         : `<div class="uma-project__aside at-${sec.at || 10}"${gap}>${sec.columns[0].map(para).join('')}</div>`) +   // at: 10 — средний текст, 11 — мало текста
       '</div>';
     // палитра: плашки с HEX и «Aa»
-    if (sec.palette) m += `<ul class="uma-project__palette" style="--n:${sec.palette.length}">` + sec.palette.map((c) => { const hex = c.hex || c;
+    if (sec.palette) m += `<ul class="uma-project__palette${sec.palette.length === 3 ? ' is-3' : ''}" style="--n:${sec.palette.length}${sec.paletteFont ? `;font-family:'${esc(sec.paletteFont)}',var(--f-sans)` : ''}">` + sec.palette.map((c) => { const hex = c.hex || c;
       return `<li style="background:${esc(hex)};color:${esc(c.ink || inkFor(hex))}"><span class="uma-project__hex"><b>HEX</b> ${esc(hex.toUpperCase())}</span><span class="uma-project__aa" aria-hidden="true">Aa</span></li>`; }).join('') + '</ul>';
     // шрифты: название крупно самим шрифтом, справа — роль и описание
     // образец «Aa Bb Cc» во всю ширину своим шрифтом и цветом, над ним — название
