@@ -13,11 +13,12 @@
   column-gap: var(--g-gap);
   padding-inline: 16px;   
 }@media (min-width: 768px){html #sos-page .grid{
-    --g-cols: calc(272 * var(--u)) calc(264 * var(--u)) calc(276 * var(--u)) calc(276 * var(--u)); --g-gap: calc(16 * var(--u));
+    
+    --g-cols: repeat(4, minmax(0, 1fr)); --g-gap: calc(10 * var(--u));
     grid-template-columns: var(--g-cols);
     column-gap: var(--g-gap);
     
-    padding-inline: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2));
+    padding-inline: var(--pad-x);
   }
 }html #sos-page .btn{
   display: inline-flex; align-items: center; justify-content: center; gap: calc(8 * var(--u));
@@ -34,12 +35,12 @@
 }html #sos-page .hd__logo{ margin-right: auto; letter-spacing: -.02em; }html #sos-page .hd__logo b{ font-weight: 700; }html #sos-page .hd__nav{ display: flex; gap: calc(10 * var(--u)); }html #sos-page .hd__link{ color: var(--grey); font-weight: 400; transition: color var(--m-hover) var(--m-out); }html #sos-page .hd__link:hover{ color: var(--txt); }html #sos-page .hd__theme{
   display: grid; place-items: center; width: calc(20 * var(--u)); height: calc(20 * var(--u));
   border: 1px solid var(--line); border-radius: calc(4 * var(--u)); color: var(--grey);
-}@media (min-width: 768px){html #sos-page .hd{ display: grid; grid-template-columns: calc(568 * var(--u)) calc(190 * var(--u)) calc(186 * var(--u)) 1fr auto;
-        gap: 0; padding-inline: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2)); font-size: max(var(--min-nav), calc(12 * var(--u))); }html #sos-page .hd__nav{ display: contents; }html #sos-page .hd__theme{ width: max(24px, calc(24 * var(--u))); height: max(24px, calc(24 * var(--u))); }
+}@media (min-width: 768px){html #sos-page .hd{ display: grid; grid-template-columns: var(--grid-12); column-gap: var(--gap-12);
+        padding-inline: var(--pad-x); font-size: max(var(--min-nav), calc(12 * var(--u))); }html #sos-page .hd__logo{ grid-column: 1 / 7; }html #sos-page .hd__nav{ display: contents; }html #sos-page .hd__link:nth-child(1){ grid-column: 7 / 9; }html #sos-page .hd__link:nth-child(2){ grid-column: 9 / 11; }html #sos-page .hd__link:nth-child(3){ grid-column: 11 / 12; }html #sos-page .hd__theme{ grid-column: 12; justify-self: end; }html #sos-page .hd__theme{ width: max(24px, calc(24 * var(--u))); height: max(24px, calc(24 * var(--u))); }
 }html #sos-page .ft{
   border-top: 1px solid var(--line);
   padding-block: calc(32 * var(--u)) calc(24 * var(--u));
   row-gap: calc(24 * var(--u));
   font-size: max(var(--min-small), calc(12 * var(--u))); line-height: 1.6; letter-spacing: .45px;
-}html #sos-page .ft__logo{ grid-column: 1 / -1; font-size: calc(32 * var(--u)); line-height: 1; letter-spacing: -.04em; font-weight: 300; }html #sos-page .ft__logo b{ font-weight: 700; }html #sos-page .ft__col{ display: flex; flex-direction: column; color: var(--grey); font-weight: 400; }html #sos-page .ft__h{ font-weight: var(--w-text); }html #sos-page .ft__col a:hover{ color: var(--txt); }html #sos-page .ft__h{ font: inherit; color: var(--txt); }html #sos-page .ft__made{ grid-column: 1 / -1; grid-row: 3; }@media (min-width: 768px){html #sos-page .ft{ grid-template-rows: auto auto; padding-block: calc(36 * var(--u)) calc(32 * var(--u)); }html #sos-page .ft__logo{ grid-column: 1 / 3; grid-row: 1; font-size: calc(37.5 * var(--u)); }html #sos-page .ft__made{ grid-column: 1 / 3; grid-row: 2; align-self: end; }html #sos-page .ft__col:nth-of-type(1){ grid-column: 3; grid-row: 1 / 3; }html #sos-page .ft__col:last-child{ grid-column: 4; grid-row: 1 / 3; padding-left: calc(84 * var(--u)); }   
+}html #sos-page .ft__logo{ grid-column: 1 / -1; font-size: calc(32 * var(--u)); line-height: 1; letter-spacing: -.04em; font-weight: 300; }html #sos-page .ft__logo b{ font-weight: 700; }html #sos-page .ft__col{ display: flex; flex-direction: column; color: var(--grey); font-weight: 400; }html #sos-page .ft__h{ font-weight: var(--w-text); }html #sos-page .ft__col a:hover{ color: var(--txt); }html #sos-page .ft__h{ font: inherit; color: var(--txt); }html #sos-page .ft__made{ grid-column: 1 / -1; grid-row: 3; }@media (min-width: 768px){html #sos-page .ft{ grid-template-rows: auto auto; padding-block: calc(36 * var(--u)) calc(32 * var(--u)); }html #sos-page .ft__logo{ grid-column: 1 / 3; grid-row: 1; font-size: calc(37.5 * var(--u)); }html #sos-page .ft__made{ grid-column: 1 / 3; grid-row: 2; align-self: end; }html #sos-page .ft__col:nth-of-type(1){ grid-column: 3; grid-row: 1 / 3; }html #sos-page .ft__col:last-child{ grid-column: 4; grid-row: 1 / 3; padding-left: calc(97.5 * var(--u)); }   
 }html.rm-off #sos-page *{ transition: none !important; animation: none !important; scroll-behavior: auto !important; }html.rm,html.rm #sos-page *{ scroll-behavior: auto !important; }html.light-theme #sos-page .btn{ font-weight: 520; }

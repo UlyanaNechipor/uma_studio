@@ -67,9 +67,14 @@
     --t-name: 20; --t-name-lh: 1;  --t-name-ls: 1px;
     --col-split: 600;  
     --row-step: 53;    
+    
     --cols: 12;
-    --margin: 32;
-    --gutter: 20;
+    --margin: 20;
+    --gutter: 10;
+    --content: calc(1160 * var(--u));
+    --pad-x: max(calc(20 * var(--u)), calc((100% - var(--content)) / 2));
+    --grid-12: repeat(12, minmax(0, 1fr));
+    --gap-12: calc(10 * var(--u));
   }
 }html.light-theme{
   --bg: var(--c-paper); --txt: var(--c-ink-2); --txt-soft: var(--c-ink-2); --grey: var(--c-grey-light); --line: var(--c-line-light);
