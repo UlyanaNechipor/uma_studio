@@ -7,6 +7,10 @@
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+/* якорные ссылки (/#projects, /#about…): раздел встаёт верхней границей под шапку, с воздухом над подписью —
+   половина отступа между блоками (40 на мобилке, 90 на десктопе) */
+section[id] { scroll-margin-top: calc(max(44px, calc(48 * var(--u))) + 40 * var(--u)); }
+@media (min-width: 768px) { section[id] { scroll-margin-top: calc(max(44px, calc(48 * var(--u))) + 90 * var(--u)); } }
 body {
   margin: 0; background: var(--bg); color: var(--txt);
   font-family: var(--f-sans); font-weight: var(--w-text);
