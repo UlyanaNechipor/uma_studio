@@ -733,7 +733,7 @@
           var toHash = function () {
             var hd = $('.hd'), m = $('main'), ty = 0;
             try { ty = new DOMMatrix(getComputedStyle(m).transform).m42 || 0; } catch (e) {}
-            var y = t.getBoundingClientRect().top + scrollY - ty - (hd ? hd.offsetHeight : 0);
+            var y = t.getBoundingClientRect().top + scrollY - ty - (parseFloat(getComputedStyle(t).scrollMarginTop) || (hd ? hd.offsetHeight : 0));
             html.style.scrollBehavior = 'auto'; scrollTo(0, Math.max(0, y)); html.style.scrollBehavior = '';
           };
           toHash(); addEventListener('load', function () { requestAnimationFrame(toHash); });
