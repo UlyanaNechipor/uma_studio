@@ -68,8 +68,8 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
   .uma-project {
     --up-pad: var(--pad-x);
     --up-gap: calc(10 * var(--u));     /* 16 */
-    --up-sec: calc(100 * var(--u));    /* 160 между разделами */
-    --up-inner: calc(50 * var(--u));   /* 80 от текста до картинки */
+    --up-sec: var(--block-gap, calc(180 * var(--u)));      /* между разделами — как между блоками главной (180) */
+    --up-inner: calc(60 * var(--u));   /* заголовок/текст → содержимое — 60, как на главной */
     --up-lines: var(--grid-12);
     --up-col-gap: var(--gap-12);
     padding-top: calc(48 * var(--u) + 37 * var(--u));            /* 123 от верха страницы */
