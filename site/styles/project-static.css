@@ -106,7 +106,7 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
   .uma-project__intro .uma-project__cols,
   .uma-project__head .uma-project__cols { display: contents; }
   .uma-project__intro .uma-project__col:nth-child(1),
-  .uma-project__head .uma-project__col:nth-child(1) { grid-column: 7 / 10; }
+  .uma-project__head .uma-project__col:nth-child(1) { grid-column: 7 / 10; padding-right: calc(24 * var(--u)); }   /* текстовое правило: строка не упирается во вторую колонку */
   .uma-project__intro .uma-project__col:nth-child(2),
   .uma-project__head .uma-project__col:nth-child(2) { grid-column: 10 / 13; }
   /* одиночный текст: средний — с 10-й, короткий — с 11-й */
