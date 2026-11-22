@@ -340,7 +340,7 @@
 }html #sos-page .uma-project p.uma-project__spacer{ height: calc(var(--t-small-lh) * 1em); font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); }html #sos-page .uma-project__cols{ gap: calc(var(--t-small-lh) * 1em); }html #sos-page .uma-project__font-info p.uma-project__sub{ margin-bottom: 0; }html #sos-page .uma-project__back,html #sos-page .uma-project__meta dt,html #sos-page .uma-project__pager a{ font-weight: var(--w-text); }
 </style>
 <style>@media (min-width: 1025px) and (hover: hover){html,html body.t-body,html #sos-page a,html #sos-page button{ cursor: pointer; } }html #sos-page #trail,html #sos-page #wipe{ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }html #sos-page #trail{ z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }html.light-theme #sos-page #trail,html.light-theme #sos-page .hd__trail{ mix-blend-mode: multiply; opacity: .85; filter: blur(24px); }html #sos-page .hd__trail{ position: absolute; left: 0; top: 0; width: 100%; height: calc(100% + 120px);   
-  pointer-events: none; z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }html #sos-page .hd > :not(.hd__trail){ position: relative; z-index: 1; }html #sos-page .hd{ isolation: isolate; overflow: hidden; }html #sos-page #wipe{ z-index: -1; }html #sos-page main{ position: relative; z-index: 1; }html #sos-page .ft{ position: relative; z-index: 20; }html body.t-body{ background: transparent; }html{ background: var(--bg); transition: background-color .5s var(--m-out); }html.is-wiping{ transition: none; }html #sos-page .hd__ic{ position: relative; display: block; width: 100%; height: 100%; transition: transform .6s var(--m-out); }html #sos-page .hd__ic svg{
+  pointer-events: none; z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }html #sos-page .hd > :not(.hd__trail){ position: relative; z-index: 1; }html #sos-page .hd{ isolation: isolate; overflow: hidden; }html #sos-page #wipe{ z-index: -1; }html #sos-page main{ position: relative; z-index: 1; }html body.t-body{ background: transparent; }html{ background: var(--bg); transition: background-color .5s var(--m-out); }html.is-wiping{ transition: none; }html #sos-page .hd__ic{ position: relative; display: block; width: 100%; height: 100%; transition: transform .6s var(--m-out); }html #sos-page .hd__ic svg{
   position: absolute; top: 29%; left: 29%; width: 42%; height: 42%;   
   fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
   transition: opacity .4s var(--m-out), transform .6s var(--m-out);
@@ -393,21 +393,12 @@ html #allrecords{font-family:var(--f-sans)}
 html #allrecords *{font-family:inherit}
 /* Зеро-блоки Тильды на страницах статичного сайта (например, форма обратной связи):
    текст, поля и кнопка формы берут цвета текущей темы. Добавляется в styles/tilda.css при сборке. */
-/* Зеро-блоки (договорённость):
-   • всегда видны, даже пустые;
-   • фон — фон текущей темы сайта (меняется вместе с темой);
-   • всегда накладываются на то, что стоит под ними («поверх следующих блоков»), содержимое не обрезается;
-   • слои на всех страницах: Зеро-блоки 10 → подвал 20 (поверх Зеро-блоков) → листы переходов 25 → шапка 30.
-   Плашка «Made on Tilda» всегда остаётся видимой поверх Зеро-блоков. */
+/* Зеро-блоки: из своих правил оставляем только два — фон и курсор.
+   Фон прозрачный: под блоком виден фон сайта, он меняется вместе с темой, и сквозь блок видно свечение за курсором.
+   Слои (z-index), видимость, обрезка и положение блоков — только из настроек Тильды. */
 html #allrecords .t396 .t396__artboard,
 html #allrecords .t396 .t396__carrier,
-html #allrecords .t396 .t396__filter { background-color: var(--bg) !important; background-image: none !important; transition: background-color .5s var(--m-out); }
-html #allrecords .t-rec:has(.t396__artboard) { position: relative; z-index: 10 !important; }
-html #allrecords .t396__artboard { z-index: 10 !important; overflow: visible !important; }
-html #allrecords .t396 { display: block !important; overflow: visible; transition: color .5s var(--m-out); }
-/* последний Зеро-блок страницы ниже себя накрыл бы только плашку «Made on Tilda» — её не перекрываем:
-   у последнего блока артборд занимает своё место, и плашка идёт под ним */
-html #allrecords > .t-rec:last-child .t396__artboard, html #allrecords .t-records > .t-rec:last-child .t396__artboard { position: relative !important; }
+html #allrecords .t396 .t396__filter { background-color: transparent !important; background-image: none !important; }
 
 /* текст */
 html #allrecords .t396 .tn-elem[data-elem-type="text"] .tn-atom,
