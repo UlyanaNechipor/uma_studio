@@ -214,16 +214,31 @@ const pad2 = (n) => String(n).padStart(2, '0');
 const arrowSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.73 4a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>';
 function projectFigure(slug, im, cls = '') {
   if (!im) return '';
-  const c = 'uma-project__figure' + (cls ? ' ' + cls : '') + (im.clear ? ' is-clear' : '');   // clear — картинка с прозрачным фоном, без подложки
+  // clear — картинка с прозрачным фоном: на телефоне лежит на плашке; mscroll — на телефоне картинка шире экрана в N раз и листается вбок
+  const c = 'uma-project__figure' + (cls ? ' ' + cls : '') + (im.clear ? ' is-clear' : '') + (im.mscroll ? ' is-scroll' : '');
   let src = im.src, w = im.w, hh = im.h;
   if (!src) {
     const base = `img/projects/${slug}/${im.name}`;
     if (existsSync(join(ROOT, base + '-1200.webp'))) src = base + '-1200.webp';
   }
-  const ratio = w && hh ? ` style="aspect-ratio:${w} / ${hh}"` : '';
+  // своя картинка для телефона (m: {name, w, h}) — другая раскладка, тот же смысл
+  const m = im.m && existsSync(join(ROOT, `img/projects/${slug}/${im.m.name}-1200.webp`)) ? im.m : null;
+  const vars = [];
+  if (w && hh) vars.push(`--ar:${w} / ${hh}`);
+  const mw = m ? m.w : w, mh = m ? m.h : hh;
+  if (im.mscroll && mw && mh) vars.push(`--ar-m:${+(mw / im.mscroll).toFixed(2)} / ${mh}`, `--ms:${im.mscroll}`, `--ar-s:${mw} / ${mh}`);
+  else if (m) vars.push(`--ar-m:${m.w} / ${m.h}`);
+  const ratio = vars.length ? ` style="${vars.join(';')}"` : '';
   if (!src) return `<figure class="${c} is-empty"${ratio} data-label="${esc(im.alt)}"></figure>`;
-  return `<figure class="${c}"${ratio}>${img(src, im.alt, '', /uma-project__cover/.test(c), '(max-width: 1920px) 97vw, 1856px')}</figure>`;
+  let pic = img(src, im.alt, '', /uma-project__cover/.test(c), '(max-width: 1920px) 97vw, 1856px');
+  if (m) {
+    const v = variants(`img/projects/${slug}/${m.name}-1200.webp`);
+    pic = `<picture><source media="(max-width: 767px)" srcset="${v.map((x) => `${esc(x.path)} ${x.w}w`).join(', ')}" sizes="100vw">${pic}</picture>`;
+  }
+  return `<figure class="${c}"${ratio}>${pic}</figure>`;
 }
+// «Подробнее»: на телефоне длинный текст свёрнут, кнопка раскрывает его (на десктопе кнопки нет, текст целиком)
+const moreBtn = (label) => `<button class="uma-project__more" type="button" aria-expanded="false"><span>${esc(label)}</span><i aria-hidden="true"></i></button>`;
 const turnAttr = (x, label) => (x.url && x.url !== '#' && x.url !== soon.url ? `data-turn-title="${esc(x.title)}" data-turn-label="${esc(label)}" data-turn-page="${esc(x.title.toLowerCase().replace(/\s+/g, '-'))}"` : '');
 function projectPage(d) {
   const s = d.slug;
@@ -237,7 +252,10 @@ function projectPage(d) {
     // одна колонка текста во вступлении (вторая пустая) — встаёт по правилу одиночного текста: с 10-й или 11-й колонки
     (d.intro.columns.filter((c) => c.length).length === 1
       ? d.intro.columns.filter((c) => c.length).map((col) => `<div class="uma-project__col is-single at-${d.intro.at || 10}">${col.map(para).join('')}</div>`).join('')
-      : d.intro.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')) + '</div></section>';
+      : d.intro.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')) + '</div>' +
+    // на телефоне «Проект / Задачи» прячутся под «Подробнее о проекте» вместе с остальным текстом
+    '<div class="uma-project__meta is-m">' + (d.meta || []).map((g) => `<dl class="uma-project__meta-group"><dt>${esc(g.title)}</dt>${g.items.map((i) => `<dd>${typo(i)}</dd>`).join('')}</dl>`).join('') + '</div>' +
+    moreBtn('Подробнее о проекте') + '</section>';
   const total = (d.sections || []).filter((x) => x.title).length; let num = 0;
   for (const sec of d.sections || []) {
     // две картинки рядом, без заголовка и текста
@@ -248,7 +266,7 @@ function projectPage(d) {
       (!sec.columns ? '' : sec.layout === 'split'
         ? `<div class="uma-project__cols"${gap}>${sec.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')}</div>`
         : `<div class="uma-project__aside at-${sec.at || 10}"${gap}>${sec.columns[0].map(para).join('')}</div>`) +   // at: 10 — средний текст, 11 — мало текста
-      '</div>';
+      (sec.columns ? moreBtn('Подробнее') : '') + '</div>';
     // палитра: плашки с HEX и «Aa»
     if (sec.palette) m += `<ul class="uma-project__palette${sec.palette.length === 3 ? ' is-3' : ''}" style="--n:${sec.palette.length}${sec.paletteFont ? `;font-family:'${esc(sec.paletteFont)}',var(--f-sans)` : ''}">` + sec.palette.map((c) => { const hex = c.hex || c;
       return `<li style="background:${esc(hex)};color:${esc(c.ink || inkFor(hex))}"><span class="uma-project__hex"><b>HEX</b> ${esc(hex.toUpperCase())}</span><span class="uma-project__aa" aria-hidden="true">Aa</span></li>`; }).join('') + '</ul>';

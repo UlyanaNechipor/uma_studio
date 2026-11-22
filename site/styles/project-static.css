@@ -211,3 +211,103 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 /* «Назад к проектам»: подчёркивание — как разделители сайта (1 px, цвет линий), при наведении светлее */
 .uma-project__back { border-bottom: 1px solid var(--line); }
 .uma-project__back:hover, .uma-project__back:focus-visible { border-color: var(--grey); }
+
+/* ================= ТЕЛЕФОН (до 768): кейс по мобильным макетам =================
+   Кегли — из дизайн-системы мобилки: название кейса = H1 (36), заголовки разделов = H2 (24),
+   вступление и тексты = Body (14, межстрочный 1,55). Отступы — шаги системы: 60 между разделами,
+   32 — от названия до «Назад» и до обложки, 24 — от заголовка до картинки, 16 — от картинки до текста.
+   Порядок раздела: заголовок → картинка (палитра, шрифты) → текст → «Подробнее».
+   Картинки на прозрачном фоне лежат на плашке; полоса телефонов листается вбок. */
+.uma-project__figure { aspect-ratio: var(--ar, auto); }
+.uma-project__more, .uma-project__meta.is-m { display: none; }
+@media (max-width: 767px) {
+  .uma-project {
+    --up-sec: calc(60 * var(--u));
+    --up-inner: calc(24 * var(--u));
+    --up-panel: #1b1c1b;
+    --up-body: max(var(--min-body), calc(var(--t-body) * var(--u)));
+  }
+  html.light-theme .uma-project { --up-panel: #e8e7e2; }
+
+  /* кегли */
+  .uma-project__title { font-size: max(var(--min-h1), calc(var(--t-h1) * var(--u))); line-height: var(--t-h1-lh); letter-spacing: var(--t-h1-ls); }
+  .uma-project__h2 { font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u))); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); }
+  .uma-project__lead { font-size: var(--up-body); line-height: var(--t-body-lh); letter-spacing: 0; }
+  .uma-project__cols, .uma-project__aside, .uma-project__col p, .uma-project__aside p, .uma-project__font-info p,
+  .uma-project__back, .uma-project__more, .uma-project__pager, .uma-project__pager *, .uma-project__count {
+    font-size: var(--up-body); line-height: var(--t-body-lh); letter-spacing: 0;
+  }
+  .uma-project p.uma-project__spacer { font-size: var(--up-body); height: calc(var(--t-body-lh) * 1em); }
+
+  /* шапка кейса: название, «Назад», обложка; «Проект / Задачи» — под «Подробнее о проекте» */
+  .uma-project__left { gap: calc(32 * var(--u)); }
+  .uma-project__top > .uma-project__meta { display: none; }
+  .uma-project__cover { margin-top: calc(32 * var(--u)); }
+  .uma-project__intro { margin-top: calc(24 * var(--u)); gap: calc(24 * var(--u)); }
+
+  /* свёрнутый текст: вступление — 7 строк, текст раздела — 10; край растворяется */
+  .uma-project__intro:not(.is-open) .uma-project__cols { max-height: calc(var(--t-body-lh) * 7em); overflow: hidden; }
+  .uma-project__head:not(.is-open) > .uma-project__cols,
+  .uma-project__head:not(.is-open) > .uma-project__aside { max-height: calc(var(--t-body-lh) * 10em); overflow: hidden; }
+  .is-clamped:not(.is-open) > .uma-project__cols,
+  .is-clamped:not(.is-open) > .uma-project__aside {
+    -webkit-mask-image: linear-gradient(#000 calc(100% - 3em), transparent); mask-image: linear-gradient(#000 calc(100% - 3em), transparent);
+  }
+  .uma-project__intro.is-open .uma-project__meta.is-m { display: flex; flex-direction: row; gap: var(--up-gap); }
+  .uma-project__more {
+    display: none; align-items: center; justify-content: space-between; width: 100%;
+    margin: calc(24 * var(--u)) 0 0; padding: 0; border: 0; background: none; color: var(--up-text);
+    font-family: inherit; font-weight: var(--w-text); text-align: left; cursor: pointer;
+  }
+  .is-clamped > .uma-project__more, .is-open > .uma-project__more { display: flex; }
+  .uma-project__intro > .uma-project__more { margin-top: 0; }
+  .uma-project__more i { position: relative; width: 18px; height: 18px; flex: none; }
+  .uma-project__more i::before, .uma-project__more i::after {
+    content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 1px; background: currentColor; transition: transform var(--m-hover) var(--m-out);
+  }
+  .uma-project__more i::after { transform: rotate(90deg); }
+  .is-open > .uma-project__more i::after { transform: rotate(0deg); }   /* «+» → «−» */
+
+  /* раздел: заголовок → картинка → текст → «Подробнее» */
+  .uma-project__section { display: flex; flex-direction: column; }
+  .uma-project__head { display: contents; }
+  .uma-project__h2 { order: 0; }
+  .uma-project__section > .uma-project__figure,
+  .uma-project__section > .uma-project__palette,
+  .uma-project__section > .uma-project__fonts { order: 1; margin-top: var(--up-inner); }
+  .uma-project__section .uma-project__figure + .uma-project__figure { margin-top: var(--up-gap); }
+  .uma-project__head > .uma-project__cols,
+  .uma-project__head > .uma-project__aside { order: 2; margin-top: calc(16 * var(--u)); }
+  .uma-project__head > .uma-project__more { order: 3; }
+  .uma-project__h2 + .uma-project__cols, .uma-project__h2 + .uma-project__aside { margin-top: var(--up-inner); }
+  .uma-project__section:has(> .uma-project__figure, > .uma-project__palette, > .uma-project__fonts) .uma-project__h2 + :is(.uma-project__cols, .uma-project__aside) { margin-top: calc(16 * var(--u)); }
+
+  /* картинки: на прозрачном фоне — на плашке с полями 32; своя пропорция для телефона */
+  .uma-project__figure { aspect-ratio: var(--ar-m, var(--ar, auto)); }
+  .uma-project__figure.is-clear { aspect-ratio: auto; background: var(--up-panel); padding: calc(32 * var(--u)); }
+  .uma-project__figure.is-clear img { aspect-ratio: var(--ar-m, var(--ar, auto)); }
+  /* полоса телефонов шире экрана — листается вбок на плашке */
+  .uma-project__figure.is-scroll { aspect-ratio: auto; padding: 0; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .uma-project__figure.is-scroll::-webkit-scrollbar { display: none; }
+  .uma-project__figure.is-clear.is-scroll { padding: calc(32 * var(--u)) 0; }
+  /* раздел со шрифтами: образцы → текст → картинка (как в макете Sure) */
+  .uma-project__section:has(> .uma-project__fonts) > .uma-project__figure { order: 4; }
+  .uma-project__figure.is-scroll img { width: calc(var(--ms) * 100%); max-width: none; aspect-ratio: var(--ar-s, var(--ar)); }
+
+  /* палитра — карусель плашек, следующая выглядывает из-за края экрана */
+  .uma-project__palette, .uma-project__palette.is-3 {
+    display: flex; gap: var(--up-gap); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin-right: calc(-1 * var(--up-pad)); padding-right: var(--up-pad); scroll-padding: 0;
+  }
+  .uma-project__palette::-webkit-scrollbar { display: none; }
+  .uma-project__palette li, .uma-project__palette.is-3 li { flex: 0 0 80%; aspect-ratio: 1 / 1.05; scroll-snap-align: start; padding: calc(24 * var(--u)); }
+  .uma-project__aa, .uma-project__palette.is-3 .uma-project__aa { font-size: calc(80 * var(--u)); }
+
+  /* шрифты: название шрифта крупно в одну строку */
+  .uma-project__specimen { font-size: 12vw; white-space: nowrap; }
+
+  /* навигация: ▲ назад · 03/05 · вперёд ▼ — в одну строку */
+  .uma-project__pager { grid-template-columns: 1fr auto 1fr; margin-top: var(--up-sec); }
+  .uma-project__count { grid-column: auto; grid-row: auto; justify-self: center; height: auto; }
+}
