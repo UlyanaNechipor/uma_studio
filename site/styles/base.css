@@ -68,7 +68,7 @@ html.light-theme .ty-grey, html.light-theme .hd__link, html.light-theme .ft__col
 
 /* ---------- шапка ---------- */
 .hd {
-  position: fixed; top: 0; right: 0; left: 0; z-index: 30;   /* слои: Зеро-блоки 10 → подвал 20 → листы переходов 25 → шапка 30 */
+  position: fixed; top: 0; right: 0; left: 0; z-index: 30;   /* шапка — над содержимым и листами переходов (25) */
   display: flex; align-items: center; gap: calc(12 * var(--u));
   height: max(44px, calc(48 * var(--u))); padding-inline: 16px;
   background: var(--bg); border-bottom: 1px solid var(--line);
