@@ -404,6 +404,9 @@ html #allrecords .t396 .t396__filter { background-color: var(--bg) !important; b
 html #allrecords .t-rec:has(.t396__artboard) { position: relative; z-index: 10 !important; }
 html #allrecords .t396__artboard { z-index: 10 !important; overflow: visible !important; }
 html #allrecords .t396 { display: block !important; overflow: visible; transition: color .5s var(--m-out); }
+/* последний Зеро-блок страницы ниже себя накрыл бы только плашку «Made on Tilda» — её не перекрываем:
+   у последнего блока артборд занимает своё место, и плашка идёт под ним */
+html #allrecords > .t-rec:last-child .t396__artboard, html #allrecords .t-records > .t-rec:last-child .t396__artboard { position: relative !important; }
 
 /* текст */
 html #allrecords .t396 .tn-elem[data-elem-type="text"] .tn-atom,
