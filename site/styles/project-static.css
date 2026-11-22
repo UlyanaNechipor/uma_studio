@@ -350,3 +350,5 @@ html.light-theme .uma-project__sw { box-shadow: inset 0 0 0 1px rgba(26, 26, 26,
 @media (min-width: 768px) { .uma-project__pair.is-gap { grid-template-columns: 1fr 1fr; column-gap: var(--gap-12); } }
 .uma-project__pair.is-gap { gap: var(--up-gap); }
 .uma-project__pair.is-gap + .uma-project__pair, .uma-project__section + .uma-project__pair.is-gap { margin-top: var(--up-gap); }
+/* одиночный текст вступления с 9-й колонки («О нас» в шапке) — Kara Fox по макету */
+@media (min-width: 768px) { .uma-project__intro .uma-project__col.is-single.at-9 { grid-column: 9 / 13; } }
