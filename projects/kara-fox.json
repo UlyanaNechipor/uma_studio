@@ -74,12 +74,12 @@
       "palette": [
         {
           "hex": "#FAF6F1",
-          "ink": "#D9381E",
+          "ink": "#555555",
           "name": "Light beige"
         },
         {
           "hex": "#FFFFFF",
-          "ink": "#D9381E",
+          "ink": "#555555",
           "name": "White"
         },
         {
@@ -89,7 +89,7 @@
         },
         {
           "hex": "#F7E6DB",
-          "ink": "#D9381E",
+          "ink": "#555555",
           "name": "Beige"
         }
       ],

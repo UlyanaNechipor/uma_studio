@@ -384,3 +384,6 @@ html.light-theme :is(.uma-project__col p, .uma-project__aside p, .uma-project__m
 /* палитра в рамках: поле внутри рамки — серое (цвет плашек под картинками), светлые квадраты на нём читаются */
 .uma-project__palette.is-framed li { background: var(--up-panel); }
 html.light-theme .uma-project__sw { box-shadow: none; }
+/* палитра: поле внутри рамок снова прозрачное; в квадрате номер и HEX — обычным весом, название — жирным */
+.uma-project__palette.is-framed li { background: none; }
+.uma-project__sw > span { font-weight: 400; }
