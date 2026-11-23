@@ -95,13 +95,13 @@
       "text": "Сайт адаптируется под различные виды устройств, при этом сохраняет целостность дизайна, удобство навигации и доступность контента.",
       "at": "10",
       "image": {
-        "image": "img/projects/kara-fox/mobile-3600.webp",
+        "image": "img/projects/kara-fox/mobile-light-3600.webp",
         "alt": "Мобильная версия Kara Fox: портфолио, контакты, об авторе",
-        "mobile": "img/projects/kara-fox/mobile-m-2107.webp",
+        "mobile": "img/projects/kara-fox/mobile-m-light-2107.webp",
         "plate": "both",
         "scroll": 2.57,
-        "image_dark": "img/projects/kara-fox/mobile-dark-3600.webp",
-        "mobile_dark": "img/projects/kara-fox/mobile-m-dark-2107.webp"
+        "image_dark": "img/projects/kara-fox/mobile-3600.webp",
+        "mobile_dark": "img/projects/kara-fox/mobile-m-2107.webp"
       }
     },
     {
