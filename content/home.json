@@ -1,21 +1,7 @@
 {
-  "_about": "Тексты главной по блокам, в порядке на странице. Источник — живой сайт на Тильде 2026-11-11. id — номер блока в Тильде для сверки.",
   "hero": {
-    "tilda": "rec3979597401",
-    "title": [
-      "Design. Direction",
-      "& Digital production"
-    ],
-    "lead": [
-      [
-        "Проектируем и создаём сайты, интернет-магазины",
-        "и цифровые интерфейсы для бизнеса и брендов."
-      ],
-      [
-        "Объединяем стратегический подход, визуальный",
-        "дизайн и современные технологии."
-      ]
-    ],
+    "title": "Design. Direction\n& Digital production",
+    "lead": "Проектируем и создаём сайты, интернет-магазины\nи цифровые интерфейсы для бизнеса и брендов.\n\nОбъединяем стратегический подход, визуальный\nдизайн и современные технологии.",
     "gallery": [
       {
         "title": "Rosi",
@@ -40,8 +26,6 @@
     ]
   },
   "projects": {
-    "tilda": "rec3979597501",
-    "anchor": "projects",
     "label": "Проекты клиентов",
     "title": "Избранные проекты",
     "items": [
@@ -52,10 +36,8 @@
         "slug": "rosi",
         "url": "/project_page_rosi",
         "cover": "img/covers/rosi-mockup.webp",
-        "mobile": [
-          "img/covers/rosi.webp",
-          "img/mobile/rosi-2.webp"
-        ]
+        "mobile1": "img/covers/rosi.webp",
+        "mobile2": "img/mobile/rosi-2.webp"
       },
       {
         "name": "Sure",
@@ -64,10 +46,8 @@
         "slug": "sure",
         "url": "/project_page_sure",
         "cover": "img/covers/sure.webp",
-        "mobile": [
-          "img/covers/sure.webp",
-          "img/mobile/sure-2.webp"
-        ]
+        "mobile1": "img/covers/sure.webp",
+        "mobile2": "img/mobile/sure-2.webp"
       },
       {
         "name": "Kara Fox",
@@ -75,11 +55,9 @@
         "year": "2025",
         "slug": "kara-fox",
         "cover": "img/covers/kara-fox-mockup.webp",
-        "mobile": [
-          "img/mobile/kara-fox-mockup.webp",
-          "img/mobile/kara-fox-2.webp"
-        ],
-        "url": "/project_page_kara_fox"
+        "url": "/project_page_kara_fox",
+        "mobile1": "img/mobile/kara-fox-mockup.webp",
+        "mobile2": "img/mobile/kara-fox-2.webp"
       },
       {
         "name": "Black Sable",
@@ -87,11 +65,9 @@
         "year": "2025",
         "slug": "black-sable",
         "cover": "img/covers/black-sable-mockup.webp",
-        "mobile": [
-          "img/mobile/black-sable-mockup.webp",
-          "img/mobile/black-sable-2.webp"
-        ],
-        "url": "/project_page_black_sable"
+        "url": "/project_page_black_sable",
+        "mobile1": "img/mobile/black-sable-mockup.webp",
+        "mobile2": "img/mobile/black-sable-2.webp"
       },
       {
         "name": "Arine Atelier",
@@ -99,20 +75,14 @@
         "year": "2025",
         "slug": "arine-atelier",
         "cover": "img/covers/arine-atelier-mockup.webp",
-        "mobile": [
-          "img/mobile/arine-atelier-mockup.webp",
-          "img/mobile/arine-atelier-2.webp"
-        ],
-        "url": "/project_page_arine_atelier"
+        "url": "/project_page_arine_atelier",
+        "mobile1": "img/mobile/arine-atelier-mockup.webp",
+        "mobile2": "img/mobile/arine-atelier-2.webp"
       }
     ]
   },
   "lab": {
-    "tilda": "rec3979597601",
-    "title": [
-      "Дизайн. Исследования.",
-      "Эксперименты."
-    ],
+    "title": "Дизайн. Исследования.\nЭксперименты.",
     "lead": "Проекты, в которых мы исследуем новые идеи и подходы.",
     "images": [
       {
@@ -164,19 +134,11 @@
         "cap": "Каринус. Веб-дизайн",
         "h": 293
       }
-    ],
-    "_layout": "Десктоп по макету Figma «Landing Arine» 2625:27773 (1600 px): 4 колонки — a1+a2 | b | c2+c1 | d1+d2; h — высота картинки в px макета при ширине колонки 372."
+    ]
   },
   "about": {
-    "tilda": "rec3979597701",
-    "anchor": "about",
     "label": "О нас",
-    "title": [
-      "Дизайн-студия",
-      "из Санкт-Петербурга.",
-      "Дизайн, реализация",
-      "и AI-процессы"
-    ],
+    "title": "Дизайн-студия\nиз Санкт-Петербурга.\nДизайн, реализация\nи AI-процессы",
     "lead": "Создаём сайты и цифровые интерфейсы, объединяя стратегический подход, визуальный дизайн и современные технологии.",
     "cta": {
       "label": "Написать нам",
@@ -188,41 +150,27 @@
     ]
   },
   "services": {
-    "tilda": "rec5645367701",
     "items": [
       {
         "title": "UX/UI-дизайн",
-        "text": [
-          "Проектируем сайты, которые понятно представляют ваш бизнес, помогают клиентам найти нужную информацию и упрощают взаимодействие с компанией."
-        ]
+        "text": "Проектируем сайты, которые понятно представляют ваш бизнес, помогают клиентам найти нужную информацию и упрощают взаимодействие с компанией."
       },
       {
         "title": "Реализация",
-        "text": [
-          "Превращаем дизайн в работающий сайт: собираем детали, настраиваем анимации и адаптивность, доводим до задуманного результата."
-        ]
+        "text": "Превращаем дизайн в работающий сайт: собираем детали, настраиваем анимации и адаптивность, доводим до задуманного результата."
       },
       {
         "title": "Интеграции и запуск",
-        "text": [
-          "Подключаем внешние сервисы, платёжные системы и инструменты управления. Настраиваем связь сайта с вашими бизнес-процессами для эффективной работы."
-        ]
+        "text": "Подключаем внешние сервисы, платёжные системы и инструменты управления. Настраиваем связь сайта с вашими бизнес-процессами для эффективной работы."
       },
       {
         "title": "AI-процессы",
-        "text": [
-          "Используем AI там, где он ускоряет работу, расширяет возможности для экспериментов и помогает находить нестандартные решения."
-        ]
+        "text": "Используем AI там, где он ускоряет работу, расширяет возможности для экспериментов и помогает находить нестандартные решения."
       }
     ]
   },
   "cta": {
-    "tilda": "rec4249463601",
-    "anchor": "contacts",
-    "title": [
-      "Есть идея?",
-      "Давайте обсудим."
-    ],
+    "title": "Есть идея?\nДавайте обсудим.",
     "primary": {
       "label": "Написать нам",
       "href": "mailto:{email}"

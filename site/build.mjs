@@ -18,6 +18,16 @@ const OUT = join(ROOT, 'site/dist');
 const j = (p) => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
 const site = j('content/site.json');
 const home = j('content/home.json');
+// главная из админки: многострочные поля — одной строкой с переносами, якоря разделов — постоянные
+{
+  const L = (v) => (Array.isArray(v) ? v : String(v || '').split('\n'));
+  home.hero.title = L(home.hero.title);
+  home.hero.lead = Array.isArray(home.hero.lead) ? home.hero.lead : String(home.hero.lead || '').split(/\n\s*\n/).map(L);
+  for (const k of ['lab', 'about', 'cta']) home[k].title = L(home[k].title);
+  for (const s of home.services.items) s.text = L(s.text);
+  for (const it of home.projects.items) if (!it.mobile) it.mobile = [it.mobile1, it.mobile2].filter(Boolean);
+  Object.assign(home.projects, { anchor: 'projects' }); Object.assign(home.about, { anchor: 'about' }); Object.assign(home.cta, { anchor: 'contacts' });
+}
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 // логотип: название капсом, все слова одной плотности
@@ -427,7 +437,7 @@ pages['soon.html'] = page({ title: soon.title + ' — ' + site.brand, css: ['soo
   main: `<section class="soon">
   <div class="soon__head">
     <h1 class="soon__title">${typo(soon.title)}</h1>
-    <p class="soon__text">${soon.text.map(typo).join('<br class="soon__lb"> ')}</p>
+    <p class="soon__text">${[].concat(Array.isArray(soon.text) ? soon.text : String(soon.text).split("\n")).map(typo).join('<br class="soon__lb"> ')}</p>
     <a class="soon__back" href="/#projects" data-back>${esc(soon.back)}</a>
   </div>
   <p class="soon__mark" aria-hidden="true"><span class="soon__shape">SHAPE</span> <span class="soon__of">(of&nbsp;Sense)</span></p>

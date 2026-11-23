@@ -1,0 +1,347 @@
+# Админка сайта Shape of Sense (Sveltia CMS).
+# Принцип: здесь только содержание. Сетка, кегли, отступы и цвета задаёт сборка по дизайн-системе,
+# поэтому в полях нет пикселей — только тексты, картинки и выбор из разрешённых вариантов раскладки.
+# После «Сохранить» GitHub сам собирает сайт (.github/workflows/publish.yml): через 1–2 минуты правка на сайте.
+
+backend:
+  name: github
+  repo: UlyanaNechipor/uma_studio
+  branch: main
+  commit_messages:
+    create: 'Админка: новый {{collection}} «{{slug}}»'
+    update: 'Админка: {{collection}} «{{slug}}»'
+    delete: 'Админка: удалён {{collection}} «{{slug}}»'
+    uploadMedia: 'Админка: картинка {{path}}'
+    deleteMedia: 'Админка: удалена картинка {{path}}'
+
+locale: ru
+
+# Загруженные картинки: сборка сама сделает лёгкие версии, обрежет пустые поля у прозрачных и пропишет пропорции
+media_folder: img/uploads
+public_folder: /img/uploads
+
+# ---------- повторяющиеся куски схемы ----------
+_text_hint: &text_hint 'Каждая строка — абзац. Пустая строка — пустая строка в тексте. «## Подзаголовок» — пункт с подзаголовком (текст пункта — на следующих строках).'
+
+_at: &at
+  name: at
+  label: Начало текста (если текст один)
+  widget: select
+  required: false
+  default: 10
+  options:
+    - { label: '9-я колонка — под «О нас»', value: 9 }
+    - { label: '10-я колонка — средний текст', value: 10 }
+    - { label: '11-я колонка — короткий текст, под «Контакты»', value: 11 }
+  hint: Два текста всегда встают с 7-й и 10-й колонки.
+
+_picture: &picture
+  - { name: image, label: Картинка, widget: image, required: false, hint: 'Любой размер. Прозрачный фон (PNG) — картинка на десктопе по сетке, на телефоне ляжет на плашку.' }
+  - { name: alt, label: Описание картинки для незрячих и поисковиков, widget: string, required: false }
+  - { name: mobile, label: Отдельная картинка для телефона, widget: image, required: false, hint: 'Необязательно. Например, вертикальная раскладка того же макета.' }
+  - name: plate
+    label: Плашка под картинкой на десктопе
+    widget: select
+    required: false
+    default: none
+    options:
+      - { label: Без плашки, value: none }
+      - { label: 'Плашка, поля сверху и снизу', value: both }
+      - { label: 'Плашка, картинка уходит в нижний край', value: top }
+  - { name: scroll, label: 'На телефоне листать вбок (во сколько экранов шириной)', widget: number, value_type: float, required: false, hint: 'Для полосы из нескольких телефонов. Пусто — картинка целиком на экране.' }
+
+collections:
+  # ================= КЕЙСЫ =================
+  - name: cases
+    label: Кейсы
+    label_singular: кейс
+    description: 'Страницы проектов. Порядок кейсов и переходы «назад / вперёд» берутся из списка проектов на главной.'
+    folder: projects
+    extension: json
+    format: json
+    create: true
+    delete: true
+    identifier_field: title
+    slug: '{{title}}'
+    summary: '{{title}}'
+    fields:
+      - { name: title, label: Название проекта, widget: string }
+      - { name: project, label: Проект, widget: text, required: false, hint: 'Каждая строка — пункт. Например: «Клиент: Kara Fox», «Год: 2025», «Бизнес-сайт».' }
+      - { name: tasks, label: Задачи, widget: text, required: false, hint: Каждая строка — пункт. }
+      - name: cover
+        label: Обложка
+        widget: object
+        fields:
+          - { name: image, label: Картинка, widget: image }
+          - { name: alt, label: Описание картинки, widget: string, required: false }
+      - { name: lead, label: Вступление крупно (слева), widget: text, required: false }
+      - name: intro
+        label: Текст вступления (справа)
+        widget: object
+        fields:
+          - { name: text, label: Текст, widget: text, required: false, hint: *text_hint }
+          - { name: text2, label: Второй текст (необязательно), widget: text, required: false, hint: *text_hint }
+          - *at
+      - name: sections
+        label: Разделы
+        label_singular: раздел
+        widget: list
+        required: false
+        summary: '{{fields.title}}'
+        typeKey: type
+        types:
+          - name: text
+            label: Текст и картинка
+            widget: object
+            summary: '{{fields.title}}'
+            fields:
+              - { name: title, label: Заголовок раздела, widget: string }
+              - { name: text, label: Текст, widget: text, required: false, hint: *text_hint }
+              - { name: text2, label: Второй текст (необязательно), widget: text, required: false, hint: *text_hint }
+              - *at
+              - name: para_gap
+                label: Абзацы
+                widget: select
+                required: false
+                default: 0
+                options:
+                  - { label: Вплотную, value: 0 }
+                  - { label: С небольшим отступом (список), value: 8 }
+              - { name: image, label: Картинка, widget: object, required: false, collapsed: false, fields: *picture }
+              - { name: image_after, label: Вторая картинка под первой, widget: object, required: false, collapsed: true, fields: *picture }
+          - name: pair
+            label: Две картинки рядом
+            widget: object
+            summary: Две картинки рядом
+            fields:
+              - { name: gap, label: Промежуток между картинками, widget: boolean, required: false, default: false, hint: 'Выключено — встык, стык на линии «Проекты». Включено — по половине сетки с промежутком.' }
+              - { name: left, label: Левая, widget: object, fields: *picture }
+              - { name: right, label: Правая, widget: object, fields: *picture }
+          - name: palette
+            label: Палитра
+            widget: object
+            summary: '{{fields.title}}'
+            fields:
+              - { name: title, label: Заголовок раздела, widget: string, default: Палитра }
+              - { name: text, label: Текст, widget: text, required: false }
+              - { name: text2, label: Второй текст, widget: text, required: false }
+              - *at
+              - name: colors
+                label: Цвета
+                label_singular: цвет
+                widget: list
+                summary: '{{fields.name}} {{fields.hex}}'
+                fields:
+                  - { name: hex, label: Цвет, widget: color }
+                  - { name: name, label: Название, widget: string, required: false, hint: 'С названиями — квадраты в рамках с подписью (01), название, HEX. Без названий — плашки «HEX / Aa».' }
+                  - { name: ink, label: Цвет подписи, widget: color, required: false, hint: 'Пусто — подберётся сам: тёмный на светлом, светлый на тёмном.' }
+              - { name: font, label: Шрифт подписей в палитре, widget: string, required: false, hint: 'Название шрифта из ссылки Google Fonts ниже, например Plus Jakarta Sans.' }
+          - name: fonts
+            label: Шрифты
+            widget: object
+            summary: '{{fields.title}}'
+            fields:
+              - { name: title, label: Заголовок раздела, widget: string, default: Типографика }
+              - { name: text, label: Текст, widget: text, required: false, hint: *text_hint }
+              - { name: text2, label: Второй текст, widget: text, required: false, hint: *text_hint }
+              - *at
+              - name: fonts
+                label: Шрифты
+                label_singular: шрифт
+                widget: list
+                summary: '{{fields.name}}'
+                fields:
+                  - { name: name, label: Название шрифта, widget: string, hint: 'Набирается самим шрифтом — шрифт нужно подключить ссылкой Google Fonts ниже.' }
+                  - { name: label, label: Подпись над описанием, widget: string, required: false }
+                  - { name: text, label: Описание, widget: text, required: false }
+                  - { name: color, label: Цвет названия, widget: color, required: false }
+                  - { name: size, label: 'Кегль названия (px при ширине 1200)', widget: number, required: false, hint: 'Пусто — по умолчанию. Название должно уместиться в колонки 1–9.' }
+                  - { name: weight, label: Начертание, widget: select, required: false, options: [300, 400, 500, 600, 700] }
+                  - { name: serif, label: С засечками, widget: boolean, required: false, default: false }
+              - { name: image, label: Картинка, widget: object, required: false, collapsed: true, fields: *picture }
+      - { name: fonts, label: Шрифты проекта — ссылка Google Fonts, widget: string, required: false, hint: 'Например https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&display=swap' }
+
+  # ================= ГЛАВНАЯ =================
+  - name: pages
+    label: Страницы
+    files:
+      - name: home
+        label: Главная
+        file: content/home.json
+        format: json
+        fields:
+          - name: hero
+            label: Первый экран
+            widget: object
+            fields:
+              - { name: title, label: Заголовок, widget: text, hint: 'Каждая строка — строка заголовка на десктопе.' }
+              - { name: lead, label: Текст, widget: text, hint: 'Строки внутри абзаца переносятся только на десктопе. Пустая строка — новый абзац.' }
+              - name: gallery
+                label: Слайды
+                label_singular: слайд
+                widget: list
+                summary: '{{fields.title}}'
+                fields:
+                  - { name: title, label: Подпись, widget: string }
+                  - { name: src, label: Картинка, widget: image }
+          - name: projects
+            label: Проекты
+            widget: object
+            fields:
+              - { name: label, label: Надпись над заголовком, widget: string }
+              - { name: title, label: Заголовок, widget: string }
+              - name: items
+                label: Проекты (порядок = порядок на сайте и в переходах между кейсами)
+                label_singular: проект
+                widget: list
+                summary: '{{fields.name}} — {{fields.year}}'
+                fields:
+                  - { name: name, label: Название, widget: string }
+                  - { name: type, label: Тип, widget: string }
+                  - { name: year, label: Год, widget: string }
+                  - { name: slug, label: Файл кейса, widget: relation, collection: cases, value_field: '{{slug}}', search_fields: [title], display_fields: [title], required: false, hint: Какой кейс открывается по ссылке. }
+                  - { name: url, label: Адрес страницы кейса в Тильде, widget: string, required: false, hint: 'Например /project_page_kara_fox. Пусто — ссылка ведёт на «Скоро здесь».' }
+                  - { name: cover, label: Обложка (десктоп), widget: image }
+                  - { name: mobile1, label: Картинка 1 на телефоне, widget: image }
+                  - { name: mobile2, label: Картинка 2 на телефоне, widget: image }
+          - name: lab
+            label: Лаборатория
+            widget: object
+            fields:
+              - { name: title, label: Заголовок, widget: text, hint: Каждая строка — строка заголовка. }
+              - { name: lead, label: Текст, widget: string }
+              - name: images
+                label: Работы
+                label_singular: работа
+                widget: list
+                summary: '{{fields.cap}}'
+                fields:
+                  - { name: cap, label: Подпись, widget: string }
+                  - { name: src, label: Картинка, widget: image }
+                  - { name: d, label: Место в мозаике на десктопе, widget: select, options: [a1, a2, b, c1, c2, d1, d2], hint: 'Колонки: a1+a2 | b | c2+c1 | d1+d2. Каждое место — один раз.' }
+                  - name: m
+                    label: Ширина на телефоне
+                    widget: select
+                    options:
+                      - { label: Во всю ширину, value: wide }
+                      - { label: Половина, value: half }
+                  - { name: h, label: 'Высота на десктопе (px при ширине колонки 372)', widget: number }
+          - name: about
+            label: О нас
+            widget: object
+            fields:
+              - { name: label, label: Надпись над заголовком, widget: string }
+              - { name: title, label: Заголовок, widget: text, hint: Каждая строка — строка заголовка. }
+              - { name: lead, label: Текст, widget: text }
+              - name: cta
+                label: Кнопка
+                widget: object
+                fields:
+                  - { name: label, label: Текст кнопки, widget: string }
+                  - { name: href, label: Ссылка, widget: string, hint: '{email} подставит почту из контактов.' }
+              - { name: photos, label: Фото, widget: list, field: { name: photo, label: Фото, widget: image } }
+          - name: services
+            label: Услуги
+            widget: object
+            fields:
+              - name: items
+                label: Услуги
+                label_singular: услуга
+                widget: list
+                summary: '{{fields.title}}'
+                fields:
+                  - { name: title, label: Название, widget: string }
+                  - { name: text, label: Описание, widget: text }
+          - name: cta
+            label: Блок «Есть идея?»
+            widget: object
+            fields:
+              - { name: title, label: Заголовок, widget: text, hint: Каждая строка — строка заголовка. }
+              - name: primary
+                label: Основная кнопка
+                widget: object
+                fields:
+                  - { name: label, label: Текст, widget: string }
+                  - { name: href, label: Ссылка, widget: string }
+              - name: secondary
+                label: Вторая кнопка
+                widget: object
+                fields:
+                  - { name: label, label: Текст, widget: string }
+                  - { name: href, label: Ссылка, widget: string }
+              - { name: image, label: Картинка, widget: image }
+
+      - name: soon
+        label: «Скоро здесь»
+        file: content/soon.json
+        format: json
+        fields:
+          - { name: url, label: Адрес страницы в Тильде, widget: string }
+          - { name: title, label: Заголовок, widget: string }
+          - { name: text, label: Текст, widget: text, hint: Каждая строка — строка на десктопе. }
+          - { name: back, label: Кнопка «Назад», widget: string }
+
+      - name: site
+        label: Контакты и общее
+        file: content/site.json
+        format: json
+        fields:
+          - { name: brand, label: Название студии, widget: string }
+          - { name: lang, label: Язык, widget: hidden, default: ru }
+          - { name: url, label: Адрес сайта, widget: string }
+          - name: seo
+            label: Для поисковиков
+            widget: object
+            collapsed: true
+            fields:
+              - { name: title, label: Заголовок вкладки, widget: string, required: false, hint: Пусто — название студии. }
+              - { name: description, label: Описание, widget: text, required: false }
+          - name: nav
+            label: Меню
+            widget: list
+            allow_add: false
+            allow_remove: false
+            allow_reorder: false
+            summary: '{{fields.label}}'
+            fields:
+              - { name: id, label: Раздел, widget: hidden }
+              - { name: label, label: Название пункта, widget: string }
+          - name: contacts
+            label: Контакты
+            widget: object
+            fields:
+              - { name: email, label: Почта, widget: string }
+              - { name: phone, label: Телефон, widget: string }
+              - { name: city, label: Город, widget: string }
+              - { name: telegram, label: Telegram (ссылка), widget: string, required: false }
+              - { name: privacy, label: Политика конфиденциальности (ссылка), widget: string, required: false }
+          - name: footer
+            label: Подвал
+            widget: object
+            fields:
+              - { name: year, label: Год, widget: string }
+              - { name: made, label: Подпись, widget: string }
+          - name: themes
+            label: Цвета тем
+            widget: object
+            collapsed: true
+            hint: Цвета задаёт дизайн-система — меняйте только вместе с ней.
+            fields:
+              - name: dark
+                label: Тёмная
+                widget: object
+                fields:
+                  - { name: bg, label: Фон, widget: color }
+                  - { name: text, label: Текст, widget: color }
+              - name: light
+                label: Светлая
+                widget: object
+                fields:
+                  - { name: bg, label: Фон, widget: color }
+                  - { name: text, label: Текст, widget: color }
+              - name: default
+                label: Тема по умолчанию
+                widget: select
+                options:
+                  - { label: Тёмная, value: dark }
+                  - { label: Светлая, value: light }

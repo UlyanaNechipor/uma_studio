@@ -1,12 +1,10 @@
 {
-  "_about": "Общие данные сайта: название, навигация, контакты. Источник — живой сайт umastudio.tilda.ws и js/footer.js, js/site-header.js (снято 2026-11-09).",
   "brand": "Shape of Sense",
   "lang": "ru",
   "url": "https://umastudio.tilda.ws/",
   "seo": {
     "title": "",
-    "description": "",
-    "_note": "Название студии не окончательное — title, description, соцкарточки и favicon пока не заполняем. Без title в браузере показывается название бренда из поля brand."
+    "description": ""
   },
   "nav": [
     {
@@ -24,12 +22,10 @@
   ],
   "contacts": {
     "email": "workingtitle@gmail.com",
-    "_emailNote": "Временный адрес, сменится позже.",
     "phone": "+7 (911) 973-66-93",
     "city": "Санкт-Петербург",
     "telegram": "",
-    "privacy": "",
-    "_note": "Telegram и политику конфиденциальности добавим позже — пока в футере они без ссылок."
+    "privacy": ""
   },
   "footer": {
     "year": "2026",
