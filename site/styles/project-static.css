@@ -435,3 +435,7 @@ html.light-theme .uma-project__sw { box-shadow: none; }
 .uma-project__palette.is-framed .uma-project__sw { box-shadow: inset 0 0 0 1px var(--up-text); }
 .uma-project__sw { gap: .35em; }
 .uma-project__sw b { font-weight: 700; }
+/* палитра: обводки — тонкие серые, как все линии сайта; между прямоугольниками ровно 16 px */
+.uma-project__palette.is-framed li { border: 1px solid var(--line); }
+.uma-project__palette.is-framed .uma-project__sw { box-shadow: inset 0 0 0 1px var(--line); }
+@media (min-width: 768px) { .uma-project__palette.is-framed { gap: 16px; } }
