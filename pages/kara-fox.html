@@ -141,7 +141,8 @@
 }html #sos-page .ftm{ display: none; }@media (max-width: 767px){html #sos-page .ft{ padding-block: 0 0; row-gap: 0; }html #sos-page .ft > :not(.ftm){ display: none; }html #sos-page .ftm{ display: block; grid-column: 1 / -1; font-size: max(var(--min-body), calc(var(--t-body) * var(--u))); line-height: 1.45; letter-spacing: 0; }html #sos-page .ftm__row{ display: grid; grid-template-columns: 1fr 1fr; column-gap: 8px; margin-inline: -16px; padding: 14px 16px; border-bottom: 1px solid var(--line); }html #sos-page .ftm__k{ color: var(--grey); font-weight: var(--w-text); }html #sos-page .ftm__v{ display: flex; flex-direction: column; min-width: 0; color: var(--txt); }html #sos-page .ftm__v a{ color: inherit; }html #sos-page .ftm__lock{ margin: 0; padding: 28px 0 18px; color: var(--txt); }html #sos-page .ftm__shape{ display: block; width: max-content; font-weight: 800; letter-spacing: .01em; line-height: .8; white-space: nowrap; font-size: 28vw; }html #sos-page .ftm__sense{ display: block; width: max-content; margin-left: auto; font-family: 'Lora', Georgia, serif; font-style: italic; font-weight: 400;
     line-height: 1; white-space: nowrap; font-size: 18vw; letter-spacing: -.01em; }html #sos-page .ftm__meta{ display: grid; grid-template-columns: 1fr 1fr; column-gap: 8px; margin: 0 -16px; padding: 12px 16px 16px; border-top: 1px solid var(--line);
     font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); color: var(--grey); text-transform: uppercase; letter-spacing: .08em; }
-}@media (max-width: 767px){html #sos-page .ftm__meta{ display: flex; justify-content: space-between; gap: 8px; letter-spacing: .06em; } }
+}@media (max-width: 767px){html #sos-page .ftm__meta{ display: flex; justify-content: space-between; gap: 8px; letter-spacing: .06em; } }@media (max-width: 767px){html #sos-page .ftm__lock{ padding: 28px 0 24px; }html #sos-page .ftm__lock + .ftm__row{ border-top: 1px solid var(--line); }html #sos-page .ftm__meta{ border-top: 0; }
+}
 </style>
 <style>html #sos-page .uma-project{
     
@@ -519,13 +520,13 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
 
   <!-- телефон: ведомость в две колонки и знак SHAPE (of Sense) во всю ширину -->
   <div class="ftm">
+    <p class="ftm__lock" aria-label="Shape of Sense"><span class="ftm__shape" data-fit-w>SHAPE</span><span class="ftm__sense" data-fit-w="0.79">(of Sense)</span></p>
     <div class="ftm__row"><span class="ftm__k">Разделы</span><span class="ftm__v"><a href="/#projects">Проекты</a><a href="/#about">О нас</a><a href="/#contacts">Контакты</a></span></div>
     <div class="ftm__row"><span class="ftm__k">Почта</span><span class="ftm__v"><a href="mailto:shapeofsense@gmail.com">shapeofsense@<wbr>gmail.com</a></span></div>
     <div class="ftm__row"><span class="ftm__k">Телефон</span><span class="ftm__v"><a href="tel:+79119736693">+7 (911) 973-66-93</a></span></div>
     <div class="ftm__row"><span class="ftm__k">Телеграм</span><span class="ftm__v"><span>Написать</span></span></div>
     <div class="ftm__row"><span class="ftm__k">Город</span><span class="ftm__v"><span class="nw">Санкт-Петербург</span></span></div>
     <div class="ftm__row"><span class="ftm__k">Документы</span><span class="ftm__v"><span>Политика конфиденциальности</span></span></div>
-    <p class="ftm__lock" aria-label="Shape of Sense"><span class="ftm__shape" data-fit-w>SHAPE</span><span class="ftm__sense" data-fit-w="0.79">(of Sense)</span></p>
     <p class="ftm__meta"><span>Made by Shape of Sense</span><span>©2026</span></p>
   </div>
 </footer>
