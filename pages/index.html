@@ -143,7 +143,8 @@
 }@media (max-width: 767px){html #sos-page .ftm__meta{ display: flex; justify-content: space-between; gap: 8px; letter-spacing: .06em; } }@media (max-width: 767px){html #sos-page .ftm__lock{ padding: 28px 0 24px; }html #sos-page .ftm__lock + .ftm__row{ border-top: 1px solid var(--line); }html #sos-page .ftm__meta{ border-top: 0; }
 }@media (max-width: 767px){html #sos-page .ftm{ font-size: max(var(--min-nav), calc(10 * var(--u))); letter-spacing: normal; } }@media (max-width: 767px){html #sos-page .ftm__row.is-group{ display: flex; flex-direction: column; gap: 0; }html #sos-page .ftm__pair{ display: grid; grid-template-columns: 1fr 1fr; column-gap: 8px; }
 }@media (max-width: 767px){html #sos-page .ftm__row,html #sos-page .ftm__lock + .ftm__row{ border: 0; padding: 0 16px; }html #sos-page .ftm__lock{ padding-bottom: 28px; }html #sos-page .ftm__row:last-of-type{ padding-bottom: 28px; }html #sos-page .ftm__meta{ border-top: 0; padding-top: 0; }
-}
+}@media (max-width: 767px){html #sos-page .ftm__row{ row-gap: 0; padding-block: 0 12px; }html #sos-page .ftm__row.is-head{ padding-bottom: 20px; }html #sos-page .ftm__row.is-head .ftm__k{ color: var(--txt); font-weight: var(--w-ink); position: relative; }html #sos-page .ftm__row.is-head .ftm__k::after{ content: ''; position: absolute; right: 12px; top: .2em; bottom: .2em; width: 1px; background: var(--txt); }
+}@media (max-width: 767px){html #sos-page .ftm__row.is-head .ftm__v{ white-space: nowrap; } }
 </style>
 <style>html #sos-page main{ display: flex; flex-direction: column; gap: var(--block-gap); padding-bottom: var(--block-gap); }:root{ --block-gap: calc(80 * var(--u)); }@media (min-width: 768px){:root{ --block-gap: calc(180 * var(--u)); } }html #sos-page .hero{
   padding-top: calc(96 * var(--u));
@@ -462,17 +463,19 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
   <div class="ft__col"><h2 class="ft__h">Контакты</h2>
     <span><span class="nw">Санкт-Петербург</span></span>
     <a href="mailto:shapeofsense@gmail.com">Почта</a>
-    <span>Телеграм</span>
+    <a href="https://t.me/shapeofsense">Телеграм</a>
     <a href="tel:+79119736693">+7 (911) 973-66-93</a>
   </div>
 
   <!-- телефон: ведомость в две колонки и знак SHAPE (of Sense) во всю ширину -->
   <div class="ftm">
     <p class="ftm__lock" aria-label="Shape of Sense"><span class="ftm__shape" data-fit-w>SHAPE</span><span class="ftm__sense" data-fit-w="0.79">(of Sense)</span></p>
-    <div class="ftm__row"><span class="ftm__k">Разделы</span><span class="ftm__v"><a href="#projects">Проекты</a><a href="#about">О нас</a><a href="#contacts">Контакты</a></span></div>
-    <div class="ftm__row is-group"><div class="ftm__pair"><span class="ftm__k">Почта</span><span class="ftm__v"><a href="mailto:shapeofsense@gmail.com">shapeofsense@<wbr>gmail.com</a></span></div><div class="ftm__pair"><span class="ftm__k">Телефон</span><span class="ftm__v"><a href="tel:+79119736693">+7 (911) 973-66-93</a></span></div><div class="ftm__pair"><span class="ftm__k">Телеграм</span><span class="ftm__v"><span>Написать</span></span></div></div>
-    <div class="ftm__row"><span class="ftm__k">Город</span><span class="ftm__v"><span class="nw">Санкт-Петербург</span></span></div>
-    <div class="ftm__row"><span class="ftm__k">Документы</span><span class="ftm__v"><span>Политика конфиденциальности</span></span></div>
+    <!-- первая строка: правовая информация | город; дальше — подпись серым, значение со 2-й колонки -->
+    <div class="ftm__row is-head"><span class="ftm__k">Правовая информация</span><span class="ftm__v">г.&nbsp;<span class="nw">Санкт-Петербург</span></span></div>
+    <div class="ftm__row"><span class="ftm__k">Телефон</span><span class="ftm__v"><a href="tel:+79119736693">+7 (911) 973-66-93</a></span></div>
+    <div class="ftm__row"><span class="ftm__k">Почта</span><span class="ftm__v"><a href="mailto:shapeofsense@gmail.com">shapeofsense@<wbr>gmail.com</a></span></div>
+    <div class="ftm__row"><span class="ftm__k">Телеграм</span><span class="ftm__v"><a href="https://t.me/shapeofsense">shapeofsense</a></span></div>
+    <div class="ftm__row"><span class="ftm__k">Инстаграм</span><span class="ftm__v"><a href="https://instagram.com/shapeofsense">shapeofsense</a></span></div>
     <p class="ftm__meta"><span>Made by Shape of Sense</span><span>©2026</span></p>
   </div>
 </footer>
