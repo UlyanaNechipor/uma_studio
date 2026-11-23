@@ -144,7 +144,8 @@
 }@media (max-width: 767px){html #sos-page .ftm{ font-size: max(var(--min-nav), calc(10 * var(--u))); letter-spacing: normal; } }@media (max-width: 767px){html #sos-page .ftm__row.is-group{ display: flex; flex-direction: column; gap: 0; }html #sos-page .ftm__pair{ display: grid; grid-template-columns: 1fr 1fr; column-gap: 8px; }
 }@media (max-width: 767px){html #sos-page .ftm__row,html #sos-page .ftm__lock + .ftm__row{ border: 0; padding: 0 16px; }html #sos-page .ftm__lock{ padding-bottom: 28px; }html #sos-page .ftm__row:last-of-type{ padding-bottom: 28px; }html #sos-page .ftm__meta{ border-top: 0; padding-top: 0; }
 }@media (max-width: 767px){html #sos-page .ftm__row{ row-gap: 0; padding-block: 0 12px; }html #sos-page .ftm__row.is-head{ padding-bottom: 20px; }html #sos-page .ftm__row.is-head .ftm__k{ color: var(--txt); font-weight: var(--w-ink); position: relative; }html #sos-page .ftm__row.is-head .ftm__k::after{ content: ''; position: absolute; right: 12px; top: .2em; bottom: .2em; width: 1px; background: var(--txt); }
-}@media (max-width: 767px){html #sos-page .ftm__row.is-head .ftm__v{ white-space: nowrap; } }
+}@media (max-width: 767px){html #sos-page .ftm__row.is-head .ftm__v{ white-space: nowrap; } }@media (max-width: 767px){html #sos-page .ftm__city{ white-space: nowrap; }html #sos-page .ftm__row.is-head .ftm__k::after{ top: .25em; bottom: .25em; height: auto; background: var(--line); }html #sos-page .ftm__row.is-head{ align-items: start; }
+}
 </style>
 <style>html #sos-page main{ display: flex; flex-direction: column; gap: var(--block-gap); padding-bottom: var(--block-gap); }:root{ --block-gap: calc(80 * var(--u)); }@media (min-width: 768px){:root{ --block-gap: calc(180 * var(--u)); } }html #sos-page .hero{
   padding-top: calc(96 * var(--u));
@@ -471,7 +472,7 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
   <div class="ftm">
     <p class="ftm__lock" aria-label="Shape of Sense"><span class="ftm__shape" data-fit-w>SHAPE</span><span class="ftm__sense" data-fit-w="0.79">(of Sense)</span></p>
     <!-- первая строка: правовая информация | город; дальше — подпись серым, значение со 2-й колонки -->
-    <div class="ftm__row is-head"><span class="ftm__k">Правовая информация</span><span class="ftm__v">г.&nbsp;<span class="nw">Санкт-Петербург</span></span></div>
+    <div class="ftm__row is-head"><span class="ftm__k">Правовая информация</span><span class="ftm__v"><span class="ftm__city">г.&nbsp;Санкт-Петербург</span></span></div>
     <div class="ftm__row"><span class="ftm__k">Телефон</span><span class="ftm__v"><a href="tel:+79119736693">+7 (911) 973-66-93</a></span></div>
     <div class="ftm__row"><span class="ftm__k">Почта</span><span class="ftm__v"><a href="mailto:shapeofsense@gmail.com">shapeofsense@<wbr>gmail.com</a></span></div>
     <div class="ftm__row"><span class="ftm__k">Телеграм</span><span class="ftm__v"><a href="https://t.me/shapeofsense">shapeofsense</a></span></div>
