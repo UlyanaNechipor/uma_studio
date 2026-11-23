@@ -188,3 +188,5 @@ html.light-theme :is(.case-turn__k, .cs-k, .cs-num, .cs-text p) { font-weight: v
   .ftm__row.is-head .ftm__k::after { top: .25em; bottom: .25em; height: auto; background: var(--line); }
   .ftm__row.is-head { align-items: start; }
 }
+/* разделитель в первой строке футера убран */
+@media (max-width: 767px) { .ftm__row.is-head .ftm__k::after { content: none; } }
