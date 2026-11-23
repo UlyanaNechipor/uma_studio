@@ -686,9 +686,9 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     var check = function () {
       boxes.forEach(function (b) {
         if (b.classList.contains('is-open')) return;
-        var t = b.querySelector('.uma-project__cols, .uma-project__aside');
-        var hidden = !!b.querySelector('.uma-project__meta.is-m dl');
-        b.classList.toggle('is-clamped', mq.matches && (hidden || (t && t.scrollHeight > t.clientHeight + 2)));
+        var t = b.querySelector('.is-m-only.uma-project__aside') || b.querySelector('.uma-project__cols, .uma-project__aside');
+        var full = b.closest && b.closest('.is-palette');   // текст палитры на телефоне всегда целиком
+        b.classList.toggle('is-clamped', mq.matches && !full && !!t && t.scrollHeight > t.clientHeight + 2);
       });
     };
     boxes.forEach(function (b) {
