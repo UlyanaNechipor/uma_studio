@@ -28,11 +28,11 @@ _at: &at
   label: Начало текста (если текст один)
   widget: select
   required: false
-  default: 10
+  default: '10'
   options:
-    - { label: '9-я колонка — под «О нас»', value: 9 }
-    - { label: '10-я колонка — средний текст', value: 10 }
-    - { label: '11-я колонка — короткий текст, под «Контакты»', value: 11 }
+    - { label: '9-я колонка — под «О нас»', value: '9' }
+    - { label: '10-я колонка — средний текст', value: '10' }
+    - { label: '11-я колонка — короткий текст, под «Контакты»', value: '11' }
   hint: Два текста всегда встают с 7-й и 10-й колонки.
 
 _picture: &picture
@@ -104,10 +104,10 @@ collections:
                 label: Абзацы
                 widget: select
                 required: false
-                default: 0
+                default: '0'
                 options:
-                  - { label: Вплотную, value: 0 }
-                  - { label: С небольшим отступом (список), value: 8 }
+                  - { label: Вплотную, value: '0' }
+                  - { label: С небольшим отступом (список), value: '8' }
               - { name: image, label: Картинка, widget: object, required: false, collapsed: false, fields: *picture }
               - { name: image_after, label: Вторая картинка под первой, widget: object, required: false, collapsed: true, fields: *picture }
           - name: pair
@@ -157,7 +157,7 @@ collections:
                   - { name: text, label: Описание, widget: text, required: false }
                   - { name: color, label: Цвет названия, widget: color, required: false }
                   - { name: size, label: 'Кегль названия (px при ширине 1200)', widget: number, required: false, hint: 'Пусто — по умолчанию. Название должно уместиться в колонки 1–9.' }
-                  - { name: weight, label: Начертание, widget: select, required: false, options: [300, 400, 500, 600, 700] }
+                  - { name: weight, label: Начертание, widget: select, required: false, options: ['300', '400', '500', '600', '700'] }
                   - { name: serif, label: С засечками, widget: boolean, required: false, default: false }
               - { name: image, label: Картинка, widget: object, required: false, collapsed: true, fields: *picture }
       - { name: fonts, label: Шрифты проекта — ссылка Google Fonts, widget: string, required: false, hint: 'Например https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&display=swap' }
