@@ -245,13 +245,13 @@
   }
   // образцы шрифтов на телефоне («Aa Bb Cc») — как картинка: ровно во всю ширину колонки, каким бы ни был шрифт
   function fitSamples() {
-    var els = $$('.uma-project__sample-m');
+    var els = $$('.uma-project__sample-m, [data-fit-w]');
     if (!els.length) return;
     var fit = function () {
       els.forEach(function (e) {
         if (!e.offsetParent) return;
         e.style.fontSize = '100px';
-        var w = e.scrollWidth, box = e.parentNode.clientWidth;
+        var w = e.scrollWidth, box = e.parentNode.clientWidth * (+e.getAttribute('data-fit-w') || 1);
         if (w) e.style.fontSize = (100 * box / w).toFixed(2) + 'px';
       });
     };
