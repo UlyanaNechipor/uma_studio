@@ -372,6 +372,7 @@
 }html #sos-page .uma-project__h2{ letter-spacing: 0; }html #sos-page .uma-project__palette.is-framed li{ background: var(--up-panel); }html.light-theme #sos-page .uma-project__sw{ box-shadow: none; }html #sos-page .uma-project__palette.is-framed li{ background: none; }html #sos-page .uma-project__sw > span{ font-weight: 400; }html #sos-page .uma-project__pager a{ gap: .5em; align-items: center; }html #sos-page .uma-project__pager svg{ width: .62em; height: .5em; flex: none; fill: currentColor; position: relative; top: -.04em; }html #sos-page .uma-project__pager .is-next svg{ transform: rotate(180deg); }html #sos-page .is-m-only{ display: none; }@media (max-width: 767px){html #sos-page .is-d-only{ display: none !important; }html #sos-page .uma-project__aside.is-m-only{ display: block; }html #sos-page p.is-m-only{ display: block; }html #sos-page .uma-project__intro:not(.is-open) .uma-project__cols{ max-height: none; -webkit-mask-image: none; mask-image: none;
     display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 6; overflow: hidden; }html #sos-page .uma-project__intro:not(.is-open) .uma-project__cols > *{ display: inline; }html #sos-page .uma-project__intro:not(.is-open) .uma-project__cols p{ display: inline; }html #sos-page .is-palette .uma-project__head > :is(.uma-project__cols, .uma-project__aside){ max-height: none !important; -webkit-mask-image: none !important; mask-image: none !important; }html #sos-page .is-palette .uma-project__cols{ display: block; }html #sos-page .is-palette .uma-project__col + .uma-project__col{ margin-top: 1.45em; }html #sos-page .is-fonts .uma-project__specimen,html #sos-page .is-fonts .uma-project__font-info{ display: none; }html #sos-page .is-fonts .uma-project__font{ padding: calc(16 * var(--u)) 0 calc(20 * var(--u)); gap: calc(12 * var(--u)); }html #sos-page .uma-project__sample-m{ margin: 0; font-size: 17vw; line-height: 1; white-space: nowrap; letter-spacing: -.01em; }html #sos-page .is-fonts .uma-project__aside.is-m-only .uma-project__item{ margin-bottom: 1.45em; }html #sos-page .is-fonts .uma-project__aside.is-m-only .uma-project__sub{ display: block; color: var(--up-text); }
 }@media (max-width: 767px){html #sos-page .is-fonts .uma-project__aside.is-m-only .uma-project__item{ margin: 1.45em 0 0; }html #sos-page .is-fonts .uma-project__aside.is-m-only > .uma-project__item:first-child{ margin-top: 0; }
+}@media (max-width: 767px){html #sos-page .uma-project__sample-m{ display: block; width: max-content; max-width: none; line-height: .95; letter-spacing: 0; }html #sos-page .is-fonts .uma-project__font{ overflow: hidden; }
 }
 </style>
 <style>@media (min-width: 1025px) and (hover: hover){html,html body.t-body,html #sos-page a,html #sos-page button{ cursor: pointer; } }html #sos-page #trail,html #sos-page #wipe{ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }html #sos-page #trail{ z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }html.light-theme #sos-page #trail,html.light-theme #sos-page .hd__trail{ mix-blend-mode: multiply; opacity: .85; filter: blur(24px); }html #sos-page .hd__trail{ position: absolute; left: 0; top: 0; width: 100%; height: calc(100% + 120px);   
@@ -755,6 +756,23 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     check();
     addEventListener('resize', check);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(check);
+  }
+  // образцы шрифтов на телефоне («Aa Bb Cc») — как картинка: ровно во всю ширину колонки, каким бы ни был шрифт
+  function fitSamples() {
+    var els = $$('.uma-project__sample-m');
+    if (!els.length) return;
+    var fit = function () {
+      els.forEach(function (e) {
+        if (!e.offsetParent) return;
+        e.style.fontSize = '100px';
+        var w = e.scrollWidth, box = e.parentNode.clientWidth;
+        if (w) e.style.fontSize = (100 * box / w).toFixed(2) + 'px';
+      });
+    };
+    fit();
+    addEventListener('resize', fit);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', fit);
   }
   function reveal() {
     // что появляется: прямые части каждого блока (кроме первого экрана), колонки подвала
@@ -1284,7 +1302,7 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       addEventListener('pageshow', function (e) { if (e.persisted) scrollTo(0, 0); });
     }, 'scroll');
     safe(theme, 'theme'); safe(trail, 'trail'); safe(gallery, 'gallery'); safe(aside, 'aside');
-    safe(projects, 'projects'); safe(labZoom, 'labZoom'); safe(caseMore, 'caseMore'); safe(reveal, 'reveal');
+    safe(projects, 'projects'); safe(labZoom, 'labZoom'); safe(caseMore, 'caseMore'); safe(fitSamples, 'fitSamples'); safe(reveal, 'reveal');
     var go = function () {
       safe(fillInit, 'fillInit');
       try { preloader(); } catch (e) { try { console.error('Shape of Sense: preloader', e); } catch (_) {} rescue(); }
