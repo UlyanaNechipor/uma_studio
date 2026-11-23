@@ -130,3 +130,8 @@ html.light-theme .btn { font-weight: 520; }
 
 /* светлая тема: серые подписи остаются лёгкими (w-text), чёрный текст — плотнее (w-ink) */
 html.light-theme :is(.case-turn__k, .cs-k, .cs-num, .cs-text p) { font-weight: var(--w-text); }
+
+/* футер на телефоне: пункты меню тем же кеглем и разрядкой, что меню в шапке */
+@media (max-width: 767px) {
+  .ft__col { font-size: max(var(--min-nav), calc(10 * var(--u))); letter-spacing: normal; }
+}
