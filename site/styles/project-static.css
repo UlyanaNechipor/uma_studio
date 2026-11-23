@@ -419,3 +419,7 @@ html.light-theme .uma-project__sw { box-shadow: none; }
   .is-fonts .uma-project__aside.is-m-only .uma-project__item { margin: 1.45em 0 0; }
   .is-fonts .uma-project__aside.is-m-only > .uma-project__item:first-child { margin-top: 0; }
 }
+@media (max-width: 767px) {
+  .uma-project__sample-m { display: block; width: max-content; max-width: none; line-height: .95; letter-spacing: 0; }
+  .is-fonts .uma-project__font { overflow: hidden; }
+}
