@@ -265,8 +265,6 @@ function projectPage(d) {
     (d.intro.columns.filter((c) => c.length).length === 1
       ? d.intro.columns.filter((c) => c.length).map((col) => `<div class="uma-project__col is-single at-${d.intro.at || 10}">${col.map(para).join('')}</div>`).join('')
       : d.intro.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')) + '</div>' +
-    // на телефоне «Проект / Задачи» прячутся под «Подробнее о проекте» вместе с остальным текстом
-    '<div class="uma-project__meta is-m">' + (d.meta || []).map((g) => `<dl class="uma-project__meta-group"><dt>${esc(g.title)}</dt>${g.items.map((i) => `<dd>${typo(i)}</dd>`).join('')}</dl>`).join('') + '</div>' +
     moreBtn('Подробнее о проекте') + '</section>';
   const total = (d.sections || []).filter((x) => x.title).length; let num = 0;
   for (const sec of d.sections || []) {
@@ -274,11 +272,18 @@ function projectPage(d) {
     if (sec.layout === 'pair') { m += `<section class="uma-project__pair${sec.gap ? ' is-gap' : ''}">${(sec.images || []).map((im) => projectFigure(s, im)).join('')}</section>`; continue; }
     const gap = sec.gap ? ` style="--up-pgap:${sec.gap}px"` : '';
     num++;
-    m += `<section class="uma-project__section"><div class="uma-project__head"><h2 class="uma-project__h2">${typo(sec.title)}</h2>` +
+    // на телефоне: у шрифтов описания собраны под образцами в один текст (вместе с текстом раздела) и свёрнуты под «Подробнее»;
+    // mobileText — подпись, которая есть только на телефоне
+    const fontsM = sec.fonts && sec.fonts.some((f) => !f.sample);
+    const mText = fontsM ? [].concat(...(sec.columns || []), ...sec.fonts.filter((f) => !f.sample).map((f) => [{ h: f.label || f.name, t: f.text || '' }]))
+      : (!sec.columns && sec.mobileText ? sec.mobileText : null);
+    const cls = 'uma-project__section' + (sec.palette ? ' is-palette' : '') + (fontsM ? ' is-fonts' : '');
+    m += `<section class="${cls}"><div class="uma-project__head"><h2 class="uma-project__h2">${typo(sec.title)}</h2>` +
       (!sec.columns ? '' : sec.layout === 'split'
-        ? `<div class="uma-project__cols"${gap}>${sec.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')}</div>`
-        : `<div class="uma-project__aside at-${sec.at || 10}"${gap}>${sec.columns[0].map(para).join('')}</div>`) +   // at: 10 — средний текст, 11 — мало текста
-      (sec.columns ? moreBtn('Подробнее') : '') + '</div>';
+        ? `<div class="uma-project__cols${fontsM ? ' is-d-only' : ''}"${gap}>${sec.columns.map((col) => `<div class="uma-project__col">${col.map(para).join('')}</div>`).join('')}</div>`
+        : `<div class="uma-project__aside at-${sec.at || 10}${fontsM ? ' is-d-only' : ''}"${gap}>${sec.columns[0].map(para).join('')}</div>`) +   // at: 10 — средний текст, 11 — мало текста
+      (mText ? `<div class="uma-project__aside is-m-only">${mText.map(para).join('')}</div>` : '') +
+      ((sec.columns || mText) && !sec.palette ? moreBtn('Подробнее') : '') + '</div>';
     // палитра: плашки с HEX и «Aa»
     // палитра: у цветов с названием — квадрат в рамке: (01), название, HEX (рамка держит светлые цвета на светлой теме)
     if (sec.palette && sec.palette.some((c) => c.name)) m += `<ul class="uma-project__palette is-framed" style="--n:${sec.palette.length}${sec.paletteFont ? `;font-family:'${esc(sec.paletteFont)}',var(--f-sans)` : ''}">` +
@@ -289,7 +294,7 @@ function projectPage(d) {
     // образец «Aa Bb Cc» во всю ширину своим шрифтом и цветом, над ним — название
     if (sec.fonts) m += '<div class="uma-project__fonts">' + sec.fonts.map((f) => f.sample
       ? `<div class="uma-project__font is-sample"><p class="uma-project__font-name">${esc(f.name)}</p><p class="uma-project__sample" aria-hidden="true" style="font-family:'${esc(f.family || f.name)}',${f.serif ? 'Georgia,serif' : 'Arial,sans-serif'};font-weight:${+f.weight || 400}${f.color ? ';color:' + esc(f.color) : ''}">${f.sample.split(' ').map((x) => `<span>${esc(x)}</span>`).join('')}</p></div>`
-      : `<div class="uma-project__font"><p class="uma-project__specimen" style="font-family:'${esc(f.family || f.name)}',${f.serif ? 'Georgia,serif' : 'Arial,sans-serif'}${f.weight ? ';font-weight:' + +f.weight : ''}${f.color ? ';color:' + esc(f.color) : ''}${f.size ? ';--fs:' + +f.size : ''}">${esc(f.name)}</p>` +
+      : `<div class="uma-project__font"><p class="uma-project__font-name is-m-only">${esc(f.name)}</p><p class="uma-project__sample-m is-m-only" aria-hidden="true" style="font-family:'${esc(f.family || f.name)}',${f.serif ? 'Georgia,serif' : 'Arial,sans-serif'}${f.weight ? ';font-weight:' + +f.weight : ''}${f.color ? ';color:' + esc(f.color) : ''}">Aa Bb Cc</p><p class="uma-project__specimen" style="font-family:'${esc(f.family || f.name)}',${f.serif ? 'Georgia,serif' : 'Arial,sans-serif'}${f.weight ? ';font-weight:' + +f.weight : ''}${f.color ? ';color:' + esc(f.color) : ''}${f.size ? ';--fs:' + +f.size : ''}">${esc(f.name)}</p>` +
       `<div class="uma-project__font-info"><p class="uma-project__sub">${typo(f.label || '')}</p><p>${typo(f.text || '')}</p></div></div>`).join('') + '</div>';
     m += projectFigure(s, sec.image) + projectFigure(s, sec.after) + '</section>';
   }
@@ -347,6 +352,7 @@ function loadProject(file) {
     const sec = { title: x.title };
     if (cols.length) { sec.columns = cols; sec.layout = cols.length > 1 ? 'split' : 'side'; sec.at = +x.at || 10; }
     if (+x.para_gap) sec.gap = +x.para_gap;
+    if (String(x.mobile_text || '').trim()) sec.mobileText = textCol(x.mobile_text);
     if (x.type === 'palette') { sec.palette = x.colors || []; if (x.font) sec.paletteFont = x.font; }
     if (x.type === 'fonts') sec.fonts = x.fonts || [];
     sec.image = imgOf(x.image); sec.after = imgOf(x.image_after);

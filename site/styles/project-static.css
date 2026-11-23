@@ -391,3 +391,31 @@ html.light-theme .uma-project__sw { box-shadow: none; }
 .uma-project__pager a { gap: .5em; align-items: center; }
 .uma-project__pager svg { width: .62em; height: .5em; flex: none; fill: currentColor; position: relative; top: -.04em; }
 .uma-project__pager .is-next svg { transform: rotate(180deg); }
+
+/* ---------- телефон по мобильному макету ----------
+   is-m-only — только на телефоне, is-d-only — только на десктопе */
+.is-m-only { display: none; }
+@media (max-width: 767px) {
+  .is-d-only { display: none !important; }
+  .uma-project__aside.is-m-only { display: block; }
+  p.is-m-only { display: block; }
+  /* вступление: свёрнутый текст — 6 строк с многоточием, «Проект / Задачи» на телефоне нет */
+  .uma-project__intro:not(.is-open) .uma-project__cols { max-height: none; -webkit-mask-image: none; mask-image: none;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 6; overflow: hidden; }
+  .uma-project__intro:not(.is-open) .uma-project__cols > * { display: inline; }
+  .uma-project__intro:not(.is-open) .uma-project__cols p { display: inline; }
+  /* палитра: текст целиком, без «Подробнее» */
+  .is-palette .uma-project__head > :is(.uma-project__cols, .uma-project__aside) { max-height: none !important; -webkit-mask-image: none !important; mask-image: none !important; }
+  .is-palette .uma-project__cols { display: block; }
+  .is-palette .uma-project__col + .uma-project__col { margin-top: 1.45em; }
+  /* шрифты: маленькое название, крупно «Aa Bb Cc» её шрифтом, линии между; описания — общим текстом ниже */
+  .is-fonts .uma-project__specimen, .is-fonts .uma-project__font-info { display: none; }
+  .is-fonts .uma-project__font { padding: calc(16 * var(--u)) 0 calc(20 * var(--u)); gap: calc(12 * var(--u)); }
+  .uma-project__sample-m { margin: 0; font-size: 17vw; line-height: 1; white-space: nowrap; letter-spacing: -.01em; }
+  .is-fonts .uma-project__aside.is-m-only .uma-project__item { margin-bottom: 1.45em; }
+  .is-fonts .uma-project__aside.is-m-only .uma-project__sub { display: block; color: var(--up-text); }
+}
+@media (max-width: 767px) {
+  .is-fonts .uma-project__aside.is-m-only .uma-project__item { margin: 1.45em 0 0; }
+  .is-fonts .uma-project__aside.is-m-only > .uma-project__item:first-child { margin-top: 0; }
+}
