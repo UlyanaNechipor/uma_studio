@@ -180,9 +180,7 @@ const footerHtml = (home = '') => `
   <div class="ftm">
     <p class="ftm__lock" aria-label="${esc(site.brand)}"><span class="ftm__shape" data-fit-w>SHAPE</span><span class="ftm__sense" data-fit-w="0.79">(of Sense)</span></p>
     <div class="ftm__row"><span class="ftm__k">Разделы</span><span class="ftm__v">${site.nav.map((n) => `<a href="${home}#${n.id}">${esc(n.label)}</a>`).join('')}</span></div>
-    <div class="ftm__row"><span class="ftm__k">Почта</span><span class="ftm__v"><a href="mailto:${esc(c.email)}">${esc(c.email).replace('@', '@<wbr>')}</a></span></div>
-    <div class="ftm__row"><span class="ftm__k">Телефон</span><span class="ftm__v"><a href="tel:${esc(c.phone.replace(/[^\d+]/g, ''))}">${esc(c.phone)}</a></span></div>
-    <div class="ftm__row"><span class="ftm__k">Телеграм</span><span class="ftm__v">${c.telegram ? `<a href="${esc(c.telegram)}">Написать</a>` : '<span>Написать</span>'}</span></div>
+    <div class="ftm__row is-group"><div class="ftm__pair"><span class="ftm__k">Почта</span><span class="ftm__v"><a href="mailto:${esc(c.email)}">${esc(c.email).replace('@', '@<wbr>')}</a></span></div><div class="ftm__pair"><span class="ftm__k">Телефон</span><span class="ftm__v"><a href="tel:${esc(c.phone.replace(/[^\d+]/g, ''))}">${esc(c.phone)}</a></span></div><div class="ftm__pair"><span class="ftm__k">Телеграм</span><span class="ftm__v">${c.telegram ? `<a href="${esc(c.telegram)}">Написать</a>` : '<span>Написать</span>'}</span></div></div>
     <div class="ftm__row"><span class="ftm__k">Город</span><span class="ftm__v">${typo(c.city)}</span></div>
     <div class="ftm__row"><span class="ftm__k">Документы</span><span class="ftm__v">${c.privacy ? `<a href="${esc(c.privacy)}">Политика конфиденциальности</a>` : '<span>Политика конфиденциальности</span>'}</span></div>
     <p class="ftm__meta"><span>Made by ${esc(site.brand)}</span><span>©${esc(site.footer.year)}</span></p>

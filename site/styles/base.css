@@ -162,3 +162,8 @@ html.light-theme :is(.case-turn__k, .cs-k, .cs-num, .cs-text p) { font-weight: v
 }
 /* футер на телефоне: пункты и подписи — кеглем меню в шапке */
 @media (max-width: 767px) { .ftm { font-size: max(var(--min-nav), calc(10 * var(--u))); letter-spacing: normal; } }
+/* почта, телефон и телеграм — одной полосой между линейками */
+@media (max-width: 767px) {
+  .ftm__row.is-group { display: flex; flex-direction: column; gap: 0; }   /* шаг строк — как в «Разделах» */
+  .ftm__pair { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8px; }
+}
