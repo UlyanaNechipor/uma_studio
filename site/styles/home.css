@@ -181,3 +181,18 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
   .hero__title { white-space: nowrap; }
   .hero__title .hero__br { display: none; }
 }
+
+/* «Лаборатория» на телефоне — ритм «широкая — две узкие — широкая»: широкие 16:10, узкие 3:4;
+   под картинкой номер, название и тег (без рамок), кегли — как были */
+.lab__n { display: none; }
+@media (max-width: 767px) {
+  .lab__grid { row-gap: calc(24 * var(--u)); }
+  .lab__it--m-wide .lab__ph, .lab__it.lab__it--m-wide .lab__ph { height: auto; aspect-ratio: 16 / 10; }
+  .lab__it--m-half .lab__ph, .lab__it.lab__it--m-half .lab__ph { height: auto; aspect-ratio: 3 / 4; }
+  .lab__cap { display: flex; flex-wrap: wrap; column-gap: .5em; }
+  .lab__n { display: inline; }
+  .lab__name { color: var(--txt); }
+  .lab__dot { display: none; }
+  .lab__tag { flex-basis: 100%; }
+  .lab__it--m-wide .lab__tag { flex-basis: auto; }
+}

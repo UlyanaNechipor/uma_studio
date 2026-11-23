@@ -69,6 +69,13 @@ const img = (src, alt = '', cls = '', eager = false, sizes = '100vw') => {
   const main = v ? (v.find((x) => x.w >= 960) || v[v.length - 1]).path : src;
   return `<img class="${cls}" src="${esc(main)}"${set} alt="${esc(alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
 };
+// подпись работы в «Лаборатории»: на телефоне — номер, название и тег («Название. Тег» делится по первой точке)
+const LAB_M_ORDER = ['a1', 'd2', 'a2', 'c1', 'b', 'c2', 'd1'];
+const labCap = (x) => {
+  const i = String(x.cap).indexOf('. '), name = i < 0 ? x.cap : x.cap.slice(0, i), tag = i < 0 ? '' : x.cap.slice(i + 2);
+  const n = LAB_M_ORDER.indexOf(x.d) + 1;
+  return `<span class="lab__n">${n ? String(n).padStart(2, '0') : ''}</span><span class="lab__name">${typo(name)}</span>${tag ? `<span class="lab__dot">. </span><span class="lab__tag">${typo(tag)}</span>` : ''}`;
+};
 const btn = (b, kind = 'light') =>
   `<a class="btn btn--${kind}" href="${href(b.href)}">${esc(b.label)}</a>`;
 
@@ -130,7 +137,7 @@ const lab = `
     ${[['a1', 'a2'], ['b'], ['c2', 'c1'], ['d1', 'd2']].map((col) => `<div class="lab__col">${col.map((k) => h.lab.images.find((x) => x.d === k)).map((x) => `
       <figure class="lab__it lab__it--${x.d} lab__it--m-${x.m}" style="--h:${x.h}">
         <div class="lab__ph">${img(x.src, '', '', false, x.m === 'wide' ? '(min-width: 768px) 25vw, 100vw' : '(min-width: 768px) 25vw, 50vw')}</div>
-        <figcaption class="lab__cap ty-small ty-grey">${typo(x.cap)}</figcaption>
+        <figcaption class="lab__cap ty-small ty-grey">${labCap(x)}</figcaption>
       </figure>`).join('')}
     </div>`).join('\n    ')}
   </div>
