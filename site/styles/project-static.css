@@ -445,3 +445,15 @@ html.light-theme .uma-project__figure .tv-l { display: block; }
 html.light-theme .uma-project__figure .tv-d { display: none; }
 .uma-project__figure picture.tv-d, .uma-project__figure picture.tv-l { width: 100%; }
 html:not(.light-theme) .uma-project__figure picture.tv-d { display: block; }
+
+/* кейсы на телефоне — правило «Подробнее»: текст длиннее 4 строк свёрнут целиком (виден только заголовок и «+»),
+   короче — показан полностью и без «+»; дымки нет */
+@media (max-width: 767px) {
+  .uma-project__intro .uma-project__cols, .uma-project__head > .uma-project__cols, .uma-project__head > .uma-project__aside {
+    max-height: none !important; -webkit-mask-image: none !important; mask-image: none !important;
+  }
+  .uma-project__intro:not(.is-open) .uma-project__cols { display: block; -webkit-line-clamp: unset; }
+  .uma-project__intro:not(.is-open) .uma-project__cols > *, .uma-project__intro:not(.is-open) .uma-project__cols p { display: block; }
+  .is-clamped:not(.is-open) > .uma-project__cols, .is-clamped:not(.is-open) > .uma-project__aside { display: none !important; }
+  .uma-project__head.is-clamped:not(.is-open) > .uma-project__more { margin-top: calc(16 * var(--u)); }
+}
