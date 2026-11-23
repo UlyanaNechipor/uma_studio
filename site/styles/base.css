@@ -155,3 +155,8 @@ html.light-theme :is(.case-turn__k, .cs-k, .cs-num, .cs-text p) { font-weight: v
     font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); color: var(--grey); text-transform: uppercase; letter-spacing: .08em; }
 }
 @media (max-width: 767px) { .ftm__meta { display: flex; justify-content: space-between; gap: 8px; letter-spacing: .06em; } }
+@media (max-width: 767px) {
+  .ftm__lock { padding: 28px 0 24px; }
+  .ftm__lock + .ftm__row { border-top: 1px solid var(--line); }
+  .ftm__meta { border-top: 0; }
+}
