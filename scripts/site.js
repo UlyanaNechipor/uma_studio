@@ -240,6 +240,8 @@
       if (btn) btn.addEventListener('click', function () {
         var open = !b.classList.contains('is-open');
         b.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        var sp = btn.querySelector('span');
+        if (sp) { if (!btn.dataset.label) btn.dataset.label = sp.textContent; sp.textContent = open ? 'Свернуть' : btn.dataset.label; }
         if (!open) check();
       });
     });
