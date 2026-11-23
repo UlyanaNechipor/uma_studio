@@ -180,7 +180,7 @@ const footerHtml = (home = '') => `
   <div class="ftm">
     <p class="ftm__lock" aria-label="${esc(site.brand)}"><span class="ftm__shape" data-fit-w>SHAPE</span><span class="ftm__sense" data-fit-w="0.79">(of Sense)</span></p>
     <!-- первая строка: правовая информация | город; дальше — подпись серым, значение со 2-й колонки -->
-    <div class="ftm__row is-head">${c.privacy ? `<a class="ftm__k" href="${esc(c.privacy)}">Правовая информация</a>` : '<span class="ftm__k">Правовая информация</span>'}<span class="ftm__v">г.&nbsp;${typo(c.city)}</span></div>
+    <div class="ftm__row is-head">${c.privacy ? `<a class="ftm__k" href="${esc(c.privacy)}">Правовая информация</a>` : '<span class="ftm__k">Правовая информация</span>'}<span class="ftm__v"><span class="ftm__city">г.&nbsp;${esc(c.city)}</span></span></div>
     <div class="ftm__row"><span class="ftm__k">Телефон</span><span class="ftm__v"><a href="tel:${esc(c.phone.replace(/[^\d+]/g, ''))}">${esc(c.phone)}</a></span></div>
     <div class="ftm__row"><span class="ftm__k">Почта</span><span class="ftm__v"><a href="mailto:${esc(c.email)}">${esc(c.email).replace('@', '@<wbr>')}</a></span></div>
     ${c.telegram ? `<div class="ftm__row"><span class="ftm__k">Телеграм</span><span class="ftm__v"><a href="${esc(c.telegram)}">${esc(c.telegram.replace(/\/+$/, '').split('/').pop())}</a></span></div>` : ''}

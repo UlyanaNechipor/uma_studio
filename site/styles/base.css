@@ -182,3 +182,9 @@ html.light-theme :is(.case-turn__k, .cs-k, .cs-num, .cs-text p) { font-weight: v
   .ftm__row.is-head .ftm__k::after { content: ''; position: absolute; right: 12px; top: .2em; bottom: .2em; width: 1px; background: var(--txt); }
 }
 @media (max-width: 767px) { .ftm__row.is-head .ftm__v { white-space: nowrap; } }
+/* город — одной строкой; разделитель — серый, высотой в строку, не выходит за текст */
+@media (max-width: 767px) {
+  .ftm__city { white-space: nowrap; }
+  .ftm__row.is-head .ftm__k::after { top: .25em; bottom: .25em; height: auto; background: var(--line); }
+  .ftm__row.is-head { align-items: start; }
+}
