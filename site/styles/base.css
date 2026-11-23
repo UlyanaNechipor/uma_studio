@@ -167,3 +167,10 @@ html.light-theme :is(.case-turn__k, .cs-k, .cs-num, .cs-text p) { font-weight: v
   .ftm__row.is-group { display: flex; flex-direction: column; gap: 0; }   /* шаг строк — как в «Разделах» */
   .ftm__pair { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8px; }
 }
+/* футер на телефоне: без разделителей — пункты идут подряд, строка за строкой */
+@media (max-width: 767px) {
+  .ftm__row, .ftm__lock + .ftm__row { border: 0; padding: 0 16px; }
+  .ftm__lock { padding-bottom: 28px; }
+  .ftm__row:last-of-type { padding-bottom: 28px; }
+  .ftm__meta { border-top: 0; padding-top: 0; }
+}
