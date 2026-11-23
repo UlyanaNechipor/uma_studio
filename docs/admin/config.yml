@@ -133,9 +133,9 @@ collections:
                 widget: list
                 summary: '{{fields.name}} {{fields.hex}}'
                 fields:
-                  - { name: hex, label: Цвет, widget: color }
+                  - { name: hex, label: Цвет, widget: color, allowInput: true }
                   - { name: name, label: Название, widget: string, required: false, hint: 'С названиями — квадраты в рамках с подписью (01), название, HEX. Без названий — плашки «HEX / Aa».' }
-                  - { name: ink, label: Цвет подписи, widget: color, required: false, hint: 'Пусто — подберётся сам: тёмный на светлом, светлый на тёмном.' }
+                  - { name: ink, label: Цвет подписи, widget: color, allowInput: true, required: false, hint: 'Пусто — подберётся сам: тёмный на светлом, светлый на тёмном.' }
               - { name: font, label: Шрифт подписей в палитре, widget: string, required: false, hint: 'Название шрифта из ссылки Google Fonts ниже, например Plus Jakarta Sans.' }
           - name: fonts
             label: Шрифты
@@ -155,7 +155,7 @@ collections:
                   - { name: name, label: Название шрифта, widget: string, hint: 'Набирается самим шрифтом — шрифт нужно подключить ссылкой Google Fonts ниже.' }
                   - { name: label, label: Подпись над описанием, widget: string, required: false }
                   - { name: text, label: Описание, widget: text, required: false }
-                  - { name: color, label: Цвет названия, widget: color, required: false }
+                  - { name: color, label: Цвет названия, widget: color, allowInput: true, required: false }
                   - { name: size, label: 'Кегль названия (px при ширине 1200)', widget: number, required: false, hint: 'Пусто — по умолчанию. Название должно уместиться в колонки 1–9.' }
                   - { name: weight, label: Начертание, widget: select, required: false, options: ['300', '400', '500', '600', '700'] }
                   - { name: serif, label: С засечками, widget: boolean, required: false, default: false }
@@ -332,14 +332,14 @@ collections:
                 label: Тёмная
                 widget: object
                 fields:
-                  - { name: bg, label: Фон, widget: color }
-                  - { name: text, label: Текст, widget: color }
+                  - { name: bg, label: Фон, widget: color, allowInput: true }
+                  - { name: text, label: Текст, widget: color, allowInput: true }
               - name: light
                 label: Светлая
                 widget: object
                 fields:
-                  - { name: bg, label: Фон, widget: color }
-                  - { name: text, label: Текст, widget: color }
+                  - { name: bg, label: Фон, widget: color, allowInput: true }
+                  - { name: text, label: Текст, widget: color, allowInput: true }
               - name: default
                 label: Тема по умолчанию
                 widget: select
