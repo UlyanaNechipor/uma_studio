@@ -469,3 +469,12 @@ html:not(.light-theme) .uma-project__figure picture.tv-d { display: block; }
   .uma-project__section > .uma-project__facts { order: 1; }
   .uma-project__fact-l { font-size: var(--up-body); }
 }
+/* правило «Подробнее» (обновлено): у длинного текста видны первые 4 строки, ниже — «Подробнее +» без дымки;
+   раскрыт — «Свернуть −» */
+@media (max-width: 767px) {
+  .is-clamped:not(.is-open) > .uma-project__cols, .is-clamped:not(.is-open) > .uma-project__aside { display: block !important; }
+  .uma-project__head.is-clamped:not(.is-open) > .is-d-only { display: none !important; }
+  .is-clamped:not(.is-open) > .uma-project__cols, .is-clamped:not(.is-open) > .uma-project__aside {
+    max-height: calc(1.45em * 4) !important; overflow: hidden; }
+  .is-clamped:not(.is-open) > .uma-project__cols .uma-project__col + .uma-project__col { display: none; }
+}
