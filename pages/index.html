@@ -709,9 +709,13 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     var check = function () {
       boxes.forEach(function (b) {
         if (b.classList.contains('is-open')) return;
+        // правило: текст длиннее 4 строк сворачивается целиком под «+» (заголовок виден всегда); 4 строки и меньше — виден, без «+»
         var t = b.querySelector('.is-m-only.uma-project__aside') || b.querySelector('.uma-project__cols, .uma-project__aside');
         var full = b.closest && b.closest('.is-palette');   // текст палитры на телефоне всегда целиком
-        b.classList.toggle('is-clamped', mq.matches && !full && !!t && t.scrollHeight > t.clientHeight + 2);
+        b.classList.remove('is-clamped');
+        if (!mq.matches || full || !t) return;
+        var lh = parseFloat(getComputedStyle(t.querySelector('p') || t).lineHeight) || 20;
+        b.classList.toggle('is-clamped', t.scrollHeight > lh * 4 + 2);
       });
     };
     boxes.forEach(function (b) {
