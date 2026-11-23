@@ -99,6 +99,7 @@ collections:
               - { name: text, label: Текст, widget: text, required: false, hint: *text_hint }
               - { name: text2, label: Второй текст (необязательно), widget: text, required: false, hint: *text_hint }
               - *at
+              - { name: mobile_text, label: Подпись только на телефоне, widget: text, required: false, hint: 'Для раздела без текста: короткая подпись под картинкой на телефоне.' }
               - name: para_gap
                 label: Абзацы
                 widget: select
