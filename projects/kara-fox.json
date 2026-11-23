@@ -43,7 +43,7 @@
         },
         {
           "hex": "#d9381e",
-          "ink": "#faf6f1",
+          "ink": "#ffffff",
           "name": "Red fox"
         },
         {
@@ -108,7 +108,7 @@
       "text": "Страница контактов с формой для обратной связи и возможностью записаться на интервью в Calendly.",
       "at": "10",
       "image": {
-        "image": "img/projects/kara-fox/contacts-3600.webp",
+        "image": "img/projects/kara-fox/contacts-2-3600.webp",
         "alt": "Страница контактов Kara Fox на ноутбуке"
       }
     }
