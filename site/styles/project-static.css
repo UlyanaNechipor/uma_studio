@@ -457,3 +457,15 @@ html:not(.light-theme) .uma-project__figure picture.tv-d { display: block; }
   .is-clamped:not(.is-open) > .uma-project__cols, .is-clamped:not(.is-open) > .uma-project__aside { display: none !important; }
   .uma-project__head.is-clamped:not(.is-open) > .uma-project__more { margin-top: calc(16 * var(--u)); }
 }
+
+/* ---------- цифры проекта (Black Sable): 4 значения по 3 колонки, на телефоне — 2 × 2 ----------
+   значение — кеглем H2, подпись — серым кеглем текста; над каждым — тонкая линия */
+.uma-project__facts { list-style: none; margin: var(--up-inner) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: calc(32 * var(--u)) var(--up-gap); }
+.uma-project__facts li { border-top: 1px solid var(--line); padding-top: calc(16 * var(--u)); display: flex; flex-direction: column; gap: calc(12 * var(--u)); }
+.uma-project__fact-v { font-weight: var(--w-head); font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u))); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); color: var(--up-text); }
+.uma-project__fact-l { color: var(--up-meta); font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); line-height: 1.45; }
+@media (min-width: 768px) { .uma-project__facts { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--gap-12); } }
+@media (max-width: 767px) {
+  .uma-project__section > .uma-project__facts { order: 1; }
+  .uma-project__fact-l { font-size: var(--up-body); }
+}

@@ -196,3 +196,5 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
   .lab__tag { flex-basis: 100%; }
   .lab__it--m-wide .lab__tag { flex-basis: auto; }
 }
+/* номера в подписях «Лаборатории» убраны и на телефоне */
+.lab__n, .lab__cap .lab__n { display: none !important; }

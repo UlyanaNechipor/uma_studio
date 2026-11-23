@@ -323,6 +323,8 @@ function projectPage(d) {
       ? `<div class="uma-project__font is-sample"><p class="uma-project__font-name">${esc(f.name)}</p><p class="uma-project__sample" aria-hidden="true" style="font-family:'${esc(f.family || f.name)}',${f.serif ? 'Georgia,serif' : 'Arial,sans-serif'};font-weight:${+f.weight || 400}${f.color ? ';color:' + esc(f.color) : ''}">${f.sample.split(' ').map((x) => `<span>${esc(x)}</span>`).join('')}</p></div>`
       : `<div class="uma-project__font"><p class="uma-project__font-name is-m-only">${esc(f.name)}</p><p class="uma-project__sample-m is-m-only" aria-hidden="true" style="font-family:'${esc(f.family || f.name)}',${f.serif ? 'Georgia,serif' : 'Arial,sans-serif'}${f.weight ? ';font-weight:' + +f.weight : ''}${f.color ? ';color:' + esc(f.color) : ''}">Aa Bb Cc</p><p class="uma-project__specimen" style="font-family:'${esc(f.family || f.name)}',${f.serif ? 'Georgia,serif' : 'Arial,sans-serif'}${f.weight ? ';font-weight:' + +f.weight : ''}${f.color ? ';color:' + esc(f.color) : ''}${f.size ? ';--fs:' + +f.size : ''}">${esc(f.name)}</p>` +
       `<div class="uma-project__font-info"><p class="uma-project__sub">${typo(f.label || '')}</p><p>${typo(f.text || '')}</p></div></div>`).join('') + '</div>';
+    // цифры проекта: крупное значение кеглем H2 и подпись — по 3 колонки сетки, сверху линия
+    if (sec.facts) m += '<ul class="uma-project__facts">' + sec.facts.map((f) => `<li><b class="uma-project__fact-v">${typo(f.value)}</b><span class="uma-project__fact-l">${typo(f.label || '')}</span></li>`).join('') + '</ul>';
     m += projectFigure(s, sec.image) + projectFigure(s, sec.after) + '</section>';
   }
   const p = d.pagination;
@@ -383,6 +385,7 @@ function loadProject(file) {
     if (String(x.mobile_text || '').trim()) sec.mobileText = textCol(x.mobile_text);
     if (x.type === 'palette') { sec.palette = x.colors || []; if (x.font) sec.paletteFont = x.font; }
     if (x.type === 'fonts') sec.fonts = x.fonts || [];
+    if (x.type === 'facts') sec.facts = (x.items || []).filter((f) => f && f.value);
     sec.image = imgOf(x.image); sec.after = imgOf(x.image_after);
     return sec;
   });

@@ -139,6 +139,20 @@ collections:
                   - { name: name, label: Название, widget: string, required: false, hint: 'С названиями — квадраты в рамках с подписью (01), название, HEX. Без названий — плашки «HEX / Aa».' }
                   - { name: ink, label: Цвет подписи, widget: color, allowInput: true, required: false, hint: 'Пусто — подберётся сам: тёмный на светлом, светлый на тёмном.' }
               - { name: font, label: Шрифт подписей в палитре, widget: string, required: false, hint: 'Название шрифта из ссылки Google Fonts ниже, например Plus Jakarta Sans.' }
+          - name: facts
+            label: Цифры проекта
+            widget: object
+            summary: '{{fields.title}}'
+            fields:
+              - { name: title, label: Заголовок раздела, widget: string, default: Проект в цифрах }
+              - name: items
+                label: Цифры (лучше 4 — по 3 колонки сетки)
+                label_singular: цифра
+                widget: list
+                summary: '{{fields.value}}'
+                fields:
+                  - { name: value, label: Значение, widget: string, hint: 'Коротко: «1,5 года», «25+», «~5 минут».' }
+                  - { name: label, label: Подпись, widget: string }
           - name: fonts
             label: Шрифты
             widget: object
