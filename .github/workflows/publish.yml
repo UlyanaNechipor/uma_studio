@@ -1,0 +1,61 @@
+# Автосборка: любая правка контента (из админки или вручную) → лёгкие версии картинок → сборка →
+# выкладка в ветку static → tilda/static.json указывает на свежую версию. Через 1–2 минуты правка на сайте.
+name: Публикация сайта
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/**'
+      - 'projects/**'
+      - 'img/**'
+      - 'site/**'
+      - 'tools/**'
+      - 'tilda/loader.js'
+      - '.github/workflows/publish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:            # две правки подряд — собирается последняя, без гонки
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Pillow
+        run: pip install --quiet pillow
+
+      - name: Git от имени сборки
+        run: |
+          git config user.name "Публикация сайта"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Картинки — лёгкие версии и размеры
+        run: python3 tools/images.py
+
+      - name: Сборка и выкладка в ветку static
+        run: FOOT=" (автосборка)" bash tools/tilda-static.sh
+
+      - name: Сохранить картинки и номер версии
+        run: |
+          git add -A img tilda
+          if git diff --cached --quiet; then echo "нечего сохранять"; exit 0; fi
+          git commit -m "Публикация: картинки и свежая версия сайта [skip ci]"
+          git pull --rebase -q origin main
+          git push -q origin HEAD:main

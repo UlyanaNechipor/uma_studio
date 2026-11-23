@@ -44,9 +44,10 @@ const href = (h) => esc(String(h).replace('{email}', site.contacts.email));
 const OPT = readdirSync(join(ROOT, 'img/opt'));
 const variants = (src) => {
   let dir, stem;
-  const g = src.match(/^(img\/gallery|img\/projects\/[\w-]+)\/(.+)-(\d+)\.webp$/);
+  const g = src.match(/^(img\/[\w\/.-]+)\/(.+)-(\d+)\.webp$/);
   const t = src.match(/^site\/assets\/tilda\/(.+)\.(?:jpe?g|png)$/i);
-  if (g) { dir = g[1]; stem = g[2]; } else if (t) { dir = 'img/opt'; stem = t[1]; } else return null;
+  const u = src.match(/^(img\/[\w\/.-]+)\/([^\/]+?)\.(?:jpe?g|png|webp|avif|gif|tiff?)$/i);   // загруженный исходник: версии лежат рядом
+  if (g) { dir = g[1]; stem = g[2]; } else if (t) { dir = 'img/opt'; stem = t[1]; } else if (u) { dir = u[1]; stem = u[2]; } else return null;
   const list = (dir === 'img/opt' ? OPT : readdirSync(join(ROOT, dir)))
     .map((f) => f.match(new RegExp('^' + stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '-(\\d+)\\.webp$')))
     .filter(Boolean).map((m) => ({ w: +m[1], path: `${dir}/${m[0]}` })).sort((a, b) => a.w - b.w);
@@ -223,7 +224,7 @@ function projectFigure(slug, im, cls = '') {
     if (existsSync(join(ROOT, base + '-1200.webp'))) src = base + '-1200.webp';
   }
   // своя картинка для телефона (m: {name, w, h}) — другая раскладка, тот же смысл
-  const m = im.m && existsSync(join(ROOT, `img/projects/${slug}/${im.m.name}-1200.webp`)) ? im.m : null;
+  const m = im.m && (im.m.src || existsSync(join(ROOT, `img/projects/${slug}/${im.m.name}-1200.webp`))) ? im.m : null;
   const vars = [];
   if (w && hh) vars.push(`--ar:${w} / ${hh}`);
   const mw = m ? m.w : w, mh = m ? m.h : hh;
@@ -233,7 +234,7 @@ function projectFigure(slug, im, cls = '') {
   if (!src) return `<figure class="${c} is-empty"${ratio} data-label="${esc(im.alt)}"></figure>`;
   let pic = img(src, im.alt, '', /uma-project__cover/.test(c), '(max-width: 1920px) 97vw, 1856px');
   if (m) {
-    const v = variants(`img/projects/${slug}/${m.name}-1200.webp`);
+    const v = variants(m.src || `img/projects/${slug}/${m.name}-1200.webp`) || [{ path: m.src, w: m.w }];
     pic = `<picture><source media="(max-width: 767px)" srcset="${v.map((x) => `${esc(x.path)} ${x.w}w`).join(', ')}" sizes="100vw">${pic}</picture>`;
   }
   return `<figure class="${c}"${ratio}>${pic}</figure>`;
@@ -293,7 +294,63 @@ function projectPage(d) {
 /* ---------------- кейс, версия 2: «Индекс» + наезжающий лист (как у Locomotive) ----------------
    Первый экран кейса закреплён; лист с обложкой и содержимым наезжает на него при прокрутке.
    Всё стоит на сетке главной: поле | 568 | 190 | 186 | остаток — линии A «Проекты», B «О нас», C «Контакты». */
-const allProjects = () => readdirSync(join(ROOT, 'projects')).filter((f) => f.endsWith('.json')).map((f) => j('projects/' + f));
+
+/* ---------------- кейс из админки → внутренняя структура ----------------
+   Файл кейса (projects/<slug>.json) хранит только содержание: тексты одним полем, картинки путями,
+   раскладку — выбором из дизайн-системы. Пропорции и прозрачность картинок берутся из img/meta.json
+   (его пишет tools/images.py), соседние кейсы и «назад к проектам» — из порядка проектов на главной.
+   Текст в поле: строка — абзац, пустая строка — пустая строка, «## Подзаголовок» — пункт с подзаголовком. */
+const META = existsSync(join(ROOT, 'img/meta.json')) ? j('img/meta.json') : {};
+const clean = (p) => String(p || '').replace(/^\/+/, '');
+function textCol(str) {
+  const out = []; let item = null;
+  for (const line of String(str || '').replace(/\r/g, '').split('\n')) {
+    if (/^##\s+/.test(line)) { item = { h: line.replace(/^##\s+/, ''), t: '' }; out.push(item); continue; }
+    if (item && line.trim()) { item.t += (item.t ? '\n' : '') + line; continue; }
+    item = null; out.push(line.trim() ? line : '');
+  }
+  while (out.length && out[out.length - 1] === '') out.pop();
+  while (out.length && out[0] === '') out.shift();
+  return out;
+}
+function imgOf(o) {
+  if (!o || !o.image) return null;
+  const src = clean(o.image), mt = META[src] || {};
+  const r = { src, w: mt.w, h: mt.h, alt: o.alt || '', clear: !!mt.alpha };
+  if (o.mobile) { const ms = clean(o.mobile), mm = META[ms] || {}; r.m = { src: ms, w: mm.w, h: mm.h }; }
+  if (o.plate && o.plate !== 'none') r.panel = o.plate;
+  if (+o.scroll) r.mscroll = +o.scroll;
+  return r;
+}
+function loadProject(file) {
+  const v = j('projects/' + file), slug = file.replace(/\.json$/, '');
+  if (v.slug) return v;                                    // старый формат
+  const lines = (t) => String(t || '').split('\n').map((x) => x.trim()).filter(Boolean);
+  const d = { slug, title: v.title, fonts: v.fonts || '', back: { label: 'Назад к проектам', url: '/#projects' } };
+  d.meta = [{ title: 'Проект', items: lines(v.project) }, { title: 'Задачи', items: lines(v.tasks) }].filter((g) => g.items.length);
+  if (v.cover && v.cover.image) { const c = imgOf(v.cover); d.cover = { src: c.src, w: c.w, h: c.h, alt: c.alt }; }
+  const it = v.intro || {};
+  d.intro = { lead: lines(v.lead), columns: [textCol(it.text), textCol(it.text2)], at: +it.at || undefined };
+  d.sections = (v.sections || []).map((x) => {
+    if (x.type === 'pair') return { layout: 'pair', gap: !!x.gap, images: [imgOf(x.left), imgOf(x.right)].filter(Boolean) };
+    const cols = [x.text, x.text2].filter((t) => String(t || '').trim()).map(textCol);
+    const sec = { title: x.title };
+    if (cols.length) { sec.columns = cols; sec.layout = cols.length > 1 ? 'split' : 'side'; sec.at = +x.at || 10; }
+    if (+x.para_gap) sec.gap = +x.para_gap;
+    if (x.type === 'palette') { sec.palette = x.colors || []; if (x.font) sec.paletteFont = x.font; }
+    if (x.type === 'fonts') sec.fonts = x.fonts || [];
+    sec.image = imgOf(x.image); sec.after = imgOf(x.image_after);
+    return sec;
+  });
+  // соседние кейсы — по порядку проектов на главной (по кругу)
+  const list = home.projects.items, i = list.findIndex((p) => p.slug === slug || String(p.url || '').endsWith(slug.replace(/-/g, '_')));
+  if (i >= 0) {
+    const at = (k) => { const p = list[(k + list.length) % list.length]; return { title: p.name, url: p.url || '#' }; };
+    d.pagination = { index: i + 1, total: list.length, prev: at(i - 1), next: at(i + 1) };
+  }
+  return d;
+}
+const allProjects = () => readdirSync(join(ROOT, 'projects')).filter((f) => f.endsWith('.json')).map(loadProject);
 function csFig(slug, im, cls = '') {
   if (!im) return '';
   let src = im.src;
@@ -358,7 +415,7 @@ function caseV2(d) {
 
 const pages = { 'index.html': html };
 for (const f of readdirSync(join(ROOT, 'projects')).filter((f) => f.endsWith('.json'))) {
-  const d = j('projects/' + f);
+  const d = loadProject(f);
   pages[d.slug + '.html'] = page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['project'], main: projectPage(d), home: '/', fonts: d.fonts || '' });
   // предпросмотр новой раскладки кейса: <slug>-v2.html
   pages[d.slug + '-v2.html'] = page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['case'], main: caseV2(d), home: '/', fonts: d.fonts || '' });
