@@ -198,3 +198,5 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
 }
 /* номера в подписях «Лаборатории» убраны и на телефоне */
 .lab__n, .lab__cap .lab__n { display: none !important; }
+/* номера у работ «Лаборатории» на телефоне убраны */
+@media (max-width: 767px) { .lab__n { display: none; } }
