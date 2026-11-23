@@ -18,9 +18,9 @@
       "type": "text",
       "title": "Главная страница",
       "image": {
-        "image": "img/projects/kara-fox/home-4082.webp",
+        "image": "img/projects/kara-fox/home-4074.webp",
         "alt": "Главная страница сайта Kara Fox: первый экран и лента портфолио",
-        "mobile": "img/projects/kara-fox/home-m-3006.webp",
+        "mobile": "img/projects/kara-fox/home-m-3000.webp",
         "plate": "both"
       },
       "mobile_text": "Избранные работы и информация об авторе."
@@ -99,7 +99,9 @@
         "alt": "Мобильная версия Kara Fox: портфолио, контакты, об авторе",
         "mobile": "img/projects/kara-fox/mobile-m-2107.webp",
         "plate": "both",
-        "scroll": 2.57
+        "scroll": 2.57,
+        "image_dark": "img/projects/kara-fox/mobile-dark-3600.webp",
+        "mobile_dark": "img/projects/kara-fox/mobile-m-dark-2107.webp"
       }
     },
     {

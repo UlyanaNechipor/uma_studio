@@ -439,3 +439,9 @@ html.light-theme .uma-project__sw { box-shadow: none; }
 .uma-project__palette.is-framed li { border: 1px solid var(--line); }
 .uma-project__palette.is-framed .uma-project__sw { box-shadow: inset 0 0 0 1px var(--line); }
 @media (min-width: 768px) { .uma-project__palette.is-framed { gap: 16px; } }
+/* картинка с вариантом под тему: по умолчанию тёмная тема — показываем tv-d, в светлой — tv-l */
+.uma-project__figure .tv-l { display: none; }
+html.light-theme .uma-project__figure .tv-l { display: block; }
+html.light-theme .uma-project__figure .tv-d { display: none; }
+.uma-project__figure picture.tv-d, .uma-project__figure picture.tv-l { width: 100%; }
+html:not(.light-theme) .uma-project__figure picture.tv-d { display: block; }

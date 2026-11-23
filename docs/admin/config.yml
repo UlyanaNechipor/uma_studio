@@ -48,6 +48,8 @@ _picture: &picture
       - { label: Без плашки, value: none }
       - { label: 'Плашка, поля сверху и снизу', value: both }
       - { label: 'Плашка, картинка уходит в нижний край', value: top }
+  - { name: image_dark, label: Вариант для тёмной темы, widget: image, required: false, hint: 'Необязательно. Например, мокап со светлой рамкой телефона.' }
+  - { name: mobile_dark, label: Вариант для тёмной темы — телефон, widget: image, required: false }
   - { name: scroll, label: 'На телефоне листать вбок (во сколько экранов шириной)', widget: number, value_type: float, required: false, hint: 'Для полосы из нескольких телефонов. Пусто — картинка целиком на экране.' }
 
 collections:

@@ -258,6 +258,13 @@ function projectFigure(slug, im, cls = '') {
     const v = variants(m.src || `img/projects/${slug}/${m.name}-1200.webp`) || [{ path: m.src, w: m.w }];
     pic = `<picture><source media="(max-width: 767px)" srcset="${v.map((x) => `${esc(x.path)} ${x.w}w`).join(', ')}" sizes="100vw">${pic}</picture>`;
   }
+  if (im.dark) {   // два варианта: светлая тема — основной, тёмная — свой; показывается тот, что под тему сайта
+    let dp = img(im.dark.src, im.alt, 'tv-d', false, '(max-width: 1920px) 97vw, 1856px');
+    if (im.dark.m) { const v = variants(im.dark.m) || [{ path: im.dark.m, w: 1200 }];
+      dp = `<picture class="tv-d"><source media="(max-width: 767px)" srcset="${v.map((x) => `${esc(x.path)} ${x.w}w`).join(', ')}" sizes="100vw">${dp}</picture>`; }
+    pic = pic.replace(/^<picture>/, '<picture class="tv-l">').replace(/^<img class="/, '<img class="tv-l ');
+    return `<figure class="${c}"${ratio}>${pic}${dp}</figure>`;
+  }
   return `<figure class="${c}"${ratio}>${pic}</figure>`;
 }
 // «Подробнее»: на телефоне длинный текст свёрнут, кнопка раскрывает его (на десктопе кнопки нет, текст целиком)
@@ -344,6 +351,7 @@ function imgOf(o) {
   const src = clean(o.image), mt = META[src] || {};
   const r = { src, w: mt.w, h: mt.h, alt: o.alt || '', clear: !!mt.alpha };
   if (o.mobile) { const ms = clean(o.mobile), mm = META[ms] || {}; r.m = { src: ms, w: mm.w, h: mm.h }; }
+  if (o.image_dark) r.dark = { src: clean(o.image_dark), m: o.mobile_dark ? clean(o.mobile_dark) : null };   // вариант для тёмной темы (напр. светлая рамка телефона)
   if (o.plate && o.plate !== 'none') r.panel = o.plate;
   if (+o.scroll) r.mscroll = +o.scroll;
   return r;
