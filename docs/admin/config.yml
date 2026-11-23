@@ -317,6 +317,7 @@ collections:
               - { name: phone, label: Телефон, widget: string }
               - { name: city, label: Город, widget: string }
               - { name: telegram, label: Telegram (ссылка), widget: string, required: false }
+              - { name: instagram, label: Instagram (ссылка), widget: string, required: false, hint: 'В футере показывается ник — последняя часть ссылки.' }
               - { name: privacy, label: Политика конфиденциальности (ссылка), widget: string, required: false }
           - name: footer
             label: Подвал

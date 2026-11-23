@@ -174,3 +174,11 @@ html.light-theme :is(.case-turn__k, .cs-k, .cs-num, .cs-text p) { font-weight: v
   .ftm__row:last-of-type { padding-bottom: 28px; }
   .ftm__meta { border-top: 0; padding-top: 0; }
 }
+/* футер на телефоне, по макету: «Правовая информация | город» тёмным, ниже — подпись серым, значение со 2-й колонки */
+@media (max-width: 767px) {
+  .ftm__row { row-gap: 0; padding-block: 0 12px; }
+  .ftm__row.is-head { padding-bottom: 20px; }
+  .ftm__row.is-head .ftm__k { color: var(--txt); font-weight: var(--w-ink); position: relative; }
+  .ftm__row.is-head .ftm__k::after { content: ''; position: absolute; right: 12px; top: .2em; bottom: .2em; width: 1px; background: var(--txt); }
+}
+@media (max-width: 767px) { .ftm__row.is-head .ftm__v { white-space: nowrap; } }
