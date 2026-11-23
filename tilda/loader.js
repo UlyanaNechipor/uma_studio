@@ -46,14 +46,23 @@
   function getJSON(u) { return timeout(fetch(u, { cache: 'no-store' }), 3000).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
 
   // номер свежего коммита ветки static: GitHub API → файл-указатель в main → последний известный → сама ветка
-  // номер свежей версии: tilda/static.json в main (без лимитов GitHub API). Если версия уже открывалась раньше,
+  // номер свежей версии: tilda/static.json в main. Если версия уже открывалась раньше,
   // ждём ответа до 2 с (обычно приходит за 0,2–0,5 с), иначе открываем ту, что в браузере, — страница не висит на сети.
   function latest() {
     var m = location.search.match(/[?&]sosref=([\w.\-]+)/);
     if (m) return Promise.resolve(m[1]);
     var cached = null; try { cached = localStorage.getItem(KEY + '_ok') || localStorage.getItem(KEY); } catch (e) {}
-    var fresh = timeout(fetch('https://raw.githubusercontent.com/' + REPO + '/main/tilda/static.json?t=' + Math.floor(Date.now() / 30000), { cache: 'no-store' }), 2500)
+    // GitHub API отдаёт свежий номер сразу после публикации (raw.githubusercontent держит старый до 5 минут),
+    // но отвечает дольше. Ждём API до 1,2 с, иначе берём raw. Лимит API — 60 запросов в час с адреса: сверх — тоже raw.
+    var rawP = fetch('https://raw.githubusercontent.com/' + REPO + '/main/tilda/static.json?t=' + Math.floor(Date.now() / 30000), { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
+    var apiP = fetch('https://api.github.com/repos/' + REPO + '/contents/tilda/static.json?ref=main', { cache: 'no-store' })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (j) { return JSON.parse(atob(String(j.content).replace(/\s/g, ''))); });
+    var fresh = timeout(new Promise(function (ok, no) {
+      var useRaw = function () { rawP.then(ok, no); };
+      apiP.then(ok, useRaw); setTimeout(useRaw, 1200);
+    }), 2500)
       .then(function (j) { try { if (/^[0-9a-f]{40}$/.test(j.sha)) localStorage.setItem(KEY, j.sha); } catch (e) {} return j.sha; });
     if (!cached) return fresh.catch(function () { return BRANCH; });
     return Promise.race([fresh, new Promise(function (ok) { setTimeout(function () { ok(cached); }, 2000); })]).catch(function () { return cached; });
