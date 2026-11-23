@@ -135,3 +135,23 @@ html.light-theme :is(.case-turn__k, .cs-k, .cs-num, .cs-text p) { font-weight: v
 @media (max-width: 767px) {
   .ft__col { font-size: max(var(--min-nav), calc(10 * var(--u))); letter-spacing: normal; }
 }
+
+/* ---------- футер на телефоне: ведомость в две колонки + знак SHAPE (of Sense) ----------
+   строки на линейках во всю ширину экрана; подпись — серым в 1-й колонке сетки, значение — со 2-й */
+.ftm { display: none; }
+@media (max-width: 767px) {
+  .ft { padding-block: 0 0; row-gap: 0; }
+  .ft > :not(.ftm) { display: none; }
+  .ftm { display: block; grid-column: 1 / -1; font-size: max(var(--min-body), calc(var(--t-body) * var(--u))); line-height: 1.45; letter-spacing: 0; }
+  .ftm__row { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8px; margin-inline: -16px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  .ftm__k { color: var(--grey); font-weight: var(--w-text); }
+  .ftm__v { display: flex; flex-direction: column; min-width: 0; color: var(--txt); }
+  .ftm__v a { color: inherit; }
+  .ftm__lock { margin: 0; padding: 28px 0 18px; color: var(--txt); }
+  .ftm__shape { display: block; width: max-content; font-weight: 800; letter-spacing: .01em; line-height: .8; white-space: nowrap; font-size: 28vw; }
+  .ftm__sense { display: block; width: max-content; margin-left: auto; font-family: 'Lora', Georgia, serif; font-style: italic; font-weight: 400;
+    line-height: 1; white-space: nowrap; font-size: 18vw; letter-spacing: -.01em; }
+  .ftm__meta { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8px; margin: 0 -16px; padding: 12px 16px 16px; border-top: 1px solid var(--line);
+    font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); color: var(--grey); text-transform: uppercase; letter-spacing: .08em; }
+}
+@media (max-width: 767px) { .ftm__meta { display: flex; justify-content: space-between; gap: 8px; letter-spacing: .06em; } }
