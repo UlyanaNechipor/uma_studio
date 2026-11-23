@@ -160,3 +160,5 @@ html.light-theme :is(.case-turn__k, .cs-k, .cs-num, .cs-text p) { font-weight: v
   .ftm__lock + .ftm__row { border-top: 1px solid var(--line); }
   .ftm__meta { border-top: 0; }
 }
+/* футер на телефоне: пункты и подписи — кеглем меню в шапке */
+@media (max-width: 767px) { .ftm { font-size: max(var(--min-nav), calc(10 * var(--u))); letter-spacing: normal; } }
