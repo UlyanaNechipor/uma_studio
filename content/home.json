@@ -78,6 +78,16 @@
         "url": "",
         "mobile1": "img/mobile/arine-atelier-mockup.webp",
         "mobile2": "img/mobile/arine-atelier-2g.webp"
+      },
+      {
+        "name": "Gruzinka",
+        "type": "Ресторан",
+        "year": "2026",
+        "slug": "gruzinka",
+        "cover": "img/covers/gruzinka-soon.webp",
+        "url": "",
+        "mobile1": "img/mobile/gruzinka-soon-1.webp",
+        "mobile2": "img/mobile/gruzinka-soon-2.webp"
       }
     ]
   },

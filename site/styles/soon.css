@@ -38,3 +38,8 @@ html.rm .soon__mark, html.rm-off .soon__mark { animation: none; }
   .soon__mark { font-size: 21vw; white-space: normal; line-height: .95; }
   .soon__of { display: block; }
 }
+
+/* «Скоро здесь» внутри книги кейсов: под знаком — та же навигация по проектам, что у кейсов */
+.uma-project--soon { padding: 0 var(--up-pad); }
+.uma-project--soon .soon { min-height: 82svh; padding-left: 0; padding-right: 0; }
+.uma-project--soon .uma-project__pager { margin-top: 0; }

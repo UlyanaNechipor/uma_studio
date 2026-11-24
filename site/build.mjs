@@ -117,10 +117,13 @@ const soon = j('content/soon.json');
    Опубликованные кейсы (у проекта на главной есть адрес) живут на одной странице — странице Роси.
    Переход между ними — без перезагрузки: лист подкладывается снизу, под ним меняется содержимое, адрес — #кейс.
    Ссылки на кейсы ведут на /project_page_rosi#<кейс>; старые адреса кейсов в Тильде тоже открывают эту книгу. */
-const BOOK = h.projects.items.filter((p) => p.url && p.slug && existsSync(join(ROOT, 'projects', p.slug + '.json')));
-const BOOK_HOST = (BOOK.find((p) => p.slug === 'rosi') || BOOK[0] || {}).url || '';
+// в книге — все проекты из «Избранных»; опубликованный (есть адрес и файл кейса) показывает кейс, остальные — «Скоро здесь»
+const BOOK = h.projects.items.filter((p) => p.slug);
+const isPub = (p) => !!(p.url && existsSync(join(ROOT, 'projects', p.slug + '.json')));
+const BOOK_HOST = '/project_page';
+const HOST_SLUG = (BOOK.find((p) => p.url === BOOK_HOST) || BOOK.find(isPub) || BOOK[0] || {}).slug;
 const inBook = (slug) => BOOK.some((p) => p.slug === slug);
-const bookUrl = (slug) => (BOOK.find((p) => p.slug === slug) || {}).url === BOOK_HOST ? BOOK_HOST : BOOK_HOST + '#' + slug;
+const bookUrl = (slug) => (slug === HOST_SLUG ? BOOK_HOST : BOOK_HOST + '#' + slug);
 const projects = `
 <section class="projects grid" id="${h.projects.anchor}">
   <p class="projects__label ty-small ty-grey">${typo(h.projects.label)}</p>
@@ -470,19 +473,38 @@ function caseV2(d) {
 
 const pages = { 'index.html': html };
 // книга: все опубликованные кейсы в шаблонах; показан один, скрипт ниже выбирает его по адресу (#кейс) или по странице Тильды
-const bookCases = BOOK.map((p) => loadProject(p.slug + '.json'));
+const bookCases = BOOK.filter(isPub).map((p) => loadProject(p.slug + '.json'));
+// «Скоро здесь» внутри книги: та же страница, но с навигацией по проектам
+function soonCase(it) {
+  const list = BOOK, i = list.indexOf(it), at = (k) => { const p = list[(k + list.length) % list.length]; return { title: p.name, slug: p.slug, url: bookUrl(p.slug) }; };
+  const pv = at(i - 1), nx = at(i + 1);
+  return `<article class="uma-project uma-project--soon"><section class="soon">
+  <div class="soon__head">
+    <h1 class="soon__title">${typo(soon.title)}</h1>
+    <p class="soon__text">${[].concat(Array.isArray(soon.text) ? soon.text : String(soon.text).split("\n")).map(typo).join('<br class="soon__lb"> ')}</p>
+    <a class="soon__back" href="/#projects">${esc(soon.back)}</a>
+  </div>
+  <p class="soon__mark" aria-hidden="true"><span class="soon__shape">SHAPE</span> <span class="soon__of">(of&nbsp;Sense)</span></p>
+</section><nav class="uma-project__pager" aria-label="Другие проекты">` +
+    `<a class="is-prev" href="${esc(pv.url)}" rel="prev" ${turnAttr(pv, 'Предыдущий проект')}>${arrowSvg}${esc(pv.title)}</a>` +
+    `<div class="uma-project__count" aria-label="Проект ${i + 1} из ${list.length}">${pad2(i + 1)}/<span>${pad2(list.length)}</span></div>` +
+    `<a class="is-next" href="${esc(nx.url)}" rel="next" ${turnAttr(nx, 'Следующий проект')}>${esc(nx.title)}${arrowSvg}</a></nav></article>`;
+}
+const bookEntry = (p) => { const d = isPub(p) ? bookCases.find((x) => x.slug === p.slug) : null;
+  return `<template data-case="${esc(p.slug)}" data-url="${esc(bookUrl(p.slug))}" data-name="${esc(d ? d.title : p.name)}" data-title="${esc((d ? d.title.toUpperCase() : p.name.toUpperCase() + ' — ' + soon.title) + ' — ' + site.brand)}">${d ? projectPage(d) : soonCase(p)}</template>`; };
 const bookBoot = `(function(){var b=document.querySelector('.cs-book');if(!b)return;var m=document.getElementById('sos-page'),q=function(s){return /^[\\w-]+$/.test(s||'')&&b.querySelector('template[data-case="'+s+'"]')};
 var s=decodeURIComponent(location.hash.slice(1));if(!q(s))s=m&&m.getAttribute('data-page');if(!q(s))s=b.getAttribute('data-default');
 var t=q(s),pg=b.querySelector('.cs-book__page');pg.appendChild(t.content.cloneNode(true));pg.setAttribute('data-case',s);document.title=t.getAttribute('data-title')})();`;
-const bookPage = (def) => page({ title: (bookCases.find((d) => d.slug === def) || bookCases[0]).title.toUpperCase() + ' — ' + site.brand, css: ['project'], home: '/',
-  fonts: [...new Set(bookCases.map((d) => d.fonts).filter(Boolean))],
+const bookPage = (def) => page({ title: ((BOOK.find((p) => p.slug === def) || BOOK[0]).name).toUpperCase() + ' — ' + site.brand, css: ['project', 'soon'], home: '/',
+  fonts: [...new Set(bookCases.map((d) => d.fonts).filter(Boolean)), 'https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@1,700&display=swap'],
   main: `<div class="cs-book" data-host="${esc(BOOK_HOST)}" data-default="${esc(def)}">` +
-    bookCases.map((d) => `<template data-case="${esc(d.slug)}" data-url="${esc(bookUrl(d.slug))}" data-name="${esc(d.title)}" data-title="${esc(d.title.toUpperCase() + ' — ' + site.brand)}">${projectPage(d)}</template>`).join('\n') +
+    BOOK.map(bookEntry).join('\n') +
     `<div class="cs-book__page"></div></div><script>${bookBoot}</script>` });
 // страница-«книга» в Тильде: /project_page с блоком data-page="project" (или "rosi" — тоже книга)
-if (bookCases.length) pages['project.html'] = bookPage(bookCases[0].slug);
+if (BOOK.length) pages['project.html'] = bookPage(HOST_SLUG);
 for (const f of readdirSync(join(ROOT, 'projects')).filter((f) => f.endsWith('.json'))) {
   const d = loadProject(f);
+  if (inBook(d.slug) && !isPub(BOOK.find((p) => p.slug === d.slug))) { pages[d.slug + '.html'] = bookPage(d.slug); continue; }
   pages[d.slug + '.html'] = inBook(d.slug) ? bookPage(d.slug) : page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['project'], main: projectPage(d), home: '/', fonts: d.fonts || '' });
   // предпросмотр новой раскладки кейса: <slug>-v2.html
   pages[d.slug + '-v2.html'] = page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['case'], main: caseV2(d), home: '/', fonts: d.fonts || '' });
