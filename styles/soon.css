@@ -3,12 +3,12 @@ html #sos-page .soon{
   display: grid; grid-template-rows: auto 1fr; grid-template-columns: minmax(0, 1fr);
   padding: calc(max(44px, calc(48 * var(--u))) + calc(56 * var(--u))) 16px calc(48 * var(--u));
   text-align: center; overflow: hidden;
-}html #sos-page .soon__head{ display: grid; justify-items: center; }html #sos-page .soon__title{ margin: 0; color: var(--txt); font-weight: var(--w-head);
+}@media (min-width: 768px){html #sos-page .soon{padding: calc(max(44px, calc(76.8 * var(--u))) + calc(89.6 * var(--u))) 16px calc(76.8 * var(--u)); } }html #sos-page .soon__head{ display: grid; justify-items: center; }html #sos-page .soon__title{ margin: 0; color: var(--txt); font-weight: var(--w-head);
   
   font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u))); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); }html #sos-page .soon__text{ margin: calc(24 * var(--u)) 0 0; color: var(--txt); max-width: 34em;
-  font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); line-height: var(--t-small-lh); letter-spacing: var(--t-small-ls); font-weight: var(--w-text); }html #sos-page .soon__back{ margin-top: calc(24 * var(--u)); color: var(--txt); text-decoration: none;
+  font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); line-height: var(--t-small-lh); letter-spacing: var(--t-small-ls); font-weight: var(--w-text); }@media (min-width: 768px){html #sos-page .soon__text{margin: calc(38.4 * var(--u)) 0 0; } }html #sos-page .soon__back{ margin-top: calc(24 * var(--u)); color: var(--txt); text-decoration: none;
   font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); line-height: var(--t-small-lh); letter-spacing: var(--t-small-ls); border-bottom: 1px solid transparent;
-  transition: border-color var(--m-hover) var(--m-out); }@media (hover: hover){html #sos-page .soon__back:hover{ border-bottom-color: currentColor; } }html #sos-page .soon__mark{
+  transition: border-color var(--m-hover) var(--m-out); }@media (min-width: 768px){html #sos-page .soon__back{margin-top: calc(38.4 * var(--u)); } }@media (hover: hover){html #sos-page .soon__back:hover{ border-bottom-color: currentColor; } }html #sos-page .soon__mark{
   align-self: center; margin: 0; white-space: nowrap; line-height: 1; color: var(--txt);
   font-size: 12vw; letter-spacing: 0;
   filter: blur(calc(.075em)); animation: soon-focus 7s ease-in-out infinite;
