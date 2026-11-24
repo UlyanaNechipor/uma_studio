@@ -486,3 +486,14 @@ html:not(.light-theme) .uma-project__figure picture.tv-d { display: block; }
 /* Sure: квадраты палитры — промежуток 16 px, скругление меньше */
 [data-case="sure"] .uma-project__palette:not(.is-framed) { gap: 16px; }
 [data-case="sure"] .uma-project__palette:not(.is-framed) li { border-radius: 4px; }
+
+/* плавающая навигация между кейсами (site.js → book): появляется при прокрутке */
+.bk-float { position: fixed; left: 0; right: 0; bottom: 0; z-index: 24; pointer-events: none;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: color-mix(in srgb, var(--bg) 88%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border-top: 1px solid var(--line); transform: translate3d(0, 105%, 0); transition: transform .45s var(--m-out); }
+.bk-float.is-on { transform: none; pointer-events: auto; }
+.bk-float__in.uma-project { padding-top: 0; padding-bottom: 0; background: none; }
+.bk-float .uma-project__pager { margin: 0 !important; padding: 14px 0 !important; opacity: 1 !important; transform: none !important; }
+@media (min-width: 768px) { .bk-float .uma-project__pager { padding: calc(20 * var(--u)) 0 !important; } }
+html.rm-off .bk-float { transition: none; }
