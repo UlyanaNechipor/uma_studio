@@ -750,7 +750,7 @@
      Картинки следующего кейса скачиваются заранее — когда ссылка на него подходит к экрану или на неё навели. */
   function book() {
     var bk = $('.cs-book'); if (!bk) return;
-    var pg = $('.cs-book__page', bk), main = $('main'), busy = false, TURN = 950, OUT = 1000;
+    var pg = $('.cs-book__page', bk), main = $('main'), busy = false, TURN = 1000;
     var tpl = function (s) { return /^[\w-]+$/.test(s || '') && $('template[data-case="' + s + '"]', bk); };
     var cur = function () { return pg.getAttribute('data-case'); };
     var hostCase = function () { var t = $$('template', bk).filter(function (x) { return x.getAttribute('data-url') === bk.getAttribute('data-host'); })[0]; return t ? t.getAttribute('data-case') : bk.getAttribute('data-default'); };
@@ -762,33 +762,40 @@
         if (im.getAttribute('srcset')) i.srcset = im.getAttribute('srcset'); i.src = im.getAttribute('src');
       });
     }
-    function mount(s) {
+    function mount(s, shown) {
       var t = tpl(s); pg.innerHTML = ''; pg.appendChild(t.content.cloneNode(true)); pg.setAttribute('data-case', s);
       document.title = t.getAttribute('data-title');
       [caseMore, fitSamples, reveal].forEach(function (f) { try { f(pg); } catch (e) { try { console.error('Shape of Sense: book', e); } catch (_) {} } }); watch();
+      // после листа первый экран уже показан — его блоки сразу на месте, без повторного появления
+      if (shown) $$('.rv', pg).forEach(function (el) { if (el.getBoundingClientRect().top < innerHeight) el.classList.add('is-in'); });
     }
-    function top() { html.style.scrollBehavior = 'auto'; scrollTo(0, 0); html.style.scrollBehavior = ''; }
-    function go(s, push, label) {
+    function top() { html.style.scrollBehavior = 'auto'; try { scrollTo({ top: 0, left: 0, behavior: 'instant' }); } catch (e) { scrollTo(0, 0); } html.style.scrollBehavior = ''; }
+    function go(s, push) {
       var t = tpl(s); if (!t || busy || s === cur()) return;
       if (push) history.pushState({ sosCase: s }, '', t.getAttribute('data-url'));
       if (reduce) { mount(s); top(); return; }
       busy = true; preload(s);
+      // лист = сам новый кейс: его первый экран (с той же вёрсткой, что после перехода) въезжает снизу поверх текущего
       var sh = document.createElement('div');
-      sh.className = 'case-turn'; sh.setAttribute('aria-hidden', 'true');
-      sh.innerHTML = '<div class="case-turn__in"><p class="case-turn__k"></p><p class="case-turn__title"></p></div>';
-      sh.querySelector('.case-turn__k').textContent = label || '';
-      sh.querySelector('.case-turn__title').textContent = t.getAttribute('data-name') || '';
+      sh.className = 'bk-sheet'; sh.setAttribute('aria-hidden', 'true');
+      var m2 = document.createElement('main'); m2.className = main.className;
+      var p2 = document.createElement('div'); p2.className = 'cs-book__page'; p2.setAttribute('data-case', s);
+      p2.appendChild(t.content.cloneNode(true)); m2.appendChild(p2); sh.appendChild(m2);
       (document.getElementById('sos-page') || document.body).appendChild(sh);
-      html.classList.add('pt-case-out');
-      requestAnimationFrame(function () { requestAnimationFrame(function () { sh.classList.add('is-on'); }); });
-      setTimeout(function () {
-        // лист закрыл экран: под ним — новый кейс с самого верха, чуть ниже своего места
-        html.classList.remove('pt-case-out'); html.classList.add('bk-in');
-        mount(s); top();
-        main.offsetHeight;
-        html.classList.add('bk-go'); sh.classList.add('is-off');
-        setTimeout(function () { sh.remove(); html.classList.remove('bk-in', 'bk-go'); busy = false; if (caseOfUrl() !== cur()) go(caseOfUrl(), false, ''); }, OUT + 150);
-      }, TURN);
+      try { caseMore(p2); fitSamples(p2); } catch (e) {}
+      html.classList.add('bk-out');
+      sh.offsetHeight;
+      requestAnimationFrame(function () { sh.classList.add('is-on'); });
+      var done = false, fin = function () {
+        if (done) return; done = true;
+        // лист встал на место: настоящий кейс — под ним, в той же точке; лист убирается незаметно
+        html.classList.add('bk-swap'); html.classList.remove('bk-out');
+        mount(s, true); top();
+        sh.remove();
+        requestAnimationFrame(function () { requestAnimationFrame(function () { html.classList.remove('bk-swap'); busy = false; if (caseOfUrl() !== cur()) go(caseOfUrl(), false); }); });
+      };
+      sh.addEventListener('transitionend', function (e) { if (e.target === sh) fin(); });
+      setTimeout(fin, TURN + 400);
     }
     var seen = [];
     function watch() {
@@ -803,9 +810,9 @@
       var a = e.target.closest && e.target.closest('a[data-case]');
       if (!a || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || !tpl(a.getAttribute('data-case'))) return;
       e.preventDefault(); e.stopImmediatePropagation();
-      go(a.getAttribute('data-case'), true, a.getAttribute('data-turn-label'));
+      go(a.getAttribute('data-case'), true);
     }, true);
-    addEventListener('popstate', function () { go(caseOfUrl(), false, ''); });
+    addEventListener('popstate', function () { go(caseOfUrl(), false); });
     try { history.replaceState({ sosCase: cur() }, ''); } catch (e) {}
     watch();
   }
