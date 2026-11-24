@@ -479,6 +479,8 @@ const bookPage = (def) => page({ title: (bookCases.find((d) => d.slug === def) |
   main: `<div class="cs-book" data-host="${esc(BOOK_HOST)}" data-default="${esc(def)}">` +
     bookCases.map((d) => `<template data-case="${esc(d.slug)}" data-url="${esc(bookUrl(d.slug))}" data-name="${esc(d.title)}" data-title="${esc(d.title.toUpperCase() + ' — ' + site.brand)}">${projectPage(d)}</template>`).join('\n') +
     `<div class="cs-book__page"></div></div><script>${bookBoot}</script>` });
+// страница-«книга» в Тильде: /project_page с блоком data-page="project" (или "rosi" — тоже книга)
+if (bookCases.length) pages['project.html'] = bookPage(bookCases[0].slug);
 for (const f of readdirSync(join(ROOT, 'projects')).filter((f) => f.endsWith('.json'))) {
   const d = loadProject(f);
   pages[d.slug + '.html'] = inBook(d.slug) ? bookPage(d.slug) : page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['project'], main: projectPage(d), home: '/', fonts: d.fonts || '' });
