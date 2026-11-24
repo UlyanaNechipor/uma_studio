@@ -491,11 +491,11 @@ function soonCase(it) {
     `<a class="is-next" href="${esc(nx.url)}" rel="next" ${turnAttr(nx, 'Следующий проект')}>${esc(nx.title)}${arrowSvg}</a></nav></article>`;
 }
 const bookEntry = (p) => { const d = isPub(p) ? bookCases.find((x) => x.slug === p.slug) : null;
-  return `<template data-case="${esc(p.slug)}" data-url="${esc(bookUrl(p.slug))}" data-name="${esc(d ? d.title : p.name)}" data-title="${esc((d ? d.title.toUpperCase() : p.name.toUpperCase() + ' — ' + soon.title) + ' — ' + site.brand)}">${d ? projectPage(d) : soonCase(p)}</template>`; };
+  return `<template data-case="${esc(p.slug)}" data-url="${esc(bookUrl(p.slug))}" data-name="${esc(d ? d.title : p.name)}" data-title="${esc((d ? d.title : p.name + ' — ' + soon.title) + ' — ' + site.brand)}">${d ? projectPage(d) : soonCase(p)}</template>`; };
 const bookBoot = `(function(){var b=document.querySelector('.cs-book');if(!b)return;var m=document.getElementById('sos-page'),q=function(s){return /^[\\w-]+$/.test(s||'')&&b.querySelector('template[data-case="'+s+'"]')};
 var s=decodeURIComponent(location.hash.slice(1));if(!q(s))s=m&&m.getAttribute('data-page');if(!q(s))s=b.getAttribute('data-default');
 var t=q(s),pg=b.querySelector('.cs-book__page');pg.appendChild(t.content.cloneNode(true));pg.setAttribute('data-case',s);document.title=t.getAttribute('data-title')})();`;
-const bookPage = (def) => page({ title: ((BOOK.find((p) => p.slug === def) || BOOK[0]).name).toUpperCase() + ' — ' + site.brand, css: ['project', 'soon'], home: '/',
+const bookPage = (def) => page({ title: ((BOOK.find((p) => p.slug === def) || BOOK[0]).name) + ' — ' + site.brand, css: ['project', 'soon'], home: '/',
   fonts: [...new Set(bookCases.map((d) => d.fonts).filter(Boolean)), 'https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@1,700&display=swap'],
   main: `<div class="cs-book" data-host="${esc(BOOK_HOST)}" data-default="${esc(def)}">` +
     BOOK.map(bookEntry).join('\n') +
@@ -505,9 +505,9 @@ if (BOOK.length) pages['project.html'] = bookPage(HOST_SLUG);
 for (const f of readdirSync(join(ROOT, 'projects')).filter((f) => f.endsWith('.json'))) {
   const d = loadProject(f);
   if (inBook(d.slug) && !isPub(BOOK.find((p) => p.slug === d.slug))) { pages[d.slug + '.html'] = bookPage(d.slug); continue; }
-  pages[d.slug + '.html'] = inBook(d.slug) ? bookPage(d.slug) : page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['project'], main: projectPage(d), home: '/', fonts: d.fonts || '' });
+  pages[d.slug + '.html'] = inBook(d.slug) ? bookPage(d.slug) : page({ title: d.title + ' — ' + site.brand, css: ['project'], main: projectPage(d), home: '/', fonts: d.fonts || '' });
   // предпросмотр новой раскладки кейса: <slug>-v2.html
-  pages[d.slug + '-v2.html'] = page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['case'], main: caseV2(d), home: '/', fonts: d.fonts || '' });
+  pages[d.slug + '-v2.html'] = page({ title: d.title + ' — ' + site.brand, css: ['case'], main: caseV2(d), home: '/', fonts: d.fonts || '' });
 }
 
 /* ---------------- «Скоро здесь»: для проектов, у которых ещё нет страницы ---------------- */
