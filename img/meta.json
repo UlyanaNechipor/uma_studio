@@ -24,10 +24,10 @@
   "h": 507,
   "w": 760
  },
- "img/covers/sure.webp": {
+ "img/covers/sure-mockup.webp": {
   "alpha": false,
-  "h": 480,
-  "w": 760
+  "h": 960,
+  "w": 1520
  },
  "img/gallery/arine-mockup-2400.webp": {
   "alpha": false,
@@ -84,9 +84,14 @@
   "h": 480,
   "w": 720
  },
- "img/mobile/sure-2.webp": {
+ "img/mobile/sure-m1.webp": {
   "alpha": false,
-  "h": 1000,
+  "h": 900,
+  "w": 1600
+ },
+ "img/mobile/sure-m2.webp": {
+  "alpha": false,
+  "h": 900,
   "w": 1600
  },
  "img/projects/arine-atelier/about-2382.webp": {
