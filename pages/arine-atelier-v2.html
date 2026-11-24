@@ -1106,6 +1106,7 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       document.title = t.getAttribute('data-title');
       [caseMore, fitSamples, reveal].forEach(function (f) { try { f(pg); } catch (e) { try { console.error('Shape of Sense: book', e); } catch (_) {} } }); watch();
       // после листа первый экран уже показан — его блоки сразу на месте, без повторного появления
+      if (window.__sosSyncFloat) window.__sosSyncFloat();
       if (shown) $$('.rv', pg).forEach(function (el) { if (el.getBoundingClientRect().top < innerHeight) el.classList.add('is-in'); });
     }
     function top() { html.style.scrollBehavior = 'auto'; try { scrollTo({ top: 0, left: 0, behavior: 'instant' }); } catch (e) { scrollTo(0, 0); } html.style.scrollBehavior = ''; }
@@ -1153,6 +1154,32 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     }, true);
     addEventListener('popstate', function () { go(caseOfUrl(), false); });
     try { history.replaceState({ sosCase: cur() }, ''); } catch (e) {}
+    // плавающая навигация: при прокрутке вверх или вниз внизу экрана появляются кнопки соседних проектов,
+    // через 1,8 с покоя прячутся; не показываются на первом экране и когда видна своя навигация внизу кейса
+    var fl = document.createElement('div'); fl.className = 'bk-float'; fl.setAttribute('aria-hidden', 'true');
+    var flIn = document.createElement('div'); flIn.className = 'uma-project bk-float__in'; fl.appendChild(flIn);
+    (document.getElementById('sos-page') || document.body).appendChild(fl);
+    var pagerSeen = false, flT = 0, pio = null;
+    function syncFloat() {
+      var src = $('.uma-project__pager', pg); flIn.innerHTML = '';
+      if (!src) return;
+      var c = src.cloneNode(true); c.classList.remove('rv', 'is-in'); c.removeAttribute('aria-label');
+      $$('a', c).forEach(function (x) { x.setAttribute('tabindex', '-1'); });
+      flIn.appendChild(c);
+      if (pio) pio.disconnect(); pagerSeen = false;
+      if ('IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen) fl.classList.remove('is-on'); }); pio.observe(src); }
+    }
+    var lastY = scrollY;
+    addEventListener('scroll', function () {
+      var y = scrollY, moved = Math.abs(y - lastY) > 4; lastY = y;
+      if (!moved || busy) return;
+      var show = y > innerHeight * 0.6 && !pagerSeen;
+      fl.classList.toggle('is-on', show);
+      clearTimeout(flT); if (show) flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1800);
+    }, { passive: true });
+    fl.addEventListener('pointerenter', function () { clearTimeout(flT); });
+    fl.addEventListener('pointerleave', function () { flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1200); });
+    syncFloat(); window.__sosSyncFloat = function () { fl.classList.remove('is-on'); syncFloat(); };
     watch();
   }
 
