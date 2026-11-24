@@ -481,3 +481,7 @@ html:not(.light-theme) .uma-project__figure picture.tv-d { display: block; }
 
 /* название проекта — как написано: заглавная и строчные, без капса */
 .uma-project__title { text-transform: none; letter-spacing: var(--t-h2-ls); }
+
+/* Sure: квадраты палитры — промежуток 16 px, скругление меньше */
+[data-case="sure"] .uma-project__palette:not(.is-framed) { gap: 16px; }
+[data-case="sure"] .uma-project__palette:not(.is-framed) li { border-radius: 4px; }
