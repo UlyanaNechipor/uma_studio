@@ -9,7 +9,7 @@
   "h": 960,
   "w": 1520
  },
- "img/covers/kara-fox-mockup.webp": {
+ "img/covers/kara-fox-laptop.webp": {
   "alpha": false,
   "h": 960,
   "w": 1520
@@ -69,15 +69,15 @@
   "h": 900,
   "w": 1600
  },
- "img/mobile/kara-fox-2.webp": {
-  "alpha": false,
-  "h": 480,
-  "w": 720
- },
  "img/mobile/kara-fox-mockup.webp": {
   "alpha": false,
   "h": 690,
   "w": 966
+ },
+ "img/mobile/kara-fox-phone.webp": {
+  "alpha": false,
+  "h": 900,
+  "w": 1600
  },
  "img/mobile/rosi-2.webp": {
   "alpha": false,

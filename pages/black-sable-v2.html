@@ -225,7 +225,7 @@
   padding: calc(max(44px, calc(48 * var(--u))) + 32px) 16px 24px;
 }html #sos-page .case-turn__k{ margin: 0; font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); color: var(--grey); }html #sos-page .case-turn__title{ margin: 0; font-size: clamp(56px, 19vw, 120px); line-height: .9; letter-spacing: -.045em; font-weight: var(--w-head); }@media (min-width: 768px){html #sos-page .case-turn__in{ padding: calc(48 * var(--u) + 60 * var(--u)) var(--pad-x) calc(40 * var(--u) + 120 * var(--u)); }html #sos-page .case-turn__title{ font-size: min(calc(220 * var(--u)), 15vw); line-height: .86; white-space: nowrap; margin-left: -.04em; }
 }html.pt-case-out #sos-page main{ transform: translate3d(0, -10vh, 0) scale(.97); opacity: .4; transform-origin: 50% 0;
-  transition: transform .95s var(--m-inout), opacity .95s var(--m-inout); }html.pt-case:not(.pt-go) #sos-page main{ transform: translate3d(0, 6vh, 0); }html.pt-case.pt-go #sos-page main{ transition: transform 1.1s var(--m-out) .1s; }
+  transition: transform .95s var(--m-inout), opacity .95s var(--m-inout); }html.pt-case:not(.pt-go) #sos-page main{ transform: translate3d(0, 6vh, 0); }html.pt-case.pt-go #sos-page main{ transition: transform 1.1s var(--m-out) .1s; }html #sos-page .case-turn.is-off{ transform: translate3d(0, -100%, 0); transition: transform 1s var(--m-inout); box-shadow: none; }html.bk-in:not(.bk-go) #sos-page main{ transform: translate3d(0, 8vh, 0); }html.bk-go #sos-page main{ transition: transform 1.1s var(--m-out) .08s; }
 </style>
 <style>#allrecords{overflow:visible!important;background:none!important}
 #allrecords .t123,#allrecords .t-container_100,#allrecords .t-width_100{max-width:none!important;padding:0!important;margin:0!important}
@@ -551,8 +551,8 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
   /* ---------------- появление при прокрутке ---------------- */
   // кейс на телефоне: длинный текст свёрнут до нескольких строк, «Подробнее» раскрывает его.
   // Кнопка видна, только если текст правда не помещается (или под ней спрятано «Проект / Задачи»).
-  function caseMore() {
-    var boxes = $$('.uma-project__intro, .uma-project__head');
+  function caseMore(root) {
+    var boxes = $$('.uma-project__intro, .uma-project__head', root);
     if (!boxes.length) return;
     var mq = matchMedia('(max-width: 767px)');
     var check = function () {
@@ -582,8 +582,8 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(check);
   }
   // образцы шрифтов на телефоне («Aa Bb Cc») — как картинка: ровно во всю ширину колонки, каким бы ни был шрифт
-  function fitSamples() {
-    var els = $$('.uma-project__sample-m, [data-fit-w]');
+  function fitSamples(root) {
+    var els = $$('.uma-project__sample-m, [data-fit-w]', root);
     if (!els.length) return;
     var fit = function () {
       els.forEach(function (e) {
@@ -598,9 +598,10 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
     if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', fit);
   }
-  function reveal() {
+  function reveal(root) {
     // что появляется: прямые части каждого блока (кроме первого экрана), колонки подвала
-    var items = $$('main > section:not(.hero) > *, .cs-sheet > :not(.cs-sec):not(.cs-cover), .cs-sec > *, .uma-project > :not(.uma-project__section), .uma-project__section > *, .about__photos > img, .lab__it, .svc, .cta__act > *, .about__act > *, .ft > *')
+    // root — новый кейс в «книге»: появляются только его блоки, наблюдение начинается сразу
+    var items = $$(root ? '.uma-project > :not(.uma-project__section), .uma-project__section > *' : 'main > section:not(.hero) > *, .cs-sheet > :not(.cs-sec):not(.cs-cover), .cs-sec > *, .uma-project > :not(.uma-project__section), .uma-project__section > *, .about__photos > img, .lab__it, .svc, .cta__act > *, .about__act > *, .ft > *', root)
       .filter(function (el) { return !el.matches('.projects__list, .lab__grid, .about__photos, .about__act, .cta__act'); });
     items.forEach(function (el) { el.classList.add('rv'); });
     // мобилка, услуги: выезжают слева, по очереди
@@ -624,6 +625,7 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       });
       if (queue.length && !timer) timer = setTimeout(flush, 30);
     }, { rootMargin: '0px 0px -12% 0px' });
+    if (root) { requestAnimationFrame(function () { items.forEach(function (el) { io.observe(el); }); }); return; }
     // подвал: линия сверху прочерчивается, когда он дошёл до экрана
     var ft = $('.ft');
     if (ft) { if (reduce) ft.classList.add('is-lines'); else new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { o.disconnect(); ft.classList.add('is-lines'); } }, { rootMargin: '0px 0px -8% 0px' }).observe(ft); }
@@ -1073,6 +1075,73 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     addEventListener('pageshow', function (e) { if (e.persisted) { html.classList.remove('pt-out', 'pt-case-out'); $$('.case-turn').forEach(function (x) { x.remove(); }); } });
   }
 
+  /* ---------------- «книга» кейсов: переход между кейсами без перезагрузки ----------------
+     Все опубликованные кейсы лежат в странице шаблонами (<template data-case>), показан один.
+     По ссылке на другой кейс (a[data-case]) снизу подкладывается лист с его названием; когда лист закрыл экран,
+     под ним меняется содержимое, адрес становится …#кейс (кнопки «Назад/Вперёд» работают), лист уезжает вверх.
+     Картинки следующего кейса скачиваются заранее — когда ссылка на него подходит к экрану или на неё навели. */
+  function book() {
+    var bk = $('.cs-book'); if (!bk) return;
+    var pg = $('.cs-book__page', bk), main = $('main'), busy = false, TURN = 950, OUT = 1000;
+    var tpl = function (s) { return /^[\w-]+$/.test(s || '') && $('template[data-case="' + s + '"]', bk); };
+    var cur = function () { return pg.getAttribute('data-case'); };
+    var hostCase = function () { var t = $$('template', bk).filter(function (x) { return x.getAttribute('data-url') === bk.getAttribute('data-host'); })[0]; return t ? t.getAttribute('data-case') : bk.getAttribute('data-default'); };
+    var caseOfUrl = function () { var st = history.state && history.state.sosCase; if (tpl(st)) return st; var s = decodeURIComponent(location.hash.slice(1)); return tpl(s) ? s : hostCase(); };
+    function preload(s) {
+      var t = tpl(s); if (!t || t.__pre) return; t.__pre = 1;
+      $$('img', t.content).slice(0, 4).forEach(function (im) {
+        var i = new Image(); if (im.getAttribute('sizes')) i.sizes = im.getAttribute('sizes');
+        if (im.getAttribute('srcset')) i.srcset = im.getAttribute('srcset'); i.src = im.getAttribute('src');
+      });
+    }
+    function mount(s) {
+      var t = tpl(s); pg.innerHTML = ''; pg.appendChild(t.content.cloneNode(true)); pg.setAttribute('data-case', s);
+      document.title = t.getAttribute('data-title');
+      [caseMore, fitSamples, reveal].forEach(function (f) { try { f(pg); } catch (e) { try { console.error('Shape of Sense: book', e); } catch (_) {} } }); watch();
+    }
+    function top() { html.style.scrollBehavior = 'auto'; scrollTo(0, 0); html.style.scrollBehavior = ''; }
+    function go(s, push, label) {
+      var t = tpl(s); if (!t || busy || s === cur()) return;
+      if (push) history.pushState({ sosCase: s }, '', t.getAttribute('data-url'));
+      if (reduce) { mount(s); top(); return; }
+      busy = true; preload(s);
+      var sh = document.createElement('div');
+      sh.className = 'case-turn'; sh.setAttribute('aria-hidden', 'true');
+      sh.innerHTML = '<div class="case-turn__in"><p class="case-turn__k"></p><p class="case-turn__title"></p></div>';
+      sh.querySelector('.case-turn__k').textContent = label || '';
+      sh.querySelector('.case-turn__title').textContent = t.getAttribute('data-name') || '';
+      (document.getElementById('sos-page') || document.body).appendChild(sh);
+      html.classList.add('pt-case-out');
+      requestAnimationFrame(function () { requestAnimationFrame(function () { sh.classList.add('is-on'); }); });
+      setTimeout(function () {
+        // лист закрыл экран: под ним — новый кейс с самого верха, чуть ниже своего места
+        html.classList.remove('pt-case-out'); html.classList.add('bk-in');
+        mount(s); top();
+        main.offsetHeight;
+        html.classList.add('bk-go'); sh.classList.add('is-off');
+        setTimeout(function () { sh.remove(); html.classList.remove('bk-in', 'bk-go'); busy = false; if (caseOfUrl() !== cur()) go(caseOfUrl(), false, ''); }, OUT + 150);
+      }, TURN);
+    }
+    var seen = [];
+    function watch() {
+      $$('a[data-case]', pg).forEach(function (a) {
+        if (seen.indexOf(a) >= 0) return; seen.push(a);
+        ['pointerenter', 'focus', 'touchstart'].forEach(function (ev) { a.addEventListener(ev, function () { preload(a.getAttribute('data-case')); }, { passive: true }); });
+        if ('IntersectionObserver' in window) { var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); preload(a.getAttribute('data-case')); } }, { rootMargin: '0px 0px 1200px 0px' }); io.observe(a); }
+      });
+    }
+    // ссылки на кейсы — до общего обработчика переходов (он перезагрузил бы страницу)
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[data-case]');
+      if (!a || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || !tpl(a.getAttribute('data-case'))) return;
+      e.preventDefault(); e.stopImmediatePropagation();
+      go(a.getAttribute('data-case'), true, a.getAttribute('data-turn-label'));
+    }, true);
+    addEventListener('popstate', function () { go(caseOfUrl(), false, ''); });
+    try { history.replaceState({ sosCase: cur() }, ''); } catch (e) {}
+    watch();
+  }
+
   /* ---------------- кейс: лист наезжает на первый экран ----------------
      Первый экран закреплён (position: sticky); пока лист его закрывает, он чуть уменьшается и темнеет. */
   function caseSheet() {
@@ -1105,6 +1174,7 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     if (turning) { var pl0 = $('#preloader'); if (pl0) pl0.parentNode.removeChild(pl0); }
     safe(pageTurn, 'pageTurn');
     safe(caseSheet, 'caseSheet');
+    safe(book, 'book');
     safe(function () {
       // пришли по ссылке с якорем (/#projects) переходом — сразу к разделу, под листом
       // (и ещё раз после загрузки: браузер сам прыгает к якорю и не учитывает шапку и сдвиг листа)
