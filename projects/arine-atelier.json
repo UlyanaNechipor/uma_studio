@@ -3,7 +3,7 @@
   "project": "Клиент: Arine Atelier\nГод: 2024\nБизнес-сайт",
   "tasks": "Дизайн-проект\nРазработка на Webflow\nИнтеграции способов доставки\nПодключение СМС-оповещений\nИнтеграции способов оплаты",
   "cover": {
-    "image": "img/projects/arine-atelier/cover-2382.webp",
+    "image": "img/projects/arine-atelier/cover-3600.webp",
     "alt": "Arine Atelier: портрет основателя и первый экран сайта"
   },
   "lead": "Arine Atelier — творческая студия дизайна, основанная промышленным дизайнером Евгением Арининым, выпускником Британской высшей школы дизайна.",
@@ -18,9 +18,9 @@
       "text": "Страница о студии устроена как манифест: крупные заголовки, портрет основателя, направления, процесс работы, услуги и партнёры, а в конце — форма для связи.",
       "at": "10",
       "image": {
-        "image": "img/projects/arine-atelier/about-2382.webp",
+        "image": "img/projects/arine-atelier/about-3600.webp",
         "alt": "Страница о компании Arine Atelier на телефоне и на десктопе",
-        "mobile": "img/projects/arine-atelier/about-m-1840.webp"
+        "mobile": "img/projects/arine-atelier/about-m-3025.webp"
       }
     },
     {
@@ -29,23 +29,23 @@
       "text": "Направления — интерьер, промышленный дизайн, архитектурная фотография — открываются полноэкранными кадрами. Список проектов набран крупно, и названия сами работают как навигация.",
       "at": "10",
       "image": {
-        "image": "img/projects/arine-atelier/directions-2382.webp",
+        "image": "img/projects/arine-atelier/directions-3600.webp",
         "alt": "Страница направлений Arine Atelier: первый экран, список проектов, архитектурная фотография",
-        "mobile": "img/projects/arine-atelier/directions-m-1238.webp"
+        "mobile": "img/projects/arine-atelier/directions-m-3600.webp"
       }
     },
     {
       "type": "pair",
       "gap": true,
       "left": {
-        "image": "img/projects/arine-atelier/tablet-1200.webp",
+        "image": "img/projects/arine-atelier/tablet-3597.webp",
         "alt": "Страница направлений на планшете",
-        "mobile": "img/projects/arine-atelier/tablet-m-1200.webp"
+        "mobile": "img/projects/arine-atelier/tablet-m-3480.webp"
       },
       "right": {
-        "image": "img/projects/arine-atelier/phones-1200.webp",
+        "image": "img/projects/arine-atelier/phones-3600.webp",
         "alt": "Страница направлений и список проектов на телефоне",
-        "mobile": "img/projects/arine-atelier/phones-m-1200.webp"
+        "mobile": "img/projects/arine-atelier/phones-m-2386.webp"
       }
     },
     {
@@ -54,23 +54,23 @@
       "text": "Страница проекта рассказывает историю одной работы: описание, заказчик и крупные изображения объекта. Новости разделены по типам — награды, публикации, интервью, — чтобы нужное находилось сразу.",
       "at": "10",
       "image": {
-        "image": "img/projects/arine-atelier/project-2382.webp",
+        "image": "img/projects/arine-atelier/project-3600.webp",
         "alt": "Страница проекта «Россети» и страница новостей Arine Atelier",
-        "mobile": "img/projects/arine-atelier/project-m-1232.webp"
+        "mobile": "img/projects/arine-atelier/project-m-3600.webp"
       }
     },
     {
       "type": "pair",
       "gap": true,
       "left": {
-        "image": "img/projects/arine-atelier/phones-news-1200.webp",
+        "image": "img/projects/arine-atelier/phones-news-3598.webp",
         "alt": "Страница проекта и новости на телефоне",
-        "mobile": "img/projects/arine-atelier/phones-news-m-1200.webp"
+        "mobile": "img/projects/arine-atelier/phones-news-m-2392.webp"
       },
       "right": {
-        "image": "img/projects/arine-atelier/tablet-news-1200.webp",
+        "image": "img/projects/arine-atelier/tablet-news-3600.webp",
         "alt": "Новость о награде на планшете",
-        "mobile": "img/projects/arine-atelier/tablet-news-m-1200.webp"
+        "mobile": "img/projects/arine-atelier/tablet-news-m-1694.webp"
       }
     }
   ]
