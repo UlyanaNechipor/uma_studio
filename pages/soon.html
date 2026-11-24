@@ -165,7 +165,7 @@
   user-select: none;
 }html #sos-page .soon__shape{ font-family: var(--f-sans); font-weight: 800; letter-spacing: .01em; }html #sos-page .soon__of{ font-family: 'PT Serif', Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 700;
   font-size: 1.08em; color: var(--grey); letter-spacing: -.01em; }@keyframes soon-focus{ 0%, 100% { filter: blur(.075em); opacity: .9; } 50% { filter: blur(.03em); opacity: 1; } }html.rm #sos-page .soon__mark,html.rm-off #sos-page .soon__mark{ animation: none; }@media (max-width: 767px){html #sos-page .soon__lb{ display: none; }html #sos-page .soon__text,html #sos-page .soon__back{ margin-top: 20px; }html #sos-page .soon__mark{ font-size: 21vw; white-space: normal; line-height: .95; }html #sos-page .soon__of{ display: block; }
-}
+}html #sos-page .uma-project--soon{ padding: 0 var(--up-pad); }html #sos-page .uma-project--soon .soon{ min-height: 82svh; padding-left: 0; padding-right: 0; }html #sos-page .uma-project--soon .uma-project__pager{ margin-top: 0; }
 </style>
 <style>@media (min-width: 1025px) and (hover: hover){html,html body.t-body,html #sos-page a,html #sos-page button{ cursor: pointer; } }html #sos-page #trail,html #sos-page #wipe{ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }html #sos-page #trail{ z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }html.light-theme #sos-page #trail,html.light-theme #sos-page .hd__trail{ mix-blend-mode: multiply; opacity: .85; filter: blur(24px); }html #sos-page .hd__trail{ position: absolute; left: 0; top: 0; width: 100%; height: calc(100% + 120px);   
   pointer-events: none; z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }html #sos-page .hd > :not(.hd__trail){ position: relative; z-index: 1; }html #sos-page .hd{ isolation: isolate; overflow: hidden; }html #sos-page #wipe{ z-index: -1; }html #sos-page main{ position: relative; z-index: 1; }html #sos-page .ft{ z-index: 10; }html body.t-body{ background: transparent; }html{ background: var(--bg); transition: background-color .5s var(--m-out); }html.is-wiping{ transition: none; }html #sos-page .hd__ic{ position: relative; display: block; width: 100%; height: 100%; transition: transform .6s var(--m-out); }html #sos-page .hd__ic svg{
@@ -297,7 +297,7 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
   <div class="soon__head">
     <h1 class="soon__title">Скоро здесь</h1>
     <p class="soon__text">Некоторые проекты ещё обретают свою форму.<br class="soon__lb"> Подробности и&nbsp;визуальные материалы скоро<br class="soon__lb"> появятся здесь.</p>
-    <a class="soon__back" href="/#projects" data-back>Назад</a>
+    <a class="soon__back" href="/#projects" data-back>Назад к проектам</a>
   </div>
   <p class="soon__mark" aria-hidden="true"><span class="soon__shape">SHAPE</span> <span class="soon__of">(of&nbsp;Sense)</span></p>
 </section>

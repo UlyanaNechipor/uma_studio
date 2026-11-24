@@ -9,6 +9,11 @@
   "h": 960,
   "w": 1520
  },
+ "img/covers/gruzinka-soon.webp": {
+  "alpha": false,
+  "h": 960,
+  "w": 1520
+ },
  "img/covers/kara-fox-laptop.webp": {
   "alpha": false,
   "h": 960,
@@ -65,6 +70,16 @@
   "w": 1600
  },
  "img/mobile/black-sable-m2.webp": {
+  "alpha": false,
+  "h": 900,
+  "w": 1600
+ },
+ "img/mobile/gruzinka-soon-1.webp": {
+  "alpha": false,
+  "h": 900,
+  "w": 1600
+ },
+ "img/mobile/gruzinka-soon-2.webp": {
   "alpha": false,
   "h": 900,
   "w": 1600
