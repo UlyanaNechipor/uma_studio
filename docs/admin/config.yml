@@ -172,7 +172,7 @@ collections:
                   - { name: label, label: Подпись над описанием, widget: string, required: false }
                   - { name: text, label: Описание, widget: text, required: false }
                   - { name: color, label: Цвет названия, widget: color, allowInput: true, required: false }
-                  - { name: size, label: 'Кегль названия (px при ширине 1200)', widget: number, required: false, hint: 'Пусто — по умолчанию. Название должно уместиться в колонки 1–9.' }
+                  - { name: size, label: 'Кегль названия (px при ширине 1920)', widget: number, required: false, hint: 'Пиксели на экране 1920. Пусто — по умолчанию. Название должно уместиться в колонки 1–9.' }
                   - { name: weight, label: Начертание, widget: select, required: false, options: ['300', '400', '500', '600', '700'] }
                   - { name: serif, label: С засечками, widget: boolean, required: false, default: false }
               - { name: image, label: Картинка, widget: object, required: false, collapsed: true, fields: *picture }

@@ -2,7 +2,7 @@
    Кривые и длительности — из tokens.css (--m-*), те же, что на Тильде (css/motion.css). */
 
 /* ---------- курсор: на компьютере рука везде (как на Тильде) ---------- */
-@media (min-width: 1025px) and (hover: hover) { html, body, a, button { cursor: pointer; } }
+@media (min-width: 1025px) and (hover: hover) { html, body, a, button { cursor: pointer;} }
 
 /* ---------- фон за курсором и смена темы ---------- */
 #trail, #wipe { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }
@@ -95,7 +95,7 @@ html.js .hg:not(.is-in) .hg__frame { visibility: hidden; }
 .hg__ic--play { opacity: 0; transform: scale(.6); }
 .hg.is-paused .hg__ic--pause { opacity: 0; transform: scale(.6); }
 .hg.is-paused .hg__ic--play { opacity: 1; transform: none; }
-@media (min-width: 768px) { .hg__pause { right: 14px; bottom: 14px; } }
+@media (min-width: 768px) { .hg__pause { right: 14px; bottom: 14px;} }
 
 /* ---------- абстрактная фигура справа (WebGL) ---------- */
 .hero__aside {
@@ -134,8 +134,8 @@ html.rm-off .hg__slide img { transform: none !important; }
 
 /* десктоп: строки целиком въезжают слева по очереди */
 @media (min-width: 768px) {
-  html.js .prow--rv { opacity: 0; transform: translate3d(-56px, 0, 0); }
-  html.js .is-in > .prow--rv { opacity: 1; transform: none; transition: opacity .55s ease var(--row-d, 0s), transform .95s var(--m-out) var(--row-d, 0s); }
+  html.js .prow--rv { opacity: 0; transform: translate3d(-56px, 0, 0);}
+  html.js .is-in > .prow--rv { opacity: 1; transform: none; transition: opacity .55s ease var(--row-d, 0s), transform .95s var(--m-out) var(--row-d, 0s);}
 }
 /* телефон: линия над карточкой прочерчивается, содержимое всплывает по очереди */
 @media (max-width: 767.98px) {
@@ -225,12 +225,12 @@ html.light-theme .case-turn { box-shadow: 0 -40px 90px -20px rgba(40, 30, 20, .3
 .case-turn__in {
   height: 100%; display: flex; flex-direction: column; justify-content: space-between;
   padding: calc(max(44px, calc(48 * var(--u))) + 32px) 16px 24px;
-}
+} @media (min-width: 768px) { .case-turn__in {padding: calc(max(44px, calc(76.8 * var(--u))) + 32px) 16px 24px; } }
 .case-turn__k { margin: 0; font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); color: var(--grey); }
 .case-turn__title { margin: 0; font-size: clamp(56px, 19vw, 120px); line-height: .9; letter-spacing: -.045em; font-weight: var(--w-head); }
 @media (min-width: 768px) {
-  .case-turn__in { padding: calc(48 * var(--u) + 60 * var(--u)) var(--pad-x) calc(40 * var(--u) + 120 * var(--u)); }
-  .case-turn__title { font-size: min(calc(220 * var(--u)), 15vw); line-height: .86; white-space: nowrap; margin-left: -.04em; }
+  .case-turn__in { padding: calc(76.8 * var(--u) + 96 * var(--u)) var(--pad-x) calc(64 * var(--u) + 192 * var(--u));}
+  .case-turn__title { font-size: min(calc(352 * var(--u)), 15vw); line-height: .86; white-space: nowrap; margin-left: -.04em;}
 }
 /* уходящая страница чуть уезжает вверх и гаснет под листом */
 html.pt-case-out main { transform: translate3d(0, -10vh, 0) scale(.97); opacity: .4; transform-origin: 50% 0;

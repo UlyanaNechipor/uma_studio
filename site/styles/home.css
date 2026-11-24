@@ -1,77 +1,75 @@
 /* Shape of Sense · главная. Отступы сняты с Тильды (content/layout.json):
-   мобилка — макет 320, десктоп — макет 1200, всё в calc(N * var(--u)). */
+   мобилка — макет 320, десктоп — макет 1920, всё в calc(N * var(--u)). */
 
 /* ===== Расстояние между блоками: 80 на мобилке, 180 на десктопе (в пикселях макета) =====
    Блоки сами не имеют отступов сверху и снизу — расстояние задаёт только main, поэтому оно везде одинаковое. */
 main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bottom: var(--block-gap); }
-:root { --block-gap: calc(80 * var(--u)); }
-@media (min-width: 768px) { :root { --block-gap: calc(180 * var(--u)); } }
+:root { --block-gap: calc(80 * var(--u)); }                                   /* между блоками: телефон — 80 (макет 320) */
+@media (min-width: 768px) { :root { --block-gap: calc(180 * var(--u)); } }   /* десктоп — 180 на экране 1920 */
 
 /* ===== 1. Первый экран: 496 / 947 ===== */
 .hero {
   padding-top: calc(96 * var(--u));
   grid-template-rows: minmax(calc(112 * var(--u)), auto) minmax(calc(88 * var(--u)), auto) calc(200 * var(--uw));   /* ряды с текстом растут, если текст крупнее макета */
-}
-.hero__lead { grid-column: 1 / -1; grid-row: 1; color: var(--txt-soft); padding-bottom: calc(24 * var(--u)); }
+} @media (min-width: 768px) { .hero {padding-top: calc(153.6 * var(--u)); grid-template-rows: minmax(calc(179.2 * var(--u)), auto) minmax(calc(140.8 * var(--u)), auto) calc(320 * var(--uw)); } }
+.hero__lead { grid-column: 1 / -1; grid-row: 1; color: var(--txt-soft); padding-bottom: calc(24 * var(--u)); } @media (min-width: 768px) { .hero__lead {padding-bottom: calc(38.4 * var(--u)); } }
 .hero__lead .hero__lb { display: none; }   /* на телефоне строки внутри предложения переносятся сами */
-@media (min-width: 768px) { .hero__lead .hero__lb { display: inline; } }
-.hero__title, .about__title, .about__lead, .about__label { padding-bottom: calc(24 * var(--u)); }
+@media (min-width: 768px) { .hero__lead .hero__lb { display: inline;} }
+.hero__title, .about__title, .about__lead, .about__label { padding-bottom: calc(24 * var(--u)); } @media (min-width: 768px) { .hero__title, .about__title, .about__lead, .about__label {padding-bottom: calc(38.4 * var(--u)); } }
 .hero__title { grid-column: 1 / -1; grid-row: 2; }
 .hero__gallery { grid-column: 1 / -1; grid-row: 3; position: relative; }
 .hero__aside { display: none; }
 @media (min-width: 768px) {
-  .hero { padding-top: calc(120 * var(--u)); grid-template-rows: auto auto calc(480 * var(--u)); }
+  .hero { padding-top: calc(192 * var(--u)); grid-template-rows: auto auto calc(768 * var(--u));}
   /* видимые расстояния по буквам: текст → заголовок → галерея по 60. Строки заголовка плотные (.96),
      буквы выходят за строку на .19em сверху и снизу — это добавлено к отступам */
-  .hero__title { padding-bottom: calc(60 * var(--u) + .19em); }
+  .hero__title { padding-bottom: calc(96 * var(--u) + .19em);}
   /* текст первого экрана: каждое предложение с новой строки, переносы заданы в контенте; до заголовка — 60 */
-  .hero__lead { grid-column: 3 / 5; max-width: none; white-space: nowrap; padding-bottom: calc(60 * var(--u) + .19 * max(var(--min-h1), calc(var(--t-h1) * var(--u)))); }
+  .hero__lead { grid-column: 3 / 5; max-width: none; white-space: nowrap; padding-bottom: calc(96 * var(--u) + .19 * max(var(--min-h1), calc(var(--t-h1) * var(--u))));}
   /* правая картинка начинается на линии пункта «О нас» в шапке (790) и идёт до правого поля (1168);
      галерея — от левого поля до 782, шаг между ними 8 */
-  .hero__gallery { grid-column: 1 / -1; width: calc(772 * var(--u)); }
+  .hero__gallery { grid-column: 1 / -1; width: calc(1235.2 * var(--u));}
   .hero__aside {
     display: block; grid-column: 1 / -1; grid-row: 3; justify-self: start;
-    margin-left: calc(780 * var(--u)); width: calc(380 * var(--u));   /* с 9-й колонки (800, «О нас») до правого поля (1180) */
-    background: radial-gradient(120% 60% at 70% 30%, rgba(255,120,60,.35), transparent 60%), #0d0d0d;
-  }
+    margin-left: calc(1248 * var(--u)); width: calc(608 * var(--u));   /* с 9-й колонки (800, «О нас») до правого поля (1180) */
+    background: radial-gradient(120% 60% at 70% 30%, rgba(255,120,60,.35), transparent 60%), #0d0d0d;}
 }
 
 /* ===== 2. Избранные проекты: 1146 / 558 ===== */
 
 .projects__label, .projects__title, .projects__list { grid-column: 1 / -1; }
-.projects__title { margin-top: calc(16 * var(--u)); }
-.projects__list { margin-top: calc(32 * var(--u)); }
-.prow { border-top: 1px solid var(--line); height: calc(124 * var(--u) + 79 * var(--uw)); }
-.prow:last-child { height: calc(92 * var(--u) + 79 * var(--uw)); }
+.projects__title { margin-top: calc(16 * var(--u)); } @media (min-width: 768px) { .projects__title {margin-top: calc(25.6 * var(--u)); } }
+.projects__list { margin-top: calc(32 * var(--u)); } @media (min-width: 768px) { .projects__list {margin-top: calc(51.2 * var(--u)); } }
+.prow { border-top: 1px solid var(--line); height: calc(124 * var(--u) + 79 * var(--uw)); } @media (min-width: 768px) { .prow {height: calc(198.4 * var(--u) + 126.4 * var(--uw)); } }
+.prow:last-child { height: calc(92 * var(--u) + 79 * var(--uw)); } @media (min-width: 768px) { .prow:last-child {height: calc(147.2 * var(--u) + 126.4 * var(--uw)); } }
 .prow__link {
   display: grid; grid-template-columns: 1fr auto; column-gap: calc(8 * var(--u));
   padding-top: calc(12 * var(--u));
-}
-.prow__name { font-size: max(var(--min-name), calc(14 * var(--u))); text-transform: none; letter-spacing: 0; }
-.prow__year { font-size: max(var(--min-name), calc(14 * var(--u))); line-height: 1; }
-.prow__type { grid-row: 2; font-size: max(var(--min-name), calc(14 * var(--u))); margin-top: calc(8 * var(--u)); }
+} @media (min-width: 768px) { .prow__link {column-gap: calc(12.8 * var(--u)); padding-top: calc(19.2 * var(--u)); } }
+.prow__name { font-size: max(var(--min-name), calc(14 * var(--u))); text-transform: none; letter-spacing: 0; } @media (min-width: 768px) { .prow__name {font-size: max(var(--min-name), calc(22.4 * var(--u))); } }
+.prow__year { font-size: max(var(--min-name), calc(14 * var(--u))); line-height: 1; } @media (min-width: 768px) { .prow__year {font-size: max(var(--min-name), calc(22.4 * var(--u))); } }
+.prow__type { grid-row: 2; font-size: max(var(--min-name), calc(14 * var(--u))); margin-top: calc(8 * var(--u)); } @media (min-width: 768px) { .prow__type {font-size: max(var(--min-name), calc(22.4 * var(--u))); margin-top: calc(12.8 * var(--u)); } }
 .prow__pics {
   grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: calc(8 * var(--u));
   height: calc(79 * var(--uw)); margin-top: calc(18 * var(--u));
-}
+} @media (min-width: 768px) { .prow__pics {gap: calc(12.8 * var(--u)); height: calc(126.4 * var(--uw)); margin-top: calc(28.8 * var(--u)); } }
 .prow__pics > * { display: block; height: 100%; min-height: 0; overflow: hidden; }
 @media (min-width: 768px) {
-  .projects__label, .projects__title { grid-column: 3 / 5; }
-  .projects__title { margin-top: calc(22 * var(--u)); }   /* надпись → заголовок 16 по буквам */
-  .projects__list { margin-top: calc(68 * var(--u)); }    /* заголовок → список 60, как в первом экране */
-  .prow, .prow:last-child { height: max(44px, calc(53 * var(--u))); }
-  .prow:last-child { border-bottom: 1px solid var(--line); }
+  .projects__label, .projects__title { grid-column: 3 / 5;}
+  .projects__title { margin-top: calc(35.2 * var(--u));}   /* надпись → заголовок 16 по буквам */
+  .projects__list { margin-top: calc(108.8 * var(--u));}    /* заголовок → список 60, как в первом экране */
+  .prow, .prow:last-child { height: max(44px, calc(84.8 * var(--u)));}
+  .prow:last-child { border-bottom: 1px solid var(--line);}
   .prow__link {
-    grid-template-columns: calc(585 * var(--u)) 1fr auto; column-gap: 0;   /* тип проекта — с 7-й колонки (605) */
-    align-items: baseline; padding-top: calc(16 * var(--u));
-    transition: opacity var(--m-hover) var(--m-out);
-  }
-  .prow__name { font-size: max(var(--min-name), calc(var(--t-name) * var(--u))); letter-spacing: var(--t-name-ls); text-transform: none; color: var(--txt-soft); }
-  .prow__name { grid-column: 1; }
-  .prow__type { grid-column: 2; }
-  .prow__year { grid-column: 3; justify-self: end; }
-  .prow__type, .prow__year { grid-row: 1; margin: 0; font-size: max(var(--min-small), calc(12 * var(--u))); }
-  .prow__pics { display: none; }
+    grid-template-columns: calc(936 * var(--u)) 1fr auto; column-gap: 0;   /* тип проекта — с 7-й колонки (605) */
+    align-items: baseline; padding-top: calc(25.6 * var(--u));
+    transition: opacity var(--m-hover) var(--m-out);}
+  .prow__name { font-size: max(var(--min-name), calc(var(--t-name) * var(--u))); letter-spacing: var(--t-name-ls); text-transform: none; color: var(--txt-soft);}
+  .prow__name { grid-column: 1;}
+  .prow__type { grid-column: 2;}
+  .prow__year { grid-column: 3; justify-self: end;}
+  .prow__type, .prow__year { grid-row: 1; margin: 0; font-size: max(var(--min-small), calc(19.2 * var(--u)));}
+  .prow__pics { display: none;}
 }
 
 /* ===== 3. Эксперименты: макет Figma «Landing Arine» 2625:27773 =====
@@ -79,107 +77,107 @@ main { display: flex; flex-direction: column; gap: var(--block-gap); padding-bot
    Мобилка: колонки раскрываются (display: contents), порядок и ширины — как раньше. */
 .lab { text-align: center; }
 .lab__title, .lab__lead, .lab__grid { grid-column: 1 / -1; }
-.lab__lead { margin: calc(24 * var(--u)) auto 0; max-width: calc(254 * var(--u)); }
+.lab__lead { margin: calc(24 * var(--u)) auto 0; max-width: calc(254 * var(--u)); } @media (min-width: 768px) { .lab__lead {margin: calc(38.4 * var(--u)) auto 0; max-width: calc(406.4 * var(--u)); } }
 .lab__grid {
   display: grid; margin-top: calc(24 * var(--u));
   grid-template-columns: var(--g-cols); column-gap: var(--g-gap);   /* те же колонки, что у .grid (вместо subgrid — он только с Safari 16) */
   row-gap: calc(16 * var(--u)); align-items: start;
-}
+} @media (min-width: 768px) { .lab__grid {margin-top: calc(38.4 * var(--u)); /* те же колонки, что у .grid (вместо subgrid — он только с Safari 16) */
+  row-gap: calc(25.6 * var(--u)); } }
 .lab__col { display: contents; }
 .lab__it { margin: 0; text-align: left; min-width: 0; }
-.lab__ph { overflow: hidden; height: calc(180 * var(--uw)); }
+.lab__ph { overflow: hidden; height: calc(180 * var(--uw)); } @media (min-width: 768px) { .lab__ph {height: calc(288 * var(--uw)); } }
 .lab__ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.lab__cap { margin-top: calc(6 * var(--u)); }
+.lab__cap { margin-top: calc(6 * var(--u)); } @media (min-width: 768px) { .lab__cap {margin-top: calc(9.6 * var(--u)); } }
 .lab__it--m-wide { grid-column: 1 / -1; }
 /* порядок и высоты на мобилке как в Тильде */
 .lab__it--a1 { order: 1; } .lab__it--d2 { order: 2; } .lab__it--a2 { order: 3; }
 .lab__it--c1 { order: 4; } .lab__it--b  { order: 5; } .lab__it--c2 { order: 6; } .lab__it--d1 { order: 7; }
-.lab__it--c1 .lab__ph { height: calc(185 * var(--uw)); }
-.lab__it--b .lab__ph, .lab__it--c2 .lab__ph { height: calc(200 * var(--uw)); }
-.lab__it--d1 .lab__ph { height: calc(181 * var(--uw)); }
+.lab__it--c1 .lab__ph { height: calc(185 * var(--uw)); } @media (min-width: 768px) { .lab__it--c1 .lab__ph {height: calc(296 * var(--uw)); } }
+.lab__it--b .lab__ph, .lab__it--c2 .lab__ph { height: calc(200 * var(--uw)); } @media (min-width: 768px) { .lab__it--b .lab__ph, .lab__it--c2 .lab__ph {height: calc(320 * var(--uw)); } }
+.lab__it--d1 .lab__ph { height: calc(181 * var(--uw)); } @media (min-width: 768px) { .lab__it--d1 .lab__ph {height: calc(289.6 * var(--uw)); } }
 @media (min-width: 768px) {
-  .lab__lead { margin-top: calc(31 * var(--u)); max-width: none; }   /* заголовок → подпись 24 */
-  .lab__grid { margin-top: calc(58 * var(--u)); }                   /* подпись → карточки 60 */
-  .lab__title { margin-top: calc(8 * var(--u)); }                    /* верх букв на 180 от предыдущего блока */
-  .lab__col { display: flex; flex-direction: column; gap: calc(12 * var(--u)); }
-  .lab__it { order: 0 !important; grid-column: auto !important; }
+  .lab__lead { margin-top: calc(49.6 * var(--u)); max-width: none;}   /* заголовок → подпись 24 */
+  .lab__grid { margin-top: calc(92.8 * var(--u));}                   /* подпись → карточки 60 */
+  .lab__title { margin-top: calc(12.8 * var(--u));}                    /* верх букв на 180 от предыдущего блока */
+  .lab__col { display: flex; flex-direction: column; gap: calc(19.2 * var(--u));}
+  .lab__it { order: 0 !important; grid-column: auto !important;}
   /* высоты по макету: px макета при колонке 372 → колонка 272 (одинаково для всех колонок, чтобы низы совпали) */
-  .lab__ph, .lab__it .lab__ph { height: calc(var(--h) * 272 / 372 * var(--u)); }
-  .lab__cap { margin-top: calc(6 * var(--u)); letter-spacing: 0; }
+  .lab__ph, .lab__it .lab__ph { height: calc(var(--h) * 435.2 / 372 * var(--u));}
+  .lab__cap { margin-top: calc(9.6 * var(--u)); letter-spacing: 0;}
   /* низы колонок на одной линии: если подпись переносится, нижняя картинка в соседних колонках чуть вытягивается */
-  .lab__grid { align-items: stretch; }
-  .lab__col > .lab__it:last-child { flex: 1 0 auto; display: flex; flex-direction: column; }
-  .lab__col > .lab__it:last-child > .lab__ph { flex: 1 0 auto; }
+  .lab__grid { align-items: stretch;}
+  .lab__col > .lab__it:last-child { flex: 1 0 auto; display: flex; flex-direction: column;}
+  .lab__col > .lab__it:last-child > .lab__ph { flex: 1 0 auto;}
   /* у нижних карточек место под подпись в две строки у всех: картинки кончаются на одной линии, даже если одна подпись переносится */
-  .lab__col > .lab__it:last-child > .lab__cap { min-height: calc(2 * var(--t-small-lh) * 1em); }
+  .lab__col > .lab__it:last-child > .lab__cap { min-height: calc(2 * var(--t-small-lh) * 1em);}
   /* высокая карточка = две соседние + подпись и отступ между ними */
-  .lab__it--b .lab__ph { height: calc((293 + 509) * 272 / 372 * var(--u) + 38 * var(--u)); }
+  .lab__it--b .lab__ph { height: calc((293 + 509) * 435.2 / 372 * var(--u) + 60.8 * var(--u));}
 }
 
 /* ===== 4. О нас: 674 / 736 ===== */
 .about {
   grid-template-rows: minmax(calc(136 * var(--u)), auto) calc(24 * var(--u) + 220 * var(--uw)) minmax(calc(62 * var(--u)), auto) auto;
-}
+} @media (min-width: 768px) { .about {grid-template-rows: minmax(calc(217.6 * var(--u)), auto) calc(38.4 * var(--u) + 352 * var(--uw)) minmax(calc(99.2 * var(--u)), auto) auto; } }
 .about__label { display: none; }
 .about__title { grid-column: 1 / -1; grid-row: 1; }
-.about__photos { grid-column: 1 / -1; grid-row: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 8px; height: calc(220 * var(--uw)); }
+.about__photos { grid-column: 1 / -1; grid-row: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 8px; height: calc(220 * var(--uw)); } @media (min-width: 768px) { .about__photos {height: calc(352 * var(--uw)); } }
 .about__lead { grid-column: 1 / -1; grid-row: 3; }
-.about__act { grid-column: 1 / -1; grid-row: 4; display: flex; flex-direction: column; gap: calc(9 * var(--u)); }
+.about__act { grid-column: 1 / -1; grid-row: 4; display: flex; flex-direction: column; gap: calc(9 * var(--u)); } @media (min-width: 768px) { .about__act {gap: calc(14.4 * var(--u)); } }
 .about__act .btn { width: 100%; }
 @media (min-width: 768px) {
   .about {
     /* ряд заголовка тянется: низ кнопки = низ фото (556), пока тексты помещаются; если нет — блок растёт */
-    grid-template-rows: calc(41 * var(--u)) minmax(min-content, 1fr) auto auto;   /* надпись → заголовок 16 */
+    grid-template-rows: calc(65.6 * var(--u)) minmax(min-content, 1fr) auto auto;   /* надпись → заголовок 16 */
   }
-  .about__label { display: block; grid-column: 1 / 3; grid-row: 1; padding-bottom: 0; }   /* отступ до заголовка задаёт ряд (35) */
-  .about__title { grid-column: 1 / 3; grid-row: 2; max-width: calc(475 * var(--u)); padding-bottom: calc(18 * var(--u)); }   /* заголовок → абзац 24 по буквам */   /* наименьший отступ до абзаца; в макете ряд тянется до 216 */
-  .about__lead { grid-column: 1 / 3; grid-row: 3; max-width: max(calc(293 * var(--u)), 24.4em); padding-bottom: calc(31 * var(--u)); }   /* абзац → кнопки 32 */   /* строки как в макете и при крупном мелком тексте */
-  .about__act { grid-column: 1 / 3; grid-row: 4; flex-direction: row; align-items: center; gap: calc(16 * var(--u)); }
-  .about__act .btn { width: auto; }
-  .about__photos { grid-column: 3 / 5; grid-row: 1 / 5; height: auto; min-height: calc(376 * var(--u)); align-self: stretch;   /* выше макета, только если колонка текста не помещается (узкий планшет) — низы остаются вровень */
-    grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--g-gap); }
+  .about__label { display: block; grid-column: 1 / 3; grid-row: 1; padding-bottom: 0;}   /* отступ до заголовка задаёт ряд (35) */
+  .about__title { grid-column: 1 / 3; grid-row: 2; max-width: calc(760 * var(--u)); padding-bottom: calc(28.8 * var(--u));}   /* заголовок → абзац 24 по буквам */   /* наименьший отступ до абзаца; в макете ряд тянется до 216 */
+  .about__lead { grid-column: 1 / 3; grid-row: 3; max-width: max(calc(468.8 * var(--u)), 24.4em); padding-bottom: calc(49.6 * var(--u));}   /* абзац → кнопки 32 */   /* строки как в макете и при крупном мелком тексте */
+  .about__act { grid-column: 1 / 3; grid-row: 4; flex-direction: row; align-items: center; gap: calc(25.6 * var(--u));}
+  .about__act .btn { width: auto;}
+  .about__photos { grid-column: 3 / 5; grid-row: 1 / 5; height: auto; min-height: calc(601.6 * var(--u)); align-self: stretch;   /* выше макета, только если колонка текста не помещается (узкий планшет) — низы остаются вровень */
+    grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--g-gap);}
 }
 
 /* ===== 5. Услуги: 568 / 300 ===== */
-.services { row-gap: calc(36 * var(--u)); }
+.services { row-gap: calc(36 * var(--u)); } @media (min-width: 768px) { .services {row-gap: calc(57.6 * var(--u)); } }
 .svc { grid-column: 1 / -1; }
 .svc__title { font-weight: var(--w-ink); color: var(--txt-soft); }
-.svc__text { margin-top: calc(4 * var(--u)); }
+.svc__text { margin-top: calc(4 * var(--u)); } @media (min-width: 768px) { .svc__text {margin-top: calc(6.4 * var(--u)); } }
 @media (min-width: 768px) {
-  .services {
-  }
-  .svc { grid-column: auto; }
+  .services {}
+  .svc { grid-column: auto;}
   /* ширины текстов как в Тильде — от них зависят переносы строк */
-  .svc:nth-child(1) { max-width: calc(235 * var(--u)); } .svc:nth-child(2) { max-width: calc(213 * var(--u)); }
-  .svc:nth-child(3) { max-width: calc(235 * var(--u)); } .svc:nth-child(4) { max-width: calc(225 * var(--u)); }
-  .svc__text { margin-top: calc(8 * var(--u)); }
+  .svc:nth-child(1) { max-width: calc(376 * var(--u));} .svc:nth-child(2) { max-width: calc(340.8 * var(--u));}
+  .svc:nth-child(3) { max-width: calc(376 * var(--u));} .svc:nth-child(4) { max-width: calc(360 * var(--u));}
+  .svc__text { margin-top: calc(12.8 * var(--u));}
 }
 
 /* ===== 6. Есть идея?: 441 / 320 ===== */
 
-.cta__img { grid-column: 1 / -1; height: calc(195 * var(--uw)); }
-.cta__title { grid-column: 1 / -1; margin-top: calc(16 * var(--u)); }
-.cta__act { grid-column: 1 / -1; margin-top: calc(24 * var(--u)); display: flex; flex-wrap: wrap; gap: calc(8 * var(--u)); align-items: center; }
-.cta__act .btn--light { min-width: calc(140 * var(--u)); } .cta__act .btn--grey { min-width: calc(94 * var(--u)); }   /* как в Тильде: 140 и 94 */
-.cta__act .mail { flex-basis: 100%; margin-top: calc(8 * var(--u)); }
+.cta__img { grid-column: 1 / -1; height: calc(195 * var(--uw)); } @media (min-width: 768px) { .cta__img {height: calc(312 * var(--uw)); } }
+.cta__title { grid-column: 1 / -1; margin-top: calc(16 * var(--u)); } @media (min-width: 768px) { .cta__title {margin-top: calc(25.6 * var(--u)); } }
+.cta__act { grid-column: 1 / -1; margin-top: calc(24 * var(--u)); display: flex; flex-wrap: wrap; gap: calc(8 * var(--u)); align-items: center; } @media (min-width: 768px) { .cta__act {margin-top: calc(38.4 * var(--u)); gap: calc(12.8 * var(--u)); } }
+.cta__act .btn--light { min-width: calc(140 * var(--u)); } @media (min-width: 768px) { .cta__act .btn--light {min-width: calc(224 * var(--u)); } } .cta__act .btn--grey { min-width: calc(94 * var(--u)); } @media (min-width: 768px) { .cta__act .btn--grey {min-width: calc(150.4 * var(--u)); } }   /* как в Тильде: 140 и 94 */
+.cta__act .mail { flex-basis: 100%; margin-top: calc(8 * var(--u)); } @media (min-width: 768px) { .cta__act .mail {margin-top: calc(12.8 * var(--u)); } }
 @media (min-width: 768px) {
   .cta {
-    grid-template-columns: calc(267 * var(--u)) 1fr; column-gap: calc(16 * var(--u));
+    grid-template-columns: calc(427.2 * var(--u)) 1fr; column-gap: calc(25.6 * var(--u));
     grid-template-rows: 1fr auto;   /* кнопки встают низом ровно по низу картинки (160) */
   }
-  .cta__img { grid-column: 1; grid-row: 1 / 3; height: calc(160 * var(--u)); }
-  .cta__title { grid-column: 2; grid-row: 1; margin: calc(8 * var(--u)) 0 0; }   /* верх букв = верх картинки */
-  .cta__act { grid-column: 2; grid-row: 2; align-self: end; margin: 0; gap: calc(16 * var(--u)); flex-wrap: nowrap; }
-  .cta__act { align-items: center; }
-  .cta__act .btn--light, .cta__act .btn--grey { min-width: calc(127 * var(--u)); }
-  .cta__act .mail { flex-basis: auto; margin: 0; }
+  .cta__img { grid-column: 1; grid-row: 1 / 3; height: calc(256 * var(--u));}
+  .cta__title { grid-column: 2; grid-row: 1; margin: calc(12.8 * var(--u)) 0 0;}   /* верх букв = верх картинки */
+  .cta__act { grid-column: 2; grid-row: 2; align-self: end; margin: 0; gap: calc(25.6 * var(--u)); flex-wrap: nowrap;}
+  .cta__act { align-items: center;}
+  .cta__act .btn--light, .cta__act .btn--grey { min-width: calc(203.2 * var(--u));}
+  .cta__act .mail { flex-basis: auto; margin: 0;}
 }
 
 /* заголовок первого блока: на десктопе одна строка, кегль прежний (5.5% ширины), справа остаётся воздух;
    на планшете уже не влезает — там две строки */
 @media (min-width: 1024px) {
-  .hero__title { white-space: nowrap; }
-  .hero__title .hero__br { display: none; }
+  .hero__title { white-space: nowrap;}
+  .hero__title .hero__br { display: none;}
 }
 
 /* «Лаборатория» на телефоне — ритм «широкая — две узкие — широкая»: широкие 16:10, узкие 3:4;

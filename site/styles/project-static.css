@@ -13,7 +13,9 @@
   --up-small: max(var(--min-small), calc(var(--t-small) * var(--u)));
   --up-mid: max(var(--min-name), calc(var(--t-name) * var(--u)));   /* вступление и заголовки разделов = подзаголовок (ty-name) */
   padding: calc(max(44px, calc(48 * var(--u))) + calc(40 * var(--u))) var(--up-pad) 0;
-}
+} @media (min-width: 768px) { .uma-project {--up-gap: calc(12.8 * var(--u)); --up-sec: calc(128 * var(--u)); /* между разделами */
+  --up-inner: calc(38.4 * var(--u)); /* вступление и заголовки разделов = подзаголовок (ty-name) */
+  padding: calc(max(44px, calc(76.8 * var(--u))) + calc(64 * var(--u))) var(--up-pad) 0; } }
 html.light-theme .uma-project {
   --up-text: var(--txt);
   --up-muted: var(--grey);
@@ -41,20 +43,20 @@ html.light-theme .uma-project {
 .uma-project p.uma-project__spacer { height: 1.4em; font-size: var(--up-small); }
 .uma-project__meta dt, .uma-project__meta dd { line-height: 1.3; }
 .uma-project__meta dd { color: var(--up-meta); font-weight: var(--w-text); }
-.uma-project__back { padding-bottom: calc(2 * var(--u)); }
+.uma-project__back { padding-bottom: calc(2 * var(--u)); } @media (min-width: 768px) { .uma-project__back {padding-bottom: calc(3.2 * var(--u)); } }
 html.light-theme .uma-project__count { font-weight: var(--w-head); }
 
 /* ---------- телефон (макет 320): всё в одну колонку ---------- */
-.uma-project__top { row-gap: calc(24 * var(--u)); }
-.uma-project__left { gap: calc(16 * var(--u)); }
+.uma-project__top { row-gap: calc(24 * var(--u)); } @media (min-width: 768px) { .uma-project__top {row-gap: calc(38.4 * var(--u)); } }
+.uma-project__left { gap: calc(16 * var(--u)); } @media (min-width: 768px) { .uma-project__left {gap: calc(25.6 * var(--u)); } }
 .uma-project__meta { flex-direction: row; gap: var(--up-gap); }
-.uma-project__meta-group { flex: 1 1 0; gap: calc(6 * var(--u)); }
-.uma-project__cover { margin-top: calc(32 * var(--u)); }
-.uma-project__intro { margin-top: calc(32 * var(--u)); gap: calc(24 * var(--u)); }
+.uma-project__meta-group { flex: 1 1 0; gap: calc(6 * var(--u)); } @media (min-width: 768px) { .uma-project__meta-group {gap: calc(9.6 * var(--u)); } }
+.uma-project__cover { margin-top: calc(32 * var(--u)); } @media (min-width: 768px) { .uma-project__cover {margin-top: calc(51.2 * var(--u)); } }
+.uma-project__intro { margin-top: calc(32 * var(--u)); gap: calc(24 * var(--u)); } @media (min-width: 768px) { .uma-project__intro {margin-top: calc(51.2 * var(--u)); gap: calc(38.4 * var(--u)); } }
 .uma-project__cols { gap: 1.4em; }
-.uma-project__head { gap: calc(16 * var(--u)); }
+.uma-project__head { gap: calc(16 * var(--u)); } @media (min-width: 768px) { .uma-project__head {gap: calc(25.6 * var(--u)); } }
 .uma-project__section .uma-project__figure + .uma-project__figure { margin-top: var(--up-gap); }
-.uma-project__pager { margin-top: calc(48 * var(--u)); padding-bottom: calc(64 * var(--u)); }
+.uma-project__pager { margin-top: calc(48 * var(--u)); padding-bottom: calc(64 * var(--u)); } @media (min-width: 768px) { .uma-project__pager {margin-top: calc(76.8 * var(--u)); padding-bottom: calc(102.4 * var(--u)); } }
 .uma-project__count { width: auto; height: auto; }
 
 /* ---------- планшет и десктоп: ДИЗАЙН-СИСТЕМА, сетка 12 колонок ----------
@@ -64,16 +66,16 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
      одиночный текст среднего объёма — с 10-й колонки до края (layout "side", at: 10);
      мало текста («Проект/Задачи», одна-две строки) — с 11-й колонки, под «Контактами» в шапке (at: 11);
      какой текст куда — задаётся вручную в projects/*.json (поле "at" у раздела и у вступления).
-   Размеры по вертикали и кегли — из макета Figma MAIN (894:1338), делённые на 1.6 (1920 → 1200). */
+   Размеры по вертикали и кегли — из макета Figma MAIN (894:1338), в пикселях экрана 1920. */
 @media (min-width: 768px) {
   .uma-project {
     --up-pad: var(--pad-x);
-    --up-gap: calc(10 * var(--u));     /* 16 */
-    --up-sec: var(--block-gap, calc(180 * var(--u)));      /* между разделами — как между блоками главной (180) */
-    --up-inner: calc(60 * var(--u));   /* заголовок/текст → содержимое — 60, как на главной */
+    --up-gap: calc(16 * var(--u));     /* 16 */
+    --up-sec: var(--block-gap, calc(180 * var(--u)));      /* между разделами — как между блоками главной: 180 на 1920 */
+    --up-inner: calc(96 * var(--u));   /* заголовок/текст → содержимое — 96 на 1920 */
     --up-lines: var(--grid-12);
     --up-col-gap: var(--gap-12);
-    padding-top: calc(48 * var(--u) + 37 * var(--u));            /* 123 от верха страницы */
+    padding-top: calc(76.8 * var(--u) + 59.2 * var(--u));            /* 123 от верха страницы */
   }
   .uma-project__top,
   .uma-project__intro,
@@ -82,42 +84,41 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
     display: grid;
     grid-template-columns: var(--up-lines);
     column-gap: var(--up-col-gap);
-    align-items: start;
-  }
+    align-items: start;}
   /* шапка кейса: название слева, «Проект/Задачи» — мало текста, с 11-й колонки */
-  .uma-project__top { align-items: stretch; }
-  .uma-project__left { grid-column: 1 / 11; gap: calc(24 * var(--u)); height: auto; justify-content: space-between; }
-  .uma-project__meta { grid-column: 11 / 13; display: flex; flex-direction: column; gap: calc(25 * var(--u)); }   /* 40 */
-  .uma-project__meta-group { gap: calc(10 * var(--u)); }                                                        /* шаг строк 31 */
-  .uma-project__meta-group { gap: 0; }
-  .uma-project__back { line-height: 1.25; }
+  .uma-project__top { align-items: stretch;}
+  .uma-project__left { grid-column: 1 / 11; gap: calc(38.4 * var(--u)); height: auto; justify-content: space-between;}
+  .uma-project__meta { grid-column: 11 / 13; display: flex; flex-direction: column; gap: calc(40 * var(--u));}   /* 40 */
+  .uma-project__meta-group { gap: calc(16 * var(--u));}                                                        /* шаг строк 31 */
+  .uma-project__meta-group { gap: 0;}
+  .uma-project__back { line-height: 1.25;}
 
-  .uma-project__cover { margin-top: var(--up-inner); }
+  .uma-project__cover { margin-top: var(--up-inner);}
 
   /* вступление */
-  .uma-project__intro { margin-top: var(--up-inner); }
-  .uma-project__lead { grid-column: 1 / 7; width: auto; max-width: calc(480 * var(--u)); }
+  .uma-project__intro { margin-top: var(--up-inner);}
+  .uma-project__lead { grid-column: 1 / 7; width: auto; max-width: calc(768 * var(--u));}
 
   /* разделы */
-  .uma-project__h2 { grid-column: 1 / 7; flex: none; }
+  .uma-project__h2 { grid-column: 1 / 7; flex: none;}
   /* два блока текста: 7–9 и 10–12 */
   .uma-project__intro .uma-project__cols,
-  .uma-project__head .uma-project__cols { display: contents; }
+  .uma-project__head .uma-project__cols { display: contents;}
   .uma-project__intro .uma-project__col:nth-child(1),
-  .uma-project__head .uma-project__col:nth-child(1) { grid-column: 7 / 10; padding-right: calc(24 * var(--u)); }   /* текстовое правило: строка не упирается во вторую колонку */
+  .uma-project__head .uma-project__col:nth-child(1) { grid-column: 7 / 10; padding-right: calc(38.4 * var(--u));}   /* текстовое правило: строка не упирается во вторую колонку */
   .uma-project__intro .uma-project__col:nth-child(2),
-  .uma-project__head .uma-project__col:nth-child(2) { grid-column: 10 / 13; }
+  .uma-project__head .uma-project__col:nth-child(2) { grid-column: 10 / 13;}
   /* одиночный текст: средний — с 10-й, короткий — с 11-й */
-  .uma-project__aside, .uma-project__intro .uma-project__col.is-single { grid-column: 10 / 13; width: auto; max-width: none; margin-left: 0; }
-  .uma-project__aside.at-11, .uma-project__intro .uma-project__col.is-single.at-11 { grid-column: 11 / 13; }
-  .uma-project__aside p { text-wrap: pretty; }
-  .uma-project__section .uma-project__figure + .uma-project__figure { margin-top: var(--up-sec); }
+  .uma-project__aside, .uma-project__intro .uma-project__col.is-single { grid-column: 10 / 13; width: auto; max-width: none; margin-left: 0;}
+  .uma-project__aside.at-11, .uma-project__intro .uma-project__col.is-single.at-11 { grid-column: 11 / 13;}
+  .uma-project__aside p { text-wrap: pretty;}
+  .uma-project__section .uma-project__figure + .uma-project__figure { margin-top: var(--up-sec);}
 
   /* навигация внизу: назад — у левого поля, счётчик — на 7-й колонке, вперёд — у правого поля */
-  .uma-project__pager { margin-top: var(--up-inner); padding-bottom: var(--up-sec); align-items: center; }
-  .uma-project__pager > :first-child { grid-column: 1 / 7; justify-self: start; }
-  .uma-project__count { grid-column: 7 / 10; grid-row: auto; justify-self: start; justify-content: flex-start; width: auto; height: calc(40 * var(--u)); }
-  .uma-project__pager > :last-child { grid-column: 10 / 13; justify-self: end; }
+  .uma-project__pager { margin-top: var(--up-inner); padding-bottom: var(--up-sec); align-items: center;}
+  .uma-project__pager > :first-child { grid-column: 1 / 7; justify-self: start;}
+  .uma-project__count { grid-column: 7 / 10; grid-row: auto; justify-self: start; justify-content: flex-start; width: auto; height: calc(64 * var(--u));}
+  .uma-project__pager > :last-child { grid-column: 10 / 13; justify-self: end;}
 }
 
 
@@ -132,24 +133,24 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 .uma-project__pair { display: grid; grid-template-columns: 1fr; margin-top: var(--up-sec); }
 .uma-project__pair .uma-project__figure { margin: 0; }
 .uma-project__palette { list-style: none; margin: var(--up-inner) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--up-gap); }
-.uma-project__palette li { aspect-ratio: 1; display: flex; flex-direction: column; justify-content: space-between; padding: calc(14 * var(--uw, var(--u))); min-width: 0; }
+.uma-project__palette li { aspect-ratio: 1; display: flex; flex-direction: column; justify-content: space-between; padding: calc(14 * var(--uw, var(--u))); min-width: 0; } @media (min-width: 768px) { .uma-project__palette li {padding: calc(22.4 * var(--uw, var(--u))); } }
 .uma-project__hex { font-size: var(--up-small); letter-spacing: 0; }
 .uma-project__hex b { font-weight: 600; }
-.uma-project__aa { font-size: max(2rem, calc(54 * var(--u))); line-height: 1; font-weight: 500; letter-spacing: -.01em; }
+.uma-project__aa { font-size: max(2rem, calc(54 * var(--u))); line-height: 1; font-weight: 500; letter-spacing: -.01em; } @media (min-width: 768px) { .uma-project__aa {font-size: max(2rem, calc(86.4 * var(--u))); } }
 .uma-project__fonts { margin-top: var(--up-inner); }
-.uma-project__font { border-top: 1px solid var(--line); padding: calc(20 * var(--u)) 0; display: grid; gap: calc(12 * var(--u)); }
-.uma-project__specimen { margin: 0; font-size: max(2.5rem, calc(96 * var(--u))); line-height: 1.05; color: var(--up-text); font-weight: 400; letter-spacing: 0; }
+.uma-project__font { border-top: 1px solid var(--line); padding: calc(20 * var(--u)) 0; display: grid; gap: calc(12 * var(--u)); } @media (min-width: 768px) { .uma-project__font {padding: calc(32 * var(--u)) 0; gap: calc(19.2 * var(--u)); } }
+.uma-project__specimen { margin: 0; font-size: max(2.5rem, calc(96 * var(--u))); line-height: 1.05; color: var(--up-text); font-weight: 400; letter-spacing: 0; } @media (min-width: 768px) { .uma-project__specimen {font-size: max(2.5rem, calc(153.6 * var(--u))); } }
 .uma-project__font-info p { margin: 0; font-size: var(--up-small); line-height: 1.4; color: var(--up-muted); }
 .uma-project__font-info p.uma-project__sub { color: var(--up-text); margin-bottom: .6em; }
 @media (min-width: 768px) {
-  .uma-project__pair { grid-template-columns: 1fr 1fr; }
-  .uma-project__palette { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: calc(24 * var(--u)); }
-  .uma-project__font { grid-template-columns: var(--up-lines); gap: 0; column-gap: var(--up-col-gap); align-items: start; }
-  .uma-project__specimen { grid-column: 1 / 10; }
-  .uma-project__font-info { grid-column: 10 / 13; }
+  .uma-project__pair { grid-template-columns: 1fr 1fr;}
+  .uma-project__palette { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: calc(38.4 * var(--u));}
+  .uma-project__font { grid-template-columns: var(--up-lines); gap: 0; column-gap: var(--up-col-gap); align-items: start;}
+  .uma-project__specimen { grid-column: 1 / 10;}
+  .uma-project__font-info { grid-column: 10 / 13;}
 }
 @media (min-width: 768px) {
-  .uma-project__font-info p.uma-project__sub { margin-bottom: 1.4em; }
+  .uma-project__font-info p.uma-project__sub { margin-bottom: 1.4em;}
 }
 .uma-project__pair > :only-child { grid-column: 1 / -1; }
 /* две картинки рядом: стык ровно по центральной линии, кадр одинаковый у обеих */
@@ -157,38 +158,38 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 
 /* ---------- номер раздела «01 / 05» в одну строку с заголовком ---------- */
 .uma-project__h2:has(> .uma-project__num) { display: flex; align-items: baseline; gap: 12px; }
-@media (min-width: 768px) { .uma-project__h2:has(> .uma-project__num) { gap: calc(24 * var(--u)); } .uma-project__num { min-width: 4.2em; } }
+@media (min-width: 768px) { .uma-project__h2:has(> .uma-project__num) { gap: calc(38.4 * var(--u));} .uma-project__num { min-width: 4.2em;} }
 .uma-project__num { flex: none; font-size: var(--up-small); line-height: 1; letter-spacing: 0;
   color: var(--grey); font-variant-numeric: tabular-nums; font-weight: var(--w-text); }
 
 /* ---------- палитра: столько колонок, сколько цветов (Kara Fox — три) ---------- */
 /* плашки того же размера, что у пяти цветов, но разнесены на всю ширину */
 /* палитра из трёх цветов — элемент интерфейса на сетке: плашки по 2 колонки на 2–3, 6–7 и 10–11 колонках */
-.uma-project__palette.is-3 li { border-radius: calc(8 * var(--u)); padding: calc(22 * var(--u)); }
-.uma-project__palette.is-3 .uma-project__hex { font-family: inherit; font-size: max(var(--min-small), calc(11 * var(--u))); letter-spacing: 0; }
+.uma-project__palette.is-3 li { border-radius: calc(8 * var(--u)); padding: calc(22 * var(--u)); } @media (min-width: 768px) { .uma-project__palette.is-3 li {border-radius: calc(12.8 * var(--u)); padding: calc(35.2 * var(--u)); } }
+.uma-project__palette.is-3 .uma-project__hex { font-family: inherit; font-size: max(var(--min-small), calc(11 * var(--u))); letter-spacing: 0; } @media (min-width: 768px) { .uma-project__palette.is-3 .uma-project__hex {font-size: max(var(--min-small), calc(17.6 * var(--u))); } }
 .uma-project__palette.is-3 .uma-project__hex b { font-weight: 700; }
-.uma-project__palette.is-3 .uma-project__aa { font-family: inherit; font-weight: 700; font-size: calc(76 * var(--u)); letter-spacing: -.02em; }
+.uma-project__palette.is-3 .uma-project__aa { font-family: inherit; font-weight: 700; font-size: calc(76 * var(--u)); letter-spacing: -.02em; } @media (min-width: 768px) { .uma-project__palette.is-3 .uma-project__aa {font-size: calc(121.6 * var(--u)); } }
 @media (min-width: 768px) {
-  .uma-project__palette.is-3 { display: grid; grid-template-columns: var(--grid-12); column-gap: var(--gap-12); }
-  .uma-project__palette.is-3 li:nth-child(1) { grid-column: 2 / 4; }
-  .uma-project__palette.is-3 li:nth-child(2) { grid-column: 6 / 8; }
-  .uma-project__palette.is-3 li:nth-child(3) { grid-column: 10 / 12; }
+  .uma-project__palette.is-3 { display: grid; grid-template-columns: var(--grid-12); column-gap: var(--gap-12);}
+  .uma-project__palette.is-3 li:nth-child(1) { grid-column: 2 / 4;}
+  .uma-project__palette.is-3 li:nth-child(2) { grid-column: 6 / 8;}
+  .uma-project__palette.is-3 li:nth-child(3) { grid-column: 10 / 12;}
 }
 /* две картинки рядом — встык, стык на линии «Проекты» (начало 7-й колонки): левая 585, правая 575 */
-@media (min-width: 768px) { .uma-project__pair { grid-template-columns: 585fr 575fr; column-gap: 0; } }
+@media (min-width: 768px) { .uma-project__pair { grid-template-columns: 585fr 575fr; column-gap: 0;} }
 /* палитра из любого числа цветов: плашки поровну на всю ширину, между ними — промежуток сетки (gutter) */
-.uma-project__palette li { border-radius: calc(8 * var(--u)); }
+.uma-project__palette li { border-radius: calc(8 * var(--u)); } @media (min-width: 768px) { .uma-project__palette li {border-radius: calc(12.8 * var(--u)); } }
 @media (min-width: 768px) {
-  .uma-project__palette:not(.is-3) { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: var(--gap-12); }
-  .uma-project__palette:not(.is-3) li { padding: calc(22 * var(--u)); }
+  .uma-project__palette:not(.is-3) { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: var(--gap-12);}
+  .uma-project__palette:not(.is-3) li { padding: calc(35.2 * var(--u));}
 }
 
 /* ---------- образец шрифта «Aa Bb Cc» во всю ширину ---------- */
-.uma-project__font.is-sample { display: block; padding: calc(16 * var(--u)) 0 calc(24 * var(--u)); }
+.uma-project__font.is-sample { display: block; padding: calc(16 * var(--u)) 0 calc(24 * var(--u)); } @media (min-width: 768px) { .uma-project__font.is-sample {padding: calc(25.6 * var(--u)) 0 calc(38.4 * var(--u)); } }
 .uma-project__font-name { margin: 0; font-size: var(--up-small); line-height: 1.3; color: var(--up-muted); }
 .uma-project__sample { margin: calc(8 * var(--u)) 0 0; display: flex; justify-content: space-between; align-items: baseline;
-  font-size: 21vw; line-height: 1; letter-spacing: -.02em; white-space: nowrap; color: var(--up-text); }
-@media (min-width: 768px) { .uma-project__sample { font-size: min(calc(250 * var(--u)), 19vw); } }
+  font-size: 21vw; line-height: 1; letter-spacing: -.02em; white-space: nowrap; color: var(--up-text); } @media (min-width: 768px) { .uma-project__sample {margin: calc(12.8 * var(--u)) 0 0; } }
+@media (min-width: 768px) { .uma-project__sample { font-size: min(calc(400 * var(--u)), 19vw);} }
 /* картинка с прозрачным фоном (палитра Kara Fox) — без серой подложки, лежит прямо на фоне страницы */
 .uma-project__figure.is-clear { background: none; }
 
@@ -317,18 +318,18 @@ html.light-theme .uma-project__count { font-weight: var(--w-head); }
 .uma-project { --up-panel: #1b1c1b; }
 html.light-theme .uma-project { --up-panel: #f0f0f0; }
 @media (min-width: 768px) {
-  .uma-project__figure.is-panel { aspect-ratio: auto; background: var(--up-panel); padding: calc(100 * var(--u)) 0; }
-  .uma-project__figure.is-panel-top { padding-bottom: 0; }
-  .uma-project__figure.is-panel img { aspect-ratio: var(--ar); }
+  .uma-project__figure.is-panel { aspect-ratio: auto; background: var(--up-panel); padding: calc(160 * var(--u)) 0;}
+  .uma-project__figure.is-panel-top { padding-bottom: 0;}
+  .uma-project__figure.is-panel img { aspect-ratio: var(--ar);}
 }
 
 /* ---------- палитра в рамках: квадрат цвета в рамке 1 px (рамка держит светлые цвета и на светлой теме) ----------
    Десктоп: каждая рамка шириной 2 колонки, крайние — по полям, остальные поровну между ними. */
 .uma-project__palette.is-framed { display: flex; justify-content: space-between; gap: var(--up-gap); }
 .uma-project__palette.is-framed li { flex: 0 0 auto; aspect-ratio: auto; border-radius: 0; background: none;
-  border: 1px solid var(--line); padding: calc(10 * var(--u)); }
+  border: 1px solid var(--line); padding: calc(10 * var(--u)); } @media (min-width: 768px) { .uma-project__palette.is-framed li {padding: calc(16 * var(--u)); } }
 @media (min-width: 768px) {
-  .uma-project__palette.is-framed li { width: calc((100% - 11 * var(--gap-12)) / 6 + var(--gap-12)); padding: calc(10 * var(--u)); }
+  .uma-project__palette.is-framed li { width: calc((100% - 11 * var(--gap-12)) / 6 + var(--gap-12)); padding: calc(16 * var(--u));}
 }
 .uma-project__sw { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .2em; text-align: center;
   font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); line-height: 1.35; letter-spacing: 0; }
@@ -338,25 +339,25 @@ html.light-theme .uma-project { --up-panel: #f0f0f0; }
 .uma-project__specimen[style*="--fs"] { font-size: calc(var(--fs) * var(--u)); line-height: 1.05; }
 .uma-project__fonts:has([style*="--fs"]) { border-bottom: 1px solid var(--line); }
 @media (max-width: 767px) {
-  .uma-project__specimen[style*="--fs"] { font-size: calc(var(--fs) * .12vw); white-space: normal; }
+  .uma-project__specimen[style*="--fs"] { font-size: calc(var(--fs) * .075vw); white-space: normal; }
   .uma-project__palette.is-framed li { flex: 0 0 72%; aspect-ratio: auto; padding: calc(10 * var(--u)); }
   .uma-project__palette.is-framed .uma-project__sw { font-size: var(--up-body); }
 }
-@media (min-width: 768px) { .uma-project__specimen[style*="--fs"] { white-space: nowrap; overflow: hidden; } }
+@media (min-width: 768px) { .uma-project__specimen[style*="--fs"] { white-space: nowrap; overflow: hidden;} }
 /* светлая тема: у светлых квадратов — едва заметный край, чтобы цвет не сливался с бумагой фона */
 html.light-theme .uma-project__sw { box-shadow: inset 0 0 0 1px rgba(26, 26, 26, .08); }
 
 /* две картинки рядом с промежутком сетки (Arine Atelier): половины по 6 колонок, между ними — gutter */
-@media (min-width: 768px) { .uma-project__pair.is-gap { grid-template-columns: 1fr 1fr; column-gap: var(--gap-12); } }
+@media (min-width: 768px) { .uma-project__pair.is-gap { grid-template-columns: 1fr 1fr; column-gap: var(--gap-12);} }
 .uma-project__pair.is-gap { gap: var(--up-gap); }
 .uma-project__pair.is-gap + .uma-project__pair, .uma-project__section + .uma-project__pair.is-gap { margin-top: var(--up-gap); }
 /* одиночный текст вступления с 9-й колонки («О нас» в шапке) — Kara Fox по макету */
-@media (min-width: 768px) { .uma-project__intro .uma-project__col.is-single.at-9 { grid-column: 9 / 13; } }
+@media (min-width: 768px) { .uma-project__intro .uma-project__col.is-single.at-9 { grid-column: 9 / 13;} }
 /* две картинки рядом — всегда одной высоты: высоту ряда задаёт первая, вторая тянется по ней и кадрируется */
 @media (min-width: 768px) {
-  .uma-project__pair { align-items: stretch; }
-  .uma-project__pair > .uma-project__figure + .uma-project__figure { aspect-ratio: auto; position: relative; height: auto; }
-  .uma-project__pair > .uma-project__figure + .uma-project__figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .uma-project__pair { align-items: stretch;}
+  .uma-project__pair > .uma-project__figure + .uma-project__figure { aspect-ratio: auto; position: relative; height: auto;}
+  .uma-project__pair > .uma-project__figure + .uma-project__figure img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;}
 }
 
 /* светлая тема: чёрный текст плотнее (w-ink 560), серый — легче (w-text 470), чтобы они явно различались */
@@ -427,9 +428,9 @@ html.light-theme .uma-project__sw { box-shadow: none; }
 /* палитра в рамках по макету: 4 прямоугольника по 3 колонки во всю ширину, рамка и край квадрата — тонкой линией цвета текста;
    подписи: номер и HEX обычным, название жирным */
 @media (min-width: 768px) {
-  .uma-project__palette.is-framed { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: var(--gap-12); }
-  .uma-project__palette.is-framed li { width: auto; padding: calc(10 * var(--u)); }
-  .uma-project__palette.is-framed .uma-project__sw { aspect-ratio: 288 / 185; }
+  .uma-project__palette.is-framed { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: var(--gap-12);}
+  .uma-project__palette.is-framed li { width: auto; padding: calc(16 * var(--u));}
+  .uma-project__palette.is-framed .uma-project__sw { aspect-ratio: 288 / 185;}
 }
 .uma-project__palette.is-framed li { border-color: var(--up-text); }
 .uma-project__palette.is-framed .uma-project__sw { box-shadow: inset 0 0 0 1px var(--up-text); }
@@ -438,7 +439,7 @@ html.light-theme .uma-project__sw { box-shadow: none; }
 /* палитра: обводки — тонкие серые, как все линии сайта; между прямоугольниками ровно 16 px */
 .uma-project__palette.is-framed li { border: 1px solid var(--line); }
 .uma-project__palette.is-framed .uma-project__sw { box-shadow: inset 0 0 0 1px var(--line); }
-@media (min-width: 768px) { .uma-project__palette.is-framed { gap: 16px; } }
+@media (min-width: 768px) { .uma-project__palette.is-framed { gap: 16px;} }
 /* картинка с вариантом под тему: по умолчанию тёмная тема — показываем tv-d, в светлой — tv-l */
 .uma-project__figure .tv-l { display: none; }
 html.light-theme .uma-project__figure .tv-l { display: block; }
@@ -460,11 +461,11 @@ html:not(.light-theme) .uma-project__figure picture.tv-d { display: block; }
 
 /* ---------- цифры проекта (Black Sable): 4 значения по 3 колонки, на телефоне — 2 × 2 ----------
    значение — кеглем H2, подпись — серым кеглем текста; над каждым — тонкая линия */
-.uma-project__facts { list-style: none; margin: var(--up-inner) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: calc(32 * var(--u)) var(--up-gap); }
-.uma-project__facts li { border-top: 1px solid var(--line); padding-top: calc(16 * var(--u)); display: flex; flex-direction: column; gap: calc(12 * var(--u)); }
+.uma-project__facts { list-style: none; margin: var(--up-inner) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: calc(32 * var(--u)) var(--up-gap); } @media (min-width: 768px) { .uma-project__facts {gap: calc(51.2 * var(--u)) var(--up-gap); } }
+.uma-project__facts li { border-top: 1px solid var(--line); padding-top: calc(16 * var(--u)); display: flex; flex-direction: column; gap: calc(12 * var(--u)); } @media (min-width: 768px) { .uma-project__facts li {padding-top: calc(25.6 * var(--u)); gap: calc(19.2 * var(--u)); } }
 .uma-project__fact-v { font-weight: var(--w-head); font-size: max(var(--min-h2), calc(var(--t-h2) * var(--u))); line-height: var(--t-h2-lh); letter-spacing: var(--t-h2-ls); color: var(--up-text); }
 .uma-project__fact-l { color: var(--up-meta); font-size: max(var(--min-small), calc(var(--t-small) * var(--u))); line-height: 1.45; }
-@media (min-width: 768px) { .uma-project__facts { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--gap-12); } }
+@media (min-width: 768px) { .uma-project__facts { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--gap-12);} }
 @media (max-width: 767px) {
   .uma-project__section > .uma-project__facts { order: 1; }
   .uma-project__fact-l { font-size: var(--up-body); }

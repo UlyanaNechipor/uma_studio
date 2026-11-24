@@ -8,7 +8,8 @@
   --gap: 8px;                      /* шаг между картинками */
   --sm: max(var(--min-small), calc(var(--t-small) * var(--u)));
   position: relative;
-}
+} @media (min-width: 768px) { .cs {--sec: calc(153.6 * var(--u)); /* между разделами (мобилка) */
+  --in: calc(51.2 * var(--u)); } }
 .cs-intro__in, .cs-sheet > *, .cs-next { padding-inline: var(--pad); }
 
 /* ---------- первый экран: закреплён, лист наезжает сверху ---------- */
@@ -21,7 +22,7 @@
   height: 100%; display: flex; flex-direction: column; justify-content: space-between;
   padding-top: calc(max(44px, calc(48 * var(--u))) + 32px); padding-bottom: 24px;
   transform-origin: 50% 100%; will-change: transform, opacity;
-}
+} @media (min-width: 768px) { .cs-intro__in {padding-top: calc(max(44px, calc(76.8 * var(--u))) + 32px); } }
 .cs-intro__meta { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 8px; }
 .cs-cell { min-width: 0; }
 .cs-cell--back { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; }
@@ -76,10 +77,10 @@ html:not(.light-theme) .cs-text .uma-project__sub { color: var(--txt); }
 .cs-palette { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
 .cs-palette li { aspect-ratio: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 12px; font-size: var(--sm); min-width: 0; }
 .cs-palette b { font-weight: 600; }
-.cs-aa { font-size: max(32px, calc(54 * var(--u))); line-height: 1; letter-spacing: -.02em; }
+.cs-aa { font-size: max(32px, calc(54 * var(--u))); line-height: 1; letter-spacing: -.02em; } @media (min-width: 768px) { .cs-aa {font-size: max(32px, calc(86.4 * var(--u))); } }
 .cs-font { border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 16px; }
 .cs-font + .cs-font { margin-top: 24px; }
-.cs-specimen { margin: 0; font-size: max(44px, calc(96 * var(--u))); line-height: 1; color: var(--txt); letter-spacing: 0; }
+.cs-specimen { margin: 0; font-size: max(44px, calc(96 * var(--u))); line-height: 1; color: var(--txt); letter-spacing: 0; } @media (min-width: 768px) { .cs-specimen {font-size: max(44px, calc(153.6 * var(--u))); } }
 
 /* следующий проект */
 .cs-next { display: grid; margin-top: var(--sec); border-top: 1px solid var(--line); padding-top: 16px; color: var(--txt); text-decoration: none; gap: 16px; }
@@ -96,50 +97,49 @@ html:not(.light-theme) .cs-text .uma-project__sub { color: var(--txt); }
 /* ---------- планшет и десктоп: сетка шапки ---------- */
 @media (min-width: 768px) {
   .cs {
-    --pad: max(calc(32 * var(--u)), calc((100% - var(--content)) / 2));
-    --lines: calc(568 * var(--u)) calc(190 * var(--u)) calc(186 * var(--u)) minmax(0, 1fr);
+    --pad: max(calc(51.2 * var(--u)), calc((100% - var(--content)) / 2));
+    --lines: calc(908.8 * var(--u)) calc(304 * var(--u)) calc(297.6 * var(--u)) minmax(0, 1fr);
     --sec: calc(180 * var(--u));
-    --in: calc(60 * var(--u));
-    --gap: calc(8 * var(--u));
-    --sm: max(var(--min-small), calc(var(--t-small) * var(--u)));
-  }
-  .cs-intro { height: calc(100svh - 120 * var(--u)); min-height: calc(560 * var(--u)); }
-  .cs-intro__in { padding-top: calc(48 * var(--u) + 120 * var(--u) - 60 * var(--u)); padding-bottom: calc(40 * var(--u)); }
+    --in: calc(96 * var(--u));
+    --gap: calc(12.8 * var(--u));
+    --sm: max(var(--min-small), calc(var(--t-small) * var(--u)));}
+  .cs-intro { height: calc(100svh - 192 * var(--u)); min-height: calc(896 * var(--u));}
+  .cs-intro__in { padding-top: calc(76.8 * var(--u) + 192 * var(--u) - 96 * var(--u)); padding-bottom: calc(64 * var(--u));}
   /* мета-строка: «Все проекты» у поля, Клиент — на A, Год — на B, Сфера и Задачи — на C */
-  .cs-intro__meta { grid-template-columns: var(--lines); gap: 0; }
-  .cs-cell--back { grid-column: 1; grid-row: 1 / 3; flex-direction: column; justify-content: space-between; gap: 16px; align-items: flex-start; }
-  .cs-cell:nth-child(2) { grid-column: 2; }
-  .cs-cell:nth-child(3) { grid-column: 3; }
-  .cs-cell:nth-child(4) { grid-column: 4; }
-  .cs-cell--tasks { grid-column: 4; grid-row: 2; margin-top: calc(24 * var(--u)); }
-  .cs-title { font-size: min(calc(220 * var(--u)), 15vw); line-height: .86; white-space: nowrap; overflow-wrap: normal; margin-left: -.04em; }
+  .cs-intro__meta { grid-template-columns: var(--lines); gap: 0;}
+  .cs-cell--back { grid-column: 1; grid-row: 1 / 3; flex-direction: column; justify-content: space-between; gap: 16px; align-items: flex-start;}
+  .cs-cell:nth-child(2) { grid-column: 2;}
+  .cs-cell:nth-child(3) { grid-column: 3;}
+  .cs-cell:nth-child(4) { grid-column: 4;}
+  .cs-cell--tasks { grid-column: 4; grid-row: 2; margin-top: calc(38.4 * var(--u));}
+  .cs-title { font-size: min(calc(352 * var(--u)), 15vw); line-height: .86; white-space: nowrap; overflow-wrap: normal; margin-left: -.04em;}
 
-  .cs-about { grid-template-columns: var(--lines); gap: 0; row-gap: var(--in); }
-  .cs-statement { grid-column: 1 / 3; padding-right: calc(32 * var(--u)); }
-  .cs-about .cs-text--a { grid-column: 2 / 4; grid-row: 2; padding-right: calc(24 * var(--u)); max-width: calc(282 * var(--u) + 24 * var(--u)); }
-  .cs-about .cs-text--c { grid-column: 4; grid-row: 2; }
-  .cs-about .cs-statement + .cs-text--a { margin-top: 0; }
+  .cs-about { grid-template-columns: var(--lines); gap: 0; row-gap: var(--in);}
+  .cs-statement { grid-column: 1 / 3; padding-right: calc(51.2 * var(--u));}
+  .cs-about .cs-text--a { grid-column: 2 / 4; grid-row: 2; padding-right: calc(38.4 * var(--u)); max-width: calc(451.2 * var(--u) + 38.4 * var(--u));}
+  .cs-about .cs-text--c { grid-column: 4; grid-row: 2;}
+  .cs-about .cs-statement + .cs-text--a { margin-top: 0;}
 
-  .cs-sec__head { grid-template-columns: var(--lines); gap: 0; align-items: start; }
-  .cs-num { grid-column: 1; grid-row: 1; }
-  .cs-h2 { grid-column: 1; grid-row: 1; padding-left: calc(64 * var(--u)); padding-right: calc(24 * var(--u)); }
-  .cs-text--a { grid-column: 2 / 4; padding-right: calc(24 * var(--u)); max-width: calc(282 * var(--u) + 24 * var(--u)); }
-  .cs-text--b { grid-column: 3 / 5; max-width: calc(470 * var(--u)); }
-  .cs-text--c { grid-column: 4; }
-  .cs-sec__head > .cs-text { grid-row: 1; }
+  .cs-sec__head { grid-template-columns: var(--lines); gap: 0; align-items: start;}
+  .cs-num { grid-column: 1; grid-row: 1;}
+  .cs-h2 { grid-column: 1; grid-row: 1; padding-left: calc(102.4 * var(--u)); padding-right: calc(38.4 * var(--u));}
+  .cs-text--a { grid-column: 2 / 4; padding-right: calc(38.4 * var(--u)); max-width: calc(451.2 * var(--u) + 38.4 * var(--u));}
+  .cs-text--b { grid-column: 3 / 5; max-width: calc(752 * var(--u));}
+  .cs-text--c { grid-column: 4;}
+  .cs-sec__head > .cs-text { grid-row: 1;}
 
-  .cs-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cs-pair > :only-child { grid-column: 1 / -1; }
-  .cs-palette { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .cs-palette li { padding: calc(14 * var(--u)); }
-  .cs-font { grid-template-columns: var(--lines); gap: 0; align-items: start; }
-  .cs-specimen { grid-column: 1 / 4; }
-  .cs-font .cs-text--c { grid-column: 4; }
+  .cs-pair { grid-template-columns: repeat(2, minmax(0, 1fr));}
+  .cs-pair > :only-child { grid-column: 1 / -1;}
+  .cs-palette { grid-template-columns: repeat(5, minmax(0, 1fr));}
+  .cs-palette li { padding: calc(22.4 * var(--u));}
+  .cs-font { grid-template-columns: var(--lines); gap: 0; align-items: start;}
+  .cs-specimen { grid-column: 1 / 4;}
+  .cs-font .cs-text--c { grid-column: 4;}
 
-  .cs-next { grid-template-columns: var(--lines); gap: 0; row-gap: calc(24 * var(--u)); }
-  .cs-next .cs-k { grid-column: 1 / -1; }
-  .cs-next__name { grid-column: 1 / 3; grid-row: 2; font-size: min(calc(150 * var(--u)), 11vw); align-self: end; }
-  .cs-next__img { grid-column: 3 / 5; grid-row: 2; }
+  .cs-next { grid-template-columns: var(--lines); gap: 0; row-gap: calc(38.4 * var(--u));}
+  .cs-next .cs-k { grid-column: 1 / -1;}
+  .cs-next__name { grid-column: 1 / 3; grid-row: 2; font-size: min(calc(240 * var(--u)), 11vw); align-self: end;}
+  .cs-next__img { grid-column: 3 / 5; grid-row: 2;}
 }
 
 /* лист и первый экран при уменьшенной анимации — без закрепления */
