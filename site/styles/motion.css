@@ -238,3 +238,8 @@ html.pt-case-out main { transform: translate3d(0, -10vh, 0) scale(.97); opacity:
 /* пришли с листа: сам лист (body::after/::before) рисует загрузчик (tilda/loader.js) с первой отрисовки страницы */
 html.pt-case:not(.pt-go) main { transform: translate3d(0, 6vh, 0); }
 html.pt-case.pt-go main { transition: transform 1.1s var(--m-out) .1s; }
+
+/* ---------- «книга» кейсов (site.js → book): лист закрыл экран, под ним сменился кейс; лист уезжает вверх ---------- */
+.case-turn.is-off { transform: translate3d(0, -100%, 0); transition: transform 1s var(--m-inout); box-shadow: none; }
+html.bk-in:not(.bk-go) main { transform: translate3d(0, 8vh, 0); }
+html.bk-go main { transition: transform 1.1s var(--m-out) .08s; }

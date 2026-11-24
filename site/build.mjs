@@ -113,13 +113,21 @@ const hero = `
 </section>`;
 
 const soon = j('content/soon.json');
+/* ---------------- «книга» кейсов ----------------
+   Опубликованные кейсы (у проекта на главной есть адрес) живут на одной странице — странице Роси.
+   Переход между ними — без перезагрузки: лист подкладывается снизу, под ним меняется содержимое, адрес — #кейс.
+   Ссылки на кейсы ведут на /project_page_rosi#<кейс>; старые адреса кейсов в Тильде тоже открывают эту книгу. */
+const BOOK = h.projects.items.filter((p) => p.url && p.slug && existsSync(join(ROOT, 'projects', p.slug + '.json')));
+const BOOK_HOST = (BOOK.find((p) => p.slug === 'rosi') || BOOK[0] || {}).url || '';
+const inBook = (slug) => BOOK.some((p) => p.slug === slug);
+const bookUrl = (slug) => (BOOK.find((p) => p.slug === slug) || {}).url === BOOK_HOST ? BOOK_HOST : BOOK_HOST + '#' + slug;
 const projects = `
 <section class="projects grid" id="${h.projects.anchor}">
   <p class="projects__label ty-small ty-grey">${typo(h.projects.label)}</p>
   <h2 class="projects__title ty-h2" data-fill>${typo(h.projects.title)}</h2>
   <ul class="projects__list">
     ${h.projects.items.map((p) => `<li class="prow">
-      <a class="prow__link" href="${esc(p.url || soon.url)}" data-cover="${esc(p.cover)}">
+      <a class="prow__link" href="${esc(inBook(p.slug) ? bookUrl(p.slug) : (p.url || soon.url))}" data-cover="${esc(p.cover)}">
         <span class="prow__name ty-name">${esc(p.name)}</span>
         <span class="prow__type ty-small ty-grey">${typo(p.type)}</span>
         <span class="prow__year ty-small ty-grey">${esc(p.year)}</span>
@@ -207,7 +215,7 @@ const page = ({ title, css = [], main, home = '', fonts = '' }) => `<!doctype ht
 ${site.seo.description ? `<meta name="description" content="${esc(site.seo.description)}">\n` : ''}<meta name="theme-color" content="${site.themes.dark.bg}">
 <link rel="preload" href="site/assets/fonts/manrope-var.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital@1&display=swap">
-${fonts ? `<link rel="stylesheet" href="${esc(fonts)}">\n` : ''}<link rel="stylesheet" href="styles/tokens.css">
+${[].concat(fonts).filter(Boolean).map((f) => `<link rel="stylesheet" href="${esc(f)}">\n`).join('')}<link rel="stylesheet" href="styles/tokens.css">
 <link rel="stylesheet" href="styles/base.css">
 ${css.map((f) => `<link rel="stylesheet" href="styles/${f}.css">`).join('\n')}
 <link rel="stylesheet" href="styles/motion.css">
@@ -278,7 +286,7 @@ function projectFigure(slug, im, cls = '') {
 }
 // «Подробнее»: на телефоне длинный текст свёрнут, кнопка раскрывает его (на десктопе кнопки нет, текст целиком)
 const moreBtn = (label) => `<button class="uma-project__more" type="button" aria-expanded="false"><span>${esc(label)}</span><i aria-hidden="true"></i></button>`;
-const turnAttr = (x, label) => (x.url && x.url !== '#' && x.url !== soon.url ? `data-turn-title="${esc(x.title)}" data-turn-label="${esc(label)}" data-turn-page="${esc(x.title.toLowerCase().replace(/\s+/g, '-'))}"` : '');
+const turnAttr = (x, label) => (x.slug && inBook(x.slug) ? `data-case="${esc(x.slug)}" data-turn-title="${esc(x.title)}" data-turn-label="${esc(label)}"` : x.url && x.url !== '#' && x.url !== soon.url ? `data-turn-title="${esc(x.title)}" data-turn-label="${esc(label)}" data-turn-page="${esc(x.title.toLowerCase().replace(/\s+/g, '-'))}"` : '');
 function projectPage(d) {
   const s = d.slug;
   let m = '<article class="uma-project" aria-labelledby="uma-project-title">';
@@ -392,7 +400,7 @@ function loadProject(file) {
   // соседние кейсы — по порядку проектов на главной (по кругу)
   const list = home.projects.items, i = list.findIndex((p) => p.slug === slug || String(p.url || '').endsWith(slug.replace(/-/g, '_')));
   if (i >= 0) {
-    const at = (k) => { const p = list[(k + list.length) % list.length]; return { title: p.name, url: p.url || '#' }; };
+    const at = (k) => { const p = list[(k + list.length) % list.length]; return { title: p.name, slug: p.slug, url: p.slug && inBook(p.slug) ? bookUrl(p.slug) : (p.url || '#') }; };
     d.pagination = { index: i + 1, total: list.length, prev: at(i - 1), next: at(i + 1) };
   }
   return d;
@@ -461,9 +469,19 @@ function caseV2(d) {
 }
 
 const pages = { 'index.html': html };
+// книга: все опубликованные кейсы в шаблонах; показан один, скрипт ниже выбирает его по адресу (#кейс) или по странице Тильды
+const bookCases = BOOK.map((p) => loadProject(p.slug + '.json'));
+const bookBoot = `(function(){var b=document.querySelector('.cs-book');if(!b)return;var m=document.getElementById('sos-page'),q=function(s){return /^[\\w-]+$/.test(s||'')&&b.querySelector('template[data-case="'+s+'"]')};
+var s=decodeURIComponent(location.hash.slice(1));if(!q(s))s=m&&m.getAttribute('data-page');if(!q(s))s=b.getAttribute('data-default');
+var t=q(s),pg=b.querySelector('.cs-book__page');pg.appendChild(t.content.cloneNode(true));pg.setAttribute('data-case',s);document.title=t.getAttribute('data-title')})();`;
+const bookPage = (def) => page({ title: (bookCases.find((d) => d.slug === def) || bookCases[0]).title.toUpperCase() + ' — ' + site.brand, css: ['project'], home: '/',
+  fonts: [...new Set(bookCases.map((d) => d.fonts).filter(Boolean))],
+  main: `<div class="cs-book" data-host="${esc(BOOK_HOST)}" data-default="${esc(def)}">` +
+    bookCases.map((d) => `<template data-case="${esc(d.slug)}" data-url="${esc(bookUrl(d.slug))}" data-name="${esc(d.title)}" data-title="${esc(d.title.toUpperCase() + ' — ' + site.brand)}">${projectPage(d)}</template>`).join('\n') +
+    `<div class="cs-book__page"></div></div><script>${bookBoot}</script>` });
 for (const f of readdirSync(join(ROOT, 'projects')).filter((f) => f.endsWith('.json'))) {
   const d = loadProject(f);
-  pages[d.slug + '.html'] = page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['project'], main: projectPage(d), home: '/', fonts: d.fonts || '' });
+  pages[d.slug + '.html'] = inBook(d.slug) ? bookPage(d.slug) : page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['project'], main: projectPage(d), home: '/', fonts: d.fonts || '' });
   // предпросмотр новой раскладки кейса: <slug>-v2.html
   pages[d.slug + '-v2.html'] = page({ title: d.title.toUpperCase() + ' — ' + site.brand, css: ['case'], main: caseV2(d), home: '/', fonts: d.fonts || '' });
 }

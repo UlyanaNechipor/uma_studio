@@ -54,10 +54,10 @@
         "type": "Портфолио",
         "year": "2025",
         "slug": "kara-fox",
-        "cover": "img/covers/kara-fox-mockup.webp",
+        "cover": "img/covers/kara-fox-laptop.webp",
         "url": "/project_page_kara_fox",
         "mobile1": "img/mobile/kara-fox-mockup.webp",
-        "mobile2": "img/mobile/kara-fox-2.webp"
+        "mobile2": "img/mobile/kara-fox-phone.webp"
       },
       {
         "name": "Black Sable",
