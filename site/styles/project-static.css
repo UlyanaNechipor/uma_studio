@@ -501,3 +501,13 @@ html:not(.light-theme) .uma-project__figure picture.tv-d { display: block; }
 .bk-float .uma-project__pager svg { fill: #fff; }
 @media (min-width: 768px) { .bk-float .uma-project__pager { padding: calc(20 * var(--u)) 0 !important; } }
 html.rm-off .bk-float { transition: none; }
+
+/* жёсткая инверсия под буквами (site.js → inkify) */
+.bk-float.is-ink { mix-blend-mode: normal; opacity: 1; transition: none; }
+.bk-float.is-ink .bk-ink { opacity: 0; transition: opacity .35s var(--m-out); }
+.bk-float.is-ink.is-on .bk-ink { opacity: 1; }
+.bk-float.is-ink .uma-project__pager a, .bk-float.is-ink .uma-project__count { position: relative; }
+.bk-float.is-ink .uma-project__pager, .bk-float.is-ink .uma-project__pager * { color: transparent !important; }
+.bk-float.is-ink .uma-project__pager svg:not([width="0"]) { fill: transparent; }
+.bk-ink { position: absolute; inset: 0; pointer-events: none;
+  -webkit-backdrop-filter: grayscale(1) contrast(60) invert(1); backdrop-filter: grayscale(1) contrast(60) invert(1); }
