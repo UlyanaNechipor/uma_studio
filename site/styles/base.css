@@ -191,15 +191,13 @@ html.light-theme :is(.case-turn__k, .cs-k, .cs-num, .cs-text p) { font-weight: v
 /* разделитель в первой строке футера убран */
 @media (max-width: 767px) { .ftm__row.is-head .ftm__k::after { content: none; } }
 
-/* ---------- индикатор прокрутки (site.js → scrollbar): системный ползунок скрыт, вместо него — тонкий прямоугольник ---------- */
+/* ---------- индикатор прокрутки (site.js → scrollbar): системный ползунок скрыт; линия 1 px растёт сверху вниз по мере прокрутки ---------- */
 html.has-sbar { scrollbar-width: none; }
 html.has-sbar::-webkit-scrollbar { display: none; }
-.sbar { position: fixed; top: 0; right: 0; bottom: 0; width: 12px; z-index: 40; pointer-events: none; }
-.sbar__t { position: absolute; top: 0; right: 2px; width: 2px; border-radius: 0; background: var(--txt); opacity: .55;
-  pointer-events: auto; cursor: grab; transition: opacity .3s ease, width .2s ease; will-change: transform; }
-.sbar__t::before { content: ''; position: absolute; top: 0; bottom: 0; right: -2px; width: 12px; }   /* шире зона, за которую удобно взяться */
-.sbar.is-drag .sbar__t, .sbar__t:hover { opacity: .9; width: 3px; cursor: grabbing; }
+.sbar { position: fixed; top: 0; right: 0; bottom: 0; width: 1px; z-index: 40; pointer-events: none; }
+.sbar__t { position: absolute; top: 0; right: 0; width: 1px; height: 100%; background: var(--txt); opacity: .6;
+  transform-origin: 50% 0; transform: scaleY(0); will-change: transform; transition: opacity .3s ease; }
 @media (hover: none), (pointer: coarse) {
-  .sbar__t { opacity: 0; pointer-events: none; }
+  .sbar__t { opacity: 0; }
   .sbar.is-act .sbar__t { opacity: .5; }
 }

@@ -893,37 +893,24 @@
   }
 
   /* ---------------- индикатор прокрутки ----------------
-     Системный ползунок скрыт; вместо него — тонкий прямоугольник у правого края в цвет текста темы.
-     Высота — доля видимой части страницы, положение — как у обычного ползунка. Его можно тянуть мышью.
-     На телефоне появляется только во время прокрутки. */
+     Системный ползунок скрыт. Вместо него — линия в 1 px у правого края в цвет текста темы:
+     вверху страницы её почти не видно, при прокрутке она растёт сверху вниз — на долю пролистанного.
+     На телефоне видна только во время прокрутки. */
   function scrollbar() {
     var bar = document.createElement('div'); bar.className = 'sbar'; bar.setAttribute('aria-hidden', 'true');
     var th = document.createElement('i'); th.className = 'sbar__t'; bar.appendChild(th);
     (document.getElementById('sos-page') || document.body).appendChild(bar); html.classList.add('has-sbar');
-    var de = document.documentElement, h = 0, top = 0, raf = 0, t = 0;
+    var de = document.documentElement, raf = 0, t = 0;
     function upd() {
       raf = 0;
-      var vh = innerHeight, sh = Math.max(de.scrollHeight, document.body.scrollHeight), max = sh - vh;
-      bar.hidden = max < 4; if (max < 4) return;
-      h = Math.max(32, vh * vh / sh); top = (vh - h) * (scrollY / max);
-      th.style.height = h + 'px'; th.style.transform = 'translate3d(0,' + top + 'px,0)';
+      var vh = innerHeight, max = Math.max(de.scrollHeight, document.body.scrollHeight) - vh;
+      var p = max > 4 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+      th.style.transform = 'scaleY(' + Math.max(p, 2 / vh) + ')';
     }
     function req() { if (!raf) raf = requestAnimationFrame(upd); }
     addEventListener('scroll', function () { req(); bar.classList.add('is-act'); clearTimeout(t); t = setTimeout(function () { bar.classList.remove('is-act'); }, 1200); }, { passive: true });
     addEventListener('resize', req);
     if (window.ResizeObserver) new ResizeObserver(req).observe(document.body);
-    // перетаскивание
-    var drag = null;
-    th.addEventListener('pointerdown', function (e) {
-      drag = { y: e.clientY, s: scrollY }; th.setPointerCapture(e.pointerId); bar.classList.add('is-drag'); e.preventDefault();
-    });
-    th.addEventListener('pointermove', function (e) {
-      if (!drag) return;
-      var vh = innerHeight, max = de.scrollHeight - vh, k = max / Math.max(1, vh - h);
-      html.style.scrollBehavior = 'auto'; scrollTo(0, drag.s + (e.clientY - drag.y) * k); html.style.scrollBehavior = '';
-    });
-    function end() { drag = null; bar.classList.remove('is-drag'); }
-    th.addEventListener('pointerup', end); th.addEventListener('pointercancel', end);
     upd();
   }
 
