@@ -1161,12 +1161,44 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     var flIn = document.createElement('div'); flIn.className = 'uma-project bk-float__in'; fl.appendChild(flIn);
     (document.getElementById('sos-page') || document.body).appendChild(fl);
     var pagerSeen = false, flT = 0, pio = null;
+    // «чистая» инверсия, как на постере: под буквами фон переводится в чёрно-белый с жёстким порогом и инвертируется —
+    // на светлом буквы чёрные, на тёмном белые, граница смены резкая. Буквы — вырез (clip-path) из SVG-текста
+    // поверх слоя с backdrop-filter. Где браузер этого не умеет, остаётся простая разница цветов (mix-blend).
+    var inkN = 0, inkOK = window.CSS && CSS.supports && (CSS.supports('backdrop-filter', 'invert(1)') || CSS.supports('-webkit-backdrop-filter', 'invert(1)'));
+    function inkify(root) {
+      if (!inkOK) return;
+      fl.classList.add('is-ink');
+      $$('a, .uma-project__count', root).forEach(function (el) {
+        var box = el.getBoundingClientRect(); if (!box.width) return;
+        var cs = getComputedStyle(el), id = 'bkx' + (++inkN), NS = 'http://www.w3.org/2000/svg';
+        var svg = document.createElementNS(NS, 'svg'); svg.setAttribute('width', '0'); svg.setAttribute('height', '0'); svg.style.position = 'absolute';
+        var cp = document.createElementNS(NS, 'clipPath'); cp.setAttribute('id', id); svg.appendChild(cp);
+        var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), t;
+        while ((t = walker.nextNode())) {
+          if (!t.nodeValue.trim()) continue;
+          var r = document.createRange(); r.selectNodeContents(t); var rr = r.getBoundingClientRect(), pcs = getComputedStyle(t.parentNode);
+          var tx = document.createElementNS(NS, 'text'); tx.textContent = t.nodeValue;
+          tx.setAttribute('x', rr.left - box.left); tx.setAttribute('y', rr.top - box.top + rr.height / 2); tx.setAttribute('dominant-baseline', 'central');
+          tx.setAttribute('style', 'font-family:' + pcs.fontFamily + ';font-size:' + pcs.fontSize + ';font-weight:' + pcs.fontWeight + ';letter-spacing:' + pcs.letterSpacing);
+          cp.appendChild(tx);
+        }
+        $$('svg', el).forEach(function (ic) {
+          var ir = ic.getBoundingClientRect(), x = ir.left - box.left, y = ir.top - box.top, w = ir.width, h = ir.height, up = !el.classList.contains('is-next');
+          var pth = document.createElementNS(NS, 'path');
+          pth.setAttribute('d', up ? ('M' + (x + w / 2) + ' ' + y + 'L' + (x + w) + ' ' + (y + h) + 'L' + x + ' ' + (y + h) + 'Z') : ('M' + x + ' ' + y + 'L' + (x + w) + ' ' + y + 'L' + (x + w / 2) + ' ' + (y + h) + 'Z'));
+          cp.appendChild(pth);
+        });
+        var lay = document.createElement('span'); lay.className = 'bk-ink'; lay.style.clipPath = 'url(#' + id + ')'; lay.style.webkitClipPath = 'url(#' + id + ')';
+        el.appendChild(svg); el.appendChild(lay);
+      });
+    }
     function syncFloat() {
       var src = $('.uma-project__pager', pg); flIn.innerHTML = '';
       if (!src) return;
       var c = src.cloneNode(true); c.classList.remove('rv', 'is-in'); c.removeAttribute('aria-label');
       $$('a', c).forEach(function (x) { x.setAttribute('tabindex', '-1'); });
       flIn.appendChild(c);
+      inkify(c);
       if (pio) pio.disconnect(); pagerSeen = false;
       if ('IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen) fl.classList.remove('is-on'); }); pio.observe(src); }
     }

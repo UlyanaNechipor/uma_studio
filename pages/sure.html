@@ -396,7 +396,8 @@
     max-height: calc(1.45em * 4) !important; overflow: hidden; }html #sos-page .is-clamped:not(.is-open) > .uma-project__cols .uma-project__col + .uma-project__col{ display: none; }
 }html #sos-page .uma-project__title{ text-transform: none; letter-spacing: var(--t-h2-ls); }html #sos-page [data-case="sure"] .uma-project__palette:not(.is-framed){ gap: 16px; }html #sos-page [data-case="sure"] .uma-project__palette:not(.is-framed) li{ border-radius: 4px; }html #sos-page .bk-float{ position: fixed; left: 0; right: 0; bottom: 0; z-index: 24; pointer-events: none;
   padding-bottom: env(safe-area-inset-bottom, 0px); background: none; border: 0;
-  mix-blend-mode: difference; opacity: 0; transition: opacity .35s var(--m-out); }html #sos-page .bk-float.is-on{ opacity: 1; }html #sos-page .bk-float.is-on a{ pointer-events: auto; }html #sos-page .bk-float__in.uma-project{ padding: 0 32px; background: none; }@media (min-width: 768px){html #sos-page .bk-float__in.uma-project{ padding: 0 calc(72 * var(--u)); } }html #sos-page .bk-float .uma-project__pager{ margin: 0 !important; padding: 14px 0 !important; opacity: 1 !important; transform: none !important; border: 0 !important; }html #sos-page .bk-float .uma-project__pager,html #sos-page .bk-float .uma-project__pager *,html #sos-page .bk-float .uma-project__count span{ color: #fff !important; }html #sos-page .bk-float .uma-project__pager svg{ fill: #fff; }@media (min-width: 768px){html #sos-page .bk-float .uma-project__pager{ padding: calc(20 * var(--u)) 0 !important; } }html.rm-off #sos-page .bk-float{ transition: none; }
+  mix-blend-mode: difference; opacity: 0; transition: opacity .35s var(--m-out); }html #sos-page .bk-float.is-on{ opacity: 1; }html #sos-page .bk-float.is-on a{ pointer-events: auto; }html #sos-page .bk-float__in.uma-project{ padding: 0 32px; background: none; }@media (min-width: 768px){html #sos-page .bk-float__in.uma-project{ padding: 0 calc(72 * var(--u)); } }html #sos-page .bk-float .uma-project__pager{ margin: 0 !important; padding: 14px 0 !important; opacity: 1 !important; transform: none !important; border: 0 !important; }html #sos-page .bk-float .uma-project__pager,html #sos-page .bk-float .uma-project__pager *,html #sos-page .bk-float .uma-project__count span{ color: #fff !important; }html #sos-page .bk-float .uma-project__pager svg{ fill: #fff; }@media (min-width: 768px){html #sos-page .bk-float .uma-project__pager{ padding: calc(20 * var(--u)) 0 !important; } }html.rm-off #sos-page .bk-float{ transition: none; }html #sos-page .bk-float.is-ink{ mix-blend-mode: normal; opacity: 1; transition: none; }html #sos-page .bk-float.is-ink .bk-ink{ opacity: 0; transition: opacity .35s var(--m-out); }html #sos-page .bk-float.is-ink.is-on .bk-ink{ opacity: 1; }html #sos-page .bk-float.is-ink .uma-project__pager a,html #sos-page .bk-float.is-ink .uma-project__count{ position: relative; }html #sos-page .bk-float.is-ink .uma-project__pager,html #sos-page .bk-float.is-ink .uma-project__pager *{ color: transparent !important; }html #sos-page .bk-float.is-ink .uma-project__pager svg:not([width="0"]){ fill: transparent; }html #sos-page .bk-ink{ position: absolute; inset: 0; pointer-events: none;
+  -webkit-backdrop-filter: grayscale(1) contrast(60) invert(1); backdrop-filter: grayscale(1) contrast(60) invert(1); }
 </style>
 <style>html #sos-page .soon{
   min-height: 100svh;
@@ -1416,12 +1417,44 @@ var t=q(s),pg=b.querySelector('.cs-book__page');pg.appendChild(t.content.cloneNo
     var flIn = document.createElement('div'); flIn.className = 'uma-project bk-float__in'; fl.appendChild(flIn);
     (document.getElementById('sos-page') || document.body).appendChild(fl);
     var pagerSeen = false, flT = 0, pio = null;
+    // «чистая» инверсия, как на постере: под буквами фон переводится в чёрно-белый с жёстким порогом и инвертируется —
+    // на светлом буквы чёрные, на тёмном белые, граница смены резкая. Буквы — вырез (clip-path) из SVG-текста
+    // поверх слоя с backdrop-filter. Где браузер этого не умеет, остаётся простая разница цветов (mix-blend).
+    var inkN = 0, inkOK = window.CSS && CSS.supports && (CSS.supports('backdrop-filter', 'invert(1)') || CSS.supports('-webkit-backdrop-filter', 'invert(1)'));
+    function inkify(root) {
+      if (!inkOK) return;
+      fl.classList.add('is-ink');
+      $$('a, .uma-project__count', root).forEach(function (el) {
+        var box = el.getBoundingClientRect(); if (!box.width) return;
+        var cs = getComputedStyle(el), id = 'bkx' + (++inkN), NS = 'http://www.w3.org/2000/svg';
+        var svg = document.createElementNS(NS, 'svg'); svg.setAttribute('width', '0'); svg.setAttribute('height', '0'); svg.style.position = 'absolute';
+        var cp = document.createElementNS(NS, 'clipPath'); cp.setAttribute('id', id); svg.appendChild(cp);
+        var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), t;
+        while ((t = walker.nextNode())) {
+          if (!t.nodeValue.trim()) continue;
+          var r = document.createRange(); r.selectNodeContents(t); var rr = r.getBoundingClientRect(), pcs = getComputedStyle(t.parentNode);
+          var tx = document.createElementNS(NS, 'text'); tx.textContent = t.nodeValue;
+          tx.setAttribute('x', rr.left - box.left); tx.setAttribute('y', rr.top - box.top + rr.height / 2); tx.setAttribute('dominant-baseline', 'central');
+          tx.setAttribute('style', 'font-family:' + pcs.fontFamily + ';font-size:' + pcs.fontSize + ';font-weight:' + pcs.fontWeight + ';letter-spacing:' + pcs.letterSpacing);
+          cp.appendChild(tx);
+        }
+        $$('svg', el).forEach(function (ic) {
+          var ir = ic.getBoundingClientRect(), x = ir.left - box.left, y = ir.top - box.top, w = ir.width, h = ir.height, up = !el.classList.contains('is-next');
+          var pth = document.createElementNS(NS, 'path');
+          pth.setAttribute('d', up ? ('M' + (x + w / 2) + ' ' + y + 'L' + (x + w) + ' ' + (y + h) + 'L' + x + ' ' + (y + h) + 'Z') : ('M' + x + ' ' + y + 'L' + (x + w) + ' ' + y + 'L' + (x + w / 2) + ' ' + (y + h) + 'Z'));
+          cp.appendChild(pth);
+        });
+        var lay = document.createElement('span'); lay.className = 'bk-ink'; lay.style.clipPath = 'url(#' + id + ')'; lay.style.webkitClipPath = 'url(#' + id + ')';
+        el.appendChild(svg); el.appendChild(lay);
+      });
+    }
     function syncFloat() {
       var src = $('.uma-project__pager', pg); flIn.innerHTML = '';
       if (!src) return;
       var c = src.cloneNode(true); c.classList.remove('rv', 'is-in'); c.removeAttribute('aria-label');
       $$('a', c).forEach(function (x) { x.setAttribute('tabindex', '-1'); });
       flIn.appendChild(c);
+      inkify(c);
       if (pio) pio.disconnect(); pagerSeen = false;
       if ('IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen) fl.classList.remove('is-on'); }); pio.observe(src); }
     }
