@@ -147,8 +147,8 @@
 }@media (max-width: 767px){html #sos-page .ftm__row,html #sos-page .ftm__lock + .ftm__row{ border: 0; padding: 0 16px; }html #sos-page .ftm__lock{ padding-bottom: 28px; }html #sos-page .ftm__row:last-of-type{ padding-bottom: 28px; }html #sos-page .ftm__meta{ border-top: 0; padding-top: 0; }
 }@media (max-width: 767px){html #sos-page .ftm__row{ row-gap: 0; padding-block: 0 12px; }html #sos-page .ftm__row.is-head{ padding-bottom: 20px; }html #sos-page .ftm__row.is-head .ftm__k{ color: var(--txt); font-weight: var(--w-ink); position: relative; }html #sos-page .ftm__row.is-head .ftm__k::after{ content: ''; position: absolute; right: 12px; top: .2em; bottom: .2em; width: 1px; background: var(--txt); }
 }@media (max-width: 767px){html #sos-page .ftm__row.is-head .ftm__v{ white-space: nowrap; } }@media (max-width: 767px){html #sos-page .ftm__city{ white-space: nowrap; }html #sos-page .ftm__row.is-head .ftm__k::after{ top: .25em; bottom: .25em; height: auto; background: var(--line); }html #sos-page .ftm__row.is-head{ align-items: start; }
-}@media (max-width: 767px){html #sos-page .ftm__row.is-head .ftm__k::after{ content: none; } }html.has-sbar{ scrollbar-width: none; }html.has-sbar::-webkit-scrollbar{ display: none; }html #sos-page .sbar{ position: fixed; top: 0; right: 0; bottom: 0; width: 12px; z-index: 40; pointer-events: none; }html #sos-page .sbar__t{ position: absolute; top: 0; right: 2px; width: 2px; border-radius: 0; background: var(--txt); opacity: .55;
-  pointer-events: auto; cursor: grab; transition: opacity .3s ease, width .2s ease; will-change: transform; }html #sos-page .sbar__t::before{ content: ''; position: absolute; top: 0; bottom: 0; right: -2px; width: 12px; }html #sos-page .sbar.is-drag .sbar__t,html #sos-page .sbar__t:hover{ opacity: .9; width: 3px; cursor: grabbing; }@media (hover: none), (pointer: coarse){html #sos-page .sbar__t{ opacity: 0; pointer-events: none; }html #sos-page .sbar.is-act .sbar__t{ opacity: .5; }
+}@media (max-width: 767px){html #sos-page .ftm__row.is-head .ftm__k::after{ content: none; } }html.has-sbar{ scrollbar-width: none; }html.has-sbar::-webkit-scrollbar{ display: none; }html #sos-page .sbar{ position: fixed; top: 0; right: 0; bottom: 0; width: 1px; z-index: 40; pointer-events: none; }html #sos-page .sbar__t{ position: absolute; top: 0; right: 0; width: 1px; height: 100%; background: var(--txt); opacity: .6;
+  transform-origin: 50% 0; transform: scaleY(0); will-change: transform; transition: opacity .3s ease; }@media (hover: none), (pointer: coarse){html #sos-page .sbar__t{ opacity: 0; }html #sos-page .sbar.is-act .sbar__t{ opacity: .5; }
 }
 </style>
 <style>html #sos-page .soon{
@@ -1227,37 +1227,24 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
   }
 
   /* ---------------- индикатор прокрутки ----------------
-     Системный ползунок скрыт; вместо него — тонкий прямоугольник у правого края в цвет текста темы.
-     Высота — доля видимой части страницы, положение — как у обычного ползунка. Его можно тянуть мышью.
-     На телефоне появляется только во время прокрутки. */
+     Системный ползунок скрыт. Вместо него — линия в 1 px у правого края в цвет текста темы:
+     вверху страницы её почти не видно, при прокрутке она растёт сверху вниз — на долю пролистанного.
+     На телефоне видна только во время прокрутки. */
   function scrollbar() {
     var bar = document.createElement('div'); bar.className = 'sbar'; bar.setAttribute('aria-hidden', 'true');
     var th = document.createElement('i'); th.className = 'sbar__t'; bar.appendChild(th);
     (document.getElementById('sos-page') || document.body).appendChild(bar); html.classList.add('has-sbar');
-    var de = document.documentElement, h = 0, top = 0, raf = 0, t = 0;
+    var de = document.documentElement, raf = 0, t = 0;
     function upd() {
       raf = 0;
-      var vh = innerHeight, sh = Math.max(de.scrollHeight, document.body.scrollHeight), max = sh - vh;
-      bar.hidden = max < 4; if (max < 4) return;
-      h = Math.max(32, vh * vh / sh); top = (vh - h) * (scrollY / max);
-      th.style.height = h + 'px'; th.style.transform = 'translate3d(0,' + top + 'px,0)';
+      var vh = innerHeight, max = Math.max(de.scrollHeight, document.body.scrollHeight) - vh;
+      var p = max > 4 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+      th.style.transform = 'scaleY(' + Math.max(p, 2 / vh) + ')';
     }
     function req() { if (!raf) raf = requestAnimationFrame(upd); }
     addEventListener('scroll', function () { req(); bar.classList.add('is-act'); clearTimeout(t); t = setTimeout(function () { bar.classList.remove('is-act'); }, 1200); }, { passive: true });
     addEventListener('resize', req);
     if (window.ResizeObserver) new ResizeObserver(req).observe(document.body);
-    // перетаскивание
-    var drag = null;
-    th.addEventListener('pointerdown', function (e) {
-      drag = { y: e.clientY, s: scrollY }; th.setPointerCapture(e.pointerId); bar.classList.add('is-drag'); e.preventDefault();
-    });
-    th.addEventListener('pointermove', function (e) {
-      if (!drag) return;
-      var vh = innerHeight, max = de.scrollHeight - vh, k = max / Math.max(1, vh - h);
-      html.style.scrollBehavior = 'auto'; scrollTo(0, drag.s + (e.clientY - drag.y) * k); html.style.scrollBehavior = '';
-    });
-    function end() { drag = null; bar.classList.remove('is-drag'); }
-    th.addEventListener('pointerup', end); th.addEventListener('pointercancel', end);
     upd();
   }
 
