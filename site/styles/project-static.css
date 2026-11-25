@@ -494,8 +494,7 @@ html:not(.light-theme) .uma-project__figure picture.tv-d { display: block; }
   mix-blend-mode: difference; opacity: 0; transition: opacity .35s var(--m-out); }
 .bk-float.is-on { opacity: 1; }
 .bk-float.is-on a { pointer-events: auto; }
-.bk-float__in.uma-project { padding: 0 32px; background: none; }   /* кнопки отступают от края обложек */
-@media (min-width: 768px) { .bk-float__in.uma-project { padding: 0 calc(72 * var(--u)); } }
+.bk-float__in.uma-project { padding-top: 0; padding-bottom: 0; background: none; }   /* кнопки — по краю сетки, как навигация внизу кейса */
 .bk-float .uma-project__pager { margin: 0 !important; padding: 14px 0 !important; opacity: 1 !important; transform: none !important; border: 0 !important; }
 .bk-float .uma-project__pager, .bk-float .uma-project__pager *, .bk-float .uma-project__count span { color: #fff !important; }
 .bk-float .uma-project__pager svg { fill: #fff; }
