@@ -64,10 +64,10 @@
         "type": "Интернет-магазин",
         "year": "2025",
         "slug": "black-sable",
-        "cover": "img/covers/black-sable-mockup.webp",
+        "cover": "img/covers/black-sable-laptop.webp",
         "url": "",
-        "mobile1": "img/mobile/black-sable-m2.webp",
-        "mobile2": "img/mobile/black-sable-m1.webp"
+        "mobile1": "img/mobile/black-sable-laptop.webp",
+        "mobile2": "img/mobile/black-sable-phone.webp"
       },
       {
         "name": "Arine Atelier",
