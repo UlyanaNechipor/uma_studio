@@ -20,7 +20,7 @@
   var ready = [];   // что запустить, когда прелоадер ушёл
 
   /* ================= НАСТРОЙКИ ================= */
-  var PL = { fillDelay: 1000, fill: 1800, flight: 1400 };      // мс: прелоадер
+  var PL = { fillDelay: 1000, fill: 1800, flight: 1250 };      // мс: прелоадер
   var HERO_DELAY = 850;      // мс после вылета логотипа: тексты первого экрана
   var GALLERY_DELAY = 1250;  // мс после вылета: раскрытие галереи
   var TITLE_DELAY = 1450;    // мс после вылета: заливка главного заголовка
@@ -71,11 +71,12 @@
       place();                                                  // окно могло смениться за время заливки
       var t = target.getBoundingClientRect(), w = logo.offsetWidth, h = logo.offsetHeight;
       var k = t.width / w;
-      pl.classList.add('is-fly', 'is-done');
+      // логотип садится на ещё чёрный экран: фон прелоадера держится весь полёт,
+      // и только когда логотип встал на место, экран снимается и следом проявляется шапка, затем первый экран
+      pl.classList.add('is-fly');
       logo.style.transform = 'translate(' + (t.left - innerWidth / 2) + 'px,' + (t.top + t.height / 2 - h * k / 2 - innerHeight / 2) + 'px) scale(' + k + ')';
-      setTimeout(function () { html.classList.add('is-docked'); pl.classList.add('is-gone'); }, PL.flight);
-      setTimeout(function () { html.classList.add('hero-in'); }, HERO_DELAY);
-      release();
+      setTimeout(function () { html.classList.add('is-docked'); pl.classList.add('is-done', 'is-gone'); release(); }, PL.flight * .8);
+      setTimeout(function () { html.classList.add('hero-in'); }, PL.flight * .8 + 350);
     }
     var go = function () { start(); go = function () {}; };
     if (document.fonts && document.fonts.load) {
