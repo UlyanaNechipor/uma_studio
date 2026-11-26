@@ -1,6 +1,6 @@
 {
   "title": "Kara Fox",
-  "fonts": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Plus+Jakarta+Sans:wght@400;700&display=swap",
+  "fonts": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Plus+Jakarta+Sans:wght@400;700&display=swap",
   "project": "Клиент: Kara Fox\nГод: 2025\nБизнес-сайт",
   "tasks": "Дизайн-проект\nРазработка на WordPress\nИнтеграция Calendly",
   "cover": {
@@ -18,7 +18,7 @@
       "type": "text",
       "title": "Главная страница",
       "image": {
-        "image": "img/projects/kara-fox/home-v2-3991.webp",
+        "image": "img/projects/kara-fox/home-v3-3944.webp",
         "alt": "Главная страница сайта Kara Fox: первый экран и лента портфолио",
         "mobile": "img/projects/kara-fox/home-m-3000.webp",
         "plate": "both"
@@ -61,9 +61,9 @@
         {
           "name": "Cormorant Garamond",
           "serif": true,
-          "weight": "500",
+          "weight": "600",
           "color": "#d9381e",
-          "size": 140.8,
+          "size": 110,
           "label": "Cormorant Garamond",
           "text": "Используется для логотипа, заголовков и акцентных текстов. Шрифт с высоким контрастом штрихов и элегантной антиквенной формой добавляет образу художественность и ощущение fine art-подхода. Его утончённый характер усиливает эмоциональное восприятие контента и подчёркивает авторскую составляющую бренда."
         },
@@ -71,7 +71,7 @@
           "name": "Plus Jakarta Sans",
           "weight": "400",
           "color": "#d9381e",
-          "size": 76.8,
+          "size": 52,
           "label": "Plus Jakarta Sans",
           "text": "Применяется для навигации, описаний и вспомогательных UI-элементов. Современный гротеск с высокой читаемостью и сбалансированными пропорциями обеспечивает функциональность интерфейса и комфорт при длительном просмотре. Нейтральный характер шрифта позволяет ему не конкурировать с фотографиями и акцентной типографикой."
         }
@@ -83,7 +83,7 @@
       "text": "Страница портфолио в виде ленты адаптируется под горизонтальный и вертикальный формат фотографий.",
       "at": "10",
       "image": {
-        "image": "img/projects/kara-fox/portfolio-4324.webp",
+        "image": "img/projects/kara-fox/portfolio-v3-5581.webp",
         "alt": "Страница портфолио Kara Fox: лента фотографий в три колонки",
         "mobile": "img/projects/kara-fox/portfolio-m-3184.webp",
         "plate": "top"

@@ -526,3 +526,6 @@ html [data-case="kara-fox"] .uma-project__palette.is-framed .uma-project__sw { b
 
 /* переключатель кейсов («← Sure · 03/06 · Black Sable →») — лёгкое начертание и в светлой теме, вес не растёт при смене темы */
 html.light-theme .uma-project__pager, html.light-theme .uma-project__pager *, html.light-theme .uma-project__count { font-weight: 400; }
+
+/* Kara Fox: образцы шрифтов — межстрочный 100% как в макете */
+html [data-case="kara-fox"] .uma-project__specimen[style*="--fs"] { line-height: 1; }

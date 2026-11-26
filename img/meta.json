@@ -244,10 +244,10 @@
   "h": 7996,
   "w": 3000
  },
- "img/projects/kara-fox/home-v2-3991.webp": {
+ "img/projects/kara-fox/home-v3-3944.webp": {
   "alpha": true,
-  "h": 7882,
-  "w": 3991
+  "h": 7872,
+  "w": 3944
  },
  "img/projects/kara-fox/mobile-m-v3-2107.webp": {
   "alpha": true,
@@ -259,15 +259,15 @@
   "h": 1216,
   "w": 3600
  },
- "img/projects/kara-fox/portfolio-4324.webp": {
-  "alpha": true,
-  "h": 4510,
-  "w": 4324
- },
  "img/projects/kara-fox/portfolio-m-3184.webp": {
   "alpha": false,
   "h": 4510,
   "w": 3184
+ },
+ "img/projects/kara-fox/portfolio-v3-5581.webp": {
+  "alpha": true,
+  "h": 5814,
+  "w": 5581
  },
  "img/projects/rosi/account-3600.webp": {
   "alpha": false,
