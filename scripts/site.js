@@ -842,7 +842,7 @@
           var r = document.createRange(); r.selectNodeContents(t); var rr = r.getBoundingClientRect(), pcs = getComputedStyle(t.parentNode);
           var tx = document.createElementNS(NS, 'text'); tx.textContent = t.nodeValue;
           tx.setAttribute('x', rr.left - box.left); tx.setAttribute('y', rr.top - box.top + rr.height / 2); tx.setAttribute('dominant-baseline', 'central');
-          tx.setAttribute('style', 'font-family:' + pcs.fontFamily + ';font-size:' + pcs.fontSize + ';font-weight:' + pcs.fontWeight + ';letter-spacing:' + pcs.letterSpacing);
+          tx.setAttribute('style', 'font-family:' + pcs.fontFamily + ';font-size:' + pcs.fontSize + ';font-weight:' + pcs.fontWeight + ';letter-spacing:' + pcs.letterSpacing + ';font-variant-numeric:' + pcs.fontVariantNumeric + ';font-feature-settings:' + pcs.fontFeatureSettings);
           cp.appendChild(tx);
         }
         $$('svg', el).forEach(function (ic) {
