@@ -529,3 +529,7 @@ html.light-theme .uma-project__pager, html.light-theme .uma-project__pager *, ht
 
 /* Kara Fox: образцы шрифтов — межстрочный 100% как в макете */
 html [data-case="kara-fox"] .uma-project__specimen[style*="--fs"] { line-height: 1; }
+
+/* кнопки соседних проектов во время перехода — над въезжающим листом и после него (держатся на месте) */
+.bk-float.is-hold { z-index: 26; }
+.bk-float.is-hold .bk-ink { transition: none; }

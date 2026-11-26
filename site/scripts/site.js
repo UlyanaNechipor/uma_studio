@@ -811,7 +811,9 @@
       var a = e.target.closest && e.target.closest('a[data-case]');
       if (!a || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || !tpl(a.getAttribute('data-case'))) return;
       e.preventDefault(); e.stopImmediatePropagation();
-      go(a.getAttribute('data-case'), true);
+      var cs = a.getAttribute('data-case');
+      if (!busy && cs !== cur() && a.closest('.uma-project__pager')) pin(a);
+      go(cs, true);
     }, true);
     addEventListener('popstate', function () { go(caseOfUrl(), false); });
     try { history.replaceState({ sosCase: cur() }, ''); } catch (e) {}
@@ -860,19 +862,41 @@
       flIn.appendChild(c);
       inkify(c);
       if (pio) pio.disconnect(); pagerSeen = false;
-      if ('IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen) fl.classList.remove('is-on'); }); pio.observe(src); }
+      if ('IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen && !hold) fl.classList.remove('is-on'); }); pio.observe(src); }
+    }
+    // переход по кнопке соседнего проекта: кнопки остаются на том же месте экрана, пока новый кейс въезжает листом,
+    // и после перехода ещё видны — можно сразу листать дальше; прячутся через 3 с покоя
+    var hold = false, holdT = 0, HOLD = 3000;
+    function anchorTop(root) { var x = $('a', root); return x ? x.getBoundingClientRect().top : 0; }
+    function unpin() { fl.style.top = ''; fl.style.bottom = ''; fl.classList.remove('is-hold'); }
+    function pin(a) {
+      var src = a.closest('.uma-project__pager'); if (!src) return;
+      var want = anchorTop(src);
+      clearTimeout(flT); clearTimeout(holdT); hold = true;
+      if (!fl.contains(a)) {   // нажали кнопку внизу кейса — плавающие встают точно на её место, сама она скрывается
+        unpin(); fl.style.top = '0px'; fl.style.bottom = 'auto';
+        fl.style.top = (want - anchorTop(flIn)) + 'px';
+        src.style.visibility = 'hidden';
+      }
+      fl.classList.add('is-hold', 'is-on');
+    }
+    function release(ms) {
+      clearTimeout(holdT);
+      holdT = setTimeout(function () { hold = false; fl.classList.remove('is-on'); setTimeout(function () { if (!hold && !fl.classList.contains('is-on')) unpin(); }, 400); }, ms);
     }
     var lastY = scrollY;
     addEventListener('scroll', function () {
       var y = scrollY, moved = Math.abs(y - lastY) > 4; lastY = y;
       if (!moved || busy) return;
+      if (hold) { release(HOLD); return; }
+      if (fl.style.top) unpin();
       var show = y > innerHeight * 0.6 && !pagerSeen;
       fl.classList.toggle('is-on', show);
       clearTimeout(flT); if (show) flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1800);
     }, { passive: true });
-    fl.addEventListener('pointerenter', function () { clearTimeout(flT); });
-    fl.addEventListener('pointerleave', function () { flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1200); });
-    syncFloat(); window.__sosSyncFloat = function () { fl.classList.remove('is-on'); syncFloat(); };
+    fl.addEventListener('pointerenter', function () { clearTimeout(flT); clearTimeout(holdT); });
+    fl.addEventListener('pointerleave', function () { if (hold) { release(HOLD); return; } flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1200); });
+    syncFloat(); window.__sosSyncFloat = function () { if (!hold) fl.classList.remove('is-on'); syncFloat(); if (hold) release(HOLD); };
     watch();
   }
 
