@@ -239,35 +239,25 @@
   "h": 2113,
   "w": 3600
  },
- "img/projects/kara-fox/home-4074.webp": {
-  "alpha": true,
-  "h": 7996,
-  "w": 4074
- },
  "img/projects/kara-fox/home-m-3000.webp": {
   "alpha": false,
   "h": 7996,
   "w": 3000
  },
- "img/projects/kara-fox/mobile-3600.webp": {
+ "img/projects/kara-fox/home-v2-4003.webp": {
   "alpha": true,
-  "h": 1132,
-  "w": 3600
+  "h": 7882,
+  "w": 4003
  },
- "img/projects/kara-fox/mobile-light-3600.webp": {
+ "img/projects/kara-fox/mobile-m-v2-2107.webp": {
   "alpha": true,
-  "h": 1132,
-  "w": 3600
- },
- "img/projects/kara-fox/mobile-m-2107.webp": {
-  "alpha": true,
-  "h": 1132,
+  "h": 1114,
   "w": 2107
  },
- "img/projects/kara-fox/mobile-m-light-2107.webp": {
+ "img/projects/kara-fox/mobile-v2-3600.webp": {
   "alpha": true,
-  "h": 1132,
-  "w": 2107
+  "h": 1114,
+  "w": 3600
  },
  "img/projects/kara-fox/portfolio-4324.webp": {
   "alpha": true,
