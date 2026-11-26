@@ -56,7 +56,7 @@ html.js .pl.is-gone { display: none; }   /* сильнее, чем html.js .pl �
 }
 .pl__logo b { font-weight: 700; }
 .pl.is-ready .pl__logo { opacity: 1; }
-.pl.is-fly .pl__logo { transition: transform 1.4s cubic-bezier(.19,1,.22,1); }
+.pl.is-fly .pl__logo { transition: transform 1.25s cubic-bezier(.19,1,.22,1); }
 .pl__base { color: var(--fill-base); }
 .pl__ink { position: absolute; top: 0; right: 0; bottom: 0; left: 0; color: var(--txt); -webkit-mask-image: linear-gradient(90deg, #000 var(--a, 0%), transparent var(--b, 0%)); mask-image: linear-gradient(90deg, #000 var(--a, 0%), transparent var(--b, 0%)); }
 /* пока логотип летит, настоящий логотип и меню в шапке скрыты */
@@ -258,3 +258,10 @@ html.light-theme .hero__aside.is-mercury { background: #ececec; }
 .hero__ghost { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center;
   font-size: calc(118 * var(--u)); line-height: .9; letter-spacing: -.04em; color: var(--txt); opacity: .045; filter: blur(calc(12 * var(--u))); pointer-events: none; user-select: none; }
 html.light-theme .hero__ghost { opacity: .05; }
+
+/* шапка после приземления логотипа: линия под ней прочерчивается слева направо, вместе с пунктами меню */
+.hd { border-bottom-color: transparent; }
+.hd::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); transform-origin: 0 50%; z-index: 2; pointer-events: none; }
+html.js:not(.is-docked) .hd::after { transform: scaleX(0); }
+html.js.is-docked .hd::after { transform: scaleX(1); transition: transform 1.1s cubic-bezier(.65, 0, .35, 1); }
+html.rm .hd::after { transform: none !important; }
