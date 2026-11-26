@@ -45,4 +45,4 @@
   background: var(--bg); color: var(--txt);
   transform: translate3d(0, 100%, 0);
   transition: transform .85s var(--m-turn);
-}html #sos-page .bk-sheet.is-on{ transform: translate3d(0, 0, 0); }html #sos-page .bk-sheet .rv{ opacity: 1 !important; transform: none !important; }html.bk-out #sos-page main{ transform: translate3d(0, -8vh, 0); transition: transform .85s var(--m-turn); }html.bk-out #sos-page .bk-sheet main{ transform: none; transition: none; }html.bk-swap #sos-page main,html.bk-swap #sos-page main *,html.bk-swap #sos-page .rv{ transition: none !important; }
+}html #sos-page .bk-sheet.is-on{ transform: translate3d(0, 0, 0); }html #sos-page .bk-sheet .rv{ opacity: 1 !important; transform: none !important; }html.bk-out #sos-page main{ transform: translate3d(0, -8vh, 0); transition: transform .85s var(--m-turn); }html.bk-out #sos-page .bk-sheet main{ transform: none; transition: none; }html.bk-swap #sos-page main,html.bk-swap #sos-page main *,html.bk-swap #sos-page .rv{ transition: none !important; }html #sos-page .hero__aside.is-mercury{ background: #0c0c0d; cursor: default; }html.light-theme #sos-page .hero__aside.is-mercury{ background: #ececec; }

@@ -218,7 +218,7 @@
   background: var(--bg); color: var(--txt);
   transform: translate3d(0, 100%, 0);
   transition: transform .85s var(--m-turn);
-}html #sos-page .bk-sheet.is-on{ transform: translate3d(0, 0, 0); }html #sos-page .bk-sheet .rv{ opacity: 1 !important; transform: none !important; }html.bk-out #sos-page main{ transform: translate3d(0, -8vh, 0); transition: transform .85s var(--m-turn); }html.bk-out #sos-page .bk-sheet main{ transform: none; transition: none; }html.bk-swap #sos-page main,html.bk-swap #sos-page main *,html.bk-swap #sos-page .rv{ transition: none !important; }
+}html #sos-page .bk-sheet.is-on{ transform: translate3d(0, 0, 0); }html #sos-page .bk-sheet .rv{ opacity: 1 !important; transform: none !important; }html.bk-out #sos-page main{ transform: translate3d(0, -8vh, 0); transition: transform .85s var(--m-turn); }html.bk-out #sos-page .bk-sheet main{ transform: none; transition: none; }html.bk-swap #sos-page main,html.bk-swap #sos-page main *,html.bk-swap #sos-page .rv{ transition: none !important; }html #sos-page .hero__aside.is-mercury{ background: #0c0c0d; cursor: default; }html.light-theme #sos-page .hero__aside.is-mercury{ background: #ececec; }
 </style>
 <style>#allrecords{overflow:visible!important;background:none!important}
 #allrecords .t123,#allrecords .t-container_100,#allrecords .t-width_100{max-width:none!important;padding:0!important;margin:0!important}
@@ -856,6 +856,120 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     raf = requestAnimationFrame(draw);
   }
 
+  /* ---------------- ртуть в рамке справа (WebGL) ----------------
+     Капли рассыпаны у краёв рамки → стягиваются в одну форму → форма кружится → разлетается; и так по кругу.
+     Капли в радиусе курсора прилипают к нему комком и тянутся следом, отпускают — возвращаются в сценарий.
+     Поле метаболов с ограниченным ядром (1 - d²/R²)³, высота 1 - exp(-k·поле) — гладкий выпуклый металл без «кратеров». */
+  function mercury() {
+    var el = $('.hero__aside'), cv = $('.hero__cv');
+    if (!el || !cv) return;
+    if (getComputedStyle(el).display === 'none') {
+      var mq = matchMedia('(min-width: 768px)');
+      var on0 = function () { if (mq.matches) { mq.removeEventListener ? mq.removeEventListener('change', on0) : mq.removeListener(on0); mercury(); } };
+      mq.addEventListener ? mq.addEventListener('change', on0) : mq.addListener(on0);
+      return;
+    }
+    var gl = cv.getContext('webgl', { antialias: false, alpha: false });
+    if (!gl) return;
+    el.classList.add('is-mercury');
+    var MAX = 48;
+    var VS = 'attribute vec2 p; void main(){ gl_Position = vec4(p,0.,1.); }';
+    var FS = ['precision highp float;',
+      'uniform vec2 R; uniform vec3 P[' + MAX + ']; uniform int N; uniform vec3 BG; uniform float DARK;',
+      'void main(){',
+      '  vec2 p = vec2(gl_FragCoord.x, R.y - gl_FragCoord.y); float S = min(R.x,R.y);',
+      '  float f = 0.; vec2 g = vec2(0.);',
+      '  for (int i=0;i<' + MAX + ';i++){ if (i >= N) break; vec2 q = p - P[i].xy; float R2 = P[i].z*P[i].z*4.; float u = dot(q,q)/R2;',
+      '    if (u < 1.) { float w = 1.-u; f += w*w*w; g += -6.*w*w/R2*q; } }',
+      '  float TH = .42; float gn = max(length(g), 1e-6); float dist = (TH - f) / gn; float aa = clamp(.5 - dist, 0., 1.);',
+      '  float K = 2.2; float e = exp(-max(f-TH,0.)*K); vec2 gh = g * K * e * S * .03;',
+      '  vec3 n = normalize(vec3(-gh.x, gh.y, 1.)); vec3 V = vec3(0.,0.,1.); vec3 L = normalize(vec3(-.45,.6,.75)); vec3 H = normalize(L+V);',
+      '  vec3 rf = reflect(-V, n);',
+      '  float env = smoothstep(.05,.55, rf.y*.8 - rf.x*.25) + .55*smoothstep(.75,.95, -rf.x*.7 + rf.y*.3) + .35*smoothstep(.6,.9, rf.x*.8 - rf.y*.2);',
+      '  float dif = clamp(dot(n,L),0.,1.); float spec = pow(clamp(dot(n,H),0.,1.), 110.); float fres = pow(1. - clamp(n.z,0.,1.), 2.);',
+      '  float c = (DARK > .5 ? .15 : .08) + dif*.10 + env*.36*mix(.65,1.,DARK) + spec + fres*.3*DARK;',
+      '  vec3 col = vec3(clamp(c,0.,1.)) * vec3(1., .995, .99);',
+      '  float sh = (1.-DARK) * .06 * clamp(f*.9, 0., 1.) * (1.-aa);',
+      '  gl_FragColor = vec4(mix(BG*(1.-sh), col, aa), 1.);',
+      '}'].join('\n');
+    function shd(t, src) { var o = gl.createShader(t); gl.shaderSource(o, src); gl.compileShader(o); return o; }
+    var pr = gl.createProgram(); gl.attachShader(pr, shd(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, shd(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return;
+    gl.useProgram(pr);
+    var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+    var ap = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(ap); gl.vertexAttribPointer(ap, 2, gl.FLOAT, false, 0, 0);
+    var U = {}; ['R','P','N','BG','DARK'].forEach(function (k) { U[k] = gl.getUniformLocation(pr, k); });
+
+    var W = 0, H = 0, S = 1, dpr = 1, ps = [], COUNT = 30;
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function edgePoint() {
+      var m = S * .08, side = Math.random() * 4 | 0;
+      if (side === 0) return [rnd(m, W - m), rnd(m, H * .18)];
+      if (side === 1) return [rnd(m, W - m), rnd(H * .82, H - m)];
+      if (side === 2) return [rnd(m, W * .2), rnd(m, H - m)];
+      return [rnd(W * .8, W - m), rnd(m, H - m)];
+    }
+    function size() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = Math.round(el.clientWidth * dpr), h = Math.round(el.clientHeight * dpr);
+      if (w === W && h === H) return;
+      var first = !W; W = w; H = h; S = Math.min(W, H); cv.width = W; cv.height = H; gl.viewport(0, 0, W, H);
+      if (first) for (var i = 0; i < COUNT; i++) {
+        var e = edgePoint();
+        ps.push({ x: e[0], y: e[1], vx: 0, vy: 0, r: S * (Math.random() < .25 ? rnd(.045, .065) : rnd(.022, .04)), home: e,
+          ang: i * 2.39996, rad: Math.sqrt((i + .5) / COUNT), cap: 0, ph: Math.random() * 6.28 });
+      }
+    }
+    var CYCLE = 17, tc = 0, spin = 0, burstDone = false;
+    function phase(t) {
+      if (t < 3) return ['loose', t / 3]; if (t < 6.5) return ['gather', (t - 3) / 3.5]; if (t < 12.5) return ['spin', (t - 6.5) / 6];
+      if (t < 13.6) return ['burst', (t - 12.5) / 1.1]; return ['loose', (t - 13.6) / 3.4];
+    }
+    var mx = -1e5, my = -1e5, on = false;
+    function pt(e) { var r = el.getBoundingClientRect(); mx = (e.clientX - r.left) * dpr; my = (e.clientY - r.top) * dpr; on = true; }
+    el.addEventListener('pointermove', pt); el.addEventListener('pointerdown', pt);
+    el.addEventListener('pointerleave', function () { on = false; });
+    function bg() { var c = getComputedStyle(el).backgroundColor.match(/[\d.]+/g) || [12, 12, 13]; return [c[0] / 255, c[1] / 255, c[2] / 255]; }
+    var arr = new Float32Array(MAX * 3), last = performance.now(), raf = 0, visible = true;
+    function draw(now) {
+      raf = 0; size();
+      var dt = Math.min(.033, (now - last) / 1000); last = now; var sp = reduce ? .4 : 1;
+      tc = (tc + dt * sp) % CYCLE; var ph = phase(tc), cx = W / 2, cy = H / 2, FR = S * .13;
+      if (ph[0] === 'spin' || ph[0] === 'gather') spin += dt * sp * (ph[0] === 'spin' ? .9 : .5);
+      if (ph[0] !== 'burst') burstDone = false;
+      if (ph[0] === 'loose' && ph[1] < .02 && tc > 10) ps.forEach(function (q) { q.home = edgePoint(); });
+      var catchR = S * .2, holdR = S * .36;
+      for (var i = 0; i < ps.length; i++) {
+        var q = ps[i], tx, ty, k;
+        if (ph[0] === 'loose') { var t = now / 1000; tx = q.home[0] + Math.sin(t * .4 + q.ph) * S * .03; ty = q.home[1] + Math.cos(t * .33 + q.ph) * S * .03; k = 3; }
+        else { var a = q.ang + spin, rr = q.rad * FR * (1 + .06 * Math.sin(now / 700 + q.ph)); tx = cx + Math.cos(a) * rr; ty = cy + Math.sin(a) * rr; k = ph[0] === 'gather' ? 3 + 30 * ph[1] * ph[1] : 40; }
+        if (ph[0] === 'burst' && !burstDone) { var dx = q.x - cx, dy = q.y - cy, dl = Math.hypot(dx, dy) || 1, f = S * rnd(2.4, 3.6); q.vx += dx / dl * f + rnd(-1, 1) * S; q.vy += dy / dl * f + rnd(-1, 1) * S; q.home = edgePoint(); }
+        if (ph[0] === 'burst') k = 0;
+        var cd = Math.hypot(q.x - mx, q.y - my);
+        q.cap = on && (cd < catchR || (q.cap && cd < holdR)) ? 1 : 0;
+        if (q.cap) { var ca = q.ang * 1.7 + now / 900, cr = S * .06 * Math.sqrt(q.rad); tx = mx + Math.cos(ca) * cr; ty = my + Math.sin(ca) * cr; k = 60; }
+        if (k > 0) { var c = 1.7 * Math.sqrt(k); q.vx += ((tx - q.x) * k - c * q.vx) * dt; q.vy += ((ty - q.y) * k - c * q.vy) * dt; }
+        else { q.vx *= Math.pow(.35, dt); q.vy *= Math.pow(.35, dt); }
+        // стенки рамки: капли не улетают за край, а мягко отскакивают
+        var m = q.r; if (q.x < m) { q.x = m; q.vx = Math.abs(q.vx) * .4; } if (q.x > W - m) { q.x = W - m; q.vx = -Math.abs(q.vx) * .4; }
+        if (q.y < m) { q.y = m; q.vy = Math.abs(q.vy) * .4; } if (q.y > H - m) { q.y = H - m; q.vy = -Math.abs(q.vy) * .4; }
+        q.x += q.vx * dt; q.y += q.vy * dt;
+      }
+      if (ph[0] === 'burst') burstDone = true;
+      for (var j = 0; j < MAX; j++) { var o = ps[j]; if (o) { arr[j*3] = o.x; arr[j*3+1] = o.y; arr[j*3+2] = o.r; } else { arr[j*3] = -1e5; arr[j*3+1] = -1e5; arr[j*3+2] = 0; } }
+      var b = bg();
+      gl.uniform2f(U.R, W, H); gl.uniform3fv(U.P, arr); gl.uniform1i(U.N, ps.length); gl.uniform3f(U.BG, b[0], b[1], b[2]); gl.uniform1f(U.DARK, (b[0] + b[1] + b[2]) / 3 < .5 ? 1 : 0);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      el.classList.add('is-ready');
+      loop();
+    }
+    function loop() { if (!raf && visible && !document.hidden) raf = requestAnimationFrame(draw); }
+    if (window.IntersectionObserver) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; loop(); }).observe(el);
+    document.addEventListener('visibilitychange', function () { last = performance.now(); loop(); });
+    window.__mercury = { setT: function (t) { tc = t; } };
+    loop();
+  }
+
   /* ---------------- год-табло ----------------
      Цифры года прокручиваются, как на табло: каждая встаёт на место с трёх цифр раньше,
      слева направо с задержкой 45 мс. Десктоп — при наведении на строку,
@@ -1392,7 +1506,7 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       scrollTo(0, 0); addEventListener('load', function () { scrollTo(0, 0); });
       addEventListener('pageshow', function (e) { if (e.persisted) scrollTo(0, 0); });
     }, 'scroll');
-    safe(theme, 'theme'); safe(trail, 'trail'); safe(gallery, 'gallery'); safe(aside, 'aside');
+    safe(theme, 'theme'); safe(trail, 'trail'); safe(gallery, 'gallery'); safe(mercury, 'aside');
     safe(projects, 'projects'); safe(labZoom, 'labZoom'); safe(caseMore, 'caseMore'); safe(fitSamples, 'fitSamples'); safe(reveal, 'reveal');
     var go = function () {
       safe(fillInit, 'fillInit');
