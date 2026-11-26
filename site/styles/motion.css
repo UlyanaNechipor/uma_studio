@@ -254,3 +254,7 @@ html.bk-swap main, html.bk-swap main *, html.bk-swap .rv { transition: none !imp
 /* ртуть в рамке справа: спокойная подложка в тон теме вместо неонового градиента */
 .hero__aside.is-mercury { background: #0c0c0d; cursor: default; }
 html.light-theme .hero__aside.is-mercury { background: #ececec; }
+/* еле видная размытая надпись за формой */
+.hero__ghost { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center;
+  font-size: calc(118 * var(--u)); line-height: .9; letter-spacing: -.04em; color: var(--txt); opacity: .045; filter: blur(calc(12 * var(--u))); pointer-events: none; user-select: none; }
+html.light-theme .hero__ghost { opacity: .05; }
