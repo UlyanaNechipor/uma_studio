@@ -1337,7 +1337,8 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
           if (!t.nodeValue.trim()) continue;
           var r = document.createRange(); r.selectNodeContents(t); var rr = r.getBoundingClientRect(), pcs = getComputedStyle(t.parentNode);
           var tx = document.createElementNS(NS, 'text'); tx.textContent = t.nodeValue;
-          tx.setAttribute('x', rr.left - box.left); tx.setAttribute('y', rr.top - box.top + rr.height / 2); tx.setAttribute('dominant-baseline', 'central');
+          // правая кнопка выключена вправо: текст привязан к правому краю (у стрелки) и при наборе растёт влево
+          if (el.classList.contains('is-next')) { tx.setAttribute('x', rr.right - box.left); tx.setAttribute('text-anchor', 'end'); } else tx.setAttribute('x', rr.left - box.left); tx.setAttribute('y', rr.top - box.top + rr.height / 2); tx.setAttribute('dominant-baseline', 'central');
           tx.setAttribute('style', 'font-family:' + pcs.fontFamily + ';font-size:' + pcs.fontSize + ';font-weight:' + pcs.fontWeight + ';letter-spacing:' + pcs.letterSpacing + ';font-variant-numeric:' + pcs.fontVariantNumeric + ';font-feature-settings:' + pcs.fontFeatureSettings);
           cp.appendChild(tx);
         }
