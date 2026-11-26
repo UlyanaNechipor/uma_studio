@@ -400,7 +400,7 @@
   padding-bottom: env(safe-area-inset-bottom, 0px); background: none; border: 0;
   mix-blend-mode: difference; opacity: 0; transition: opacity .35s var(--m-out); }html #sos-page .bk-float.is-on{ opacity: 1; }html #sos-page .bk-float.is-on a{ pointer-events: auto; }html #sos-page .bk-float__in.uma-project{ padding-top: 0; padding-bottom: 0; background: none; }html #sos-page .bk-float .uma-project__pager{ margin: 0 !important; padding: 14px 0 !important; opacity: 1 !important; transform: none !important; border: 0 !important; }html #sos-page .bk-float .uma-project__pager,html #sos-page .bk-float .uma-project__pager *,html #sos-page .bk-float .uma-project__count span{ color: #fff !important; }html #sos-page .bk-float .uma-project__pager svg{ fill: #fff; }@media (min-width: 768px){html #sos-page .bk-float .uma-project__pager{ padding: calc(20 * var(--u)) 0 !important; } }html.rm-off #sos-page .bk-float{ transition: none; }html #sos-page .bk-float.is-ink{ mix-blend-mode: normal; opacity: 1; transition: none; }html #sos-page .bk-float.is-ink .bk-ink{ opacity: 0; transition: opacity .35s var(--m-out); }html #sos-page .bk-float.is-ink.is-on .bk-ink{ opacity: 1; }html #sos-page .bk-float.is-ink .uma-project__pager a,html #sos-page .bk-float.is-ink .uma-project__count{ position: relative; }html #sos-page .bk-float.is-ink .uma-project__pager,html #sos-page .bk-float.is-ink .uma-project__pager *{ color: transparent !important; }html #sos-page .bk-float.is-ink .uma-project__pager svg:not([width="0"]){ fill: transparent; }html #sos-page .bk-ink{ position: absolute; inset: 0; pointer-events: none;
   -webkit-backdrop-filter: grayscale(1) contrast(60) invert(1); backdrop-filter: grayscale(1) contrast(60) invert(1); }html #sos-page [data-case="kara-fox"] .uma-project,html.light-theme #sos-page [data-case="kara-fox"] .uma-project{ --up-panel: #d2c3ad; }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed{ gap: 0; }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed li{ border: 1px solid var(--line); }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed li + li{ border-left: 0; }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed .uma-project__sw{ box-shadow: none; }@media (min-width: 768px){html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed{ gap: 0; }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed .uma-project__sw{ aspect-ratio: 428 / 268; }
-}html.light-theme #sos-page .uma-project__pager,html.light-theme #sos-page .uma-project__pager *,html.light-theme #sos-page .uma-project__count{ font-weight: 400; }html #sos-page [data-case="kara-fox"] .uma-project__specimen[style*="--fs"]{ line-height: 1; }html #sos-page .bk-float.is-hold{ z-index: 26; }html #sos-page .bk-float.is-hold .bk-ink{ transition: none; }
+}html.light-theme #sos-page .uma-project__pager,html.light-theme #sos-page .uma-project__pager *,html.light-theme #sos-page .uma-project__count{ font-weight: 400; }html #sos-page [data-case="kara-fox"] .uma-project__specimen[style*="--fs"]{ line-height: 1; }html #sos-page .bk-float.is-hold{ z-index: 26; }html #sos-page .bk-float.is-hold .bk-ink{ transition: none; }html #sos-page .bk-float .uma-project__pager{ padding: calc(var(--margin) * var(--u)) 0 !important; }html #sos-page .bk-float__in.uma-project{ position: relative; overflow: hidden; }html #sos-page .bk-float .bk-roll,html.js #sos-page .bk-float .bk-roll{ position: relative; top: 0; opacity: 1; transform: none; transition: top .8s var(--m-inout); }html #sos-page .bk-float .bk-roll.is-new,html.js #sos-page .bk-float .bk-roll.is-new{ position: absolute; left: 0; right: 0; top: 100%; transition: none; }html #sos-page .bk-float .bk-roll.is-old,html.js #sos-page .bk-float .bk-roll.is-old{ position: absolute; left: 0; right: 0; top: -100%; }html #sos-page .uma-project--soon > .uma-project__pager{ display: none !important; }
 </style>
 <style>html #sos-page .soon{
   min-height: 100svh;
@@ -419,7 +419,7 @@
   user-select: none;
 }html #sos-page .soon__shape{ font-family: var(--f-sans); font-weight: 800; letter-spacing: .01em; }html #sos-page .soon__of{ font-family: 'PT Serif', Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 700;
   font-size: 1.08em; color: var(--grey); letter-spacing: -.01em; }@keyframes soon-focus{ 0%, 100% { filter: blur(.075em); opacity: .9; } 50% { filter: blur(.03em); opacity: 1; } }html.rm #sos-page .soon__mark,html.rm-off #sos-page .soon__mark{ animation: none; }@media (max-width: 767px){html #sos-page .soon__lb{ display: none; }html #sos-page .soon__text,html #sos-page .soon__back{ margin-top: 20px; }html #sos-page .soon__mark{ font-size: 21vw; white-space: normal; line-height: .95; }html #sos-page .soon__of{ display: block; }
-}html #sos-page .uma-project--soon{ padding: 0; background: var(--bg); }html #sos-page .uma-project--soon .soon{ min-height: 82svh; background: var(--bg); overflow: visible; padding-left: var(--up-pad); padding-right: var(--up-pad); }html #sos-page .uma-project--soon .soon__mark{ font-size: 10.6vw; justify-self: center; }html #sos-page .uma-project--soon .uma-project__pager{ margin-top: 0; padding-left: var(--up-pad); padding-right: var(--up-pad); }@media (max-width: 767px){html #sos-page .uma-project--soon .soon__mark{ font-size: 19vw; } }
+}html #sos-page .uma-project--soon{ padding: 0; background: var(--bg); }html #sos-page .uma-project--soon .soon{ min-height: 100svh; background: var(--bg); overflow: visible; padding-left: var(--up-pad); padding-right: var(--up-pad); }html #sos-page .uma-project--soon .soon__mark{ font-size: 10.6vw; justify-self: center; }html #sos-page .uma-project--soon .uma-project__pager{ margin-top: 0; padding-left: var(--up-pad); padding-right: var(--up-pad); }@media (max-width: 767px){html #sos-page .uma-project--soon .soon__mark{ font-size: 19vw; } }
 </style>
 <style>@media (min-width: 1025px) and (hover: hover){html,html body.t-body,html #sos-page a,html #sos-page button{ cursor: pointer;} }html #sos-page #trail,html #sos-page #wipe{ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }html #sos-page #trail{ z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }html.light-theme #sos-page #trail,html.light-theme #sos-page .hd__trail{ mix-blend-mode: multiply; opacity: .85; filter: blur(24px); }html #sos-page .hd__trail{ position: absolute; left: 0; top: 0; width: 100%; height: calc(100% + 120px);   
   pointer-events: none; z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }html #sos-page .hd > :not(.hd__trail){ position: relative; z-index: 1; }html #sos-page .hd{ isolation: isolate; overflow: hidden; }html #sos-page #wipe{ z-index: -1; }html #sos-page main{ position: relative; z-index: 1; }html #sos-page .ft{ z-index: 10; }html body.t-body{ background: transparent; }html{ background: var(--bg); transition: background-color .5s var(--m-out); }html.is-wiping{ transition: none; }html #sos-page .hd__ic{ position: relative; display: block; width: 100%; height: 100%; transition: transform .6s var(--m-out); }html #sos-page .hd__ic svg{
@@ -1380,6 +1380,7 @@ var t=q(s),pg=b.querySelector('.cs-book__page');pg.appendChild(t.content.cloneNo
       p2.appendChild(t.content.cloneNode(true)); m2.appendChild(p2); sh.appendChild(m2);
       (document.getElementById('sos-page') || document.body).appendChild(sh);
       try { caseMore(p2); fitSamples(p2); } catch (e) {}
+      if (window.__sosRoll) window.__sosRoll(p2, s);
       html.classList.add('bk-out');
       sh.offsetHeight;
       requestAnimationFrame(function () { sh.classList.add('is-on'); });
@@ -1450,49 +1451,76 @@ var t=q(s),pg=b.querySelector('.cs-book__page');pg.appendChild(t.content.cloneNo
         el.appendChild(svg); el.appendChild(lay);
       });
     }
-    function syncFloat() {
-      var src = $('.uma-project__pager', pg); flIn.innerHTML = '';
-      if (!src) return;
-      var c = src.cloneNode(true); c.classList.remove('rv', 'is-in'); c.removeAttribute('aria-label');
-      $$('a', c).forEach(function (x) { x.setAttribute('tabindex', '-1'); });
-      flIn.appendChild(c);
-      inkify(c);
-      if (pio) pio.disconnect(); pagerSeen = false;
-      if ('IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen && !hold) fl.classList.remove('is-on'); }); pio.observe(src); }
+    function floatClone(src) {
+      var c = src.cloneNode(true); c.classList.remove('rv', 'is-in'); c.removeAttribute('aria-label'); c.style.visibility = '';
+      if (!soonMode) $$('a', c).forEach(function (x) { x.setAttribute('tabindex', '-1'); });
+      var w = document.createElement('div'); w.className = 'bk-roll'; w.appendChild(c); return w;
     }
-    // переход по кнопке соседнего проекта: кнопки остаются на том же месте экрана, пока новый кейс въезжает листом,
-    // и после перехода ещё видны — можно сразу листать дальше; прячутся через 3 с покоя
+    var rolledFor = null, soonMode = false, footSeen = false;
+    // на «Скоро здесь» панель видна постоянно, пока на экран не пришёл подвал сайта
+    function soonShow() { if (soonMode) fl.classList.toggle('is-on', !footSeen || hold); }
+    var ftEl = $('.ft');
+    if (ftEl && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { footSeen = es[0].isIntersecting; soonShow(); }, { rootMargin: '0px 0px -4px 0px' }).observe(ftEl);
+    function observe(src) {
+      if (pio) pio.disconnect(); pagerSeen = false;
+      if (src && 'IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen && !hold && !soonMode) fl.classList.remove('is-on'); }); pio.observe(src); }
+    }
+    function syncFloat() {
+      var src = $('.uma-project__pager', pg);
+      // «Скоро здесь»: своих кнопок на странице нет — панель с кнопками стоит внизу постоянно
+      soonMode = !!$('.uma-project--soon', pg);
+      fl.setAttribute('aria-hidden', soonMode ? 'false' : 'true');
+      if (rolledFor && rolledFor === cur()) { rolledFor = null; observe(src); if (soonMode) { $$('a', flIn).forEach(function (x) { x.removeAttribute('tabindex'); }); fl.classList.add('is-on'); } return; }
+      rolledFor = null; flIn.innerHTML = '';
+      if (!src) return;
+      var w = floatClone(src); flIn.appendChild(w); inkify(w);
+      observe(src);
+      soonShow();
+    }
+    // смена подписей при переходе: старая строка уходит вверх, новая поднимается снизу — как лист календаря
+    function roll(src, s) {
+      if (!src) return;
+      var old = $('.bk-roll', flIn), w = floatClone(src);
+      w.classList.add('is-new'); flIn.appendChild(w); inkify(w); rolledFor = s;
+      if (!old || reduce) { if (old) old.remove(); w.classList.remove('is-new'); return; }
+      w.offsetHeight;
+      old.classList.remove('rv', 'is-in'); old.style.top = '0'; old.classList.add('is-old'); old.offsetHeight; old.style.top = ''; requestAnimationFrame(function () { w.classList.remove('is-new'); });
+      setTimeout(function () { old.remove(); }, 900);
+    }
+    // переход по кнопке соседнего проекта: кнопки не уезжают вместе со страницей — с места нажатия плавно встают
+    // к нижнему краю экрана, пока новый кейс въезжает листом, и после перехода ещё видны (прячутся через 3 с покоя)
     var hold = false, holdT = 0, HOLD = 3000;
     function anchorTop(root) { var x = $('a', root); return x ? x.getBoundingClientRect().top : 0; }
-    function unpin() { fl.style.top = ''; fl.style.bottom = ''; fl.classList.remove('is-hold'); }
     function pin(a) {
       var src = a.closest('.uma-project__pager'); if (!src) return;
-      var want = anchorTop(src);
       clearTimeout(flT); clearTimeout(holdT); hold = true;
-      if (!fl.contains(a)) {   // нажали кнопку внизу кейса — плавающие встают точно на её место, сама она скрывается
-        unpin(); fl.style.top = '0px'; fl.style.bottom = 'auto';
-        fl.style.top = (want - anchorTop(flIn)) + 'px';
+      if (!fl.contains(a)) {
+        var d = anchorTop(src) - anchorTop(flIn);
+        fl.style.transition = 'none'; fl.style.transform = 'translate3d(0,' + d + 'px,0)'; fl.offsetHeight;
         src.style.visibility = 'hidden';
+        requestAnimationFrame(function () { fl.style.transition = 'transform ' + TURN + 'ms var(--m-inout)'; fl.style.transform = ''; });
+        setTimeout(function () { fl.style.transition = ''; }, TURN + 50);
       }
       fl.classList.add('is-hold', 'is-on');
     }
     function release(ms) {
       clearTimeout(holdT);
-      holdT = setTimeout(function () { hold = false; fl.classList.remove('is-on'); setTimeout(function () { if (!hold && !fl.classList.contains('is-on')) unpin(); }, 400); }, ms);
+      holdT = setTimeout(function () { hold = false; fl.classList.remove('is-hold'); if (soonMode) soonShow(); else fl.classList.remove('is-on'); }, ms);
     }
     var lastY = scrollY;
     addEventListener('scroll', function () {
       var y = scrollY, moved = Math.abs(y - lastY) > 4; lastY = y;
       if (!moved || busy) return;
+      if (soonMode) return;
       if (hold) { release(HOLD); return; }
-      if (fl.style.top) unpin();
       var show = y > innerHeight * 0.6 && !pagerSeen;
       fl.classList.toggle('is-on', show);
       clearTimeout(flT); if (show) flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1800);
     }, { passive: true });
     fl.addEventListener('pointerenter', function () { clearTimeout(flT); clearTimeout(holdT); });
-    fl.addEventListener('pointerleave', function () { if (hold) { release(HOLD); return; } flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1200); });
+    fl.addEventListener('pointerleave', function () { if (soonMode) return; if (hold) { release(HOLD); return; } flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1200); });
     syncFloat(); window.__sosSyncFloat = function () { if (!hold) fl.classList.remove('is-on'); syncFloat(); if (hold) release(HOLD); };
+    window.__sosRoll = function (p2, s) { if (hold) roll($('.uma-project__pager', p2), s); };
     watch();
   }
 

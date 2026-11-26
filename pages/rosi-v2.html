@@ -1122,6 +1122,7 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       p2.appendChild(t.content.cloneNode(true)); m2.appendChild(p2); sh.appendChild(m2);
       (document.getElementById('sos-page') || document.body).appendChild(sh);
       try { caseMore(p2); fitSamples(p2); } catch (e) {}
+      if (window.__sosRoll) window.__sosRoll(p2, s);
       html.classList.add('bk-out');
       sh.offsetHeight;
       requestAnimationFrame(function () { sh.classList.add('is-on'); });
@@ -1192,49 +1193,76 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
         el.appendChild(svg); el.appendChild(lay);
       });
     }
-    function syncFloat() {
-      var src = $('.uma-project__pager', pg); flIn.innerHTML = '';
-      if (!src) return;
-      var c = src.cloneNode(true); c.classList.remove('rv', 'is-in'); c.removeAttribute('aria-label');
-      $$('a', c).forEach(function (x) { x.setAttribute('tabindex', '-1'); });
-      flIn.appendChild(c);
-      inkify(c);
-      if (pio) pio.disconnect(); pagerSeen = false;
-      if ('IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen && !hold) fl.classList.remove('is-on'); }); pio.observe(src); }
+    function floatClone(src) {
+      var c = src.cloneNode(true); c.classList.remove('rv', 'is-in'); c.removeAttribute('aria-label'); c.style.visibility = '';
+      if (!soonMode) $$('a', c).forEach(function (x) { x.setAttribute('tabindex', '-1'); });
+      var w = document.createElement('div'); w.className = 'bk-roll'; w.appendChild(c); return w;
     }
-    // переход по кнопке соседнего проекта: кнопки остаются на том же месте экрана, пока новый кейс въезжает листом,
-    // и после перехода ещё видны — можно сразу листать дальше; прячутся через 3 с покоя
+    var rolledFor = null, soonMode = false, footSeen = false;
+    // на «Скоро здесь» панель видна постоянно, пока на экран не пришёл подвал сайта
+    function soonShow() { if (soonMode) fl.classList.toggle('is-on', !footSeen || hold); }
+    var ftEl = $('.ft');
+    if (ftEl && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { footSeen = es[0].isIntersecting; soonShow(); }, { rootMargin: '0px 0px -4px 0px' }).observe(ftEl);
+    function observe(src) {
+      if (pio) pio.disconnect(); pagerSeen = false;
+      if (src && 'IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen && !hold && !soonMode) fl.classList.remove('is-on'); }); pio.observe(src); }
+    }
+    function syncFloat() {
+      var src = $('.uma-project__pager', pg);
+      // «Скоро здесь»: своих кнопок на странице нет — панель с кнопками стоит внизу постоянно
+      soonMode = !!$('.uma-project--soon', pg);
+      fl.setAttribute('aria-hidden', soonMode ? 'false' : 'true');
+      if (rolledFor && rolledFor === cur()) { rolledFor = null; observe(src); if (soonMode) { $$('a', flIn).forEach(function (x) { x.removeAttribute('tabindex'); }); fl.classList.add('is-on'); } return; }
+      rolledFor = null; flIn.innerHTML = '';
+      if (!src) return;
+      var w = floatClone(src); flIn.appendChild(w); inkify(w);
+      observe(src);
+      soonShow();
+    }
+    // смена подписей при переходе: старая строка уходит вверх, новая поднимается снизу — как лист календаря
+    function roll(src, s) {
+      if (!src) return;
+      var old = $('.bk-roll', flIn), w = floatClone(src);
+      w.classList.add('is-new'); flIn.appendChild(w); inkify(w); rolledFor = s;
+      if (!old || reduce) { if (old) old.remove(); w.classList.remove('is-new'); return; }
+      w.offsetHeight;
+      old.classList.remove('rv', 'is-in'); old.style.top = '0'; old.classList.add('is-old'); old.offsetHeight; old.style.top = ''; requestAnimationFrame(function () { w.classList.remove('is-new'); });
+      setTimeout(function () { old.remove(); }, 900);
+    }
+    // переход по кнопке соседнего проекта: кнопки не уезжают вместе со страницей — с места нажатия плавно встают
+    // к нижнему краю экрана, пока новый кейс въезжает листом, и после перехода ещё видны (прячутся через 3 с покоя)
     var hold = false, holdT = 0, HOLD = 3000;
     function anchorTop(root) { var x = $('a', root); return x ? x.getBoundingClientRect().top : 0; }
-    function unpin() { fl.style.top = ''; fl.style.bottom = ''; fl.classList.remove('is-hold'); }
     function pin(a) {
       var src = a.closest('.uma-project__pager'); if (!src) return;
-      var want = anchorTop(src);
       clearTimeout(flT); clearTimeout(holdT); hold = true;
-      if (!fl.contains(a)) {   // нажали кнопку внизу кейса — плавающие встают точно на её место, сама она скрывается
-        unpin(); fl.style.top = '0px'; fl.style.bottom = 'auto';
-        fl.style.top = (want - anchorTop(flIn)) + 'px';
+      if (!fl.contains(a)) {
+        var d = anchorTop(src) - anchorTop(flIn);
+        fl.style.transition = 'none'; fl.style.transform = 'translate3d(0,' + d + 'px,0)'; fl.offsetHeight;
         src.style.visibility = 'hidden';
+        requestAnimationFrame(function () { fl.style.transition = 'transform ' + TURN + 'ms var(--m-inout)'; fl.style.transform = ''; });
+        setTimeout(function () { fl.style.transition = ''; }, TURN + 50);
       }
       fl.classList.add('is-hold', 'is-on');
     }
     function release(ms) {
       clearTimeout(holdT);
-      holdT = setTimeout(function () { hold = false; fl.classList.remove('is-on'); setTimeout(function () { if (!hold && !fl.classList.contains('is-on')) unpin(); }, 400); }, ms);
+      holdT = setTimeout(function () { hold = false; fl.classList.remove('is-hold'); if (soonMode) soonShow(); else fl.classList.remove('is-on'); }, ms);
     }
     var lastY = scrollY;
     addEventListener('scroll', function () {
       var y = scrollY, moved = Math.abs(y - lastY) > 4; lastY = y;
       if (!moved || busy) return;
+      if (soonMode) return;
       if (hold) { release(HOLD); return; }
-      if (fl.style.top) unpin();
       var show = y > innerHeight * 0.6 && !pagerSeen;
       fl.classList.toggle('is-on', show);
       clearTimeout(flT); if (show) flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1800);
     }, { passive: true });
     fl.addEventListener('pointerenter', function () { clearTimeout(flT); clearTimeout(holdT); });
-    fl.addEventListener('pointerleave', function () { if (hold) { release(HOLD); return; } flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1200); });
+    fl.addEventListener('pointerleave', function () { if (soonMode) return; if (hold) { release(HOLD); return; } flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1200); });
     syncFloat(); window.__sosSyncFloat = function () { if (!hold) fl.classList.remove('is-on'); syncFloat(); if (hold) release(HOLD); };
+    window.__sosRoll = function (p2, s) { if (hold) roll($('.uma-project__pager', p2), s); };
     watch();
   }
 
