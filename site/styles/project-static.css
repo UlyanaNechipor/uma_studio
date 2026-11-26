@@ -512,14 +512,13 @@ html.rm-off .bk-float { transition: none; }
   -webkit-backdrop-filter: grayscale(1) contrast(60) invert(1); backdrop-filter: grayscale(1) contrast(60) invert(1); }
 
 /* ---------- Kara Fox: плашки под картинками — #D2C3AD в обеих темах; палитра по макету —
-   ячейки встык с общими тонкими линиями цвета текста, внутри поле 16 и прямоугольник цвета без обводки ---------- */
+   ячейки встык с общими тонкими серыми линиями, как все линии сайта, внутри поле 16 и прямоугольник цвета без обводки ---------- */
 html [data-case="kara-fox"] .uma-project,
 html.light-theme [data-case="kara-fox"] .uma-project { --up-panel: #d2c3ad; }
 html [data-case="kara-fox"] .uma-project__palette.is-framed { gap: 0; }
-html [data-case="kara-fox"] .uma-project__palette.is-framed li { border: 1px solid var(--up-text); }
+html [data-case="kara-fox"] .uma-project__palette.is-framed li { border: 1px solid var(--line); }
 html [data-case="kara-fox"] .uma-project__palette.is-framed li + li { border-left: 0; }
 html [data-case="kara-fox"] .uma-project__palette.is-framed .uma-project__sw { box-shadow: none; }
-html.light-theme [data-case="kara-fox"] .uma-project__palette.is-framed li { border-color: #2b2b2b; }
 @media (min-width: 768px) {
   html [data-case="kara-fox"] .uma-project__palette.is-framed { gap: 0; }
   html [data-case="kara-fox"] .uma-project__palette.is-framed .uma-project__sw { aspect-ratio: 428 / 268; }
