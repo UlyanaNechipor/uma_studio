@@ -536,10 +536,8 @@ html [data-case="kara-fox"] .uma-project__specimen[style*="--fs"] { line-height:
 
 /* плавающие кнопки: нижний отступ — как поля сетки по бокам */
 .bk-float .uma-project__pager { padding: calc(var(--margin) * var(--u)) 0 !important; }
-/* смена подписей при переходе: строки катятся вверх, как лист календаря */
-.bk-float__in.uma-project { position: relative; overflow: hidden; }
-html .bk-float .bk-roll, html.js .bk-float .bk-roll { position: relative; top: 0; opacity: 1; transform: none; transition: top .8s var(--m-inout); }   /* top, а не transform: инверсия (backdrop-filter) под transform-анимацией в Chrome пропадает */
-html .bk-float .bk-roll.is-new, html.js .bk-float .bk-roll.is-new { position: absolute; left: 0; right: 0; top: 100%; transition: none; }
-html .bk-float .bk-roll.is-old, html.js .bk-float .bk-roll.is-old { position: absolute; left: 0; right: 0; top: -100%; }
 /* «Скоро здесь»: своих кнопок на странице нет — они в плавающей панели внизу */
 .uma-project--soon > .uma-project__pager { display: none !important; }
+
+/* плавающая панель не участвует в появлении блоков при прокрутке (reveal иначе прячет её содержимое) */
+html.js .bk-float .rv { opacity: 1 !important; transform: none !important; }

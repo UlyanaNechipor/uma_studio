@@ -45,3 +45,8 @@ html.rm .soon__mark, html.rm-off .soon__mark { animation: none; }
 .uma-project--soon .soon__mark { font-size: 10.6vw; justify-self: center; }
 .uma-project--soon .uma-project__pager { margin-top: 0; padding-left: var(--up-pad); padding-right: var(--up-pad); }
 @media (max-width: 767px) { .uma-project--soon .soon__mark { font-size: 19vw; } }
+
+/* текст под «Скоро здесь» — серый, отступ от заголовка как у текстов под заголовками (правило книги кейсов обнуляло поля у p) */
+.uma-project--soon .soon__text, .soon__text { color: var(--grey); margin: calc(24 * var(--u)) 0 0; }
+@media (min-width: 768px) { .uma-project--soon .soon__text, .soon__text { margin-top: calc(38.4 * var(--u)); } }
+@media (max-width: 767px) { .uma-project--soon .soon__text { margin-top: 20px; } }
