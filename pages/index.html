@@ -1444,13 +1444,18 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       var src = realPager(); if (!src || soonMode) return;
       src.style.visibility = (fl.classList.contains('is-on') && !docked) ? 'hidden' : '';
     }
+    // пока кнопки страницы уже видны, но ещё ниже места панели, панель не прячется по таймеру —
+    // иначе внизу мелькали бы то одни, то другие кнопки
+    function approaching() { return pagerSeen && !docked && !soonMode; }
+    function idleHide() { if (approaching()) return; fl.classList.remove('is-on'); }
     function dock() {
       var src = realPager(); if (!src || soonMode || hold || busy) return;
-      var was = docked;
-      docked = pagerSeen && anchorTop(src) <= anchorTop(flIn) + 0.5;
+      var was = docked, ra = anchorTop(src), fa = anchorTop(flIn);
+      // с запасом в 3 px в обратную сторону: дрожание прокрутки (тачпад, инерция) не переключает туда-обратно
+      docked = pagerSeen && (was ? ra <= fa + 3 : ra <= fa + 0.5);
       if (docked && !was) { fl.classList.add('is-dock'); fl.classList.remove('is-on'); clearTimeout(flT); }
-      if (!docked && was) { fl.classList.add('is-on'); requestAnimationFrame(function () { fl.classList.remove('is-dock'); });
-        clearTimeout(flT); flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1800); }
+      if (!docked && was) { fl.classList.add('is-on'); requestAnimationFrame(function () { fl.classList.remove('is-dock'); }); }
+      if (approaching() && scrollY > innerHeight * 0.6) { clearTimeout(flT); if (!fl.classList.contains('is-on')) { fl.classList.add('is-dock', 'is-on'); requestAnimationFrame(function () { fl.classList.remove('is-dock'); }); } }
       paint();
     }
     if ('MutationObserver' in window) new MutationObserver(paint).observe(fl, { attributes: true, attributeFilter: ['class'] });
@@ -1464,10 +1469,10 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       if (hold) { release(HOLD); return; }
       var show = y > innerHeight * 0.6 && !docked;
       fl.classList.toggle('is-on', show);
-      clearTimeout(flT); if (show) flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1800);
+      clearTimeout(flT); if (show) flT = setTimeout(idleHide, 1800);
     }, { passive: true });
     fl.addEventListener('pointerenter', function () { clearTimeout(flT); clearTimeout(holdT); });
-    fl.addEventListener('pointerleave', function () { if (soonMode) return; if (hold) { release(HOLD); return; } flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1200); });
+    fl.addEventListener('pointerleave', function () { if (soonMode) return; if (hold) { release(HOLD); return; } flT = setTimeout(idleHide, 1200); });
     syncFloat(); window.__sosSyncFloat = function () { if (!hold) fl.classList.remove('is-on'); syncFloat(); if (hold) release(HOLD); };
     window.__sosRoll = function (p2, s) { if (hold) roll($('.uma-project__pager', p2), s); };
     watch();
