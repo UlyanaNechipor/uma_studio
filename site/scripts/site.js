@@ -967,11 +967,13 @@
     addEventListener('scroll', function () {
       var y = scrollY, moved = Math.abs(y - lastY) > 4; lastY = y;
       if (busy) return;
-      if (!soonMode && !hold) dock();
-      if (!moved) return;
+      if (!moved) { if (!soonMode && !hold) dock(); return; }
       if (soonMode) return;
-      if (hold) { release(HOLD); return; }
-      var show = y > innerHeight * 0.6 && !docked;
+      // после перехода кнопки держатся на экране, но как только человек начал листать новый кейс —
+      // панель живёт по обычным правилам (иначе в коротком кейсе она не «стыковалась» с кнопками внизу)
+      if (hold) { hold = false; clearTimeout(holdT); fl.classList.remove('is-hold'); }
+      dock();
+      var show = (y > innerHeight * 0.6 || fl.classList.contains('is-on')) && !docked;
       fl.classList.toggle('is-on', show);
       clearTimeout(flT); if (show) flT = setTimeout(idleHide, 1800);
     }, { passive: true });
