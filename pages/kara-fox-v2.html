@@ -1233,16 +1233,16 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       var els = texts(root);
       var items = els.map(function (e, j) { var v = e.nodeType === 3 ? e.nodeValue : e.textContent, host = e.nodeType === 3 ? e.parentNode : e;
         return { e: e, v: v, num: !!(host.closest && host.closest('.uma-project__count')), was: prev && prev[j] }; });
-      var T = 700, t0 = performance.now(), last = 0;
+      var T = 560, t0 = performance.now(), last = 0;
       function pick(ch) { if (/\d/.test(ch)) return DIG[Math.random() * 10 | 0]; if (/[A-Za-zА-Яа-яЁё]/.test(ch)) return GLYPH[Math.random() * GLYPH.length | 0]; return ch; }
       function set(it, str) { if (it.e.nodeType === 3) it.e.nodeValue = str; else it.e.textContent = str; }
       (function step(now) {
         var k = Math.min(1, (now - t0) / T);
-        if (now - last > 85 || k === 1) {   // знаки меняются ~12 раз в секунду — спокойно, без мельтешения
+        if (now - last > 45 || k === 1) {
           last = now;
           items.forEach(function (it) {
             // счётчик: меняется только цифра, которая отличается, нули и «/06» стоят на месте
-            if (it.num) { var o = ''; for (var q = 0; q < it.v.length; q++) o += (k >= 0.7 || (it.was && it.was[q] === it.v[q]) || !/\d/.test(it.v[q])) ? it.v[q] : pick(it.v[q]); set(it, k === 1 ? it.v : o); return; }
+            if (it.num) { var o = ''; for (var q = 0; q < it.v.length; q++) o += (k >= 0.85 || (it.was && it.was[q] === it.v[q]) || !/\d/.test(it.v[q])) ? it.v[q] : pick(it.v[q]); set(it, k === 1 ? it.v : o); return; }
             // готовая часть + 1 «бегущий» знак на месте курсора, дальше пусто — без лишнего шума
             var n = it.v.length, r = Math.floor(k * (n + 1)), out = it.v.slice(0, Math.min(r, n));
             if (r < n) out += pick(it.v[r]);
