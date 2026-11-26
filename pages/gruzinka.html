@@ -400,7 +400,7 @@
   padding-bottom: env(safe-area-inset-bottom, 0px); background: none; border: 0;
   mix-blend-mode: difference; opacity: 0; transition: opacity .35s var(--m-out); }html #sos-page .bk-float.is-on{ opacity: 1; }html #sos-page .bk-float.is-on a{ pointer-events: auto; }html #sos-page .bk-float__in.uma-project{ padding-top: 0; padding-bottom: 0; background: none; }html #sos-page .bk-float .uma-project__pager{ margin: 0 !important; padding: 14px 0 !important; opacity: 1 !important; transform: none !important; border: 0 !important; }html #sos-page .bk-float .uma-project__pager,html #sos-page .bk-float .uma-project__pager *,html #sos-page .bk-float .uma-project__count span{ color: #fff !important; }html #sos-page .bk-float .uma-project__pager svg{ fill: #fff; }@media (min-width: 768px){html #sos-page .bk-float .uma-project__pager{ padding: calc(20 * var(--u)) 0 !important; } }html.rm-off #sos-page .bk-float{ transition: none; }html #sos-page .bk-float.is-ink{ mix-blend-mode: normal; opacity: 1; transition: none; }html #sos-page .bk-float.is-ink .bk-ink{ opacity: 0; transition: opacity .35s var(--m-out); }html #sos-page .bk-float.is-ink.is-on .bk-ink{ opacity: 1; }html #sos-page .bk-float.is-ink .uma-project__pager a,html #sos-page .bk-float.is-ink .uma-project__count{ position: relative; }html #sos-page .bk-float.is-ink .uma-project__pager,html #sos-page .bk-float.is-ink .uma-project__pager *{ color: transparent !important; }html #sos-page .bk-float.is-ink .uma-project__pager svg:not([width="0"]){ fill: transparent; }html #sos-page .bk-ink{ position: absolute; inset: 0; pointer-events: none;
   -webkit-backdrop-filter: grayscale(1) contrast(60) invert(1); backdrop-filter: grayscale(1) contrast(60) invert(1); }html #sos-page [data-case="kara-fox"] .uma-project,html.light-theme #sos-page [data-case="kara-fox"] .uma-project{ --up-panel: #d2c3ad; }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed{ gap: 0; }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed li{ border: 1px solid var(--line); }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed li + li{ border-left: 0; }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed .uma-project__sw{ box-shadow: none; }@media (min-width: 768px){html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed{ gap: 0; }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed .uma-project__sw{ aspect-ratio: 428 / 268; }
-}html.light-theme #sos-page .uma-project__pager,html.light-theme #sos-page .uma-project__pager *,html.light-theme #sos-page .uma-project__count{ font-weight: 400; }html #sos-page [data-case="kara-fox"] .uma-project__specimen[style*="--fs"]{ line-height: 1; }
+}html.light-theme #sos-page .uma-project__pager,html.light-theme #sos-page .uma-project__pager *,html.light-theme #sos-page .uma-project__count{ font-weight: 400; }html #sos-page [data-case="kara-fox"] .uma-project__specimen[style*="--fs"]{ line-height: 1; }html #sos-page .bk-float.is-hold{ z-index: 26; }html #sos-page .bk-float.is-hold .bk-ink{ transition: none; }
 </style>
 <style>html #sos-page .soon{
   min-height: 100svh;
@@ -1407,7 +1407,9 @@ var t=q(s),pg=b.querySelector('.cs-book__page');pg.appendChild(t.content.cloneNo
       var a = e.target.closest && e.target.closest('a[data-case]');
       if (!a || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || !tpl(a.getAttribute('data-case'))) return;
       e.preventDefault(); e.stopImmediatePropagation();
-      go(a.getAttribute('data-case'), true);
+      var cs = a.getAttribute('data-case');
+      if (!busy && cs !== cur() && a.closest('.uma-project__pager')) pin(a);
+      go(cs, true);
     }, true);
     addEventListener('popstate', function () { go(caseOfUrl(), false); });
     try { history.replaceState({ sosCase: cur() }, ''); } catch (e) {}
@@ -1456,19 +1458,41 @@ var t=q(s),pg=b.querySelector('.cs-book__page');pg.appendChild(t.content.cloneNo
       flIn.appendChild(c);
       inkify(c);
       if (pio) pio.disconnect(); pagerSeen = false;
-      if ('IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen) fl.classList.remove('is-on'); }); pio.observe(src); }
+      if ('IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen && !hold) fl.classList.remove('is-on'); }); pio.observe(src); }
+    }
+    // переход по кнопке соседнего проекта: кнопки остаются на том же месте экрана, пока новый кейс въезжает листом,
+    // и после перехода ещё видны — можно сразу листать дальше; прячутся через 3 с покоя
+    var hold = false, holdT = 0, HOLD = 3000;
+    function anchorTop(root) { var x = $('a', root); return x ? x.getBoundingClientRect().top : 0; }
+    function unpin() { fl.style.top = ''; fl.style.bottom = ''; fl.classList.remove('is-hold'); }
+    function pin(a) {
+      var src = a.closest('.uma-project__pager'); if (!src) return;
+      var want = anchorTop(src);
+      clearTimeout(flT); clearTimeout(holdT); hold = true;
+      if (!fl.contains(a)) {   // нажали кнопку внизу кейса — плавающие встают точно на её место, сама она скрывается
+        unpin(); fl.style.top = '0px'; fl.style.bottom = 'auto';
+        fl.style.top = (want - anchorTop(flIn)) + 'px';
+        src.style.visibility = 'hidden';
+      }
+      fl.classList.add('is-hold', 'is-on');
+    }
+    function release(ms) {
+      clearTimeout(holdT);
+      holdT = setTimeout(function () { hold = false; fl.classList.remove('is-on'); setTimeout(function () { if (!hold && !fl.classList.contains('is-on')) unpin(); }, 400); }, ms);
     }
     var lastY = scrollY;
     addEventListener('scroll', function () {
       var y = scrollY, moved = Math.abs(y - lastY) > 4; lastY = y;
       if (!moved || busy) return;
+      if (hold) { release(HOLD); return; }
+      if (fl.style.top) unpin();
       var show = y > innerHeight * 0.6 && !pagerSeen;
       fl.classList.toggle('is-on', show);
       clearTimeout(flT); if (show) flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1800);
     }, { passive: true });
-    fl.addEventListener('pointerenter', function () { clearTimeout(flT); });
-    fl.addEventListener('pointerleave', function () { flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1200); });
-    syncFloat(); window.__sosSyncFloat = function () { fl.classList.remove('is-on'); syncFloat(); };
+    fl.addEventListener('pointerenter', function () { clearTimeout(flT); clearTimeout(holdT); });
+    fl.addEventListener('pointerleave', function () { if (hold) { release(HOLD); return; } flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1200); });
+    syncFloat(); window.__sosSyncFloat = function () { if (!hold) fl.classList.remove('is-on'); syncFloat(); if (hold) release(HOLD); };
     watch();
   }
 
