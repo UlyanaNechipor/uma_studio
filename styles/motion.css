@@ -44,5 +44,5 @@
   position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 25; overflow: hidden; pointer-events: none;   
   background: var(--bg); color: var(--txt);
   transform: translate3d(0, 100%, 0);
-  transition: transform 1s var(--m-inout);
-}html #sos-page .bk-sheet.is-on{ transform: translate3d(0, 0, 0); }html #sos-page .bk-sheet .rv{ opacity: 1 !important; transform: none !important; }html.bk-out #sos-page main{ transform: translate3d(0, -8vh, 0); transition: transform 1s var(--m-inout); }html.bk-out #sos-page .bk-sheet main{ transform: none; transition: none; }html.bk-swap #sos-page main,html.bk-swap #sos-page main *,html.bk-swap #sos-page .rv{ transition: none !important; }
+  transition: transform .85s var(--m-turn);
+}html #sos-page .bk-sheet.is-on{ transform: translate3d(0, 0, 0); }html #sos-page .bk-sheet .rv{ opacity: 1 !important; transform: none !important; }html.bk-out #sos-page main{ transform: translate3d(0, -8vh, 0); transition: transform .85s var(--m-turn); }html.bk-out #sos-page .bk-sheet main{ transform: none; transition: none; }html.bk-swap #sos-page main,html.bk-swap #sos-page main *,html.bk-swap #sos-page .rv{ transition: none !important; }

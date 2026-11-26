@@ -750,7 +750,7 @@
      Картинки следующего кейса скачиваются заранее — когда ссылка на него подходит к экрану или на неё навели. */
   function book() {
     var bk = $('.cs-book'); if (!bk) return;
-    var pg = $('.cs-book__page', bk), main = $('main'), busy = false, TURN = 1000;
+    var pg = $('.cs-book__page', bk), main = $('main'), busy = false, TURN = 850;
     var tpl = function (s) { return /^[\w-]+$/.test(s || '') && $('template[data-case="' + s + '"]', bk); };
     var cur = function () { return pg.getAttribute('data-case'); };
     var hostCase = function () { var t = $$('template', bk).filter(function (x) { return x.getAttribute('data-url') === bk.getAttribute('data-host'); })[0]; return t ? t.getAttribute('data-case') : bk.getAttribute('data-default'); };
@@ -881,15 +881,32 @@
       observe(src);
       soonShow();
     }
-    // смена подписей при переходе: старая строка уходит вверх, новая поднимается снизу — как лист календаря
+    // смена подписей при переходе: буквы «бегают» и по очереди слева направо встают в нужный текст
+    var GLYPH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', DIG = '0123456789';
+    function scramble(root) {
+      var els = $$('clipPath text', root);
+      if (!els.length) { var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), t; while ((t = w.nextNode())) if (t.nodeValue.trim()) els.push(t); }
+      var items = els.map(function (e) { var v = e.nodeType === 3 ? e.nodeValue : e.textContent; return { e: e, v: v }; });
+      var T = 620, t0 = performance.now(), last = 0;
+      function pick(ch) { if (/\d/.test(ch)) return DIG[Math.random() * 10 | 0]; if (/[A-Za-zА-Яа-яЁё]/.test(ch)) return GLYPH[Math.random() * GLYPH.length | 0]; return ch; }
+      function set(it, str) { if (it.e.nodeType === 3) it.e.nodeValue = str; else it.e.textContent = str; }
+      (function step(now) {
+        var k = Math.min(1, (now - t0) / T);
+        if (now - last > 45 || k === 1) {
+          last = now;
+          items.forEach(function (it) {
+            var n = it.v.length, out = '';
+            for (var i = 0; i < n; i++) out += (k >= 0.25 + 0.75 * (i + 1) / n) ? it.v[i] : pick(it.v[i]);
+            set(it, k === 1 ? it.v : out);
+          });
+        }
+        if (k < 1) requestAnimationFrame(step);
+      })(t0);
+    }
     function roll(src, s) {
       if (!src) return;
-      var old = $('.bk-roll', flIn), w = floatClone(src);
-      w.classList.add('is-new'); flIn.appendChild(w); inkify(w); rolledFor = s;
-      if (!old || reduce) { if (old) old.remove(); w.classList.remove('is-new'); return; }
-      w.offsetHeight;
-      old.classList.remove('rv', 'is-in'); old.style.top = '0'; old.classList.add('is-old'); old.offsetHeight; old.style.top = ''; requestAnimationFrame(function () { w.classList.remove('is-new'); });
-      setTimeout(function () { old.remove(); }, 900);
+      var w = floatClone(src); flIn.innerHTML = ''; flIn.appendChild(w); inkify(w); rolledFor = s;
+      if (!reduce) scramble(w);
     }
     // переход по кнопке соседнего проекта: кнопки не уезжают вместе со страницей — с места нажатия плавно встают
     // к нижнему краю экрана, пока новый кейс въезжает листом, и после перехода ещё видны (прячутся через 3 с покоя)
@@ -902,7 +919,7 @@
         var d = anchorTop(src) - anchorTop(flIn);
         fl.style.transition = 'none'; fl.style.transform = 'translate3d(0,' + d + 'px,0)'; fl.offsetHeight;
         src.style.visibility = 'hidden';
-        requestAnimationFrame(function () { fl.style.transition = 'transform ' + TURN + 'ms var(--m-inout)'; fl.style.transform = ''; });
+        requestAnimationFrame(function () { fl.style.transition = 'transform ' + TURN + 'ms var(--m-turn)'; fl.style.transform = ''; });
         setTimeout(function () { fl.style.transition = ''; }, TURN + 50);
       }
       fl.classList.add('is-hold', 'is-on');
