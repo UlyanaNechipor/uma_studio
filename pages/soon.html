@@ -1215,10 +1215,15 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     }
     // смена подписей при переходе: новый текст набирается слева направо, перед ним бегут 1–2 случайных знака
     var GLYPH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', DIG = '0123456789';
-    function scramble(root) {
+    function texts(root) {
       var els = $$('clipPath text', root);
       if (!els.length) { var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), t; while ((t = w.nextNode())) if (t.nodeValue.trim()) els.push(t); }
-      var items = els.map(function (e) { var v = e.nodeType === 3 ? e.nodeValue : e.textContent; return { e: e, v: v }; });
+      return els;
+    }
+    function scramble(root, prev) {
+      var els = texts(root);
+      var items = els.map(function (e, j) { var v = e.nodeType === 3 ? e.nodeValue : e.textContent, host = e.nodeType === 3 ? e.parentNode : e;
+        return { e: e, v: v, num: !!(host.closest && host.closest('.uma-project__count')), was: prev && prev[j] }; });
       var T = 560, t0 = performance.now(), last = 0;
       function pick(ch) { if (/\d/.test(ch)) return DIG[Math.random() * 10 | 0]; if (/[A-Za-zА-Яа-яЁё]/.test(ch)) return GLYPH[Math.random() * GLYPH.length | 0]; return ch; }
       function set(it, str) { if (it.e.nodeType === 3) it.e.nodeValue = str; else it.e.textContent = str; }
@@ -1227,6 +1232,8 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
         if (now - last > 45 || k === 1) {
           last = now;
           items.forEach(function (it) {
+            // счётчик: меняется только цифра, которая отличается, нули и «/06» стоят на месте
+            if (it.num) { var o = ''; for (var q = 0; q < it.v.length; q++) o += (k >= 0.85 || (it.was && it.was[q] === it.v[q]) || !/\d/.test(it.v[q])) ? it.v[q] : pick(it.v[q]); set(it, k === 1 ? it.v : o); return; }
             // готовая часть + 2 «бегущих» знака на месте курсора, дальше пусто — без лишнего шума
             var n = it.v.length, r = Math.floor(k * (n + 2)), out = it.v.slice(0, Math.min(r, n));
             for (var i = r; i < Math.min(n, r + 2); i++) out += pick(it.v[i]);
@@ -1238,8 +1245,9 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     }
     function roll(src, s) {
       if (!src) return;
+      var prev = texts(flIn).map(function (e) { return e.nodeType === 3 ? e.nodeValue : e.textContent; });
       var w = floatClone(src); flIn.innerHTML = ''; flIn.appendChild(w); inkify(w); rolledFor = s;
-      if (!reduce) scramble(w);
+      if (!reduce) scramble(w, prev);
     }
     // переход по кнопке соседнего проекта: кнопки не уезжают вместе со страницей — с места нажатия плавно встают
     // к нижнему краю экрана, пока новый кейс въезжает листом, и после перехода ещё видны (прячутся через 3 с покоя)
