@@ -548,3 +548,6 @@ html.js .cs-book__page .uma-project__pager.rv { opacity: 1 !important; transform
 
 /* счётчик кейсов: цифры одной ширины (tnum), чтобы «06/06» → «01/06» не сдвигало знаки */
 .uma-project__count, .uma-project__count * { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+
+/* счётчик: «06» справа от «/» тем же весом, что и слева (в светлой теме серый текст был плотнее и уже по разрядке) */
+html .uma-project__count span, html.light-theme .uma-project__count span { font-weight: inherit; }
