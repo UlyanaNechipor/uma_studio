@@ -126,7 +126,9 @@ html.light-theme .ty-grey, html.light-theme .hd__link, html.light-theme .ft__col
 html.rm-off * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 html.rm, html.rm * { scroll-behavior: auto !important; }
 
-html.light-theme .btn { font-weight: 520; }
+/* светлая тема: на кнопке светлый текст на чёрном — он оптически жирнее тёмного на светлом, поэтому вес ниже, чем в тёмной теме (500),
+   чтобы кнопка в обеих темах выглядела одинаково */
+html.light-theme .btn { font-weight: 440; }
 
 /* светлая тема: серые подписи остаются лёгкими (w-text), чёрный текст — плотнее (w-ink) */
 html.light-theme :is(.case-turn__k, .cs-k, .cs-num, .cs-text p) { font-weight: var(--w-text); }
