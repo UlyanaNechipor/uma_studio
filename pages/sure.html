@@ -401,7 +401,7 @@
   padding-bottom: env(safe-area-inset-bottom, 0px); background: none; border: 0;
   mix-blend-mode: difference; opacity: 0; transition: opacity .35s var(--m-out); }html #sos-page .bk-float.is-on{ opacity: 1; }html #sos-page .bk-float.is-on a{ pointer-events: auto; }html #sos-page .bk-float__in.uma-project{ padding-top: 0; padding-bottom: 0; background: none; }html #sos-page .bk-float .uma-project__pager{ margin: 0 !important; padding: 14px 0 !important; opacity: 1 !important; transform: none !important; border: 0 !important; }html #sos-page .bk-float .uma-project__pager,html #sos-page .bk-float .uma-project__pager *,html #sos-page .bk-float .uma-project__count span{ color: #fff !important; }html #sos-page .bk-float .uma-project__pager svg{ fill: #fff; }@media (min-width: 768px){html #sos-page .bk-float .uma-project__pager{ padding: calc(20 * var(--u)) 0 !important; } }html.rm-off #sos-page .bk-float{ transition: none; }html #sos-page .bk-float.is-ink{ mix-blend-mode: normal; opacity: 1; transition: none; }html #sos-page .bk-float.is-ink .bk-ink{ opacity: 0; transition: opacity .35s var(--m-out); }html #sos-page .bk-float.is-ink.is-on .bk-ink{ opacity: 1; }html #sos-page .bk-float.is-ink .uma-project__pager a,html #sos-page .bk-float.is-ink .uma-project__count{ position: relative; }html #sos-page .bk-float.is-ink .uma-project__pager,html #sos-page .bk-float.is-ink .uma-project__pager *{ color: transparent !important; }html #sos-page .bk-float.is-ink .uma-project__pager svg:not([width="0"]){ fill: transparent; }html #sos-page .bk-ink{ position: absolute; inset: 0; pointer-events: none;
   -webkit-backdrop-filter: grayscale(1) contrast(60) invert(1); backdrop-filter: grayscale(1) contrast(60) invert(1); }html #sos-page [data-case="kara-fox"] .uma-project,html.light-theme #sos-page [data-case="kara-fox"] .uma-project{ --up-panel: #d2c3ad; }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed{ gap: 0; }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed li{ border: 1px solid var(--line); }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed li + li{ border-left: 0; }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed .uma-project__sw{ box-shadow: none; }@media (min-width: 768px){html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed{ gap: 0; }html #sos-page [data-case="kara-fox"] .uma-project__palette.is-framed .uma-project__sw{ aspect-ratio: 428 / 268; }
-}html.light-theme #sos-page .uma-project__pager,html.light-theme #sos-page .uma-project__pager *,html.light-theme #sos-page .uma-project__count{ font-weight: 400; }html #sos-page [data-case="kara-fox"] .uma-project__specimen[style*="--fs"]{ line-height: 1; }html #sos-page .bk-float.is-hold{ z-index: 26; }html #sos-page .bk-float.is-hold .bk-ink{ transition: none; }html #sos-page .bk-float .uma-project__pager{ padding: calc(var(--margin) * var(--u)) 0 !important; }html #sos-page .uma-project--soon > .uma-project__pager{ display: none !important; }html.js #sos-page .bk-float .rv{ opacity: 1 !important; transform: none !important; }
+}html.light-theme #sos-page .uma-project__pager,html.light-theme #sos-page .uma-project__pager *,html.light-theme #sos-page .uma-project__count{ font-weight: 400; }html #sos-page [data-case="kara-fox"] .uma-project__specimen[style*="--fs"]{ line-height: 1; }html #sos-page .bk-float.is-hold{ z-index: 26; }html #sos-page .bk-float.is-hold .bk-ink{ transition: none; }html #sos-page .bk-float .uma-project__pager{ padding: calc(var(--margin) * var(--u)) 0 !important; }html #sos-page .uma-project--soon > .uma-project__pager{ display: none !important; }html.js #sos-page .bk-float .rv{ opacity: 1 !important; transform: none !important; }html #sos-page .bk-float.is-dock .bk-ink{ transition: none; }html.js #sos-page .cs-book__page .uma-project__pager.rv{ opacity: 1 !important; transform: none !important; }
 </style>
 <style>html #sos-page .soon{
   min-height: 100svh;
@@ -1464,10 +1464,11 @@ var t=q(s),pg=b.querySelector('.cs-book__page');pg.appendChild(t.content.cloneNo
     if (ftEl && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { footSeen = es[0].isIntersecting; soonShow(); }, { rootMargin: '0px 0px -4px 0px' }).observe(ftEl);
     function observe(src) {
       if (pio) pio.disconnect(); pagerSeen = false;
-      if (src && 'IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen && !hold && !soonMode) fl.classList.remove('is-on'); }); pio.observe(src); }
+      if (src && 'IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; dock(); }); pio.observe(src); }
     }
     function syncFloat() {
-      var src = $('.uma-project__pager', pg);
+      var src = $('.uma-project__pager', pg); docked = false; fl.classList.remove('is-dock');
+      if (src) src.classList.remove('rv', 'is-in');   // кнопки страницы без «появления»: при стыковке они уже на месте
       // «Скоро здесь»: своих кнопок на странице нет — панель с кнопками стоит внизу постоянно
       soonMode = !!$('.uma-project--soon', pg);
       fl.setAttribute('aria-hidden', soonMode ? 'false' : 'true');
@@ -1534,13 +1535,34 @@ var t=q(s),pg=b.querySelector('.cs-book__page');pg.appendChild(t.content.cloneNo
       clearTimeout(holdT);
       holdT = setTimeout(function () { hold = false; fl.classList.remove('is-hold'); if (soonMode) soonShow(); else fl.classList.remove('is-on'); }, ms);
     }
+    // «стыковка»: внизу кейса плавающие кнопки и кнопки страницы — один элемент. Пока кнопки страницы ниже
+    // плавающих, видны только плавающие; как только кнопки страницы доехали до их места — плавающие исчезают,
+    // а на том же месте остаются кнопки страницы и дальше едут вместе со страницей
+    var docked = false;
+    function realPager() { return $('.uma-project__pager', pg); }
+    function paint() {
+      var src = realPager(); if (!src || soonMode) return;
+      src.style.visibility = (fl.classList.contains('is-on') && !docked) ? 'hidden' : '';
+    }
+    function dock() {
+      var src = realPager(); if (!src || soonMode || hold || busy) return;
+      var was = docked;
+      docked = pagerSeen && anchorTop(src) <= anchorTop(flIn) + 0.5;
+      if (docked && !was) { fl.classList.add('is-dock'); fl.classList.remove('is-on'); clearTimeout(flT); }
+      if (!docked && was) { fl.classList.add('is-on'); requestAnimationFrame(function () { fl.classList.remove('is-dock'); });
+        clearTimeout(flT); flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1800); }
+      paint();
+    }
+    if ('MutationObserver' in window) new MutationObserver(paint).observe(fl, { attributes: true, attributeFilter: ['class'] });
     var lastY = scrollY;
     addEventListener('scroll', function () {
       var y = scrollY, moved = Math.abs(y - lastY) > 4; lastY = y;
-      if (!moved || busy) return;
+      if (busy) return;
+      if (!soonMode && !hold) dock();
+      if (!moved) return;
       if (soonMode) return;
       if (hold) { release(HOLD); return; }
-      var show = y > innerHeight * 0.6 && !pagerSeen;
+      var show = y > innerHeight * 0.6 && !docked;
       fl.classList.toggle('is-on', show);
       clearTimeout(flT); if (show) flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1800);
     }, { passive: true });

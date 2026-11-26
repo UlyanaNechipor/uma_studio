@@ -1363,10 +1363,11 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     if (ftEl && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { footSeen = es[0].isIntersecting; soonShow(); }, { rootMargin: '0px 0px -4px 0px' }).observe(ftEl);
     function observe(src) {
       if (pio) pio.disconnect(); pagerSeen = false;
-      if (src && 'IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; if (pagerSeen && !hold && !soonMode) fl.classList.remove('is-on'); }); pio.observe(src); }
+      if (src && 'IntersectionObserver' in window) { pio = new IntersectionObserver(function (es) { pagerSeen = es[0].isIntersecting; dock(); }); pio.observe(src); }
     }
     function syncFloat() {
-      var src = $('.uma-project__pager', pg);
+      var src = $('.uma-project__pager', pg); docked = false; fl.classList.remove('is-dock');
+      if (src) src.classList.remove('rv', 'is-in');   // кнопки страницы без «появления»: при стыковке они уже на месте
       // «Скоро здесь»: своих кнопок на странице нет — панель с кнопками стоит внизу постоянно
       soonMode = !!$('.uma-project--soon', pg);
       fl.setAttribute('aria-hidden', soonMode ? 'false' : 'true');
@@ -1433,13 +1434,34 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       clearTimeout(holdT);
       holdT = setTimeout(function () { hold = false; fl.classList.remove('is-hold'); if (soonMode) soonShow(); else fl.classList.remove('is-on'); }, ms);
     }
+    // «стыковка»: внизу кейса плавающие кнопки и кнопки страницы — один элемент. Пока кнопки страницы ниже
+    // плавающих, видны только плавающие; как только кнопки страницы доехали до их места — плавающие исчезают,
+    // а на том же месте остаются кнопки страницы и дальше едут вместе со страницей
+    var docked = false;
+    function realPager() { return $('.uma-project__pager', pg); }
+    function paint() {
+      var src = realPager(); if (!src || soonMode) return;
+      src.style.visibility = (fl.classList.contains('is-on') && !docked) ? 'hidden' : '';
+    }
+    function dock() {
+      var src = realPager(); if (!src || soonMode || hold || busy) return;
+      var was = docked;
+      docked = pagerSeen && anchorTop(src) <= anchorTop(flIn) + 0.5;
+      if (docked && !was) { fl.classList.add('is-dock'); fl.classList.remove('is-on'); clearTimeout(flT); }
+      if (!docked && was) { fl.classList.add('is-on'); requestAnimationFrame(function () { fl.classList.remove('is-dock'); });
+        clearTimeout(flT); flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1800); }
+      paint();
+    }
+    if ('MutationObserver' in window) new MutationObserver(paint).observe(fl, { attributes: true, attributeFilter: ['class'] });
     var lastY = scrollY;
     addEventListener('scroll', function () {
       var y = scrollY, moved = Math.abs(y - lastY) > 4; lastY = y;
-      if (!moved || busy) return;
+      if (busy) return;
+      if (!soonMode && !hold) dock();
+      if (!moved) return;
       if (soonMode) return;
       if (hold) { release(HOLD); return; }
-      var show = y > innerHeight * 0.6 && !pagerSeen;
+      var show = y > innerHeight * 0.6 && !docked;
       fl.classList.toggle('is-on', show);
       clearTimeout(flT); if (show) flT = setTimeout(function () { fl.classList.remove('is-on'); }, 1800);
     }, { passive: true });
