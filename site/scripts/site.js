@@ -511,7 +511,7 @@
       var dt = Math.min(.05, (now - last) / 1000); last = now;
       var k = 1 - Math.pow(.0015, dt); mx += (tx - mx) * k; my += (ty - my) * k;
       wake += (wakeT - wake) * (1 - Math.pow(.02, dt));
-      gl.uniform1f(U.uTime, reduce ? 12 : (now - t0) / 1000 * (calm ? 0.3 : 1) + 12);   // спокойный режим — втрое медленнее gl.uniform2f(U.uMouse, mx, my);
+      gl.uniform1f(U.uTime, reduce ? 12 : (now - t0) / 1000 + 12); gl.uniform2f(U.uMouse, mx, my);
       gl.uniform1f(U.uWake, wake); gl.uniform1f(U.uFrame, reduce ? 0 : frame++);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       el.classList.add('is-ready');
