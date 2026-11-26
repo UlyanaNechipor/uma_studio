@@ -545,3 +545,6 @@ html.js .bk-float .rv { opacity: 1 !important; transform: none !important; }
 /* стыковка с кнопками страницы — мгновенно, без проявления */
 .bk-float.is-dock .bk-ink { transition: none; }
 html.js .cs-book__page .uma-project__pager.rv { opacity: 1 !important; transform: none !important; }
+
+/* счётчик кейсов: цифры одной ширины (tnum), чтобы «06/06» → «01/06» не сдвигало знаки */
+.uma-project__count, .uma-project__count * { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
