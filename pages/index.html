@@ -1377,13 +1377,13 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       observe(src);
       soonShow();
     }
-    // смена подписей при переходе: буквы «бегают» и по очереди слева направо встают в нужный текст
+    // смена подписей при переходе: новый текст набирается слева направо, перед ним бегут 1–2 случайных знака
     var GLYPH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', DIG = '0123456789';
     function scramble(root) {
       var els = $$('clipPath text', root);
       if (!els.length) { var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), t; while ((t = w.nextNode())) if (t.nodeValue.trim()) els.push(t); }
       var items = els.map(function (e) { var v = e.nodeType === 3 ? e.nodeValue : e.textContent; return { e: e, v: v }; });
-      var T = 620, t0 = performance.now(), last = 0;
+      var T = 560, t0 = performance.now(), last = 0;
       function pick(ch) { if (/\d/.test(ch)) return DIG[Math.random() * 10 | 0]; if (/[A-Za-zА-Яа-яЁё]/.test(ch)) return GLYPH[Math.random() * GLYPH.length | 0]; return ch; }
       function set(it, str) { if (it.e.nodeType === 3) it.e.nodeValue = str; else it.e.textContent = str; }
       (function step(now) {
@@ -1391,8 +1391,9 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
         if (now - last > 45 || k === 1) {
           last = now;
           items.forEach(function (it) {
-            var n = it.v.length, out = '';
-            for (var i = 0; i < n; i++) out += (k >= 0.25 + 0.75 * (i + 1) / n) ? it.v[i] : pick(it.v[i]);
+            // готовая часть + 2 «бегущих» знака на месте курсора, дальше пусто — без лишнего шума
+            var n = it.v.length, r = Math.floor(k * (n + 2)), out = it.v.slice(0, Math.min(r, n));
+            for (var i = r; i < Math.min(n, r + 2); i++) out += pick(it.v[i]);
             set(it, k === 1 ? it.v : out);
           });
         }
