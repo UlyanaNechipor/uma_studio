@@ -673,8 +673,10 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     var cv = $('#trail'), ctx = cv.getContext('2d'), RES = 0.5;
     // шапка непрозрачная и лежит поверх общего холста — в неё копируется верхняя полоса следа
     var hc = $('.hd__trail'), hctx = hc && hc.getContext('2d'), hd = $('.hd');
+    var off = document.createElement('canvas'), oc = off.getContext('2d');
     function size() {
       cv.width = Math.ceil(innerWidth * RES); cv.height = Math.ceil(innerHeight * RES); ctx.setTransform(RES, 0, 0, RES, 0, 0);
+      off.width = cv.width; off.height = cv.height; oc.setTransform(RES, 0, 0, RES, 0, 0);
       if (hc) { hc.width = cv.width; hc.height = Math.ceil((hd.offsetHeight + 120) * RES); }
     }
     function copyHeader() {
@@ -699,20 +701,27 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       if (mx !== -1000) {
         sx += (mx - sx) * .25; sy += (my - sy) * .25;
         var p0 = pts[0];
-        if (!p0 || Math.hypot(sx - p0.x, sy - p0.y) > 7) { pts.unshift({ x: sx, y: sy, h: .3, age: 0 }); if (pts.length > MAX) pts.pop(); }
+        if (!p0 || Math.hypot(sx - p0.x, sy - p0.y) > 7) { pts.unshift({ x: sx, y: sy, h: .7, age: 0 }); if (pts.length > MAX) pts.pop(); }
         else p0.h = Math.min(1, p0.h + dt * .9);   // курсор стоит — пятно «нагревается»
       } else { sx = sy = -1000; }
       pts.forEach(function (p, i) { if (i || mx === -1000) p.h -= dt * .22; p.age += dt; });   // остывание ~4 с
       pts = pts.filter(function (p) { return p.h > 0; });
+      /* единый мазок: отпечатки складываются по максимуму (lighten), а не накладываются — без бусин в следе;
+         затем маска тонируется под тему: в тёмной — светлее фона (screen), в светлой — темнее (multiply) */
       var LT = document.documentElement.classList.contains('light-theme');
-      var TC = LT ? '70,66,62' : '255,240,222', TA = LT ? .38 : .5;   // тон темы, тёплый нейтральный
+      oc.globalCompositeOperation = 'source-over'; oc.fillStyle = '#000'; oc.fillRect(0, 0, innerWidth, innerHeight);
+      oc.globalCompositeOperation = 'lighten';
       for (var i = pts.length - 1; i >= 0; i--) {
-        var p = pts[i], r = 46 + 22 * Math.min(1, p.age / 3), al = TA * p.h * p.h;   // размер подушечки пальца, чуть расплывается при остывании
-        ctx.save(); ctx.translate(p.x, p.y); ctx.scale(.78, 1);   // овал, как отпечаток пальца
-        var g = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
-        g.addColorStop(0, 'rgba(' + TC + ',' + al + ')'); g.addColorStop(.5, 'rgba(' + TC + ',' + al * .45 + ')'); g.addColorStop(1, 'rgba(' + TC + ',0)');
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, r, 0, 6.2832); ctx.fill(); ctx.restore();
+        var p = pts[i], r = 46 + 22 * Math.min(1, p.age / 3), v = Math.round(255 * Math.pow(p.h, 1.5));
+        oc.save(); oc.translate(p.x, p.y); oc.scale(.78, 1);   // овал, как отпечаток пальца
+        var g = oc.createRadialGradient(0, 0, 0, 0, 0, r);
+        g.addColorStop(0, 'rgb(' + v + ',' + v + ',' + v + ')'); g.addColorStop(.5, 'rgb(' + (v * .6 | 0) + ',' + (v * .6 | 0) + ',' + (v * .6 | 0) + ')'); g.addColorStop(1, '#000');
+        oc.fillStyle = g; oc.beginPath(); oc.arc(0, 0, r, 0, 6.2832); oc.fill(); oc.restore();
       }
+      ctx.globalCompositeOperation = 'source-over'; ctx.drawImage(off, 0, 0, innerWidth, innerHeight);
+      ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = LT ? 'rgb(84,84,86)' : 'rgb(56,52,46)'; ctx.fillRect(0, 0, innerWidth, innerHeight);
+      if (LT) { ctx.globalCompositeOperation = 'difference'; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, innerWidth, innerHeight); }
+      ctx.globalCompositeOperation = 'source-over';
       copyHeader();
       if (!pts.length && mx === -1000) { running = false; cv.style.visibility = 'hidden'; if (hc) hc.style.visibility = 'hidden'; return; }
       requestAnimationFrame(frame);
