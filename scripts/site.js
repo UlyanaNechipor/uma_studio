@@ -367,14 +367,14 @@
       } else { sx = sy = -1000; }
       pts.forEach(function (p) { p.a -= 0.012; });
       pts = pts.filter(function (p) { return p.a > 0; });
-      var TC = document.documentElement.classList.contains('light-theme') ? '0,0,0' : '255,255,255';   // нейтральный тон, без цвета
+      var LT = document.documentElement.classList.contains('light-theme'), TC = LT ? '60,58,56' : '255,246,232', TA = LT ? .07 : .09;   // нейтральный тон темы, еле заметный
       for (var i = 0; i < pts.length - 1; i++) {
         var p1 = pts[i], p2 = pts[i + 1], pr = (MAX - i) / MAX;
         ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.quadraticCurveTo(p1.x, p1.y, (p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
-        ctx.lineWidth = 110 * Math.pow(pr, 1.2); ctx.lineCap = ctx.lineJoin = 'round';
+        ctx.lineWidth = 190 * Math.pow(pr, .8); ctx.lineCap = ctx.lineJoin = 'round';
         var al = Math.max(0, p1.a * pr), g = ctx.createRadialGradient(p1.x, p1.y, 0, p1.x, p1.y, ctx.lineWidth);
-        g.addColorStop(0, 'rgba(' + TC + ',' + 0.22 * al + ')');
-        g.addColorStop(0.5, 'rgba(' + TC + ',' + 0.08 * al + ')');
+        g.addColorStop(0, 'rgba(' + TC + ',' + TA * al + ')');
+        g.addColorStop(0.55, 'rgba(' + TC + ',' + TA * .4 * al + ')');
         g.addColorStop(1, 'rgba(' + TC + ',0)');
         ctx.strokeStyle = g; ctx.stroke();
       }
@@ -474,14 +474,14 @@
     /* жидкий градиент: мягкие изогнутые ленты (индиго → фиолетовый → пурпур) текут вокруг чёрной пустоты, мелкое зерно;
        курсор закручивает поток вокруг себя и тянет его следом */
     var FS = ['#version 300 es', 'precision highp float;', 'in vec2 vUv;out vec4 frag;',
-      'uniform vec2 uRes;uniform float uTime;uniform vec2 uMouse;uniform float uWake;uniform float uFrame;uniform vec2 uVel;uniform float uLight;uniform vec3 uP[40];',
+      'uniform vec2 uRes;uniform float uTime;uniform vec2 uMouse;uniform float uWake;uniform float uFrame;uniform vec2 uVel;uniform float uLight;',
       'float h(vec2 p){vec3 p3=fract(vec3(p.xyx)*.1031);p3+=dot(p3,p3.yzx+33.33);return fract((p3.x+p3.y)*p3.z);}',
       'float n2(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}',
       'float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<3;i++){v+=a*n2(p);p=m*p;a*=.5;}return v/.875;}',
-      /* набор цветов по кругу: ультрамарин → фиолетовый → коралл → янтарь → бирюза */
-      'vec3 pal(float x){x=fract(x)*5.;float f=fract(x);f=f*f*(3.-2.*f);int i=int(x);',
-      '  vec3 c[5];c[0]=vec3(.16,.3,1.);c[1]=vec3(.58,.26,.95);c[2]=vec3(1.,.4,.32);c[3]=vec3(1.,.72,.38);c[4]=vec3(.12,.68,.74);',
-      '  vec3 a=c[0],b=c[1];for(int k=0;k<5;k++){if(k==i){a=c[k];b=c[k==4?0:k+1];}}return mix(a,b,f);}',
+      /* набор цветов: ультрамарин → барвинок → сирень → персик → песок; шкала идёт туда-обратно, без резких стыков */
+      'vec3 pal(float x){x=1.-abs(fract(x*.5)*2.-1.);x*=4.;float f=fract(x);f=f*f*(3.-2.*f);int i=int(min(x,3.999));',
+      '  vec3 c[5];c[0]=vec3(.13,.24,.86);c[1]=vec3(.42,.5,1.);c[2]=vec3(.74,.62,.96);c[3]=vec3(1.,.64,.52);c[4]=vec3(1.,.84,.66);',
+      '  vec3 a=c[0],b=c[1];for(int k=0;k<4;k++){if(k==i){a=c[k];b=c[k+1];}}return mix(a,b,f);}',
       'void main(){vec2 uv=vec2(vUv.x,1.-vUv.y);float asp=uRes.x/uRes.y;vec2 p=vec2((uv.x-.5)*asp,uv.y-.5);float T=uTime;',
       'vec2 m=vec2((uMouse.x-.5)*asp,uMouse.y-.5);vec2 dm=p-m;float fall=exp(-dot(dm,dm)*9.)*uWake;',
       'float an=fall*1.1;float cs=cos(an),sn=sin(an);p=m+mat2(cs,-sn,sn,cs)*dm;p-=uVel*fall*.2;float t=T*.06;',
@@ -500,12 +500,6 @@
       'vec3 cd=mix(bg,hc*.92,amt*.92);cd=mix(cd,mix(hc,vec3(1.),.65),crest*amt*.6);',
       'vec3 cl=mix(bg,hc*.92+.04,amt*.85);cl=mix(cl,hc*.55,crest*amt*.45);',
       'vec3 col=mix(cd,cl,uLight);col=mix(col,bg,.22*pow(length(uv-.5)*1.25,2.));',
-      /* след курсора как на термочувствительной плёнке: где прошёл курсор, краска «выцветает» до цвета фона темы,
-         пятно чуть расплывается и медленно затягивается; по краю пятна — лёгкий сдвиг оттенка */
-      'vec2 sp=vec2(uv.x*asp,uv.y);float heat=0.;for(int i=0;i<40;i++){vec3 P=uP[i];if(P.z>=1.)continue;',
-      '  float r=.07+.09*P.z;vec2 d=sp-vec2(P.x*asp,P.y);heat=max(heat,exp(-dot(d,d)/(r*r))*pow(1.-P.z,1.5));}',
-      'heat=smoothstep(0.,.9,heat);float ring=heat*(1.-heat)*4.;',
-      'col=mix(col,pal(hue+.5)*mix(.8,1.,uLight),ring*amt*.25);col=mix(col,bg,heat*.88);',
       'float L=dot(col,vec3(.299,.587,.114));',
       'float g=h(gl_FragCoord.xy+fract(uFrame*.618)*917.)-.5;col+=g*.07*(.35+.65*mix(L,1.-L,uLight));',
       'frag=vec4(clamp(col,0.,1.),1.);}'].join('\n');
@@ -516,7 +510,7 @@
     gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
     var loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    var U = {}; ['uRes', 'uTime', 'uMouse', 'uWake', 'uFrame', 'uVel', 'uLight', 'uP'].forEach(function (k) { U[k] = gl.getUniformLocation(pr, k); });
+    var U = {}; ['uRes', 'uTime', 'uMouse', 'uWake', 'uFrame', 'uVel', 'uLight'].forEach(function (k) { U[k] = gl.getUniformLocation(pr, k); });
     var W = 0, H = 0, RES = 1, FPS = 30;
     function size() {
       var b = cv.getBoundingClientRect(), w = Math.max(1, Math.round(b.width * RES)), h = Math.max(1, Math.round(b.height * RES));
@@ -528,7 +522,6 @@
       el.addEventListener('pointerleave', function () { wakeT = 0; });
     }
     var visible = true, raf = 0, t0 = performance.now(), last = t0, lastDraw = 0, frame = 0;
-    var TR = [], TRN = 40, TRL = 3.5, trBuf = new Float32Array(TRN * 3);   // точки следа: x, y, время
     function draw(now) {
       raf = 0;
       if (!reduce && now - lastDraw < 1000 / FPS - 2 && el.classList.contains('is-ready')) return loop();
@@ -540,17 +533,6 @@
       gl.uniform1f(U.uTime, reduce ? 20 : (now - t0) / 1000 + 20); gl.uniform2f(U.uMouse, mx, my);
       gl.uniform2f(U.uVel, Math.max(-1.5, Math.min(1.5, vx)) * (W / H), Math.max(-1.5, Math.min(1.5, vy)));
       lt = document.documentElement.classList.contains('light-theme') ? 1 : 0; gl.uniform1f(U.uLight, lt);
-      var sec = (now - t0) / 1000, lp = TR[0];
-      if (wakeT) {
-        var dl = lp ? Math.hypot(tx - lp.x, ty - lp.y) : 1;
-        if (!lp || dl > .025) {   // длинный рывок дробим на промежуточные точки, чтобы след не рвался
-          var nst = lp ? Math.min(6, Math.ceil(dl / .035)) : 1;
-          for (var st = 1; st <= nst; st++) { var f = st / nst; TR.unshift({ x: lp ? lp.x + (tx - lp.x) * f : tx, y: lp ? lp.y + (ty - lp.y) * f : ty, t: sec }); }
-          TR.length = Math.min(TR.length, TRN);
-        }
-      }
-      for (var j = 0; j < TRN; j++) { var tp = TR[j]; trBuf[j * 3] = tp ? tp.x : 0; trBuf[j * 3 + 1] = tp ? tp.y : 0; trBuf[j * 3 + 2] = tp ? Math.min(1, (sec - tp.t) / TRL) : 1; }
-      gl.uniform3fv(U.uP, trBuf);
       gl.uniform1f(U.uWake, wake); gl.uniform1f(U.uFrame, reduce ? 0 : frame++);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       el.classList.add('is-ready');
