@@ -171,7 +171,7 @@
   font-size: 1.08em; color: var(--grey); letter-spacing: -.01em; }@keyframes soon-focus{ 0%, 100% { filter: blur(.075em); opacity: .9; } 50% { filter: blur(.03em); opacity: 1; } }html.rm #sos-page .soon__mark,html.rm-off #sos-page .soon__mark{ animation: none; }@media (max-width: 767px){html #sos-page .soon__lb{ display: none; }html #sos-page .soon__text,html #sos-page .soon__back{ margin-top: 20px; }html #sos-page .soon__mark{ font-size: 21vw; white-space: normal; line-height: .95; }html #sos-page .soon__of{ display: block; }
 }html #sos-page .uma-project--soon{ padding: 0; background: var(--bg); }html #sos-page .uma-project--soon .soon{ min-height: 100svh; background: var(--bg); overflow: visible; padding-left: var(--up-pad); padding-right: var(--up-pad); }html #sos-page .uma-project--soon .soon__mark{ font-size: 10.6vw; justify-self: center; }html #sos-page .uma-project--soon .uma-project__pager{ margin-top: 0; padding-left: var(--up-pad); padding-right: var(--up-pad); }@media (max-width: 767px){html #sos-page .uma-project--soon .soon__mark{ font-size: 19vw; } }html #sos-page .uma-project--soon .soon__text,html #sos-page .soon__text{ color: var(--grey); margin: calc(24 * var(--u)) 0 0; }@media (min-width: 768px){html #sos-page .uma-project--soon .soon__text,html #sos-page .soon__text{ margin-top: calc(38.4 * var(--u)); } }@media (max-width: 767px){html #sos-page .uma-project--soon .soon__text{ margin-top: 20px; } }
 </style>
-<style>@media (min-width: 1025px) and (hover: hover){html,html body.t-body,html #sos-page a,html #sos-page button{ cursor: pointer;} }html #sos-page #trail,html #sos-page #wipe{ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }html #sos-page #trail{ z-index: 0; filter: blur(26px); mix-blend-mode: screen; visibility: hidden; }html.light-theme #sos-page #trail,html.light-theme #sos-page .hd__trail{ mix-blend-mode: multiply; filter: blur(26px); }html #sos-page .hd__trail{ position: absolute; left: 0; top: 0; width: 100%; height: calc(100% + 120px);   
+<style>@media (min-width: 1025px) and (hover: hover){html,html body.t-body,html #sos-page a,html #sos-page button{ cursor: pointer;} }html #sos-page #trail,html #sos-page #wipe{ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }html #sos-page #trail{ z-index: 0; filter: blur(26px); mix-blend-mode: screen; visibility: hidden; }html.light-theme #sos-page #trail,html.light-theme #sos-page .hd__trail{ mix-blend-mode: multiply; filter: blur(12px); }html #sos-page .hd__trail{ position: absolute; left: 0; top: 0; width: 100%; height: calc(100% + 120px);   
   pointer-events: none; z-index: 0; filter: blur(26px); mix-blend-mode: screen; visibility: hidden; }html #sos-page .hd > :not(.hd__trail){ position: relative; z-index: 1; }html #sos-page .hd{ isolation: isolate; overflow: hidden; }html #sos-page #wipe{ z-index: -1; }html #sos-page main{ position: relative; z-index: 1; }html #sos-page .ft{ z-index: 10; }html body.t-body{ background: transparent; }html{ background: var(--bg); transition: background-color .5s var(--m-out); }html.is-wiping{ transition: none; }html #sos-page .hd__ic{ position: relative; display: block; width: 100%; height: 100%; transition: transform .6s var(--m-out); }html #sos-page .hd__ic svg{
   position: absolute; top: 29%; left: 29%; width: 42%; height: 42%;   
   fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
@@ -673,10 +673,13 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
     var cv = $('#trail'), ctx = cv.getContext('2d'), RES = 0.5;
     // шапка непрозрачная и лежит поверх общего холста — в неё копируется верхняя полоса следа
     var hc = $('.hd__trail'), hctx = hc && hc.getContext('2d'), hd = $('.hd');
-    var off = document.createElement('canvas'), oc = off.getContext('2d');
+    var off = document.createElement('canvas'), oc = off.getContext('2d', { willReadFrequently: true }), img = null;   // off — маска мазка (яркость = «нагрев»)
+    /* тон по нагреву: светлая — светло-серый (сердцевина чуть светлее, из зелёного канала маски); тёмная — бежевый */
+    var LUT_L = new Uint8ClampedArray(256), LUT_D = new Uint8ClampedArray(256 * 3), BEIGE = [74, 62, 46];
+    for (var q = 0; q < 256; q++) { var m = q / 255, d = Math.pow(m, .8); LUT_L[q] = 255 - 84 * d; for (var c = 0; c < 3; c++) LUT_D[q * 3 + c] = BEIGE[c] * m; }
     function size() {
       cv.width = Math.ceil(innerWidth * RES); cv.height = Math.ceil(innerHeight * RES); ctx.setTransform(RES, 0, 0, RES, 0, 0);
-      off.width = cv.width; off.height = cv.height; oc.setTransform(RES, 0, 0, RES, 0, 0);
+      off.width = cv.width; off.height = cv.height; oc.setTransform(RES, 0, 0, RES, 0, 0); img = ctx.createImageData(cv.width, cv.height);
       if (hc) { hc.width = cv.width; hc.height = Math.ceil((hd.offsetHeight + 120) * RES); }
     }
     function copyHeader() {
@@ -713,21 +716,29 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       pts.forEach(function (p, i) { if (i || mx === -1000) p.h -= dt * .38; p.age += dt; });   // остывание ~4 с
       pts = pts.filter(function (p) { return p.h > 0; });
       /* единый мазок: отпечатки складываются по максимуму (lighten), а не накладываются — без бусин в следе;
-         затем маска тонируется под тему: в тёмной — светлее фона (screen), в светлой — темнее (multiply) */
+         затем маска переводится в тон темы: в тёмной — бежевый поверх фона (screen), в светлой — светло-серый (multiply) */
       var LT = document.documentElement.classList.contains('light-theme');
       oc.globalCompositeOperation = 'source-over'; oc.fillStyle = '#000'; oc.fillRect(0, 0, innerWidth, innerHeight);
       oc.globalCompositeOperation = 'lighten';
       for (var i = pts.length - 1; i >= 0; i--) {
-        var p = pts[i], r = 46 + 22 * Math.min(1, p.age / 3), v = Math.round(255 * Math.pow(p.h, 1.5));
+        var p = pts[i], r = 46 + 22 * Math.min(1, p.age / 3), v = Math.round(255 * Math.pow(p.h, .7));
         oc.save(); oc.translate(p.x, p.y); oc.scale(.78, 1);   // овал, как отпечаток пальца
         var g = oc.createRadialGradient(0, 0, 0, 0, 0, r);
-        g.addColorStop(0, 'rgb(' + v + ',' + v + ',' + v + ')'); g.addColorStop(.5, 'rgb(' + (v * .6 | 0) + ',' + (v * .6 | 0) + ',' + (v * .6 | 0) + ')'); g.addColorStop(1, '#000');
-        oc.fillStyle = g; oc.beginPath(); oc.arc(0, 0, r, 0, 6.2832); oc.fill(); oc.restore();
+        // красный канал — весь отпечаток, зелёный — его сердцевина (lighten берёт максимум по каждому каналу отдельно)
+        g.addColorStop(0, 'rgb(' + v + ',0,0)'); g.addColorStop(.5, 'rgb(' + (v * .6 | 0) + ',0,0)'); g.addColorStop(1, '#000');
+        oc.fillStyle = g; oc.beginPath(); oc.arc(0, 0, r, 0, 6.2832); oc.fill();
+        if (LT) { var g2 = oc.createRadialGradient(0, 0, 0, 0, 0, r * .5); g2.addColorStop(0, 'rgb(0,' + v + ',0)'); g2.addColorStop(.4, 'rgb(0,' + (v * .8 | 0) + ',0)'); g2.addColorStop(1, '#000');
+          oc.fillStyle = g2; oc.beginPath(); oc.arc(0, 0, r * .5, 0, 6.2832); oc.fill(); }
+        oc.restore();
       }
-      ctx.globalCompositeOperation = 'source-over'; ctx.drawImage(off, 0, 0, innerWidth, innerHeight);
-      ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = LT ? 'rgb(84,84,86)' : 'rgb(56,52,46)'; ctx.fillRect(0, 0, innerWidth, innerHeight);
-      if (LT) { ctx.globalCompositeOperation = 'difference'; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, innerWidth, innerHeight); }
-      ctx.globalCompositeOperation = 'source-over';
+      var src = oc.getImageData(0, 0, off.width, off.height).data, out = img.data;
+      for (var j = 0; j < src.length; j += 4) {
+        var q = src[j];
+        if (LT) { out[j] = out[j + 1] = out[j + 2] = Math.min(255, LUT_L[q] + src[j + 1] * .3); }   // сердцевина чуть светлее
+        else { out[j] = LUT_D[q * 3]; out[j + 1] = LUT_D[q * 3 + 1]; out[j + 2] = LUT_D[q * 3 + 2]; }
+        out[j + 3] = 255;
+      }
+      ctx.putImageData(img, 0, 0);
       copyHeader();
       if (!pts.length && mx === -1000) { running = false; cv.style.visibility = 'hidden'; if (hc) hc.style.visibility = 'hidden'; return; }
       requestAnimationFrame(frame);
