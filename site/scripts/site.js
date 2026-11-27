@@ -352,7 +352,7 @@
     size(); addEventListener('resize', size);
     /* след как на термочувствительной плёнке: где курсор задержался — «нагрелось» пятно тона темы;
        быстрый проход оставляет бледный след, задержка — заметнее; пятна медленно остывают и расплываются */
-    var mx = -1000, my = -1000, sx = -1000, sy = -1000, pts = [], MAX = 90, running = false, last = 0;
+    var mx = -1000, my = -1000, sx = -1000, sy = -1000, pts = [], MAX = 160, running = false, last = 0;
     function input(x, y) { mx = x; my = y; if (sx === -1000) { sx = x; sy = y; } wake(); }
     addEventListener('mousemove', function (e) { input(e.clientX, e.clientY); });
     addEventListener('touchstart', function (e) { if (e.touches[0]) input(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
@@ -366,7 +366,7 @@
       if (mx !== -1000) {
         sx += (mx - sx) * .25; sy += (my - sy) * .25;
         var p0 = pts[0];
-        if (!p0 || Math.hypot(sx - p0.x, sy - p0.y) > 14) { pts.unshift({ x: sx, y: sy, h: .3, age: 0 }); if (pts.length > MAX) pts.pop(); }
+        if (!p0 || Math.hypot(sx - p0.x, sy - p0.y) > 7) { pts.unshift({ x: sx, y: sy, h: .3, age: 0 }); if (pts.length > MAX) pts.pop(); }
         else p0.h = Math.min(1, p0.h + dt * .9);   // курсор стоит — пятно «нагревается»
       } else { sx = sy = -1000; }
       pts.forEach(function (p, i) { if (i || mx === -1000) p.h -= dt * .22; p.age += dt; });   // остывание ~4 с
@@ -374,10 +374,11 @@
       var LT = document.documentElement.classList.contains('light-theme');
       var TC = LT ? '70,66,62' : '255,240,222', TA = LT ? .38 : .5;   // тон темы, тёплый нейтральный
       for (var i = pts.length - 1; i >= 0; i--) {
-        var p = pts[i], r = 110 + 70 * Math.min(1, p.age / 3), al = TA * p.h * p.h;
-        var g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+        var p = pts[i], r = 46 + 22 * Math.min(1, p.age / 3), al = TA * p.h * p.h;   // размер подушечки пальца, чуть расплывается при остывании
+        ctx.save(); ctx.translate(p.x, p.y); ctx.scale(.78, 1);   // овал, как отпечаток пальца
+        var g = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
         g.addColorStop(0, 'rgba(' + TC + ',' + al + ')'); g.addColorStop(.5, 'rgba(' + TC + ',' + al * .45 + ')'); g.addColorStop(1, 'rgba(' + TC + ',0)');
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 6.2832); ctx.fill();
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, r, 0, 6.2832); ctx.fill(); ctx.restore();
       }
       copyHeader();
       if (!pts.length && mx === -1000) { running = false; cv.style.visibility = 'hidden'; if (hc) hc.style.visibility = 'hidden'; return; }

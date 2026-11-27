@@ -6,11 +6,11 @@
 
 /* ---------- фон за курсором и смена темы ---------- */
 #trail, #wipe { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }
-#trail { z-index: 0; filter: blur(48px); mix-blend-mode: screen; visibility: hidden; }
-html.light-theme #trail, html.light-theme .hd__trail { mix-blend-mode: multiply; filter: blur(48px); }
+#trail { z-index: 0; filter: blur(20px); mix-blend-mode: screen; visibility: hidden; }
+html.light-theme #trail, html.light-theme .hd__trail { mix-blend-mode: multiply; filter: blur(20px); }
 /* след курсора виден и на шапке: копия общего холста, обрезанная по шапке */
 .hd__trail { position: absolute; left: 0; top: 0; width: 100%; height: calc(100% + 120px);   /* ниже шапки — запас под размытие, обрезается шапкой */
-  pointer-events: none; z-index: 0; filter: blur(28px); mix-blend-mode: screen; visibility: hidden; }
+  pointer-events: none; z-index: 0; filter: blur(20px); mix-blend-mode: screen; visibility: hidden; }
 .hd > :not(.hd__trail) { position: relative; z-index: 1; }
 .hd { isolation: isolate; overflow: hidden; }
 #wipe { z-index: -1; }
