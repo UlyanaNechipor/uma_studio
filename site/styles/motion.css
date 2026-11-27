@@ -7,7 +7,7 @@
 /* ---------- фон за курсором и смена темы ---------- */
 #trail, #wipe { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; }
 #trail { z-index: 0; filter: blur(26px); mix-blend-mode: screen; visibility: hidden; }
-html.light-theme #trail, html.light-theme .hd__trail { mix-blend-mode: multiply; filter: blur(26px); }
+html.light-theme #trail, html.light-theme .hd__trail { mix-blend-mode: multiply; filter: blur(12px); }   /* меньше размытие — видна светлая сердцевина */
 /* след курсора виден и на шапке: копия общего холста, обрезанная по шапке */
 .hd__trail { position: absolute; left: 0; top: 0; width: 100%; height: calc(100% + 120px);   /* ниже шапки — запас под размытие, обрезается шапкой */
   pointer-events: none; z-index: 0; filter: blur(26px); mix-blend-mode: screen; visibility: hidden; }
