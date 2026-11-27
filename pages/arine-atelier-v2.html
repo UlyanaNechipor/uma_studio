@@ -690,36 +690,37 @@ html #allrecords .t396 .t396__artboard { z-index: 15 !important; }
       hctx.drawImage(cv, 0, 0, cv.width, hc.height, 0, 0, hc.width, hc.height);
     }
     size(); addEventListener('resize', size);
-    var mx = -1000, my = -1000, sx = -1000, sy = -1000, pts = [], MAX = 55, running = false;
+    /* след как на термочувствительной плёнке: где курсор задержался — «нагрелось» пятно тона темы;
+       быстрый проход оставляет бледный след, задержка — заметнее; пятна медленно остывают и расплываются */
+    var mx = -1000, my = -1000, sx = -1000, sy = -1000, pts = [], MAX = 90, running = false, last = 0;
     function input(x, y) { mx = x; my = y; if (sx === -1000) { sx = x; sy = y; } wake(); }
     addEventListener('mousemove', function (e) { input(e.clientX, e.clientY); });
     addEventListener('touchstart', function (e) { if (e.touches[0]) input(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
     addEventListener('touchmove', function (e) { if (e.touches[0]) input(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
     function off() { mx = my = -1000; }
     addEventListener('touchend', off); addEventListener('touchcancel', off); document.addEventListener('mouseleave', off);
-    function wake() { if (running) return; running = true; cv.style.visibility = 'visible'; if (hc) hc.style.visibility = 'visible'; requestAnimationFrame(frame); }
-    function frame() {
+    function wake() { if (running) return; running = true; last = performance.now(); cv.style.visibility = 'visible'; if (hc) hc.style.visibility = 'visible'; requestAnimationFrame(frame); }
+    function frame(now) {
+      var dt = Math.min(.05, Math.max(0, (now - last) / 1000)); last = now;
       ctx.clearRect(0, 0, innerWidth, innerHeight);
       if (mx !== -1000) {
-        sx += (mx - sx) * 0.05; sy += (my - sy) * 0.05;
-        var p0 = pts[0] || { x: 0, y: 0 };
-        if (Math.hypot(sx - p0.x, sy - p0.y) > 1) { pts.unshift({ x: sx, y: sy, a: 1 }); if (pts.length > MAX) pts.pop(); }
+        sx += (mx - sx) * .25; sy += (my - sy) * .25;
+        var p0 = pts[0];
+        if (!p0 || Math.hypot(sx - p0.x, sy - p0.y) > 14) { pts.unshift({ x: sx, y: sy, h: .3, age: 0 }); if (pts.length > MAX) pts.pop(); }
+        else p0.h = Math.min(1, p0.h + dt * .9);   // курсор стоит — пятно «нагревается»
       } else { sx = sy = -1000; }
-      pts.forEach(function (p) { p.a -= 0.012; });
-      pts = pts.filter(function (p) { return p.a > 0; });
-      var LT = document.documentElement.classList.contains('light-theme'), TC = LT ? '60,58,56' : '255,246,232', TA = LT ? .07 : .09;   // нейтральный тон темы, еле заметный
-      for (var i = 0; i < pts.length - 1; i++) {
-        var p1 = pts[i], p2 = pts[i + 1], pr = (MAX - i) / MAX;
-        ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.quadraticCurveTo(p1.x, p1.y, (p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
-        ctx.lineWidth = 190 * Math.pow(pr, .8); ctx.lineCap = ctx.lineJoin = 'round';
-        var al = Math.max(0, p1.a * pr), g = ctx.createRadialGradient(p1.x, p1.y, 0, p1.x, p1.y, ctx.lineWidth);
-        g.addColorStop(0, 'rgba(' + TC + ',' + TA * al + ')');
-        g.addColorStop(0.55, 'rgba(' + TC + ',' + TA * .4 * al + ')');
-        g.addColorStop(1, 'rgba(' + TC + ',0)');
-        ctx.strokeStyle = g; ctx.stroke();
+      pts.forEach(function (p, i) { if (i || mx === -1000) p.h -= dt * .22; p.age += dt; });   // остывание ~4 с
+      pts = pts.filter(function (p) { return p.h > 0; });
+      var LT = document.documentElement.classList.contains('light-theme');
+      var TC = LT ? '70,66,62' : '255,240,222', TA = LT ? .38 : .5;   // тон темы, тёплый нейтральный
+      for (var i = pts.length - 1; i >= 0; i--) {
+        var p = pts[i], r = 110 + 70 * Math.min(1, p.age / 3), al = TA * p.h * p.h;
+        var g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+        g.addColorStop(0, 'rgba(' + TC + ',' + al + ')'); g.addColorStop(.5, 'rgba(' + TC + ',' + al * .45 + ')'); g.addColorStop(1, 'rgba(' + TC + ',0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 6.2832); ctx.fill();
       }
       copyHeader();
-      if (!pts.length && (mx === -1000 || (Math.abs(mx - sx) < 1 && Math.abs(my - sy) < 1))) { running = false; cv.style.visibility = 'hidden'; if (hc) hc.style.visibility = 'hidden'; return; }
+      if (!pts.length && mx === -1000) { running = false; cv.style.visibility = 'hidden'; if (hc) hc.style.visibility = 'hidden'; return; }
       requestAnimationFrame(frame);
     }
   }
