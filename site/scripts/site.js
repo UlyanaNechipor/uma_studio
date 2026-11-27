@@ -354,7 +354,7 @@
     size(); addEventListener('resize', size);
     /* след как на термочувствительной плёнке: где курсор задержался — «нагрелось» пятно тона темы;
        быстрый проход оставляет бледный след, задержка — заметнее; пятна медленно остывают и расплываются */
-    var mx = -1000, my = -1000, sx = -1000, sy = -1000, pts = [], MAX = 160, running = false, last = 0;
+    var mx = -1000, my = -1000, sx = -1000, sy = -1000, pts = [], MAX = 220, running = false, last = 0;
     function input(x, y) { mx = x; my = y; if (sx === -1000) { sx = x; sy = y; } wake(); }
     addEventListener('mousemove', function (e) { input(e.clientX, e.clientY); });
     addEventListener('touchstart', function (e) { if (e.touches[0]) input(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
@@ -368,10 +368,16 @@
       if (mx !== -1000) {
         sx += (mx - sx) * .25; sy += (my - sy) * .25;
         var p0 = pts[0];
-        if (!p0 || Math.hypot(sx - p0.x, sy - p0.y) > 7) { pts.unshift({ x: sx, y: sy, h: .7, age: 0 }); if (pts.length > MAX) pts.pop(); }
+        var dd = p0 ? Math.hypot(sx - p0.x, sy - p0.y) : 0;
+        if (!p0) pts.unshift({ x: sx, y: sy, h: .7, age: 0 });
+        else if (dd > 5) {   // резкий рывок — дробим отрезок на частые отпечатки, чтобы мазок оставался сплошным
+          var ns = Math.min(40, Math.ceil(dd / 5));
+          for (var k = 1; k <= ns; k++) pts.unshift({ x: p0.x + (sx - p0.x) * k / ns, y: p0.y + (sy - p0.y) * k / ns, h: .7, age: 0 });
+          if (pts.length > MAX) pts.length = MAX;
+        }
         else p0.h = Math.min(1, p0.h + dt * .9);   // курсор стоит — пятно «нагревается»
       } else { sx = sy = -1000; }
-      pts.forEach(function (p, i) { if (i || mx === -1000) p.h -= dt * .22; p.age += dt; });   // остывание ~4 с
+      pts.forEach(function (p, i) { if (i || mx === -1000) p.h -= dt * .38; p.age += dt; });   // остывание ~4 с
       pts = pts.filter(function (p) { return p.h > 0; });
       /* единый мазок: отпечатки складываются по максимуму (lighten), а не накладываются — без бусин в следе;
          затем маска тонируется под тему: в тёмной — светлее фона (screen), в светлой — темнее (multiply) */
